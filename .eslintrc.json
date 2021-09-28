@@ -1,3 +1,39 @@
 {
-  "extends": "next/core-web-vitals"
+  "env": {
+    "es6": true,
+    "node": true,
+    "mocha": true,
+    "browser": true,
+    "jest": true
+  },
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
+    "eslint:recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json",
+    "sourceType": "module"
+  },
+  "rules": {
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "no-redeclare": "off",
+    "no-unused-vars": "off",
+    "prefer-const": ["error", {"destructuring": "all"}],
+    "semi": ["error", "never"],
+    "no-extra-semi": "off",
+    "@typescript-eslint/no-extra-semi": "off"
+  },
+  "overrides": [
+    {
+      "files": [
+        "__tests__/**/*.{js,ts,tsx}"
+      ],
+      "rules": {
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "no-unused-expressions": "off"
+      }
+    }
+  ]
 }
