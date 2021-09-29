@@ -1,11 +1,11 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import { useBalance } from "../lib/hooks"
+import { useBalances } from "../lib/hooks"
 import { ALICE } from "../lib/consts"
 
 const Home: NextPage =  () => {
-  const balances = useBalance(ALICE)
+  const balances = useBalances(ALICE)
 
   console.log(`freeBalance ${balances?.freeBalance}, availableBalance ${balances?.availableBalance}, accountNonce ${balances?.accountNonce}, lockedBalance ${balances?.lockedBalance}`)
 
