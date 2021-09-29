@@ -2,14 +2,20 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import Home from '../pages/index'
 
+jest.mock('../lib/hooks/useBalances', () => ({
+  useBalances: () => ({
+    freeBalance: 3600,
+    availableBalance: 4000,
+    lockedBalance: 300,
+    accountNonce: 1
+  })
+}))
+
 describe('Home', () => {
-    it('renders a heading', () => {
-        render(<Home />)
+  it('displays balance of hardcoded account', async () => {
+    render(<Home />)
 
-        const heading = screen.getByRole('heading', {
-            name: /welcome to next\.js!/i,
-        })
-
-        expect(heading).toBeInTheDocument()
-    })
+    screen.getByRole('heading', { name: /welcome to Statemine/i })
+    await screen.findByText('Balance: 3600')
+  })
 })
