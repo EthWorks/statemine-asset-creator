@@ -1,35 +1,25 @@
 import type {NextPage} from 'next'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import  { ApiPromise, WsProvider } from '@polkadot/api'
 import {useEffect} from "react"
+import {useApi} from "./api/context"
+import {useAsync} from "./api/useAsync"
+import {DeriveBalancesAll} from "@polkadot/api-derive/types"
 
 const JACO = 'J9nD3s7zssCX7bion1xctAF6xcVexcpy2uwy4jTm9JL8yuK'
 
-function api() {
-  async function main () {
+function useBalance() {
+  const api = useApi()
 
-
-    // Retrieve the chain & node information information via rpc calls
-    const [chain, nodeName, nodeVersion] = await Promise.all([
-      api.rpc.system.chain(),
-      api.rpc.system.name(),
-      api.rpc.system.version()
-    ])
-
-    const { freeBalance, availableBalance, accountNonce, lockedBalance } = await api.derive.balances?.all(JACO)
-
-    console.log(`You are connected to chain ${chain} using ${nodeName} v${nodeVersion}`)
-    // console.log(`JACO has ${free} free balance and ${nonce} nonce, reserved: ${reserved}`)
-    console.log(`freeBalance ${freeBalance}, availableBalance ${availableBalance}, accountNonce ${accountNonce}, lockedBalance ${lockedBalance}`)
-  }
-
-  main().catch(console.error)
+  return useAsync<DeriveBalancesAll>(() => api.api.derive.balances.all(JACO), [])
 }
 
-const Home: NextPage = () => {
+const Home: NextPage =  () => {
   const balance = 3500
-  useEffect(() => api(), [])
+  const {} useBalance()
+
+  console.log(`freeBalance ${freeBalance}, availableBalance ${availableBalance}, accountNonce ${accountNonce}, lockedBalance ${lockedBalance}`)
+
 
   return (
     <div className={styles.container}>
