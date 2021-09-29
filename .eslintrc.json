@@ -11,6 +11,9 @@
     "plugin:@typescript-eslint/recommended",
     "eslint:recommended"
   ],
+  "globals": {
+    "JSX": true
+  },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./tsconfig.json",
@@ -33,7 +36,10 @@
       { "blankLine": "any", "prev": "import", "next": "import" }
     ],
     "object-curly-spacing": ["error", "always"],
-    "@typescript-eslint/no-explicit-any": "error"
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/explicit-function-return-type": ["error", {
+      "allowExpressions": true
+    }]
   },
   "overrides": [
     {

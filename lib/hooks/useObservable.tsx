@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Observable } from 'rxjs'
 
-export function useObservable<T>(observable: Observable<T> | undefined, deps: readonly any[]) {
+export function useObservable<T>(observable: Observable<T> | undefined, deps: readonly any[]): T | undefined {
   const [data, setData] = useState<T | undefined>(undefined)
 
   useEffect(() => {

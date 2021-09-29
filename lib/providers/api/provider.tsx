@@ -9,7 +9,7 @@ interface Props {
   children: ReactNode
 }
 
-export const ApiContextProvider = ({ children }: Props) => {
+export const ApiContextProvider = ({ children }: Props): JSX.Element | null => {
   const [connectionState, setConnectionState] = useState<ConnectionState>('connecting')
 
   const api = useMemo(() => {
