@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import Home from '../pages/index'
 
-jest.mock('../lib/hooks/useBalances', () => ({
+jest.mock('../src/hooks/useBalances', () => ({
   useBalances: () => ({
     freeBalance: 3600,
     availableBalance: 4000,
