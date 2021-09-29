@@ -1,25 +1,13 @@
-import type {NextPage} from 'next'
+import type { NextPage } from 'next'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import {useEffect} from "react"
-import {useApi} from "./api/context"
-import {useAsync} from "./api/useAsync"
-import {DeriveBalancesAll} from "@polkadot/api-derive/types"
-
-const JACO = 'J9nD3s7zssCX7bion1xctAF6xcVexcpy2uwy4jTm9JL8yuK'
-
-function useBalance() {
-  const api = useApi()
-
-  return useAsync<DeriveBalancesAll>(() => api.api.derive.balances.all(JACO), [])
-}
+import { useBalance } from "../lib/hooks"
+import { ALICE } from "../lib/consts"
 
 const Home: NextPage =  () => {
-  const balance = 3500
-  const {} useBalance()
+  const balances = useBalance(ALICE)
 
-  console.log(`freeBalance ${freeBalance}, availableBalance ${availableBalance}, accountNonce ${accountNonce}, lockedBalance ${lockedBalance}`)
-
+  console.log(`freeBalance ${balances?.freeBalance}, availableBalance ${balances?.availableBalance}, accountNonce ${balances?.accountNonce}, lockedBalance ${balances?.lockedBalance}`)
 
   return (
     <div className={styles.container}>
@@ -35,7 +23,7 @@ const Home: NextPage =  () => {
         </h1>
 
         <p className={styles.description}>
-         Balance: {balance}
+         Balance: {balances?.freeBalance.toString()}
         </p>
       </main>
     </div>

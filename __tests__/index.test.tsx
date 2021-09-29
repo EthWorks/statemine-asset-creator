@@ -6,7 +6,7 @@ describe('Home', () => {
   it('displays balance of hardcoded account', async () => {
     render(<Home />)
 
-    screen.getByRole('heading', {name: /welcome to Statemine/i})
+    screen.getByRole('heading', { name: /welcome to Statemine/i })
     await screen.findByText('Balance: 3500')
   })
 })

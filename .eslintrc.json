@@ -17,6 +17,9 @@
     "sourceType": "module"
   },
   "rules": {
+    // required as 'off' since typescript-eslint has own versions
+    "indent": "off",
+    "@typescript-eslint/indent": ["error", 2],
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "no-redeclare": "off",
     "no-unused-vars": "error",
@@ -28,7 +31,9 @@
       "error",
       { "blankLine": "always", "prev": "import", "next": "*" },
       { "blankLine": "any", "prev": "import", "next": "import" }
-    ]
+    ],
+    "object-curly-spacing": ["error", "always"],
+    "@typescript-eslint/no-explicit-any": "error"
   },
   "overrides": [
     {
