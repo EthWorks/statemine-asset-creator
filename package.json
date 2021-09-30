@@ -1,10 +1,9 @@
 {
-  "workspaces": [
-    "packages/*/*",
-    "libraries/*/*"
-  ],
-  "scripts": {
-    "preinstall": "echo 'This project is using Rush Stack. More details in the readme.' && false"
+  "name": "statemine",
+  "devDependencies": {
+    "@microsoft/rush": "^5.54.0"
   },
-  "version": "0.0.0"
+  "workspaces": [
+    "./*/*"
+  ]
 }

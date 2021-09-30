@@ -99,3 +99,6 @@ common/autoinstallers/*/.npmrc
 
 # Heft
 .heft
+
+*/*/dist
+
