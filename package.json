@@ -2,5 +2,8 @@
   "name": "statemine",
   "devDependencies": {
     "@microsoft/rush": "^5.54.0"
+  },
+  "scripts": {
+    "start": "cd packages/app && yarn run start"
   }
 }
