@@ -2,8 +2,5 @@
   "name": "statemine",
   "devDependencies": {
     "@microsoft/rush": "^5.54.0"
-  },
-  "workspaces": [
-    "./*/*"
-  ]
+  }
 }
