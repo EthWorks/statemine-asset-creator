@@ -6379,6 +6379,7 @@ packages:
     dependencies:
       '@testing-library/jest-dom': 5.14.1
       '@testing-library/react': 12.1.1_react-dom@17.0.2+react@17.0.2
+      '@types/jest': 27.0.2
       '@types/react': 17.0.24
       '@typescript-eslint/eslint-plugin': 4.32.0_1eacf2495a01e8a68ffa99482308e8ec
       '@typescript-eslint/parser': 4.32.0_eslint@7.32.0+typescript@4.4.3
@@ -6395,7 +6396,7 @@ packages:
     dev: false
     name: '@rush-temp/statemine-asset-creator'
     resolution:
-      integrity: sha512-PqUG1M4+Oi0zud3W7wCriad51TPnd2ZCY4jTMu+ok1asVQuNKL+bq+tnIHE4k+zkef54rFQmG8Dd80aB11CHnQ==
+      integrity: sha512-rBUI57zmVtzVBPc6A/Y/g8uuj2vfCSk7k+088GBMB64VRJWNZFDXnLB6RuZTVrYTE6oyStIUdGalbCZbz5A2Og==
       tarball: file:projects/statemine-asset-creator.tgz
     version: 0.0.0
   file:projects/use-substrate.tgz_next@11.1.2:
