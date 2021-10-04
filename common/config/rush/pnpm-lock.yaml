@@ -1,7 +1,7 @@
 dependencies:
   '@polkadot/api': 6.1.2
   '@polkadot/api-derive': 6.1.2
-  '@rush-temp/eslint-plugin': file:projects/eslint-plugin.tgz
+  '@rush-temp/eslint-config-statemine': file:projects/eslint-config-statemine.tgz_typescript@4.4.3
   '@rush-temp/statemine-asset-creator': file:projects/statemine-asset-creator.tgz
   '@rush-temp/use-substrate': file:projects/use-substrate.tgz_next@11.1.2
   '@testing-library/jest-dom': 5.14.1
@@ -6361,12 +6361,19 @@ packages:
       node: '>=10'
     resolution:
       integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
-  file:projects/eslint-plugin.tgz:
+  file:projects/eslint-config-statemine.tgz_typescript@4.4.3:
+    dependencies:
+      '@typescript-eslint/eslint-plugin': 4.32.0_1eacf2495a01e8a68ffa99482308e8ec
+      '@typescript-eslint/parser': 4.32.0_eslint@7.32.0+typescript@4.4.3
+      eslint: 7.32.0
     dev: false
-    name: '@rush-temp/eslint-plugin'
+    id: file:projects/eslint-config-statemine.tgz
+    name: '@rush-temp/eslint-config-statemine'
+    peerDependencies:
+      typescript: '*'
     resolution:
-      integrity: sha512-uhBeAYXgQoki8U/MSn+7SEJU4EPAs9Y30sG5NLkYuV4GJxmRQzRCB5Z8DEuWRN0H1yt16zzDDriIL5bsyM1lXg==
-      tarball: file:projects/eslint-plugin.tgz
+      integrity: sha512-mP+F2ko2vTl9C2r6+YZO5qlauW5cWDNfUoy+fEEaGJVSaTy3WEY2noutCVcotykEgjo9WVAbBfPUYiFBTk9kzw==
+      tarball: file:projects/eslint-config-statemine.tgz
     version: 0.0.0
   file:projects/statemine-asset-creator.tgz:
     dependencies:
@@ -6423,7 +6430,7 @@ packages:
 specifiers:
   '@polkadot/api': ^6.1.1
   '@polkadot/api-derive': ~6.1.2
-  '@rush-temp/eslint-plugin': file:./projects/eslint-plugin.tgz
+  '@rush-temp/eslint-config-statemine': file:./projects/eslint-config-statemine.tgz
   '@rush-temp/statemine-asset-creator': file:./projects/statemine-asset-creator.tgz
   '@rush-temp/use-substrate': file:./projects/use-substrate.tgz
   '@testing-library/jest-dom': ^5.14.1

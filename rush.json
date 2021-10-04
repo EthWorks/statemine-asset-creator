@@ -24,8 +24,8 @@
 
   "projects": [
     {
-      "packageName": "eslint-plugin",
-      "projectFolder": "tools/eslint-plugin"
+      "packageName": "eslint-config-statemine",
+      "projectFolder": "tools/eslint-config-statemine"
     },
     {
       "packageName": "use-substrate",
