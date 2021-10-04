@@ -24,6 +24,10 @@
 
   "projects": [
     {
+      "packageName": "eslint-plugin",
+      "projectFolder": "tools/eslint-plugin"
+    },
+    {
       "packageName": "use-substrate",
       "projectFolder": "libraries/use-substrate"
     },

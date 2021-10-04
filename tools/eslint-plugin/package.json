@@ -1,0 +1,13 @@
+{
+  "name": "eslint-plugin",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": ""
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  }
+}

@@ -1,6 +1,7 @@
 dependencies:
   '@polkadot/api': 6.1.2
   '@polkadot/api-derive': 6.1.2
+  '@rush-temp/eslint-plugin': file:projects/eslint-plugin.tgz
   '@rush-temp/statemine-asset-creator': file:projects/statemine-asset-creator.tgz
   '@rush-temp/use-substrate': file:projects/use-substrate.tgz_next@11.1.2
   '@testing-library/jest-dom': 5.14.1
@@ -79,7 +80,7 @@ packages:
       '@babel/compat-data': 7.15.0
       '@babel/core': 7.15.5
       '@babel/helper-validator-option': 7.14.5
-      browserslist: 4.17.1
+      browserslist: 4.17.2
       semver: 6.3.0
     dev: false
     engines:
@@ -1577,7 +1578,7 @@ packages:
     dependencies:
       call-bind: 1.0.2
       define-properties: 1.1.3
-      es-abstract: 1.18.7
+      es-abstract: 1.19.0
       get-intrinsic: 1.1.1
       is-string: 1.0.7
     dev: false
@@ -1595,7 +1596,7 @@ packages:
     dependencies:
       call-bind: 1.0.2
       define-properties: 1.1.3
-      es-abstract: 1.18.7
+      es-abstract: 1.19.0
     dev: false
     engines:
       node: '>= 0.4'
@@ -1605,7 +1606,7 @@ packages:
     dependencies:
       call-bind: 1.0.2
       define-properties: 1.1.3
-      es-abstract: 1.18.7
+      es-abstract: 1.19.0
       function-bind: 1.1.1
     dev: false
     engines:
@@ -1916,9 +1917,9 @@ packages:
       integrity: sha512-Z942RysHXmJrhqk88FmKBVq/v5tqmSkDz7p54G/MGyjMnCFFnC79XWNbg+Vta8W6Wb2qtSZTSxIGkJrRpCFEiA==
   /browserslist/4.16.6:
     dependencies:
-      caniuse-lite: 1.0.30001261
+      caniuse-lite: 1.0.30001263
       colorette: 1.4.0
-      electron-to-chromium: 1.3.854
+      electron-to-chromium: 1.3.856
       escalade: 3.1.1
       node-releases: 1.1.76
     dev: false
@@ -1927,19 +1928,19 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-Wspk/PqO+4W9qp5iUTJsa1B/QrYn1keNCcEP5OvP7WBwT4KaDly0uONYmC6Xa3Z5IqnUgS0KcgLYu1l74x0ZXQ==
-  /browserslist/4.17.1:
+  /browserslist/4.17.2:
     dependencies:
-      caniuse-lite: 1.0.30001261
-      electron-to-chromium: 1.3.854
+      caniuse-lite: 1.0.30001263
+      electron-to-chromium: 1.3.856
       escalade: 3.1.1
-      nanocolors: 0.1.12
+      nanocolors: 0.2.12
       node-releases: 1.1.76
     dev: false
     engines:
       node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7
     hasBin: true
     resolution:
-      integrity: sha512-aLD0ZMDSnF4lUt4ZDNgqi5BUn9BZ7YdQdI/cYlILrhdSSZJLU9aNZoD5/NBmM4SK34APB2e83MOsRt1EnkuyaQ==
+      integrity: sha512-jSDZyqJmkKMEMi7SZAgX5UltFdR5NAO43vY0AwTpu4X3sGH7GLLQ83KiUomgrnvZRCeW0yPPnKqnxPqQOER9zQ==
   /bser/2.1.1:
     dependencies:
       node-int64: 0.4.0
@@ -2013,10 +2014,10 @@ packages:
       node: '>=10'
     resolution:
       integrity: sha512-c7wVvbw3f37nuobQNtgsgG9POC9qMbNuMQmTCqZv23b6MIz0fcYpBiOlv9gEN/hdLdnZTDQhg6e9Dq5M1vKvfg==
-  /caniuse-lite/1.0.30001261:
+  /caniuse-lite/1.0.30001263:
     dev: false
     resolution:
-      integrity: sha512-vM8D9Uvp7bHIN0fZ2KQ4wnmYFpJo/Etb4Vwsuc+ka0tfGDHvOPrFm6S/7CCNLSOkAUjenT2HnUPESdOIL91FaA==
+      integrity: sha512-doiV5dft6yzWO1WwU19kt8Qz8R0/8DgEziz6/9n2FxUasteZNwNNYSmJO3GLBH8lCVE73AB1RPDPAeYbcO5Cvw==
   /chalk/2.4.2:
     dependencies:
       ansi-styles: 3.2.1
@@ -2253,7 +2254,7 @@ packages:
       integrity: sha512-DG9pFfwOrzc+hawpmqX/dHYHJG+Bsdb0klhyi1sDneOgGOXy9wQIC8hzyVp1e4NRYDBdxcylvywPkkXCHAzTyQ==
   /cssnano-preset-simple/3.0.0_postcss@8.2.15:
     dependencies:
-      caniuse-lite: 1.0.30001261
+      caniuse-lite: 1.0.30001263
       postcss: 8.2.15
     dev: false
     peerDependencies:
@@ -2474,10 +2475,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-8w2fmmq3hv9rCrcI7g9hms2pMunQr1JINfcjwR9tAyZqhtyaMN991lF/ZfHfr5tzZQ8c7y7aBgZbjfbd0fjFwQ==
-  /electron-to-chromium/1.3.854:
+  /electron-to-chromium/1.3.856:
     dev: false
     resolution:
-      integrity: sha512-00/IIC1mFPkq32MhUJyLdcTp7+wsKK2G3Sb65GSas9FKJQGYkDcZ4GwJkkxf5YyM3ETvl6n+toV8OmtXl4IA/g==
+      integrity: sha512-lSezYIe1/p5qkEswAfaQUseOBiwGwuCvRl/MKzOEVe++DcmQ92+43dznDl4rFJ4Zpu+kevhwyIf7KjJevyDA/A==
   /elliptic/6.5.4:
     dependencies:
       bn.js: 4.12.0
@@ -2530,7 +2531,7 @@ packages:
     dev: false
     resolution:
       integrity: sha512-7dFHNmqeFSEt2ZBsCriorKnn3Z2pj+fd9kmI6QoWw4//DL+icEBfc0U7qJCisqrTsKTjw4fNFy2pW9OqStD84g==
-  /es-abstract/1.18.7:
+  /es-abstract/1.19.0:
     dependencies:
       call-bind: 1.0.2
       es-to-primitive: 1.2.1
@@ -2543,7 +2544,9 @@ packages:
       is-callable: 1.2.4
       is-negative-zero: 2.0.1
       is-regex: 1.1.4
+      is-shared-array-buffer: 1.0.1
       is-string: 1.0.7
+      is-weakref: 1.0.1
       object-inspect: 1.11.0
       object-keys: 1.1.1
       object.assign: 4.1.2
@@ -2554,7 +2557,7 @@ packages:
     engines:
       node: '>= 0.4'
     resolution:
-      integrity: sha512-uFG1gyVX91tZIiDWNmPsL8XNpiCk/6tkB7MZphoSJflS4w+KgWyQ2gjCVDnsPxFAo9WjRXG3eqONNYdfbJjAtw==
+      integrity: sha512-oWPrF+7P1nGv/rw9oIInwdkmI1qediEJSvVfHFryBd8mWllCKB5tke3aKyf51J6chgyKmi6mODqdnin2yb88Nw==
   /es-to-primitive/1.2.1:
     dependencies:
       is-callable: 1.2.4
@@ -2846,7 +2849,7 @@ packages:
       semver: 7.3.5
       strip-ansi: 6.0.1
       strip-json-comments: 3.1.1
-      table: 6.7.1
+      table: 6.7.2
       text-table: 0.2.0
       v8-compile-cache: 2.3.0
     dev: false
@@ -3592,6 +3595,10 @@ packages:
       node: '>= 0.4'
     resolution:
       integrity: sha512-kvRdxDsxZjhzUX07ZnLydzS1TU/TJlTUHHY4YLL87e37oUA49DfkLqgy+VjFocowy29cKvcSiu+kIv728jTTVg==
+  /is-shared-array-buffer/1.0.1:
+    dev: false
+    resolution:
+      integrity: sha512-IU0NmyknYZN0rChcKhRO1X8LYz5Isj/Fsqh8NJOSf+N/hCOTwy29F32Ik7a+QszE63IdvmwdTPDd6cZ5pg4cwA==
   /is-stream/2.0.1:
     dev: false
     engines:
@@ -3618,7 +3625,7 @@ packages:
     dependencies:
       available-typed-arrays: 1.0.5
       call-bind: 1.0.2
-      es-abstract: 1.18.7
+      es-abstract: 1.19.0
       foreach: 2.0.5
       has-tostringtag: 1.0.0
     dev: false
@@ -3630,6 +3637,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-5HnICFjfDBsR3dppQPlgEfzaSpo=
+  /is-weakref/1.0.1:
+    dependencies:
+      call-bind: 1.0.2
+    dev: false
+    resolution:
+      integrity: sha512-b2jKc2pQZjaeFYWEf7ScFj+Be1I+PXmlu572Q8coTXZ+LD/QQZ7ShPMst8h16riVgyXTQwUsFEl74mDvc/3MHQ==
   /isarray/1.0.0:
     dev: false
     resolution:
@@ -4484,10 +4497,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
-  /nanocolors/0.1.12:
+  /nanocolors/0.2.12:
     dev: false
     resolution:
-      integrity: sha512-2nMHqg1x5PU+unxX7PGY7AuYxl2qDx7PSrTRjizr8sxdd3l/3hBuWWaki62qmtYm2U5i4Z5E7GbjlyDFhs9/EQ==
+      integrity: sha512-SFNdALvzW+rVlzqexid6epYdt8H9Zol7xDoQarioEFcFN0JHo4CYNztAxmtfgGTVRCmFlEOqqhBpoFGKqSAMug==
   /nanoid/3.1.28:
     dev: false
     engines:
@@ -4523,7 +4536,7 @@ packages:
       browserify-zlib: 0.2.0
       browserslist: 4.16.6
       buffer: 5.6.0
-      caniuse-lite: 1.0.30001261
+      caniuse-lite: 1.0.30001263
       chalk: 2.4.2
       chokidar: 3.5.1
       constants-browserify: 1.0.0
@@ -4722,7 +4735,7 @@ packages:
     dependencies:
       call-bind: 1.0.2
       define-properties: 1.1.3
-      es-abstract: 1.18.7
+      es-abstract: 1.19.0
     dev: false
     engines:
       node: '>= 0.4'
@@ -4732,7 +4745,7 @@ packages:
     dependencies:
       call-bind: 1.0.2
       define-properties: 1.1.3
-      es-abstract: 1.18.7
+      es-abstract: 1.19.0
       has: 1.0.3
     dev: false
     engines:
@@ -4742,7 +4755,7 @@ packages:
   /object.hasown/1.0.0:
     dependencies:
       define-properties: 1.1.3
-      es-abstract: 1.18.7
+      es-abstract: 1.19.0
     dev: false
     resolution:
       integrity: sha512-qYMF2CLIjxxLGleeM0jrcB4kiv3loGVAjKQKvH8pSU/i2VcRRvUNmxbD+nEMmrXRfORhuVJuH8OtSYCZoue3zA==
@@ -4750,7 +4763,7 @@ packages:
     dependencies:
       call-bind: 1.0.2
       define-properties: 1.1.3
-      es-abstract: 1.18.7
+      es-abstract: 1.19.0
     dev: false
     engines:
       node: '>= 0.4'
@@ -5638,7 +5651,7 @@ packages:
     dependencies:
       call-bind: 1.0.2
       define-properties: 1.1.3
-      es-abstract: 1.18.7
+      es-abstract: 1.19.0
       get-intrinsic: 1.1.1
       has-symbols: 1.0.2
       internal-slot: 1.0.3
@@ -5792,7 +5805,7 @@ packages:
     dev: false
     resolution:
       integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==
-  /table/6.7.1:
+  /table/6.7.2:
     dependencies:
       ajv: 8.6.3
       lodash.clonedeep: 4.5.0
@@ -5804,7 +5817,7 @@ packages:
     engines:
       node: '>=10.0.0'
     resolution:
-      integrity: sha512-ZGum47Yi6KOOFDE8m223td53ath2enHcYLgOCjGr5ngu8bdIARQk6mN/wRMv4yMRcHnCSnHbCEha4sobQx5yWg==
+      integrity: sha512-UFZK67uvyNivLeQbVtkiUs8Uuuxv24aSL4/Vil2PJVtMgU8Lx0CYkP12uCGa3kjyQzOSgV1+z9Wkb82fCGsO0g==
   /terminal-link/2.1.1:
     dependencies:
       ansi-escapes: 4.3.2
@@ -6225,7 +6238,7 @@ packages:
     dependencies:
       available-typed-arrays: 1.0.5
       call-bind: 1.0.2
-      es-abstract: 1.18.7
+      es-abstract: 1.19.0
       foreach: 2.0.5
       has-tostringtag: 1.0.0
       is-typed-array: 1.1.8
@@ -6348,6 +6361,13 @@ packages:
       node: '>=10'
     resolution:
       integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
+  file:projects/eslint-plugin.tgz:
+    dev: false
+    name: '@rush-temp/eslint-plugin'
+    resolution:
+      integrity: sha512-uhBeAYXgQoki8U/MSn+7SEJU4EPAs9Y30sG5NLkYuV4GJxmRQzRCB5Z8DEuWRN0H1yt16zzDDriIL5bsyM1lXg==
+      tarball: file:projects/eslint-plugin.tgz
+    version: 0.0.0
   file:projects/statemine-asset-creator.tgz:
     dependencies:
       '@testing-library/jest-dom': 5.14.1
@@ -6368,7 +6388,7 @@ packages:
     dev: false
     name: '@rush-temp/statemine-asset-creator'
     resolution:
-      integrity: sha512-7A1RIIH+op9+8Z9pzCNJxole+5naS67zZK6lXs5yisDVT4eeK0UepAaGVtoyVqF/hSL+/GkcjShLKZvH7ojRpg==
+      integrity: sha512-PqUG1M4+Oi0zud3W7wCriad51TPnd2ZCY4jTMu+ok1asVQuNKL+bq+tnIHE4k+zkef54rFQmG8Dd80aB11CHnQ==
       tarball: file:projects/statemine-asset-creator.tgz
     version: 0.0.0
   file:projects/use-substrate.tgz_next@11.1.2:
@@ -6397,12 +6417,13 @@ packages:
     peerDependencies:
       next: '*'
     resolution:
-      integrity: sha512-zm0LzXac1XiS4xm3PdpkgbxjcqQipgcU3yAGtPu44zqSJNp+SwKysVvkmk0aNTqaETBdoN2IGJGsf7Fe2etwKg==
+      integrity: sha512-cZPEcEeA4daIq1znB3YFK+XphvUVnkoSdO5PGQlUs6hmRNYH0sgRwBykXsMKKr0+ZfywW7ZWVQ7DL9LexM0Khw==
       tarball: file:projects/use-substrate.tgz
     version: 0.0.0
 specifiers:
   '@polkadot/api': ^6.1.1
   '@polkadot/api-derive': ~6.1.2
+  '@rush-temp/eslint-plugin': file:./projects/eslint-plugin.tgz
   '@rush-temp/statemine-asset-creator': file:./projects/statemine-asset-creator.tgz
   '@rush-temp/use-substrate': file:./projects/use-substrate.tgz
   '@testing-library/jest-dom': ^5.14.1
@@ -6412,7 +6433,7 @@ specifiers:
   '@typescript-eslint/eslint-plugin': ^4.32.0
   '@typescript-eslint/parser': ^4.32.0
   babel-jest: ^27.2.3
-  eslint: 7.32.0
+  eslint: ^7.32.0
   eslint-config-next: 11.1.2
   identity-obj-proxy: ^3.0.0
   jest: ^27.2.3
@@ -6421,4 +6442,4 @@ specifiers:
   react-dom: 17.0.2
   react-test-renderer: ^17.0.2
   rxjs: ^7.3.0
-  typescript: 4.4.3
+  typescript: ^4.4.3
