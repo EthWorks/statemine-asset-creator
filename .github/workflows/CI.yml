@@ -14,7 +14,7 @@ jobs:
         with:
           node-version: '14.18'
         run: |
-        node common/scripts/install-run-rush.js install
-        rush build
-        rush lint
-        rush test
+          node common/scripts/install-run-rush.js install
+          rush build
+          rush lint
+          rush test
