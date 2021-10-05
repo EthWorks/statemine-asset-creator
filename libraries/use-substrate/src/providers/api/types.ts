@@ -1,4 +1,4 @@
-import { ApiRx } from "@polkadot/api"
+import { ApiRx } from '@polkadot/api'
 
 export type ConnectionState = 'connecting' | 'connected' | 'disconnected'
 

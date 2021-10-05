@@ -2,8 +2,8 @@ import { ApiRx, WsProvider } from '@polkadot/api'
 import React, { ReactNode, useEffect, useMemo, useState } from 'react'
 
 import { ApiContext } from './context'
-import { ConnectionState } from "./types"
-import { LOCAL_NODE_URL } from "../../consts"
+import { ConnectionState } from './types'
+import { LOCAL_NODE_URL } from '../../consts'
 
 interface Props {
   children: ReactNode
