@@ -13,7 +13,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '14.18'
-      - run: |
+        run: |
         node common/scripts/install-run-rush.js install
         rush build
         rush lint
