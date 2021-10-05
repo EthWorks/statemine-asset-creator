@@ -5,7 +5,7 @@
 
   "pnpmVersion": "5.15.2",
 
-  "nodeSupportedVersionRange": ">=14.18.0",
+  "nodeSupportedVersionRange": ">=14.17.0",
 
   "ensureConsistentVersions": true,
 
