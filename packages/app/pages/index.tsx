@@ -1,8 +1,8 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import { useBalances } from "use-substrate"
-import { ALICE } from "use-substrate"
+import { useBalances } from 'use-substrate'
+import { ALICE } from 'use-substrate'
 
 const Home: NextPage =  () => {
   const balances = useBalances(ALICE)

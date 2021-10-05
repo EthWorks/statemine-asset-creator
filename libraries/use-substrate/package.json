@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "build": "tsc",
-    "test": "jest",
-    "lint": "eslint"
+    "lint": "eslint --fix"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
