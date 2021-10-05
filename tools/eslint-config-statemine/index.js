@@ -25,6 +25,7 @@ module.exports = {
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "no-redeclare": "off",
         "no-unused-vars": "error",
+        "quotes": ["error", "single"],
         "prefer-const": ["error", {"destructuring": "all"}],
         "semi": ["error", "never"],
         "no-extra-semi": "off",

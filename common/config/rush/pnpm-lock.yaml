@@ -1,4 +1,5 @@
 dependencies:
+  '@babel/runtime': 7.15.4
   '@polkadot/api': 6.1.2
   '@polkadot/api-derive': 6.1.2
   '@rush-temp/eslint-config-statemine': file:projects/eslint-config-statemine.tgz_typescript@4.4.3
@@ -6404,6 +6405,7 @@ packages:
     dependencies:
       '@polkadot/api': 6.1.2
       '@polkadot/api-derive': 6.1.2
+      '@rushstack/eslint-patch': 1.0.7
       '@testing-library/jest-dom': 5.14.1
       '@testing-library/react': 12.1.1_react-dom@17.0.2+react@17.0.2
       '@types/jest': 27.0.2
@@ -6420,10 +6422,11 @@ packages:
     dev: false
     name: '@rush-temp/use-substrate'
     resolution:
-      integrity: sha512-2bRLQrlzxXM+A3RS/6TmhEr0pWSHHnNdleW8Q8BNwUvf9ydZwAoPzRDQamqpGdTbFCMGc7bQaMWABn+yq27mbw==
+      integrity: sha512-Ip09Z2pej87XHI09QHT+8A0gKNA9o80QtRftP9GzkwWw+7rrRmsxZvqmILt3iUUZWhrl7dKxDVkhmObQA8QwAw==
       tarball: file:projects/use-substrate.tgz
     version: 0.0.0
 specifiers:
+  '@babel/runtime': ~7.15.4
   '@polkadot/api': ^6.1.1
   '@polkadot/api-derive': ~6.1.2
   '@rush-temp/eslint-config-statemine': file:./projects/eslint-config-statemine.tgz
