@@ -3,7 +3,7 @@ import React, { ReactNode, useEffect, useMemo, useState } from 'react'
 
 import { ApiContext } from './context'
 import { ConnectionState } from './types'
-import { LOCAL_NODE_URL } from '../../consts'
+import { KUSAMA_ARCHIVE_NODE_URL } from '../../consts'
 
 interface Props {
   children: ReactNode
@@ -13,7 +13,7 @@ export const ApiContextProvider = ({ children }: Props): JSX.Element | null => {
   const [connectionState, setConnectionState] = useState<ConnectionState>('connecting')
 
   const api = useMemo(() => {
-    const provider = new WsProvider(LOCAL_NODE_URL)
+    const provider = new WsProvider(KUSAMA_ARCHIVE_NODE_URL)
     return new ApiRx({ provider })
   }, [])
 
