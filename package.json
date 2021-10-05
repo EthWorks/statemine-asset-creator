@@ -1,7 +1,11 @@
 {
   "name": "statemine",
   "scripts": {
-    "start": "cd packages/app && yarn run start",
-    "build": "rush build"
+    "start": "cd packages/app && pnpm start",
+    "build": "rush build",
+    "test": "cd packages/app && pnpm test",
+    "lint": "cd packages/app && pnpm lint && cd ../../libraries/use-substrate && pnpm lint",
+    "rush:update": "rush update && rush build",
+    "rush:purge": "rush update --purge && rush rebuild"
   }
 }
