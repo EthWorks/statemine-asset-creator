@@ -5,11 +5,9 @@ describe('useAccountsHook', () => {
     /**/
   })
   it('returns accounts from keyring', () => {
-
+    console.log('works')
   })
   afterEach(() => {
     /**/
   })
 })
-
-
