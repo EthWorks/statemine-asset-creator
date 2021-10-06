@@ -26,7 +26,7 @@ module.exports = {
     '^.+\\.(js|jsx|ts|tsx)$': require.resolve('babel-jest'),
   },
   transformIgnorePatterns: [
-    '/node_modules/(?!@polkadot).+\\..*$'
+    '/libraries/use-substrate/node_modules/(?!@polkadot|@testing-library/jest-dom)'
   ],
   setupFilesAfterEnv: ['<rootDir>/jest-setup.ts']
 }
