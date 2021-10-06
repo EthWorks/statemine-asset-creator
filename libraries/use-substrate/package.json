@@ -36,6 +36,9 @@
     "jest-fail-on-console": "~2.0.4",
     "@babel/core": "~7.15.5",
     "@babel/preset-env": "~7.15.6",
-    "@babel/preset-typescript": "~7.15.0"
+    "@babel/preset-typescript": "~7.15.0",
+    "@testing-library/react-hooks": "~7.0.2",
+    "@polkadot/extension-dapp": "~0.40.3",
+    "@babel/preset-react": "~7.14.5"
   }
 }
