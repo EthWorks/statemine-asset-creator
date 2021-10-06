@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/rush.schema.json",
+
+  "rushVersion": "5.54.0",
+
+  "pnpmVersion": "5.15.2",
+
+  "nodeSupportedVersionRange": ">=14.17.0",
+
+  "ensureConsistentVersions": true,
+
+  "repository": {
+   "url": "https://github.com/EthWorks/statemine-asset-creator",
+    "defaultBranch": "main",
+    "defaultRemote": "origin"
+  },
+
+  "eventHooks": {
+    "preRushInstall": [],
+    "postRushInstall": [],
+    "preRushBuild": [],
+    "postRushBuild": []
+  },
+
+  "projects": [
+    {
+      "packageName": "eslint-config-statemine",
+      "projectFolder": "tools/eslint-config-statemine"
+    },
+    {
+      "packageName": "use-substrate",
+      "projectFolder": "libraries/use-substrate"
+    },
+    {
+      "packageName": "statemine-asset-creator",
+      "projectFolder": "packages/app"
+    }
+  ]
+}
