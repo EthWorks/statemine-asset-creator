@@ -16,7 +16,8 @@
       "name": "test",
       "summary": "Run tests in each project",
       "enableParallelism": true,
-      "ignoreMissingScript": true
+      "ignoreMissingScript": true,
+      "allowWarningsInSuccessfulBuild": true
     },
     {
       "commandKind": "bulk",
