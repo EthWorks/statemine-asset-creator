@@ -5,6 +5,7 @@ dependencies:
   '@rush-temp/eslint-config-statemine': file:projects/eslint-config-statemine.tgz_typescript@4.4.3
   '@rush-temp/statemine-asset-creator': file:projects/statemine-asset-creator.tgz
   '@rush-temp/use-substrate': file:projects/use-substrate.tgz
+  '@rushstack/eslint-patch': 1.0.7
   '@testing-library/jest-dom': 5.14.1
   '@testing-library/react': 12.1.1_react-dom@17.0.2+react@17.0.2
   '@types/jest': 27.0.2
@@ -3850,6 +3851,12 @@ packages:
       node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0
     resolution:
       integrity: sha512-ZbVbFSnbzTvhLOIkqh5lcLuGCCFvtG4xTXIRPK99rV2KzQT3kNg16KZwfTnLNlIiWCE8do960eToeDfcqmpSAw==
+  /jest-fail-on-console/2.0.4:
+    dependencies:
+      chalk: 4.1.2
+    dev: false
+    resolution:
+      integrity: sha512-Hzw0zDgR1HUDXPWwhNquyyoKOi6zdzXeXNAB91t5FApnUzbyS55kZQNIvU2BdWBV7a/pc+SDqhRtic1Q0Yi9Dw==
   /jest-get-type/27.0.6:
     dev: false
     engines:
@@ -6390,6 +6397,7 @@ packages:
       eslint-config-next: 11.1.2_82ad98da5e129ae9d310451a179848d9
       identity-obj-proxy: 3.0.0
       jest: 27.2.4
+      jest-fail-on-console: 2.0.4
       next: 11.1.2_bd7797d63db473de6e2318609a63c933
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -6398,7 +6406,7 @@ packages:
     dev: false
     name: '@rush-temp/statemine-asset-creator'
     resolution:
-      integrity: sha512-CXh9EX1mcHBolCT/1VzVWJjwQFHLPvdXKbXDDJSEa5LHqLXp4UmBmn67CjpMSBYNi4DKdYbnmnX3a9Vg6KElXA==
+      integrity: sha512-dTmQw5dpCF8LlAJI2XtsMVbK2BuDHWYDeLFaSW4bv0UuhuXbGENbOmQPBUsXgl8u1jMJ9WdRcTBtfOpr0XO04g==
       tarball: file:projects/statemine-asset-creator.tgz
     version: 0.0.0
   file:projects/use-substrate.tgz:
@@ -6432,6 +6440,7 @@ specifiers:
   '@rush-temp/eslint-config-statemine': file:./projects/eslint-config-statemine.tgz
   '@rush-temp/statemine-asset-creator': file:./projects/statemine-asset-creator.tgz
   '@rush-temp/use-substrate': file:./projects/use-substrate.tgz
+  '@rushstack/eslint-patch': ~1.0.7
   '@testing-library/jest-dom': ^5.14.1
   '@testing-library/react': ^12.1.1
   '@types/jest': ^27.0.2
