@@ -22,6 +22,7 @@ module.exports = {
         // required as 'off' since typescript-eslint has own versions
         "indent": "off",
         "@typescript-eslint/indent": ["error", 2],
+        "@typescript-eslint/no-duplicate-imports": ["error"],
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "no-redeclare": "off",
         "no-unused-vars": "error",

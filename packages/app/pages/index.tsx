@@ -1,13 +1,10 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import { useBalances } from 'use-substrate'
-import { JACO } from 'use-substrate'
+import { JACO, useBalances } from 'use-substrate'
 
 const Home: NextPage =  () => {
   const balances = useBalances(JACO)
-
-  console.log(`freeBalance ${balances?.freeBalance}, availableBalance ${balances?.availableBalance}, accountNonce ${balances?.accountNonce}, lockedBalance ${balances?.lockedBalance}`)
 
   return (
     <div className={styles.container}>
