@@ -117,4 +117,3 @@ export const AccountsContextProvider = (props: Props): JSX.Element => {
   }
   return <AccountsContext.Provider value={value}>{props.children}</AccountsContext.Provider>
 }
-
