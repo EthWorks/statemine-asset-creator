@@ -1,6 +1,7 @@
 dependencies:
   '@babel/core': 7.15.5
   '@babel/preset-env': 7.15.6_@babel+core@7.15.5
+  '@babel/preset-react': 7.14.5_@babel+core@7.15.5
   '@babel/preset-typescript': 7.15.0_@babel+core@7.15.5
   '@babel/runtime': 7.15.4
   '@polkadot/api': 6.1.2
@@ -8071,6 +8072,7 @@ packages:
       '@testing-library/react-hooks': 7.0.2_fc2bb8a5b006d3f25c5f84ea777e678d
       '@types/jest': 27.0.2
       '@types/react': 17.0.24
+      '@types/react-dom': 17.0.9
       babel-jest: 27.2.4_@babel+core@7.15.5
       eslint: 7.32.0
       identity-obj-proxy: 3.0.0
@@ -8084,7 +8086,7 @@ packages:
     dev: false
     name: '@rush-temp/use-substrate'
     resolution:
-      integrity: sha512-y9GctNSvR9gM8Hh0VGbgZuA4aixgjGDc1v8DILiOT6lcYbSLLk8iFYJxxOgTkhM8Ycue3CxtztXHDERriXlrEA==
+      integrity: sha512-P6uPKCp/Ec5CuhhD+HLiDTe6XP6qRrzfZQnDCR++ZeucnZkN0Zc/eZhCu2jfw22u91uMo7WES+7ADUZy6ARDlA==
       tarball: file:projects/use-substrate.tgz
     version: 0.0.0
   github.com/Zondax/bip32-ed25519/0949df01b5c93885339bc28116690292088f6134:
@@ -8100,6 +8102,7 @@ packages:
 specifiers:
   '@babel/core': ~7.15.5
   '@babel/preset-env': ~7.15.6
+  '@babel/preset-react': ~7.14.5
   '@babel/preset-typescript': ~7.15.0
   '@babel/runtime': ~7.15.4
   '@polkadot/api': ^6.1.1

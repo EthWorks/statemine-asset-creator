@@ -49,7 +49,8 @@ module.exports = {
             ],
             "rules": {
                 "@typescript-eslint/no-non-null-assertion": "off",
-                "no-unused-expressions": "off"
+                "no-unused-expressions": "off",
+                "@typescript-eslint/explicit-function-return-type": "off"
             }
         }
     ]

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "rm -rf dist && tsc",
-    "lint": "eslint 'src/**/*.{ts,tsx}' --fix",
+    "lint": "eslint '{src,__tests__}/**/*.{ts,tsx}' --fix",
     "test": "jest"
   },
   "main": "./dist/src/index.js",
@@ -39,6 +39,7 @@
     "@babel/preset-typescript": "~7.15.0",
     "@testing-library/react-hooks": "~7.0.2",
     "@polkadot/extension-dapp": "~0.40.3",
-    "@babel/preset-react": "~7.14.5"
+    "@babel/preset-react": "~7.14.5",
+    "@types/react-dom": "~17.0.9"
   }
 }

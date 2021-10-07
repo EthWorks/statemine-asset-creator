@@ -11,7 +11,7 @@ interface Props {
 
 type Error = 'EXTENSION'
 
-export const error = (message?: any, ...optionalParams: any[]) => console.error(message, ...optionalParams)
+export const error = (message?: unknown, ...optionalParams: unknown[]): void => console.error(message, ...optionalParams)
 export type Address = string
 export interface Account {
   name: string | undefined
@@ -23,7 +23,7 @@ export interface UseAccounts {
   error?: Error
 }
 
-function isKeyringLoaded() {
+function isKeyringLoaded(): boolean {
   try {
     return !!keyring
   } catch {
@@ -31,7 +31,7 @@ function isKeyringLoaded() {
   }
 }
 
-const loadKeysFromExtension = async () => {
+const loadKeysFromExtension = async (): Promise<void> => {
   await web3Enable('Pioneer')
   const injectedAccounts = await web3Accounts()
 
@@ -60,6 +60,7 @@ const onExtensionLoaded = (onSuccess: () => void, onFail: () => void) => () => {
   let timeElapsed = 0
 
   const intervalId = setInterval(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (Object.keys((window as any).injectedWeb3).length) {
       clearInterval(intervalId)
       onSuccess()
@@ -75,7 +76,7 @@ const onExtensionLoaded = (onSuccess: () => void, onFail: () => void) => () => {
   return () => clearInterval(intervalId)
 }
 
-export const AccountsContextProvider = (props: Props) => {
+export const AccountsContextProvider = (props: Props): JSX.Element => {
   const [isLoaded, setIsLoaded] = useState(false)
   const [extensionUnavailable, setExtensionUnavailable] = useState(false)
 
@@ -98,7 +99,6 @@ export const AccountsContextProvider = (props: Props) => {
   const accounts = useObservable(keyring.accounts.subject.asObservable().pipe(debounceTime(20)), [keyring])
 
   const allAccounts: Account[] = []
-
   if (accounts) {
     allAccounts.push(
       ...Object.values(accounts).map((account) => ({
@@ -115,7 +115,6 @@ export const AccountsContextProvider = (props: Props) => {
   if (extensionUnavailable) {
     value.error = 'EXTENSION'
   }
-
   return <AccountsContext.Provider value={value}>{props.children}</AccountsContext.Provider>
 }
 

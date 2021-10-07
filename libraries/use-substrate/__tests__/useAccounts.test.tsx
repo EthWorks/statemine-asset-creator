@@ -1,13 +1,44 @@
 import { keyring } from '@polkadot/ui-keyring'
-import { ALICE, ApiContext } from '../src'
+import { ALICE } from '../src'
 
 import React, { ReactNode } from 'react'
-import { ApiRx } from '@polkadot/api'
-import { renderHook } from '@testing-library/react-hooks'
+import { renderHook, act } from '@testing-library/react-hooks'
 import { useAccounts } from '../src/hooks/useAccounts'
 import { AccountsContextProvider } from '../src/providers/accounts/provider'
 
 describe('useAccountsHook', () => {
+  beforeAll(() => {
+    jest.useFakeTimers()
+    keyring.loadAll({})
+  })
+
+  it('returns accounts from keyring', async () => {
+    const { result } = renderAccounts()
+    act(() => {
+      jest.runOnlyPendingTimers()
+    })
+    const { allAccounts, hasAccounts, error } = result.current
+
+    expect(allAccounts).toHaveLength(0)
+    expect(hasAccounts).toBeFalsy()
+    expect(error).toBeUndefined()
+  })
+
+  it('returns accounts from keyring', async () => {
+    keyring.addExternal(ALICE, { name: 'Alice' })
+
+    const { result } = renderAccounts()
+    act(() => {
+      jest.runOnlyPendingTimers()
+    })
+    const { allAccounts, hasAccounts, error } = result.current
+
+    expect(allAccounts).toHaveLength(1)
+    expect(hasAccounts).toBeTruthy()
+    expect(error).toBeUndefined()
+  })
+
+  // we might need a test for an error
 
   const renderAccounts = () => {
     const wrapper = ({ children }: { children: ReactNode }) => (
@@ -17,13 +48,4 @@ describe('useAccountsHook', () => {
     )
     return renderHook(() => useAccounts(), { wrapper })
   }
-
-  beforeEach(() => {
-    keyring.addExternal(ALICE, { mame: 'Alice' })
-  })
-
-  it('returns accounts from keyring', () => {
-    const accounts = renderAccounts()
-    expect(accounts).toHaveLength(1)
-  })
 })
