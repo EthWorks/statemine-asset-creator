@@ -1,10 +1,13 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import { JACO, useBalances } from 'use-substrate'
+import { JACO } from 'use-substrate/dist/src/consts/addresses'
+import { useBalances } from 'use-substrate/dist/src/hooks/useBalances'
+import { useAccounts } from 'use-substrate/dist/src/hooks/useAccounts'
 
 const Home: NextPage =  () => {
   const balances = useBalances(JACO)
+  const accounts = useAccounts()
 
   return (
     <div className={styles.container}>
@@ -21,6 +24,11 @@ const Home: NextPage =  () => {
 
         <p className={styles.description}>
          Balance: {balances?.freeBalance.toString()}
+        </p>
+        <p>
+          {
+            accounts.allAccounts.map((account, index) => <p key={index}>{account}</p>)
+          }
         </p>
       </main>
     </div>

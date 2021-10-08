@@ -1,7 +1,9 @@
 import { keyring } from '@polkadot/ui-keyring'
-import { ALICE, AccountsContextProvider, useAccounts } from '../src'
+import { ALICE } from '../src'
 import React, { ReactNode } from 'react'
 import { act, renderHook } from '@testing-library/react-hooks'
+import { AccountsContextProvider } from '../src/providers/accounts/provider'
+import { useAccounts } from '../src/hooks/useAccounts'
 
 describe('useAccountsHook', () => {
   beforeAll(() => {

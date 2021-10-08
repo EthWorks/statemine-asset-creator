@@ -24,7 +24,8 @@
       "name": "lint",
       "summary": "Run linter in each project",
       "enableParallelism": true,
-      "ignoreMissingScript": true
+      "ignoreMissingScript": true,
+      "allowWarningsInSuccessfulBuild": true
     }
     // {
     //   /**

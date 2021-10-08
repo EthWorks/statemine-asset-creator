@@ -17,6 +17,7 @@ dependencies:
   '@testing-library/react-hooks': 7.0.2_fc2bb8a5b006d3f25c5f84ea777e678d
   '@types/jest': 27.0.2
   '@types/react': 17.0.24
+  '@types/react-dom': 17.0.9
   '@typescript-eslint/eslint-plugin': 4.32.0_1eacf2495a01e8a68ffa99482308e8ec
   '@typescript-eslint/parser': 4.32.0_eslint@7.32.0+typescript@4.4.3
   babel-jest: 27.2.4_@babel+core@7.15.5
@@ -2278,6 +2279,18 @@ packages:
     dev: false
     resolution:
       integrity: sha1-7ihweulOEdK4J7y+UnC86n8+ce4=
+  /@types/next/9.0.0_e673b0f3387e6960b41acb1bdc9e0796:
+    dependencies:
+      next: 11.1.2_e673b0f3387e6960b41acb1bdc9e0796
+    deprecated: This is a stub types definition. next provides its own type definitions, so you do not need this installed.
+    dev: false
+    peerDependencies:
+      '@babel/core': '*'
+      react: '*'
+      react-dom: '*'
+      typescript: '*'
+    resolution:
+      integrity: sha512-gnBXM8rP1mnCgT1uE2z8SnpFTKRWReJlhbZLZkOLq/CH1ifvTNwjIVtXvsywTy1dwVklf+y/MB0Eh6FOa94yrg==
   /@types/node-fetch/2.5.12:
     dependencies:
       '@types/node': 16.10.2
@@ -8034,6 +8047,7 @@ packages:
       '@testing-library/jest-dom': 5.14.1
       '@testing-library/react': 12.1.1_react-dom@17.0.2+react@17.0.2
       '@types/jest': 27.0.2
+      '@types/next': 9.0.0_e673b0f3387e6960b41acb1bdc9e0796
       '@types/react': 17.0.24
       babel-jest: 27.2.4_@babel+core@7.15.5
       eslint: 7.32.0
@@ -8052,7 +8066,7 @@ packages:
     peerDependencies:
       '@babel/core': '*'
     resolution:
-      integrity: sha512-dTmQw5dpCF8LlAJI2XtsMVbK2BuDHWYDeLFaSW4bv0UuhuXbGENbOmQPBUsXgl8u1jMJ9WdRcTBtfOpr0XO04g==
+      integrity: sha512-E7TXnfrIFf2j2d5+z9XTb2IPStAcaV75PqiFjhKQKNDQPKvekN76WKYzfiCigK9MeZOwb4fuzARhZyvlczLhUw==
       tarball: file:projects/statemine-asset-creator.tgz
     version: 0.0.0
   file:projects/use-substrate.tgz:
@@ -8118,6 +8132,7 @@ specifiers:
   '@testing-library/react-hooks': ~7.0.2
   '@types/jest': ^27.0.2
   '@types/react': 17.0.24
+  '@types/react-dom': ~17.0.9
   '@typescript-eslint/eslint-plugin': ^4.32.0
   '@typescript-eslint/parser': ^4.32.0
   babel-jest: ^27.2.3
