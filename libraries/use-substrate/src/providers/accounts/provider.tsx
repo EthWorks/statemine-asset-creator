@@ -25,14 +25,14 @@ export interface UseAccounts {
 
 function isKeyringLoaded(): boolean {
   try {
-    return !!keyring
+    return !!keyring.keyring
   } catch {
     return false
   }
 }
 
 const loadKeysFromExtension = async (): Promise<void> => {
-  await web3Enable('Pioneer')
+  await web3Enable('Statemine asset creator')
   const injectedAccounts = await web3Accounts()
 
   if (!isKeyringLoaded()) {

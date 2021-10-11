@@ -25,11 +25,12 @@ const Home: NextPage =  () => {
         <p className={styles.description}>
          Balance: {balances?.freeBalance.toString()}
         </p>
-        <p>
+        <div>Extension accounts:</div>
+        <ul>
           {
-            accounts.allAccounts.map((account, index) => <p key={index}>{account}</p>)
+            accounts.allAccounts.map((account, index) => <li key={index}>address: {account.address} name: {account.name}</li>)
           }
-        </p>
+        </ul>
       </main>
     </div>
   )
