@@ -1,28 +1,27 @@
 import { AccountsContextProvider, ALICE, useAccounts } from '../src'
 import React, { ReactNode } from 'react'
 import { act, renderHook } from '@testing-library/react-hooks'
-import { mockHooks } from './_mocks/mockHooks'
-
-jest.mock('@polkadot/extension-dapp', () => ({
-  web3Enable: async () => ({}),
-  web3AccountsSubscribe: async () => ({}),
-  web3Accounts: async () => mockHooks.injectedAccounts
-}))
 
 describe('useAccountsHook', () => {
-  beforeEach(() => {
-    ;((window as any).injectedWeb3) = { 'polkadot-js': null }
-    jest.useFakeTimers()
+  beforeAll(() => {
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+    ((window as any).injectedWeb3) = { 'polkadot-js': null }
   })
 
-  afterEach(async () => {
-    jest.runOnlyPendingTimers()
-    jest.useRealTimers()
-    jest.clearAllTimers()
+  beforeEach(() => {
+    jest.useFakeTimers()
+    jest.resetModules()
   })
+
+  const mockExtensionDapp = {
+    web3Enable: async () => ({}),
+    web3AccountsSubscribe: async () => ({}),
+    web3Accounts: async () => []
+  }
 
   it('returns for no accounts in keyring', async () => {
-    const { result, waitForNextUpdate, unmount } = renderAccounts()
+    jest.doMock('@polkadot/extension-dapp', () => (mockExtensionDapp))
+    const { result, waitForNextUpdate } = renderAccounts()
 
     act(() => {
       jest.runOnlyPendingTimers()
@@ -42,7 +41,10 @@ describe('useAccountsHook', () => {
   })
 
   it('returns for accounts in keyring', async () => {
-    mockHooks.setInjectedAccounts([{ address: ALICE, meta: { source: '', name: 'ALICE' } }])
+    jest.doMock('@polkadot/extension-dapp', () => ({
+      ...mockExtensionDapp,
+      web3Accounts: async () => [{ address: ALICE, meta: { source: '', name: 'ALICE' } }]
+    }))
 
     const { result, waitForNextUpdate } = renderAccounts()
 
@@ -61,6 +63,15 @@ describe('useAccountsHook', () => {
     expect(allAccounts).toHaveLength(1)
     expect(hasAccounts).toBeTruthy()
     expect(error).toBeUndefined()
+  })
+
+  afterEach(() => {
+    jest.useRealTimers()
+  })
+
+  afterAll(() => {
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+    ((window as any).injectedWeb3) = undefined
   })
 
   // we might need a test for an error
