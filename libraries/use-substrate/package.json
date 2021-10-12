@@ -13,11 +13,11 @@
     "./dist/src"
   ],
   "dependencies": {
-    "@polkadot/api": "^6.1.1",
-    "@polkadot/api-derive": "~6.1.2",
+    "@polkadot/api": "6.1.2",
+    "@polkadot/api-derive": "6.1.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "rxjs": "^7.3.0",
+    "rxjs": "7.3.0",
     "@polkadot/ui-keyring": "~0.85.4"
   },
   "devDependencies": {
