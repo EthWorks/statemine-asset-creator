@@ -1,21 +1,39 @@
-import { keyring } from '@polkadot/ui-keyring'
-import { ALICE } from '../src'
+import { AccountsContextProvider, ALICE, useAccounts } from '../src'
 import React, { ReactNode } from 'react'
 import { act, renderHook } from '@testing-library/react-hooks'
-import { AccountsContextProvider } from '../src/providers/accounts/provider'
-import { useAccounts } from '../src/hooks/useAccounts'
+import { mockHooks } from './_mocks/mockHooks'
+
+jest.mock('@polkadot/extension-dapp', () => ({
+  web3Enable: async () => ({}),
+  web3AccountsSubscribe: async () => ({}),
+  web3Accounts: async () => mockHooks.injectedAccounts
+}))
 
 describe('useAccountsHook', () => {
-  beforeAll(() => {
+  beforeEach(() => {
+    ;((window as any).injectedWeb3) = { 'polkadot-js': null }
     jest.useFakeTimers()
-    keyring.loadAll({})
   })
 
-  it('returns accounts from keyring', async () => {
-    const { result } = renderAccounts()
+  afterEach(async () => {
+    jest.runOnlyPendingTimers()
+    jest.useRealTimers()
+    jest.clearAllTimers()
+  })
+
+  it('returns for no accounts in keyring', async () => {
+    const { result, waitForNextUpdate, unmount } = renderAccounts()
+
     act(() => {
       jest.runOnlyPendingTimers()
     })
+
+    await waitForNextUpdate()
+
+    act(() => {
+      jest.runOnlyPendingTimers()
+    })
+
     const { allAccounts, hasAccounts, error } = result.current
 
     expect(allAccounts).toHaveLength(0)
@@ -23,13 +41,21 @@ describe('useAccountsHook', () => {
     expect(error).toBeUndefined()
   })
 
-  it('returns accounts from keyring', async () => {
-    keyring.addExternal(ALICE, { name: 'Alice' })
+  it('returns for accounts in keyring', async () => {
+    mockHooks.setInjectedAccounts([{ address: ALICE, meta: { source: '', name: 'ALICE' } }])
 
-    const { result } = renderAccounts()
+    const { result, waitForNextUpdate } = renderAccounts()
+
     act(() => {
       jest.runOnlyPendingTimers()
     })
+
+    await waitForNextUpdate()
+
+    act(() => {
+      jest.runOnlyPendingTimers()
+    })
+
     const { allAccounts, hasAccounts, error } = result.current
 
     expect(allAccounts).toHaveLength(1)

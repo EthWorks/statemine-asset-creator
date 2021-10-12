@@ -99,7 +99,7 @@ export const AccountsContextProvider = (props: Props): JSX.Element => {
     }
 
     loadKeysFromExtension().catch(error)
-  }, [isLoaded])
+  }, [isLoaded, keyring])
 
   let value: UseAccounts
 
@@ -126,5 +126,6 @@ export const AccountsContextProvider = (props: Props): JSX.Element => {
   } else {
     value = emptyAccounts
   }
+
   return <AccountsContext.Provider value={value}>{props.children}</AccountsContext.Provider>
 }
