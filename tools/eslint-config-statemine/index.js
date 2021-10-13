@@ -40,7 +40,9 @@ module.exports = {
         "@typescript-eslint/no-explicit-any": "error",
         "@typescript-eslint/explicit-function-return-type": ["error", {
             "allowExpressions": true
-        }]
+        }],
+        "eol-last": ["error", "always"],
+        "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 0 }]
     },
     "overrides": [
         {
@@ -49,7 +51,8 @@ module.exports = {
             ],
             "rules": {
                 "@typescript-eslint/no-non-null-assertion": "off",
-                "no-unused-expressions": "off"
+                "no-unused-expressions": "off",
+                "@typescript-eslint/explicit-function-return-type": "off"
             }
         }
     ]
