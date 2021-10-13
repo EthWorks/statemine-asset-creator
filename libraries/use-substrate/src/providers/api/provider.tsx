@@ -14,6 +14,7 @@ export const ApiContextProvider = ({ children }: Props): JSX.Element | null => {
 
   const api = useMemo(() => {
     const provider = new WsProvider(KUSAMA_ARCHIVE_NODE_URL)
+
     return new ApiRx({ provider })
   }, [])
 
