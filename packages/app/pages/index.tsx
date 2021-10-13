@@ -1,8 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import { JACO } from 'use-substrate/dist/src/consts/addresses'
-import { useBalances, useAccounts } from 'use-substrate'
+import { useBalances, useAccounts, JACO } from 'use-substrate'
 
 const Home: NextPage =  () => {
   const balances = useBalances(JACO)
@@ -20,14 +19,13 @@ const Home: NextPage =  () => {
         <h1 className={styles.title}>
           Welcome to Statemine
         </h1>
-
         <p className={styles.description}>
          Balance: {balances?.freeBalance.toString()}
         </p>
         <div>Extension accounts:</div>
         <ul>
-          {
-            accounts.allAccounts.map((account, index) => <li key={index}>address: {account.address} name: {account.name}</li>)
+          {accounts.allAccounts.map((account, index) =>
+            <li key={index}>address: {account.address} name: {account.name}</li>)
           }
         </ul>
       </main>
