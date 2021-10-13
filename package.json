@@ -1,7 +1,8 @@
 {
   "name": "statemine",
   "scripts": {
-    "start": "cd packages/app && pnpm dev",
+    "start": "cd packages/app && pnpm start",
+    "dev": "cd packages/app && pnpm dev",
     "build": "rush build",
     "rush:update": "rush update && rush build",
     "rush:purge": "rush update --purge && rush rebuild"
