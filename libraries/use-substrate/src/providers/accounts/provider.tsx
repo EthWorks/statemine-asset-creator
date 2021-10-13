@@ -1,131 +1,75 @@
-import type { Keyring } from '@polkadot/ui-keyring'
 import React, { ReactNode, useEffect, useState } from 'react'
 import { debounceTime } from 'rxjs'
 import { useObservable } from '../../hooks'
-import { useAsync } from '../../util/useAsync'
+import { error, useAsync } from '../../util'
 import { AccountsContext } from './context'
-import { Account, UseAccounts } from './types'
+import { UseAccounts } from './types'
+import { checkRepeatedlyIfExtensionLoaded, getInjectedAccounts, mapObservableToAccounts } from './utils'
+import { KeyringWrapper } from '../../util/keyring/KeyringWrapper'
 
 interface Props {
   children: ReactNode
 }
 
-export const error = (message?: unknown, ...optionalParams: unknown[]): void => console.error(message, ...optionalParams)
-
 const emptyAccounts: UseAccounts = { hasAccounts: false, allAccounts: [] }
 
 export const AccountsContextProvider = (props: Props): JSX.Element => {
-  const [isLoaded, setIsLoaded] = useState(false)
+  const [isExtensionLoaded, setIsExtensionLoaded] = useState(false)
   const [extensionUnavailable, setExtensionUnavailable] = useState(false)
-  const [keyring, setKeyring] = useState<Keyring | undefined>(undefined)
+  const [keyringWrapper, setKeyringWrapper] = useState<KeyringWrapper | undefined>(undefined)
 
   useAsync(async () => {
-    if (!keyring) {
-      const { keyring } = await import('@polkadot/ui-keyring')
-      setKeyring(keyring)
-    }
+    const { keyring } = await import('@polkadot/ui-keyring')
+    setKeyringWrapper(new KeyringWrapper(keyring))
   }, [])
 
-  function isKeyringLoaded(): boolean {
-    try {
-      return !!keyring?.keyring
-    } catch {
-      return false
-    }
-  }
-
-  const loadKeysFromExtension = async (): Promise<void> => {
-    const { web3Accounts, web3AccountsSubscribe, web3Enable } = await import('@polkadot/extension-dapp')
-
-    await web3Enable('Statemine asset creator')
-    const injectedAccounts = await web3Accounts()
-
-    if (!keyring) {
-      return
-    }
-
-    if (!isKeyringLoaded()) {
-      keyring.loadAll({ isDevelopment: false }, injectedAccounts)
-    }
-
-    await web3AccountsSubscribe((accounts) => {
-      const current = keyring.getAccounts()
-
-      const addresses = accounts.map(({ address }) => address)
-
-      current.forEach(({ address }) => {
-        if (!addresses.includes(address)) {
-          keyring.forgetAccount(address)
-        }
-      })
-
-      accounts.forEach((injected) => keyring.addExternal(injected.address, injected.meta))
-    })
-  }
-
-  const onExtensionLoaded = (onSuccess: () => void, onFail: () => void) => () => {
-    const interval = 20
-    const timeout = 1000
-    let timeElapsed = 0
-
-    const intervalId = setInterval(() => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      if (Object.keys((window as any).injectedWeb3).length) {
-        clearInterval(intervalId)
-        onSuccess()
-      } else {
-        timeElapsed += interval
-        if (timeElapsed >= timeout) {
-          clearInterval(intervalId)
-          onFail()
-        }
-      }
-    }, interval)
-
-    return () => clearInterval(intervalId)
-  }
-
   useEffect(
-    onExtensionLoaded(
-      () => setIsLoaded(true),
+    checkRepeatedlyIfExtensionLoaded(
+      () => setIsExtensionLoaded(true),
       () => setExtensionUnavailable(true)
     ),
     []
   )
 
   useEffect(() => {
-    if (!isLoaded) {
+    if (!isExtensionLoaded) {
       return
     }
 
+    const loadKeysFromExtension = async (): Promise<void> => {
+      const injectedAccounts = await getInjectedAccounts()
+
+      if (!keyringWrapper) {
+        return
+      }
+
+      if (!keyringWrapper.isLoaded()) {
+        keyringWrapper.loadAccounts(injectedAccounts)
+      }
+
+      const { web3AccountsSubscribe } = await import('@polkadot/extension-dapp')
+
+      await web3AccountsSubscribe((accountsFromAllExtensions) => {
+        keyringWrapper.forgetAccountsRemovedFromExtension(accountsFromAllExtensions)
+        keyringWrapper.injectAccountsAddedToExtension(accountsFromAllExtensions)
+      })
+    }
+
     loadKeysFromExtension().catch(error)
-  }, [isLoaded, keyring])
+  }, [isExtensionLoaded, keyringWrapper, keyringWrapper?.keyring])
 
-  let value: UseAccounts
+  const observableAccounts = useObservable(keyringWrapper?.keyring.accounts.subject.asObservable().pipe(debounceTime(20)), [keyringWrapper, keyringWrapper?.keyring])
 
-  const accounts = useObservable(keyring?.accounts.subject.asObservable().pipe(debounceTime(20)), [keyring])
-
-  if (keyring) {
-    const allAccounts: Account[] = []
-    if (accounts) {
-      allAccounts.push(
-        ...Object.values(accounts).map((account) => ({
-          address: account.json.address,
-          name: account.json.meta.name,
-        }))
-      )
-    }
-
-    const hasAccounts = allAccounts.length !== 0
-
-    value = { allAccounts, hasAccounts }
-
-    if (extensionUnavailable) {
-      value.error = 'EXTENSION'
-    }
-  } else {
-    value = emptyAccounts
+  if (!keyringWrapper) {
+    return <AccountsContext.Provider value={emptyAccounts}>{props.children}</AccountsContext.Provider>
   }
 
-  return <AccountsContext.Provider value={value}>{props.children}</AccountsContext.Provider>
+  const allAccounts = mapObservableToAccounts(observableAccounts)
+  const contextValue: UseAccounts = { allAccounts, hasAccounts: allAccounts.length !== 0 }
+
+  if (extensionUnavailable) {
+    contextValue.error = 'EXTENSION'
+  }
+
+  return <AccountsContext.Provider value={contextValue}>{props.children}</AccountsContext.Provider>
 }

@@ -9,15 +9,8 @@ specifiers:
   '@polkadot/api': 6.3.2-11
   '@polkadot/api-derive': 6.3.2-11
   '@polkadot/extension-dapp': ~0.40.3
-  '@polkadot/keyring': 7.4.1
-  '@polkadot/rpc-core': 6.3.1
-  '@polkadot/rpc-provider': 6.3.1
-  '@polkadot/types': 6.3.1
-  '@polkadot/types-known': 6.3.1
+  '@polkadot/extension-inject': ~0.40.3
   '@polkadot/ui-keyring': ~0.85.5
-  '@polkadot/util': 7.4.1
-  '@polkadot/util-crypto': 7.4.1
-  '@polkadot/wasm-crypto': 4.2.1
   '@rush-temp/eslint-config-statemine': file:./projects/eslint-config-statemine.tgz
   '@rush-temp/statemine-asset-creator': file:./projects/statemine-asset-creator.tgz
   '@rush-temp/use-substrate': file:./projects/use-substrate.tgz
@@ -25,14 +18,12 @@ specifiers:
   '@testing-library/jest-dom': ^5.14.1
   '@testing-library/react': ^12.1.1
   '@testing-library/react-hooks': ~7.0.2
-  '@types/bn.js': ^4.11.6
   '@types/jest': ^27.0.2
   '@types/react': 17.0.24
   '@types/react-dom': ~17.0.9
   '@typescript-eslint/eslint-plugin': ^4.32.0
   '@typescript-eslint/parser': ^4.32.0
   babel-jest: ^27.2.3
-  bn.js: 4.12.0
   eslint: ^7.32.0
   eslint-config-next: 11.1.2
   identity-obj-proxy: ^3.0.0
@@ -54,15 +45,8 @@ dependencies:
   '@polkadot/api': 6.3.2-11
   '@polkadot/api-derive': 6.3.2-11
   '@polkadot/extension-dapp': 0.40.3_@polkadot+api@6.3.2-11
-  '@polkadot/keyring': 7.4.1
-  '@polkadot/rpc-core': 6.3.1
-  '@polkadot/rpc-provider': 6.3.1
-  '@polkadot/types': 6.3.1
-  '@polkadot/types-known': 6.3.1
+  '@polkadot/extension-inject': 0.40.3_@polkadot+api@6.3.2-11
   '@polkadot/ui-keyring': 0.85.5
-  '@polkadot/util': 7.4.1
-  '@polkadot/util-crypto': 7.4.1
-  '@polkadot/wasm-crypto': 4.2.1_@polkadot+util@7.4.1
   '@rush-temp/eslint-config-statemine': file:projects/eslint-config-statemine.tgz_typescript@4.4.4
   '@rush-temp/statemine-asset-creator': file:projects/statemine-asset-creator.tgz_@babel+core@7.15.8
   '@rush-temp/use-substrate': file:projects/use-substrate.tgz
@@ -70,14 +54,12 @@ dependencies:
   '@testing-library/jest-dom': 5.14.1
   '@testing-library/react': 12.1.2_react-dom@17.0.2+react@17.0.2
   '@testing-library/react-hooks': 7.0.2_fc2bb8a5b006d3f25c5f84ea777e678d
-  '@types/bn.js': 4.11.6
   '@types/jest': 27.0.2
   '@types/react': 17.0.24
   '@types/react-dom': 17.0.9
   '@typescript-eslint/eslint-plugin': 4.33.0_cc617358c89d3f38c52462f6d809db4c
   '@typescript-eslint/parser': 4.33.0_eslint@7.32.0+typescript@4.4.4
   babel-jest: 27.2.5_@babel+core@7.15.8
-  bn.js: 4.12.0
   eslint: 7.32.0
   eslint-config-next: 11.1.2_b254488bed7690859822a81f0a41c857
   identity-obj-proxy: 3.0.0
@@ -1881,17 +1863,6 @@ packages:
       '@babel/runtime': 7.15.4
     dev: false
 
-  /@polkadot/rpc-core/6.3.1:
-    resolution: {integrity: sha512-JClQ2Gfr4g9cU+S1NADc9GH+YfwjniZXA1vYub0/94Oung7GGwp6zeICQow90NfOtYi4cpp/iPOD0H7HtDIRYA==}
-    engines: {node: '>=14.0.0'}
-    dependencies:
-      '@babel/runtime': 7.15.4
-      '@polkadot/rpc-provider': 6.3.1
-      '@polkadot/types': 6.3.1
-      '@polkadot/util': 7.4.1
-      rxjs: 7.4.0
-    dev: false
-
   /@polkadot/rpc-core/6.3.2-11:
     resolution: {integrity: sha512-Z3DTZUkx9jX3kknWqQ5Z4zX3UtD7hFydx6S5tOYBpAxgbgaowlD5u7Hpme8E+yKPCM1P3Xc2t2Zxqliv20Fk3Q==}
     engines: {node: '>=14.0.0'}
@@ -1901,20 +1872,6 @@ packages:
       '@polkadot/types': 6.3.2-11
       '@polkadot/util': 7.4.1
       rxjs: 7.4.0
-    dev: false
-
-  /@polkadot/rpc-provider/6.3.1:
-    resolution: {integrity: sha512-hf1wIfQZWsq/OLrszsGTRx/bBjDqLOKj/e7Ly5O7t9ai3ItUsYewgjXo6AiCD80jttHm3h8wg+twnh7DJxJfHQ==}
-    engines: {node: '>=14.0.0'}
-    dependencies:
-      '@babel/runtime': 7.15.4
-      '@polkadot/types': 6.3.1
-      '@polkadot/util': 7.4.1
-      '@polkadot/util-crypto': 7.4.1
-      '@polkadot/x-fetch': 7.4.1
-      '@polkadot/x-global': 7.4.1
-      '@polkadot/x-ws': 7.4.1
-      eventemitter3: 4.0.7
     dev: false
 
   /@polkadot/rpc-provider/6.3.2-11:
@@ -1931,16 +1888,6 @@ packages:
       eventemitter3: 4.0.7
     dev: false
 
-  /@polkadot/types-known/6.3.1:
-    resolution: {integrity: sha512-zeFA2c/8irg0L5OQDfMAxBnODTbsibaa0q8bk+bsqK0sVgJ/l3Sz9XtONWL72s7FEi/zzXIOQLd+ffEVWmAN7A==}
-    engines: {node: '>=14.0.0'}
-    dependencies:
-      '@babel/runtime': 7.15.4
-      '@polkadot/networks': 7.4.1
-      '@polkadot/types': 6.3.1
-      '@polkadot/util': 7.4.1
-    dev: false
-
   /@polkadot/types-known/6.3.2-11:
     resolution: {integrity: sha512-sa+V4H6/KUXPQoQVycQ8jF24Y+KyM2tiBfbW6IpJAaN2YvPJzzjVvAdjKcC4deA5leVPuioGCeS6331DoaSORg==}
     engines: {node: '>=14.0.0'}
@@ -1949,16 +1896,6 @@ packages:
       '@polkadot/networks': 7.4.1
       '@polkadot/types': 6.3.2-11
       '@polkadot/util': 7.4.1
-    dev: false
-
-  /@polkadot/types/6.3.1:
-    resolution: {integrity: sha512-ZZHwohZlyBgTAXmvISWY/lkpOfi6IvX4QAxXUNG+fH2ZB8uLB+ZPKeztPIleOqApj3HzczOCpH9QXK3he2IzHQ==}
-    engines: {node: '>=14.0.0'}
-    dependencies:
-      '@babel/runtime': 7.15.4
-      '@polkadot/util': 7.4.1
-      '@polkadot/util-crypto': 7.4.1
-      rxjs: 7.4.0
     dev: false
 
   /@polkadot/types/6.3.2-11:
@@ -2056,19 +1993,6 @@ packages:
       '@polkadot/wasm-crypto-asmjs': 4.2.1
       '@polkadot/wasm-crypto-wasm': 4.2.1
       '@polkadot/x-randomvalues': 7.4.1
-    dev: false
-
-  /@polkadot/wasm-crypto/4.2.1_@polkadot+util@7.4.1:
-    resolution: {integrity: sha512-C/A/QnemOilRTLnM0LfhPY2N/x3ZFd1ihm9sXYyuh98CxtekSVYI9h4IJ5Jrgz5imSUHgvt9oJLqJ5GbWQV/Zg==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      '@polkadot/util': '*'
-      '@polkadot/x-randomvalues': '*'
-    dependencies:
-      '@babel/runtime': 7.15.4
-      '@polkadot/util': 7.4.1
-      '@polkadot/wasm-crypto-asmjs': 4.2.1
-      '@polkadot/wasm-crypto-wasm': 4.2.1
     dev: false
 
   /@polkadot/x-fetch/7.4.1:
@@ -7552,7 +7476,7 @@ packages:
     dev: false
 
   file:projects/eslint-config-statemine.tgz_typescript@4.4.4:
-    resolution: {integrity: sha512-mP+F2ko2vTl9C2r6+YZO5qlauW5cWDNfUoy+fEEaGJVSaTy3WEY2noutCVcotykEgjo9WVAbBfPUYiFBTk9kzw==, tarball: file:projects/eslint-config-statemine.tgz}
+    resolution: {integrity: sha512-YCgZW6Gk+NZwAYWh5kGhxxRR0feku+xhNh3gqimNADGJ2Vna5DAfq1yAxFJnIf1JuWx7y0s3oqRUeEWU1CK4VQ==, tarball: file:projects/eslint-config-statemine.tgz}
     id: file:projects/eslint-config-statemine.tgz
     name: '@rush-temp/eslint-config-statemine'
     version: 0.0.0
@@ -7560,6 +7484,7 @@ packages:
       '@typescript-eslint/eslint-plugin': 4.33.0_cc617358c89d3f38c52462f6d809db4c
       '@typescript-eslint/parser': 4.33.0_eslint@7.32.0+typescript@4.4.4
       eslint: 7.32.0
+      eslint-plugin-react-hooks: 4.2.0_eslint@7.32.0
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -7602,7 +7527,7 @@ packages:
     dev: false
 
   file:projects/use-substrate.tgz:
-    resolution: {integrity: sha512-QgAZhfyt4dYJKUgga7x9we0rU1v1R+ykmHWYiMweUrCGOETgTMHps+uVh6Ff+dw7liWU7yP5X7KwhkKd7i0Ugg==, tarball: file:projects/use-substrate.tgz}
+    resolution: {integrity: sha512-+xr2MrbetUBcJ22mZ4HdCVRbKXT1+4wk5WSzvWorKy9VWsMp+SOFw2WzN44tu9BYDeNN2i0z5z1aT3I7BWgIXg==, tarball: file:projects/use-substrate.tgz}
     name: '@rush-temp/use-substrate'
     version: 0.0.0
     dependencies:
@@ -7613,6 +7538,7 @@ packages:
       '@polkadot/api': 6.3.2-11
       '@polkadot/api-derive': 6.3.2-11
       '@polkadot/extension-dapp': 0.40.3_@polkadot+api@6.3.2-11
+      '@polkadot/extension-inject': 0.40.3_@polkadot+api@6.3.2-11
       '@polkadot/ui-keyring': 0.85.5
       '@rushstack/eslint-patch': 1.0.7
       '@testing-library/jest-dom': 5.14.1
