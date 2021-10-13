@@ -7,8 +7,7 @@
     "target": "esnext"
   },
   "include": [
-    "./**/*.ts",
-    "./**/*.tsx",
-    "./jest.config.js"
+    "./src",
+    "./__tests__"
   ],
 }
