@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import { useBalances, useAccounts, JACO } from 'use-substrate'
+import { AccountSelect } from '../components/AccountSelect'
 
 const Home: NextPage =  () => {
   const balances = useBalances(JACO)
@@ -28,6 +29,9 @@ const Home: NextPage =  () => {
             <li key={index}>address: {account.address} name: {account.name}</li>)
           }
         </ul>
+        {accounts && (
+          <AccountSelect accounts={accounts.allAccounts}/>
+        )}
         { accounts.error === 'EXTENSION' && <div>No extension available</div>}
       </main>
     </div>
