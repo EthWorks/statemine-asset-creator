@@ -8,6 +8,10 @@ jest.mock('use-substrate', () => ({
     availableBalance: 4000,
     lockedBalance: 300,
     accountNonce: 1
+  }),
+  useAccounts: () => ({
+    allAccounts: [],
+    hasAccounts: false
   })
 }))
 

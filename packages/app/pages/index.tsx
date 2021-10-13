@@ -2,8 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import { JACO } from 'use-substrate/dist/src/consts/addresses'
-import { useBalances } from 'use-substrate/dist/src/hooks/useBalances'
-import { useAccounts } from 'use-substrate/dist/src/hooks/useAccounts'
+import { useBalances, useAccounts } from 'use-substrate'
 
 const Home: NextPage =  () => {
   const balances = useBalances(JACO)
