@@ -5,6 +5,7 @@ export const getInjectedAccounts = async (): Promise<InjectedAccountWithMeta[]> 
   const { web3Accounts, web3Enable } = await import('@polkadot/extension-dapp')
 
   await web3Enable('Statemine asset creator')
+
   return await web3Accounts()
 }
 
