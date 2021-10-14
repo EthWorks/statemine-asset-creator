@@ -28,6 +28,7 @@ const Home: NextPage =  () => {
             <li key={index}>address: {account.address} name: {account.name}</li>)
           }
         </ul>
+        { accounts.error === 'EXTENSION' && <div>No extension available</div>}
       </main>
     </div>
   )
