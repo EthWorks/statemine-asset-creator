@@ -1,11 +1,10 @@
 import React, { ReactNode, useEffect, useState } from 'react'
 import { debounceTime } from 'rxjs'
 import { useObservable } from '../../hooks'
-import { error, useAsync } from '../../util'
+import { error, useAsync, KeyringWrapper } from '../../util'
 import { AccountsContext } from './context'
 import { UseAccounts } from './types'
 import { checkRepeatedlyIfExtensionLoaded, getInjectedAccounts, mapObservableToAccounts } from './utils'
-import { KeyringWrapper } from '../../util/keyring/KeyringWrapper'
 
 interface Props {
   children: ReactNode
