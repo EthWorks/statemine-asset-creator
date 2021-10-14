@@ -11,8 +11,7 @@ export const getInjectedAccounts = async (): Promise<InjectedAccountWithMeta[]> 
 
 export const checkRepeatedlyIfExtensionLoaded = (onSuccess: () => void, onFailure: () => void): () => void => {
   return checkConditionRepeatedly(
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-    () => !!Object.keys((window as any).injectedWeb3 ?? {}).length,
+    () => !!Object.keys(window.injectedWeb3 ?? {}).length,
     onSuccess,
     onFailure
   )

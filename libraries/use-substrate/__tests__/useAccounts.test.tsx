@@ -1,11 +1,11 @@
+import { InjectedWindowProvider } from '@polkadot/extension-inject/types'
 import { AccountsContextProvider, ALICE, useAccounts } from '../src'
 import React, { ReactNode } from 'react'
 import { act, renderHook } from '@testing-library/react-hooks'
 
 describe('useAccountsHook', () => {
   beforeAll(() => {
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-    ((window as any).injectedWeb3) = { 'polkadot-js': null }
+    window.injectedWeb3 = { 'polkadot-js': null as unknown as InjectedWindowProvider }
   })
 
   beforeEach(() => {
@@ -70,8 +70,7 @@ describe('useAccountsHook', () => {
   })
 
   afterAll(() => {
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-    ((window as any).injectedWeb3) = undefined
+    window.injectedWeb3 = undefined
   })
 
   // we might need a test for an error
