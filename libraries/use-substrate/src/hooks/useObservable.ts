@@ -8,6 +8,7 @@ export function useObservable<T>(observable: Observable<T> | undefined, deps: re
 
   useEffect(() => {
     const subscription = observable?.subscribe(setData)
+
     return () => subscription && subscription.unsubscribe()
   }, deps)
 

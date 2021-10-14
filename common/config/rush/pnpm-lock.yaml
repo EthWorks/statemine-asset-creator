@@ -9,7 +9,6 @@ specifiers:
   '@polkadot/api': 6.3.2-11
   '@polkadot/api-derive': 6.3.2-11
   '@polkadot/extension-dapp': ~0.40.3
-  '@polkadot/extension-inject': ~0.40.3
   '@polkadot/ui-keyring': ~0.85.5
   '@rush-temp/eslint-config-statemine': file:./projects/eslint-config-statemine.tgz
   '@rush-temp/statemine-asset-creator': file:./projects/statemine-asset-creator.tgz
@@ -18,12 +17,14 @@ specifiers:
   '@testing-library/jest-dom': ^5.14.1
   '@testing-library/react': ^12.1.1
   '@testing-library/react-hooks': ~7.0.2
+  '@types/bn.js': ~5.1.0
   '@types/jest': ^27.0.2
   '@types/react': 17.0.24
   '@types/react-dom': ~17.0.9
   '@typescript-eslint/eslint-plugin': ^4.32.0
   '@typescript-eslint/parser': ^4.32.0
   babel-jest: ^27.2.3
+  bn.js: ~5.2.0
   eslint: ^7.32.0
   eslint-config-next: 11.1.2
   identity-obj-proxy: ^3.0.0
@@ -45,7 +46,6 @@ dependencies:
   '@polkadot/api': 6.3.2-11
   '@polkadot/api-derive': 6.3.2-11
   '@polkadot/extension-dapp': 0.40.3_@polkadot+api@6.3.2-11
-  '@polkadot/extension-inject': 0.40.3_@polkadot+api@6.3.2-11
   '@polkadot/ui-keyring': 0.85.5
   '@rush-temp/eslint-config-statemine': file:projects/eslint-config-statemine.tgz_typescript@4.4.4
   '@rush-temp/statemine-asset-creator': file:projects/statemine-asset-creator.tgz_@babel+core@7.15.8
@@ -54,12 +54,14 @@ dependencies:
   '@testing-library/jest-dom': 5.14.1
   '@testing-library/react': 12.1.2_react-dom@17.0.2+react@17.0.2
   '@testing-library/react-hooks': 7.0.2_fc2bb8a5b006d3f25c5f84ea777e678d
+  '@types/bn.js': 5.1.0
   '@types/jest': 27.0.2
   '@types/react': 17.0.24
   '@types/react-dom': 17.0.9
   '@typescript-eslint/eslint-plugin': 4.33.0_cc617358c89d3f38c52462f6d809db4c
   '@typescript-eslint/parser': 4.33.0_eslint@7.32.0+typescript@4.4.4
   babel-jest: 27.2.5_@babel+core@7.15.8
+  bn.js: 5.2.0
   eslint: 7.32.0
   eslint-config-next: 11.1.2_b254488bed7690859822a81f0a41c857
   identity-obj-proxy: 3.0.0
@@ -1898,6 +1900,16 @@ packages:
       '@polkadot/util': 7.4.1
     dev: false
 
+  /@polkadot/types/6.3.1:
+    resolution: {integrity: sha512-ZZHwohZlyBgTAXmvISWY/lkpOfi6IvX4QAxXUNG+fH2ZB8uLB+ZPKeztPIleOqApj3HzczOCpH9QXK3he2IzHQ==}
+    engines: {node: '>=14.0.0'}
+    dependencies:
+      '@babel/runtime': 7.15.4
+      '@polkadot/util': 7.4.1
+      '@polkadot/util-crypto': 7.4.1
+      rxjs: 7.4.0
+    dev: false
+
   /@polkadot/types/6.3.2-11:
     resolution: {integrity: sha512-KEQj4DZD1bCzpNMc1SiEkTXvMBEcu7far5nJpSseHbVno4oFz4h3h7daY7lRxtgJ8zmlwLChhi+Jm8nBOcJhww==}
     engines: {node: '>=14.0.0'}
@@ -2167,6 +2179,12 @@ packages:
 
   /@types/bn.js/4.11.6:
     resolution: {integrity: sha512-pqr857jrp2kPuO9uRjZ3PwnJTjoQy+fcdxvBTvHm6dkmEL9q+hDD/2j/0ELOBPtPnS8LjCX0gI9nbl8lVkadpg==}
+    dependencies:
+      '@types/node': 16.10.5
+    dev: false
+
+  /@types/bn.js/5.1.0:
+    resolution: {integrity: sha512-QSSVYj7pYFN49kW77o2s9xTCwZ8F2xLbjLLSEVh8D2F4JUhZtPAGOFLTD+ffqksBx/u4cE/KImFjyhqCjn/LIA==}
     dependencies:
       '@types/node': 16.10.5
     dev: false
@@ -7476,7 +7494,7 @@ packages:
     dev: false
 
   file:projects/eslint-config-statemine.tgz_typescript@4.4.4:
-    resolution: {integrity: sha512-YCgZW6Gk+NZwAYWh5kGhxxRR0feku+xhNh3gqimNADGJ2Vna5DAfq1yAxFJnIf1JuWx7y0s3oqRUeEWU1CK4VQ==, tarball: file:projects/eslint-config-statemine.tgz}
+    resolution: {integrity: sha512-mP+F2ko2vTl9C2r6+YZO5qlauW5cWDNfUoy+fEEaGJVSaTy3WEY2noutCVcotykEgjo9WVAbBfPUYiFBTk9kzw==, tarball: file:projects/eslint-config-statemine.tgz}
     id: file:projects/eslint-config-statemine.tgz
     name: '@rush-temp/eslint-config-statemine'
     version: 0.0.0
@@ -7484,7 +7502,6 @@ packages:
       '@typescript-eslint/eslint-plugin': 4.33.0_cc617358c89d3f38c52462f6d809db4c
       '@typescript-eslint/parser': 4.33.0_eslint@7.32.0+typescript@4.4.4
       eslint: 7.32.0
-      eslint-plugin-react-hooks: 4.2.0_eslint@7.32.0
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -7527,7 +7544,7 @@ packages:
     dev: false
 
   file:projects/use-substrate.tgz:
-    resolution: {integrity: sha512-+xr2MrbetUBcJ22mZ4HdCVRbKXT1+4wk5WSzvWorKy9VWsMp+SOFw2WzN44tu9BYDeNN2i0z5z1aT3I7BWgIXg==, tarball: file:projects/use-substrate.tgz}
+    resolution: {integrity: sha512-w5Xj1QuaHmK6qse0nxwF0sHeIJJGQWL5oJXLIa8MsEV/uqIGKYL4nQDWjhaBnRlBcM1jbGJ1rRkqcfnit1skoQ==, tarball: file:projects/use-substrate.tgz}
     name: '@rush-temp/use-substrate'
     version: 0.0.0
     dependencies:
@@ -7538,18 +7555,18 @@ packages:
       '@polkadot/api': 6.3.2-11
       '@polkadot/api-derive': 6.3.2-11
       '@polkadot/extension-dapp': 0.40.3_@polkadot+api@6.3.2-11
-      '@polkadot/extension-inject': 0.40.3_@polkadot+api@6.3.2-11
+      '@polkadot/types': 6.3.1
       '@polkadot/ui-keyring': 0.85.5
       '@rushstack/eslint-patch': 1.0.7
       '@testing-library/jest-dom': 5.14.1
       '@testing-library/react': 12.1.2_react-dom@17.0.2+react@17.0.2
       '@testing-library/react-hooks': 7.0.2_fc2bb8a5b006d3f25c5f84ea777e678d
-      '@types/bn.js': 4.11.6
+      '@types/bn.js': 5.1.0
       '@types/jest': 27.0.2
       '@types/react': 17.0.24
       '@types/react-dom': 17.0.9
       babel-jest: 27.2.5_@babel+core@7.15.8
-      bn.js: 4.12.0
+      bn.js: 5.2.0
       eslint: 7.32.0
       identity-obj-proxy: 3.0.0
       jest: 27.2.5
