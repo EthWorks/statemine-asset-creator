@@ -16,5 +16,8 @@ module.exports = {
   transformIgnorePatterns: [
     '/libraries/use-substrate/node_modules/(?!@polkadot|@testing-library/jest-dom)'
   ],
-  setupFilesAfterEnv: ['<rootDir>/jest-setup.ts']
+  setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],
+  testMatch: [
+    '**/?(*.)+(spec|test).[jt]s?(x)'
+  ],
 }

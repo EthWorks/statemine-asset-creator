@@ -82,6 +82,7 @@ describe('useAccountsHook', () => {
         {children}
       </AccountsContextProvider>
     )
+
     return renderHook(() => useAccounts(), { wrapper })
   }
 })
