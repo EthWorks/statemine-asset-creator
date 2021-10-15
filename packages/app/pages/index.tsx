@@ -1,12 +1,18 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import { useBalances, useAccounts, JACO } from 'use-substrate'
-import { AccountSelect } from '../components/AccountSelect'
+import { useBalances, useAccounts, JACO, Account } from 'use-substrate'
+import { AccountSelect } from '../components'
+import { useEffect, useState } from 'react'
 
 const Home: NextPage =  () => {
   const balances = useBalances(JACO)
   const accounts = useAccounts()
+  const [account, setAccount] = useState<Account>(accounts.allAccounts[0])
+
+  useEffect(() => {
+    setAccount(accounts.allAccounts[0])
+  }, [accounts])
 
   return (
     <div className={styles.container}>
@@ -29,8 +35,8 @@ const Home: NextPage =  () => {
             <li key={index}>address: {account.address} name: {account.name}</li>)
           }
         </ul>
-        {accounts && (
-          <AccountSelect accounts={accounts.allAccounts}/>
+        {accounts && account && (
+          <AccountSelect currentAccount={account} setCurrentAccount={setAccount} accounts={accounts.allAccounts}/>
         )}
         { accounts.error === 'EXTENSION' && <div>No extension available</div>}
       </main>
