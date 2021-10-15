@@ -12,6 +12,7 @@ specifiers:
   '@polkadot/extension-inject': ~0.40.3
   '@polkadot/types': ~6.3.1
   '@polkadot/ui-keyring': ~0.85.5
+  '@radix-ui/react-dropdown-menu': ~0.1.0
   '@rush-temp/eslint-config-statemine': file:./projects/eslint-config-statemine.tgz
   '@rush-temp/statemine-asset-creator': file:./projects/statemine-asset-creator.tgz
   '@rush-temp/use-substrate': file:./projects/use-substrate.tgz
@@ -52,6 +53,7 @@ dependencies:
   '@polkadot/extension-inject': 0.40.3_@polkadot+api@6.3.2-11
   '@polkadot/types': 6.3.1
   '@polkadot/ui-keyring': 0.85.5
+  '@radix-ui/react-dropdown-menu': 0.1.0_3b7f7b84f013384d046f72a4522eddf8
   '@rush-temp/eslint-config-statemine': file:projects/eslint-config-statemine.tgz_typescript@4.4.4
   '@rush-temp/statemine-asset-creator': file:projects/statemine-asset-creator.tgz_@babel+core@7.15.8
   '@rush-temp/use-substrate': file:projects/use-substrate.tgz
@@ -1906,6 +1908,16 @@ packages:
       '@polkadot/util': 7.4.1
     dev: false
 
+  /@polkadot/types/6.3.1:
+    resolution: {integrity: sha512-ZZHwohZlyBgTAXmvISWY/lkpOfi6IvX4QAxXUNG+fH2ZB8uLB+ZPKeztPIleOqApj3HzczOCpH9QXK3he2IzHQ==}
+    engines: {node: '>=14.0.0'}
+    dependencies:
+      '@babel/runtime': 7.15.4
+      '@polkadot/util': 7.4.1
+      '@polkadot/util-crypto': 7.4.1
+      rxjs: 7.4.0
+    dev: false
+
   /@polkadot/types/6.3.2-11:
     resolution: {integrity: sha512-KEQj4DZD1bCzpNMc1SiEkTXvMBEcu7far5nJpSseHbVno4oFz4h3h7daY7lRxtgJ8zmlwLChhi+Jm8nBOcJhww==}
     engines: {node: '>=14.0.0'}
@@ -2107,6 +2119,15 @@ packages:
       react: 17.0.2
     dev: false
 
+  /@radix-ui/react-context/0.1.1_react@17.0.2:
+    resolution: {integrity: sha512-PkyVX1JsLBioeu0jB9WvRpDBBLtLZohVDT3BB5CTSJqActma8S8030P57mWZb4baZifMvN7KKWPAA40UmWKkQg==}
+    peerDependencies:
+      react: ^16.8 || ^17.0
+    dependencies:
+      '@babel/runtime': 7.15.4
+      react: 17.0.2
+    dev: false
+
   /@radix-ui/react-dismissable-layer/0.1.0_react@17.0.2:
     resolution: {integrity: sha512-xQSXEP7rHkAe0sY1Ggd9CS0IuYXhjks0e+mtPu6LgJBXhlOTDVj4MeJC8fKAP+H1sKMygcrEEagb6M5GXEDvzg==}
     peerDependencies:
@@ -2168,6 +2189,16 @@ packages:
       react: ^16.8 || ^17.0
     dependencies:
       '@babel/runtime': 7.15.4
+      react: 17.0.2
+    dev: false
+
+  /@radix-ui/react-id/0.1.1_react@17.0.2:
+    resolution: {integrity: sha512-Vlg5me65+NUgxPBuA0Lk6FerNe+Mq4EuJ8xzpskGxS2t8p1puI3IkyLZ2wWtDSb1KXazoaHn8adBypagt+1P0g==}
+    peerDependencies:
+      react: ^16.8 || ^17.0
+    dependencies:
+      '@babel/runtime': 7.15.4
+      '@radix-ui/react-context': 0.1.1_react@17.0.2
       react: 17.0.2
     dev: false
 
@@ -7911,13 +7942,14 @@ packages:
     dev: false
 
   file:projects/statemine-asset-creator.tgz_@babel+core@7.15.8:
-    resolution: {integrity: sha512-a3gX+Ac6TBblnSvsPUteJ/HrinMZMqG+G2cJtinYNS6XxWdEp2NQMVOsWHhY3l1tS1TzGYNqELS3yn+lzppp1Q==, tarball: file:projects/statemine-asset-creator.tgz}
+    resolution: {integrity: sha512-ZjRISqsa+3+Ikl/dZFYM+heUayvQHTlbgXGJ3i0G05QnQuIA9yjVUyRsCHZNGdwdldZAe3P66dF4qENSDpizcg==, tarball: file:projects/statemine-asset-creator.tgz}
     id: file:projects/statemine-asset-creator.tgz
     name: '@rush-temp/statemine-asset-creator'
     version: 0.0.0
     dependencies:
       '@babel/runtime': 7.15.4
       '@radix-ui/react-dropdown-menu': 0.1.0_3b7f7b84f013384d046f72a4522eddf8
+      '@radix-ui/react-id': 0.1.1_react@17.0.2
       '@testing-library/jest-dom': 5.14.1
       '@testing-library/react': 12.1.2_react-dom@17.0.2+react@17.0.2
       '@types/jest': 27.0.2
