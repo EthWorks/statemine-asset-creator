@@ -39,14 +39,19 @@ const TextGreenStyle = css`
   color: ${({ theme }) => theme.colors.green};
 `
 
+const DefaultColor = css`
+  color: ${({ theme }) => theme.colors.gray[400]};
+`
+
 const TextAllStyles = css<TextProps>`
   ${({ bold }) => bold && TextBoldStyle};
   ${({ italic }) => italic && TextItalicStyle};
   ${({ underline }) => underline && TextUnderlineStyle};
-  ${({ white }) => white ? TextWhiteStyle : ({ theme }) => theme.colors.gray[400]};
-  ${({ pink }) => pink ? TextPinkStyle : ({ theme }) => theme.colors.gray[400]};
-  ${({ red }) => red ? TextRedStyle : ({ theme }) => theme.colors.gray[400]};
-  ${({ green }) => green ? TextGreenStyle : ({ theme }) => theme.colors.gray[400]};
+  ${DefaultColor}
+  ${({ white }) => white && TextWhiteStyle};
+  ${({ pink }) => pink && TextPinkStyle};
+  ${({ red }) => red && TextRedStyle};
+  ${({ green }) => green && TextGreenStyle};
 `
 
 export const TextXS = styled.p<TextProps>`
