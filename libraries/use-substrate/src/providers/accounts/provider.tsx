@@ -6,13 +6,14 @@ import { AccountsContext } from './context'
 import { UseAccounts } from './types'
 import { checkRepeatedlyIfExtensionLoaded, getInjectedAccounts, mapObservableToAccounts } from './utils'
 
-interface Props {
+export interface AccountsContextProviderProps {
+  appName: string,
   children: ReactNode
 }
 
 const emptyAccounts: UseAccounts = { hasAccounts: false, allAccounts: [] }
 
-export const AccountsContextProvider = (props: Props): JSX.Element => {
+export const AccountsContextProvider = ({ appName, children }: AccountsContextProviderProps): JSX.Element => {
   const [isExtensionLoaded, setIsExtensionLoaded] = useState(false)
   const [extensionUnavailable, setExtensionUnavailable] = useState(false)
   const [keyringWrapper, setKeyringWrapper] = useState<KeyringWrapper | undefined>(undefined)
@@ -36,7 +37,7 @@ export const AccountsContextProvider = (props: Props): JSX.Element => {
     }
 
     const loadKeysFromExtension = async (): Promise<void> => {
-      const injectedAccounts = await getInjectedAccounts()
+      const injectedAccounts = await getInjectedAccounts(appName)
 
       if (!keyringWrapper) {
         return
@@ -60,7 +61,7 @@ export const AccountsContextProvider = (props: Props): JSX.Element => {
   const observableAccounts = useObservable(keyringWrapper?.keyring.accounts.subject.asObservable().pipe(debounceTime(20)), [keyringWrapper, keyringWrapper?.keyring])
 
   if (!keyringWrapper) {
-    return <AccountsContext.Provider value={emptyAccounts}>{props.children}</AccountsContext.Provider>
+    return <AccountsContext.Provider value={emptyAccounts}>{children}</AccountsContext.Provider>
   }
 
   const allAccounts = mapObservableToAccounts(observableAccounts)
@@ -70,5 +71,5 @@ export const AccountsContextProvider = (props: Props): JSX.Element => {
     contextValue.error = 'EXTENSION'
   }
 
-  return <AccountsContext.Provider value={contextValue}>{props.children}</AccountsContext.Provider>
+  return <AccountsContext.Provider value={contextValue}>{children}</AccountsContext.Provider>
 }
