@@ -6,14 +6,14 @@ import { AccountsContext } from './context'
 import { UseAccounts } from './types'
 import { checkRepeatedlyIfExtensionLoaded, getInjectedAccounts, mapObservableToAccounts } from './utils'
 
-interface Props {
+export interface AccountsContextProviderProps {
   appName: string,
   children: ReactNode
 }
 
 const emptyAccounts: UseAccounts = { hasAccounts: false, allAccounts: [] }
 
-export const AccountsContextProvider = ({ appName, children }: Props): JSX.Element => {
+export const AccountsContextProvider = ({ appName, children }: AccountsContextProviderProps): JSX.Element => {
   const [isExtensionLoaded, setIsExtensionLoaded] = useState(false)
   const [extensionUnavailable, setExtensionUnavailable] = useState(false)
   const [keyringWrapper, setKeyringWrapper] = useState<KeyringWrapper | undefined>(undefined)
