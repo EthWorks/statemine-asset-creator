@@ -24,19 +24,19 @@ const TextUnderlineStyle = css`
 `
 
 const TextWhiteStyle = css`
-  color: ${({ theme }) => theme.color.white};
+  color: ${({ theme }) => theme.colors.white};
 `
 
 const TextPinkStyle = css`
-  color: ${({ theme }) => theme.color.pink};
+  color: ${({ theme }) => theme.colors.pink};
 `
 
 const TextRedStyle = css`
-  color: ${({ theme }) => theme.color.red};
+  color: ${({ theme }) => theme.colors.red};
 `
 
 const TextGreenStyle = css`
-  color: ${({ theme }) => theme.color.green};
+  color: ${({ theme }) => theme.colors.green};
 `
 
 const TextAllStyles = css<TextProps>`
