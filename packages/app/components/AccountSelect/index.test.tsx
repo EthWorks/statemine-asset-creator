@@ -57,7 +57,8 @@ describe('Component AccountSelect', () => {
         button: 0,
       })
     )
-    await screen.findByText('Account Name: ALICE')
+
+    expect(await screen.findAllByText('Account Name: ALICE')).toHaveLength(2)
     await screen.findByText('Account Name: BOB')
   })
 })
