@@ -53,7 +53,9 @@ dependencies:
   '@polkadot/extension-inject': 0.40.3_@polkadot+api@6.3.2-11
   '@polkadot/types': 6.3.1
   '@polkadot/ui-keyring': 0.85.5
+  '@radix-ui/react-collapsible': 0.1.1_react@17.0.2
   '@radix-ui/react-dropdown-menu': 0.1.0_3b7f7b84f013384d046f72a4522eddf8
+  '@radix-ui/react-id': 0.1.1_react@17.0.2
   '@rush-temp/eslint-config-statemine': file:projects/eslint-config-statemine.tgz_typescript@4.4.4
   '@rush-temp/statemine-asset-creator': file:projects/statemine-asset-creator.tgz_@babel+core@7.15.8
   '@rush-temp/use-substrate': file:projects/use-substrate.tgz
@@ -2089,6 +2091,23 @@ packages:
       react: 17.0.2
     dev: false
 
+  /@radix-ui/react-collapsible/0.1.1_react@17.0.2:
+    resolution: {integrity: sha512-GIiCo8wYz53ZZEbp4LOkSysK8B+gZSi8/X/5NotBvyZpKntnf93i+NXPmtPPr+l0uPBr4EnEG1aZnItnrJpSEQ==}
+    peerDependencies:
+      react: ^16.8 || ^17.0
+    dependencies:
+      '@babel/runtime': 7.15.4
+      '@radix-ui/primitive': 0.1.0
+      '@radix-ui/react-compose-refs': 0.1.0_react@17.0.2
+      '@radix-ui/react-context': 0.1.1_react@17.0.2
+      '@radix-ui/react-id': 0.1.1_react@17.0.2
+      '@radix-ui/react-presence': 0.1.1_react@17.0.2
+      '@radix-ui/react-primitive': 0.1.1_react@17.0.2
+      '@radix-ui/react-use-controllable-state': 0.1.0_react@17.0.2
+      '@radix-ui/react-use-layout-effect': 0.1.0_react@17.0.2
+      react: 17.0.2
+    dev: false
+
   /@radix-ui/react-collection/0.1.0_react@17.0.2:
     resolution: {integrity: sha512-7rA4o4Y4GSULTqVrUwKOO/9Ih2EsrDKFWz7IYQ2hWot0OEoxP6qJXFNxSDyVKnfvpQutFKPZXoKsh1VmtjQFFA==}
     peerDependencies:
@@ -2273,6 +2292,17 @@ packages:
       react: 17.0.2
     dev: false
 
+  /@radix-ui/react-presence/0.1.1_react@17.0.2:
+    resolution: {integrity: sha512-LsL+NcWDpFUAYCmXeH02o4pgqcSLpwxP84UIjCtpIKrsPe2vLuhcp79KC/jZJeXz+of2lUpMAxpM+eCpxFZtlg==}
+    peerDependencies:
+      react: '>=16.8'
+    dependencies:
+      '@babel/runtime': 7.15.4
+      '@radix-ui/react-compose-refs': 0.1.0_react@17.0.2
+      '@radix-ui/react-use-layout-effect': 0.1.0_react@17.0.2
+      react: 17.0.2
+    dev: false
+
   /@radix-ui/react-primitive/0.1.0_react@17.0.2:
     resolution: {integrity: sha512-ydO24k5Cvry5RCMfm5OJNnIwvxSIUuUZ3Kf6bu1GaSsDfBKiv5JeuQkipURW28KlX7I85Jr/I02JlE+Ec4HmWA==}
     peerDependencies:
@@ -2280,6 +2310,16 @@ packages:
     dependencies:
       '@babel/runtime': 7.15.4
       '@radix-ui/react-slot': 0.1.0_react@17.0.2
+      react: 17.0.2
+    dev: false
+
+  /@radix-ui/react-primitive/0.1.1_react@17.0.2:
+    resolution: {integrity: sha512-65GCHeDV/ikicXKR2rLSO6w+dyUQwSG2J1JD2qm4suK1259nTuRvPsPBrbhZpoXWQKj2drMZfhhclXVfzwW1Kw==}
+    peerDependencies:
+      react: ^16.8 || ^17.0
+    dependencies:
+      '@babel/runtime': 7.15.4
+      '@radix-ui/react-slot': 0.1.1_react@17.0.2
       react: 17.0.2
     dev: false
 
@@ -2302,6 +2342,16 @@ packages:
 
   /@radix-ui/react-slot/0.1.0_react@17.0.2:
     resolution: {integrity: sha512-ZuvAUhSK9EAE42b3+K7k7w4nF1uF+Wd4bFj2OCE1aSiW3tgiu7ZU+J61m2+RIDps0WLu95PUx6eZrnpfqBXFRg==}
+    peerDependencies:
+      react: ^16.8 || ^17.0
+    dependencies:
+      '@babel/runtime': 7.15.4
+      '@radix-ui/react-compose-refs': 0.1.0_react@17.0.2
+      react: 17.0.2
+    dev: false
+
+  /@radix-ui/react-slot/0.1.1_react@17.0.2:
+    resolution: {integrity: sha512-deq3K7cCXQ+tWMZF2GKl3zGMcwVbyQDiMY/UcPI0Q1DDudRG2dWrEwcYbYajEelc07oOxzNyKpaXZLOpNxquuA==}
     peerDependencies:
       react: ^16.8 || ^17.0
     dependencies:
@@ -2471,6 +2521,15 @@ packages:
       '@testing-library/dom': 8.9.0
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
+    dev: false
+
+  /@testing-library/user-event/13.4.1:
+    resolution: {integrity: sha512-WcnVwi96MmFsHLMNvBz03aPMVDU3UOgucXcn85fNXKKdtd7CHi2NAgE3hASt157yTB9krym0ikFVKbqYghKRCg==}
+    engines: {node: '>=10', npm: '>=6'}
+    peerDependencies:
+      '@testing-library/dom': '>=7.21.4'
+    dependencies:
+      '@babel/runtime': 7.15.4
     dev: false
 
   /@tootallnate/once/1.1.2:
@@ -7942,16 +8001,18 @@ packages:
     dev: false
 
   file:projects/statemine-asset-creator.tgz_@babel+core@7.15.8:
-    resolution: {integrity: sha512-ZjRISqsa+3+Ikl/dZFYM+heUayvQHTlbgXGJ3i0G05QnQuIA9yjVUyRsCHZNGdwdldZAe3P66dF4qENSDpizcg==, tarball: file:projects/statemine-asset-creator.tgz}
+    resolution: {integrity: sha512-flU8t59FNtmOBHYT3C803f5VT7uvJYX3ro82ymd9j6hbWb/Bn2W3U13DhputglnhKgxLWc8iXMX1hEPTWRO+Ng==, tarball: file:projects/statemine-asset-creator.tgz}
     id: file:projects/statemine-asset-creator.tgz
     name: '@rush-temp/statemine-asset-creator'
     version: 0.0.0
     dependencies:
       '@babel/runtime': 7.15.4
+      '@radix-ui/react-collapsible': 0.1.1_react@17.0.2
       '@radix-ui/react-dropdown-menu': 0.1.0_3b7f7b84f013384d046f72a4522eddf8
       '@radix-ui/react-id': 0.1.1_react@17.0.2
       '@testing-library/jest-dom': 5.14.1
       '@testing-library/react': 12.1.2_react-dom@17.0.2+react@17.0.2
+      '@testing-library/user-event': 13.4.1
       '@types/jest': 27.0.2
       '@types/react': 17.0.24
       babel-jest: 27.2.5_@babel+core@7.15.8
@@ -7967,6 +8028,7 @@ packages:
       typescript: 4.4.4
     transitivePeerDependencies:
       - '@babel/core'
+      - '@testing-library/dom'
       - bufferutil
       - canvas
       - fibers
