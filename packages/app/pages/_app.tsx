@@ -20,16 +20,16 @@ const ApiContextProvider = dynamic<JSX.ElementChildrenAttribute>(
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
-      <IdProvider>
-    <ApiContextProvider>
-      <AccountsContextProvider appName={APPLICATION_NAME}>
-        <GlobalStyle />
-        <ThemeProvider theme={theme}>
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </AccountsContextProvider>
-    </ApiContextProvider>
-      </IdProvider>
+    <IdProvider>
+      <ApiContextProvider>
+        <AccountsContextProvider appName={APPLICATION_NAME}>
+          <GlobalStyle />
+          <ThemeProvider theme={theme}>
+            <Component {...pageProps} />
+          </ThemeProvider>
+        </AccountsContextProvider>
+      </ApiContextProvider>
+    </IdProvider>
   )
 }
 
