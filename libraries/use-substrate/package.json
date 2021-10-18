@@ -35,7 +35,7 @@
     "eslint-config-statemine": "~0.1.0",
     "@rushstack/eslint-patch": "~1.0.7",
     "jest-fail-on-console": "~2.0.4",
-    "@babel/core": "~7.15.5",
+    "@babel/core": "^7.15.8",
     "@babel/preset-env": "~7.15.6",
     "@babel/preset-typescript": "~7.15.0",
     "@testing-library/react-hooks": "~7.0.2",

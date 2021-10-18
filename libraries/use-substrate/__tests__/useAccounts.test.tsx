@@ -77,7 +77,7 @@ describe('useAccountsHook', () => {
 
   const renderAccounts = () => {
     const wrapper = ({ children }: { children: ReactNode }) => (
-      <AccountsContextProvider>
+      <AccountsContextProvider appName='Statemine asset creator'>
         {children}
       </AccountsContextProvider>
     )
