@@ -1,17 +1,18 @@
 import styled, { css } from 'styled-components'
+import { ColorType, theme } from '../../styles/styleVariables'
 
-interface TextProps {
+type TextSize = 'XS' | 'SM' | 'Base' | 'Lg' | 'XL' | '2XL' | '3XL'| '4XL'| '5XL'| '6XL'
+
+export interface TextProps {
   bold?: boolean
   italic?: boolean
   underline?: boolean
   className?: string
-  green?: boolean
-  pink?: boolean
-  red?: boolean
-  white?: boolean
+  color?: ColorType;
+  size?: TextSize;
 }
 
-export const TextBoldStyle = css`
+const TextBoldStyle = css`
   font-weight: 700;
 `
 
@@ -23,93 +24,59 @@ const TextUnderlineStyle = css`
   text-decoration: underline;
 `
 
-const TextWhiteStyle = css`
-  color: ${({ theme }) => theme.colors.white};
-`
-
-const TextPinkStyle = css`
-  color: ${({ theme }) => theme.colors.pink};
-`
-
-const TextRedStyle = css`
-  color: ${({ theme }) => theme.colors.red};
-`
-
-const TextGreenStyle = css`
-  color: ${({ theme }) => theme.colors.green};
-`
-
-const DefaultColor = css`
-  color: ${({ theme }) => theme.colors.gray[400]};
-`
-
-const TextAllStyles = css<TextProps>`
+export const Text = styled.p<TextProps>`
   ${({ bold }) => bold && TextBoldStyle};
   ${({ italic }) => italic && TextItalicStyle};
   ${({ underline }) => underline && TextUnderlineStyle};
-  ${DefaultColor}
-  ${({ white }) => white && TextWhiteStyle};
-  ${({ pink }) => pink && TextPinkStyle};
-  ${({ red }) => red && TextRedStyle};
-  ${({ green }) => green && TextGreenStyle};
+  color: ${({ color }) => color ? theme.colors[color] : theme.colors.gray[400]};
+  font-size: ${({ size }) => size ? sizes[size].fontSize : sizes['Base'].fontSize};
+  line-height: ${({ size }) => size ? sizes[size].lineHeight : sizes['Base'].lineHeight};
 `
 
-export const TextXS = styled.p<TextProps>`
-  font-size: 12px;
-  line-height: 16px;
-  ${TextAllStyles}
-`
+interface TextProperties {
+  fontSize: string;
+  lineHeight: string;
+}
 
-export const TextSM = styled.p<TextProps>`
-  font-size: 14px;
-  line-height: 20px;
-  ${TextAllStyles}
-`
-
-export const TextBase = styled.p<TextProps>`
-  font-size: 16px;
-  line-height: 24px;
-  ${TextAllStyles}
-`
-
-export const TextLg = styled.p<TextProps>`
-  font-size: 18px;
-  line-height: 28px;
-  ${TextAllStyles}
-`
-
-export const TextXL = styled.p<TextProps>`
-  font-size: 20px;
-  line-height: 32px;
-  ${TextAllStyles}
-`
-
-export const Text2xl = styled.p<TextProps>`
-  font-size: 24px;
-  line-height: 32px;
-  ${TextAllStyles}
-`
-
-export const Text3xl = styled.p<TextProps>`
-  font-size: 30px;
-  line-height: 40px;
-  ${TextAllStyles}
-`
-
-export const Text4xl = styled.p<TextProps>`
-  font-size: 36px;
-  line-height: 44px;
-  ${TextAllStyles}
-`
-
-export const Text5xl = styled.p<TextProps>`
-  font-size: 48px;
-  line-height: 56px;
-  ${TextAllStyles}
-`
-
-export const Text6xl = styled.p<TextProps>`
-  font-size: 64px;
-  line-height: 72px;
-  ${TextAllStyles}
-`
+const sizes: Record<TextSize, TextProperties> = {
+  XS:  {
+    fontSize: '12px',
+    lineHeight: '16px'
+  },
+  SM: {
+    fontSize: '14px',
+    lineHeight: '20px'
+  },
+  Base:{
+    fontSize: '16px',
+    lineHeight: '24px'
+  },
+  Lg : {
+    fontSize: '18px',
+    lineHeight: '28px'
+  },
+  XL :{
+    fontSize: '20px',
+    lineHeight: '32px'
+  },
+  '2XL' : {
+    fontSize: '24px',
+    lineHeight: '32px'
+  },
+  '3XL': {
+    fontSize: '30px',
+    lineHeight: '40px'
+  },
+  '4XL': {
+    fontSize: '36px',
+    lineHeight: '44px'
+  },
+  '5XL': {
+    fontSize: '48px',
+    lineHeight: '56px'
+  },
+  '6XL': {
+    fontSize: '64px',
+    lineHeight: '72px'
+  }
+}

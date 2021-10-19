@@ -1,4 +1,23 @@
-export const theme = {
+interface GrayShades {
+  50: string,
+  300: string,
+  400: string,
+  500: string,
+  600: string,
+  700: string,
+  800: string,
+  900: string
+}
+
+export type ColorType = 'black' | 'green' | 'indigo' | 'pink' | 'red' | 'white'
+
+export type Colors = Record<ColorType, string>
+
+interface Theme {
+  colors: { gray: GrayShades } & Colors
+}
+
+export const theme: Theme = {
   colors: {
     gray: {
       50: '#FAFAFA',
