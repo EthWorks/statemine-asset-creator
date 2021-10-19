@@ -12,7 +12,7 @@ const Home: NextPage =  () => {
 
   useEffect(() => {
     setAccount(accounts.allAccounts[0])
-  }, [accounts])
+  }, [accounts.allAccounts])
 
   return (
     <div className={styles.container}>
