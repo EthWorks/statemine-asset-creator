@@ -7,8 +7,7 @@ This monorepo project uses [Rush](https://rushjs.io/) for package management, in
 
 To start developing, execute following commands
 ```
-pnpm install
-rush update --purge
+rush update
 rush build
 ```
 ### Building project
