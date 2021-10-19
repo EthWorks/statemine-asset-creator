@@ -3,17 +3,18 @@ import React, { ReactNode, useEffect, useMemo, useState } from 'react'
 
 import { ApiContext } from './context'
 import { ConnectionState } from './types'
+import { DEFAULT_CONFIG } from '../../consts/defaultConfig'
 
 interface Props {
   children: ReactNode,
-  chainUrl: string
+  chainUrl?: string
 }
 
 export const ApiContextProvider = ({ children, chainUrl }: Props): JSX.Element | null => {
   const [connectionState, setConnectionState] = useState<ConnectionState>('connecting')
 
   const api = useMemo(() => {
-    const provider = new WsProvider(chainUrl)
+    const provider = new WsProvider(chainUrl ?? DEFAULT_CONFIG.chainUrl)
 
     return new ApiRx({ provider })
   }, [])
