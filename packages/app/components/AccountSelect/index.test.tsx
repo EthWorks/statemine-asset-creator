@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import { Account, useAccounts } from 'use-substrate'
 import { AccountSelect } from './index'
 import { mockAccounts } from '../../__tests__/mocks/mockAccounts'
@@ -24,7 +24,7 @@ function AccountSelectTestComponent(): JSX.Element {
 
   useEffect(() => {
     setAccount(accounts.allAccounts[0])
-  }, [accounts])
+  }, [accounts.allAccounts])
 
   return (
     <AccountSelect
@@ -58,7 +58,32 @@ describe('Component AccountSelect', () => {
       })
     )
 
-    expect(await screen.findAllByText('Account Name: ALICE')).toHaveLength(2)
-    await screen.findByText('Account Name: BOB')
+    const dropdownMenu = await screen.findByRole('menu')
+
+    await within(dropdownMenu).findByText('Account Name: ALICE')
+    await within(dropdownMenu).findByText('Account Name: BOB')
+  })
+
+  it('sets selected account as current account', async () => {
+    render(<AccountSelectTestComponent/>)
+
+    const openDropdownButton = await screen.findByRole('button')
+
+    fireEvent.pointerDown(
+      openDropdownButton,
+      new PointerEvent('pointerdown', {
+        ctrlKey: false,
+        button: 0,
+      })
+    )
+
+    const dropdownMenu = await screen.findByRole('menu')
+
+    const menuItems = await within(dropdownMenu).findAllByRole('menuitem')
+
+    fireEvent.click(menuItems[1])
+
+    await within(openDropdownButton).findByText('Account Name: BOB')
+    expect(await within(openDropdownButton).queryAllByAltText('Account Name: ALICE')).toHaveLength(0)
   })
 })
