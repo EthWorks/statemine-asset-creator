@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { Account, useAccounts } from 'use-substrate'
 import { AccountSelect } from './index'
-import { mockAccounts } from '../../mocks/mockAccounts'
+import { mockAccounts } from '../../__tests__/mocks/mockAccounts'
 import { PointerEvent } from '../../__tests__/helpers/events'
 
 jest.mock('use-substrate', () => ({
