@@ -11,7 +11,7 @@ export interface AppProviderProps {
 export function AppProvider({ config, children }: AppProviderProps): JSX.Element {
   return (
     <ConfigProvider config={config}>
-      <DAppProviderWithConfig>{children}</DAppProviderWithConfig>
+      <AppWithConfig>{children}</AppWithConfig>
     </ConfigProvider>
   )
 }
@@ -20,7 +20,7 @@ interface WithConfigProps {
   children: ReactNode
 }
 
-function DAppProviderWithConfig({ children }: WithConfigProps): JSX.Element {
+function AppWithConfig({ children }: WithConfigProps): JSX.Element {
   const { chainUrl } = useConfig()
 
   return (
