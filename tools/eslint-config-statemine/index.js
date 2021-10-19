@@ -19,13 +19,14 @@ module.exports = {
         "sourceType": "module"
     },
     "rules": {
-        // required as 'off' since typescript-eslint has own versions
         "indent": "off",
         "@typescript-eslint/indent": ["error", 2],
         "@typescript-eslint/no-duplicate-imports": ["error"],
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "no-redeclare": "off",
-        "no-unused-vars": "error",
+        // note you must disable the base rule as it can report incorrect errors
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": ["error"],
         "quotes": ["error", "single"],
         "prefer-const": ["error", {"destructuring": "all"}],
         "semi": ["error", "never"],
