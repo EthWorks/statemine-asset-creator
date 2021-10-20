@@ -1,10 +1,6 @@
-import React, { ReactNode } from 'react'
-import { Config, ConfigContext } from './context'
-
-export interface ConfigProviderProps {
-  children: ReactNode
-  config: Config
-}
+import React from 'react'
+import { ConfigContext } from './context'
+import { ConfigProviderProps } from './types'
 
 export function ConfigProvider({ config, children }: ConfigProviderProps): JSX.Element {
 

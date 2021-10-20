@@ -1,11 +1,7 @@
-import { ConfigContext } from '../providers'
+import { Config, ConfigContext } from '../providers'
 import { useContext } from 'react'
 
-interface UseConfig {
-  chainUrl: string
-}
-
-export function useConfig(): UseConfig {
+export function useConfig(): Config {
   const { config } = useContext(ConfigContext)
 
   return config
