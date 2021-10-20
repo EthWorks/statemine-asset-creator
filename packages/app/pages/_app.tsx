@@ -4,7 +4,7 @@ import GlobalStyle from '../styles/globalStyle'
 import { ThemeProvider } from 'styled-components'
 import { theme } from '../styles/styleVariables'
 import React from 'react'
-import type { AccountsContextProviderProps, AppProviderProps } from 'use-substrate'
+import type { AccountsContextProviderProps, AppProviderProps, Config } from 'use-substrate'
 import { APPLICATION_NAME } from '../globalConstants'
 import { KUSAMA_ARCHIVE_NODE_URL } from 'use-substrate'
 
@@ -18,7 +18,7 @@ const AppProvider = dynamic<AppProviderProps>(
   { ssr: false }
 )
 
-const config = {
+const config: Config = {
   chainUrl: KUSAMA_ARCHIVE_NODE_URL
 }
 
