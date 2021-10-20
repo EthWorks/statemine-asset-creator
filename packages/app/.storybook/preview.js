@@ -1,3 +1,7 @@
+import { addDecorator } from '@storybook/client-api';
+import { ThemeProvider } from 'styled-components';
+import { theme } from '../styles/styleVariables';
+
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
   controls: {
@@ -7,3 +11,11 @@ export const parameters = {
     },
   },
 }
+
+addDecorator(
+    story => (
+        <ThemeProvider theme={theme}>
+          {story()}
+        </ThemeProvider>
+    )
+)

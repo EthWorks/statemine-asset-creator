@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components'
-import { ColorType, theme } from '../../styles/styleVariables'
+import { ColorType } from '../../styles/styleVariables'
 
 type TextSize = 'XS' | 'SM' | 'Base' | 'Lg' | 'XL' | '2XL' | '3XL'| '4XL'| '5XL'| '6XL'
 
@@ -28,7 +28,7 @@ export const Text = styled.p<TextProps>`
   ${({ bold }) => bold && TextBoldStyle};
   ${({ italic }) => italic && TextItalicStyle};
   ${({ underline }) => underline && TextUnderlineStyle};
-  color: ${({ color }) => color ? theme.colors[color] : theme.colors.gray[400]};
+  color: ${({ theme, color }) => color ? theme.colors[color] : theme.colors.gray[400]};
   font-size: ${({ size }) => size ? sizes[size].fontSize : sizes['Base'].fontSize};
   line-height: ${({ size }) => size ? sizes[size].lineHeight : sizes['Base'].lineHeight};
 `
