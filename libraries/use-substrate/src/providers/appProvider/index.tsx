@@ -1,14 +1,13 @@
 import { Config, ConfigProvider } from '../config'
-import React, { ReactNode } from 'react'
+import React from 'react'
 import { useConfig } from '../../hooks/useConfig'
 import { ApiContextProvider } from '../api'
 
 export interface AppProviderProps {
-  children: ReactNode
   config: Config
 }
 
-export function AppProvider({ config, children }: AppProviderProps): JSX.Element {
+export const AppProvider: React.FC<AppProviderProps> = ({ config, children }): JSX.Element =>  {
   return (
     <ConfigProvider config={config}>
       <AppWithConfig>{children}</AppWithConfig>
@@ -16,11 +15,7 @@ export function AppProvider({ config, children }: AppProviderProps): JSX.Element
   )
 }
 
-interface WithConfigProps {
-  children: ReactNode
-}
-
-function AppWithConfig({ children }: WithConfigProps): JSX.Element {
+const AppWithConfig: React.FC = ({ children }) => {
   const { chainUrl } = useConfig()
 
   return (

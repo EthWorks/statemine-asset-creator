@@ -1,16 +1,15 @@
 import { ApiRx, WsProvider } from '@polkadot/api'
-import React, { ReactNode, useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import { ApiContext } from './context'
 import { ConnectionState } from './types'
 import { DEFAULT_CONFIG } from '../../consts/defaultConfig'
 
 interface Props {
-  children: ReactNode,
   chainUrl?: string
 }
 
-export const ApiContextProvider = ({ children, chainUrl }: Props): JSX.Element | null => {
+export const ApiContextProvider: React.FC<Props> = ({ children, chainUrl }): JSX.Element | null => {
   const [connectionState, setConnectionState] = useState<ConnectionState>('connecting')
 
   const api = useMemo(() => {
