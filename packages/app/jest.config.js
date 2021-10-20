@@ -29,5 +29,8 @@ module.exports = {
     '/node_modules/',
     '^.+\\.module\\.(css|sass|scss)$',
   ],
-  setupFilesAfterEnv: ['<rootDir>/jest-setup.ts']
+  setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],
+  testMatch: [
+    '**/?(*.)+(spec|test).[jt]s?(x)'
+  ]
 }

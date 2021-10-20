@@ -6,6 +6,7 @@ import { theme } from '../styles/styleVariables'
 import React from 'react'
 import type { AccountsContextProviderProps, AppProviderProps, Config } from 'use-substrate'
 import { APPLICATION_NAME } from '../globalConstants'
+import { IdProvider } from '@radix-ui/react-id'
 import { KUSAMA_ARCHIVE_NODE_URL } from 'use-substrate'
 
 const AccountsContextProvider = dynamic<AccountsContextProviderProps>(
@@ -24,14 +25,16 @@ const config: Config = {
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
-    <AppProvider config={config}>
-      <AccountsContextProvider appName={APPLICATION_NAME}>
-        <GlobalStyle />
-        <ThemeProvider theme={theme}>
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </AccountsContextProvider>
-    </AppProvider>
+    <IdProvider>
+      <AppProvider config={config}>
+        <AccountsContextProvider appName={APPLICATION_NAME}>
+          <GlobalStyle />
+          <ThemeProvider theme={theme}>
+            <Component {...pageProps} />
+          </ThemeProvider>
+        </AccountsContextProvider>
+      </AppProvider>
+    </IdProvider>
   )
 }
 
