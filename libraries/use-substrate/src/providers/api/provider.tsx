@@ -1,19 +1,19 @@
 import { ApiRx, WsProvider } from '@polkadot/api'
-import React, { ReactNode, useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import { ApiContext } from './context'
 import { ConnectionState } from './types'
-import { KUSAMA_ARCHIVE_NODE_URL } from '../../consts'
+import { DEFAULT_CONFIG } from '../../consts/defaultConfig'
 
 interface Props {
-  children: ReactNode
+  chainUrl?: string
 }
 
-export const ApiContextProvider = ({ children }: Props): JSX.Element | null => {
+export const ApiContextProvider: React.FC<Props> = ({ children, chainUrl }): JSX.Element | null => {
   const [connectionState, setConnectionState] = useState<ConnectionState>('connecting')
 
   const api = useMemo(() => {
-    const provider = new WsProvider(KUSAMA_ARCHIVE_NODE_URL)
+    const provider = new WsProvider(chainUrl ?? DEFAULT_CONFIG.chainUrl)
 
     return new ApiRx({ provider })
   }, [])
