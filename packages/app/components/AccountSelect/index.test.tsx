@@ -4,6 +4,8 @@ import { Account, useAccounts } from 'use-substrate'
 import { AccountSelect } from './index'
 import { mockAccounts } from '../../__tests__/mocks/mockAccounts'
 import { PointerEvent } from '../../__tests__/helpers/events'
+import { ThemeProvider } from 'styled-components'
+import { theme } from '../../styles/styleVariables'
 
 jest.mock('use-substrate', () => ({
   useBalances: () => ({
@@ -27,11 +29,13 @@ function AccountSelectTestComponent(): JSX.Element {
   }, [accounts.allAccounts])
 
   return (
-    <AccountSelect
-      accounts={accounts.allAccounts}
-      currentAccount={account}
-      setCurrentAccount={setAccount}
-    />
+    <ThemeProvider theme={theme}>
+      <AccountSelect
+        accounts={accounts.allAccounts}
+        currentAccount={account}
+        setCurrentAccount={setAccount}
+      />
+    </ThemeProvider>
   )
 }
 
