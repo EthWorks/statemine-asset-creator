@@ -3,7 +3,7 @@ import { ThemeProvider } from 'styled-components';
 import { theme } from '../styles/styleVariables';
 
 export const parameters = {
-  actions: { argTypesRegex: "^on[A-Z].*" },
+  actions: {argTypesRegex: "^on[A-Z].*"},
   controls: {
     matchers: {
       color: /(background|color)$/i,
@@ -13,9 +13,9 @@ export const parameters = {
 }
 
 addDecorator(
-    story => (
-        <ThemeProvider theme={theme}>
-          {story()}
-        </ThemeProvider>
-    )
+  story => (
+    <ThemeProvider theme={theme}>
+      {story()}
+    </ThemeProvider>
+  )
 )

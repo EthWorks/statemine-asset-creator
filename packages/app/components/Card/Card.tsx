@@ -3,7 +3,6 @@ import styled from 'styled-components'
 type PaddingSize = 's' | 'm' | 'l'
 
 export interface CardProps {
-  className?: string,
   padding?: PaddingSize
 }
 
