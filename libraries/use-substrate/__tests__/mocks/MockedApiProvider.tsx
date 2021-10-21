@@ -38,14 +38,14 @@ export function MockedApiProvider(props: { children: React.ReactNode }) {
     connectionState: 'connected',
   }
 
-  const mockedStatmineApi: UseApi = {
+  const mockedStatemineApi: UseApi = {
     api: undefined,
     isConnected: false,
     connectionState: 'connecting',
   }
 
   return (
-    <ApiContext.Provider value={{ 'kusama': mockedKusamaApi, 'statemine': mockedStatmineApi }}>
+    <ApiContext.Provider value={{ 'kusama': mockedKusamaApi, 'statemine': mockedStatemineApi }}>
       {props.children}
     </ApiContext.Provider>
   )
