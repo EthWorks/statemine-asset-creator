@@ -1,4 +1,4 @@
-import { Config, KUSAMA_ARCHIVE_NODE_URL, Nodes } from '../src'
+import { Config, KUSAMA_ARCHIVE_NODE_URL, Chains, STATEMINE_ARCHIVE_NODE_URL } from '../src'
 import { initializeApi } from '../src/providers/api/initializeApi'
 
 jest.mock('../src/providers/api/useChainApi', () => ({
@@ -11,19 +11,23 @@ describe('Initialize api for chains', () => {
   })
 
   it('one network', () => {
-    const config: Config = { chains: [{ name: Nodes.Kusama, url: KUSAMA_ARCHIVE_NODE_URL }] }
+    const config: Config = { chains: [{ name: Chains.Kusama, url: KUSAMA_ARCHIVE_NODE_URL }] }
     const networkState = initializeApi(config.chains)
     expect(networkState).toEqual({
       'kusama': { isConnected: false, connectionState: 'connecting' }
     })
   })
 
-  // it('multiple networks', async () => {
-  //   const config: Config = { chains: [,{ name: Nodes.Kusama, url: KUSAMA_ARCHIVE_NODE_URL }] }
-  //
-  //   const networkState = initializeApi(config)
-  //   expect(networkState).toEqual({
-  //     'kusama': { isConnected: false, connectionState: 'connecting' }
-  //   })
-  // })
+  it('multiple networks', async () => {
+    const config: Config = { chains: [
+      { name: Chains.Kusama, url: KUSAMA_ARCHIVE_NODE_URL },
+      { name: Chains.Statemine, url: STATEMINE_ARCHIVE_NODE_URL }
+    ] }
+
+    const networkState = initializeApi(config.chains)
+    expect(networkState).toEqual({
+      'kusama': { isConnected: false, connectionState: 'connecting' },
+      'statemine': { isConnected: false, connectionState: 'connecting' }
+    })
+  })
 })

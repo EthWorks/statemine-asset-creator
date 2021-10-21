@@ -1,6 +1,6 @@
-import type { Nodes } from '../../consts'
+import type { Chains } from '../../consts'
 
-export type ChainInfo = {name: Nodes, url?: string}
+export type ChainInfo = {name: Chains, url?: string}
 
 export interface Config {
   chains: ChainInfo[]

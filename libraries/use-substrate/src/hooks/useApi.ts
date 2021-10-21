@@ -1,9 +1,9 @@
 import { useContext } from 'react'
 import { ApiContext } from '../providers'
 import type { UseApi } from '../providers'
-import { Nodes } from '../consts'
+import { Chains } from '../consts'
 
-export const useApi = (chain: Nodes): UseApi => {
+export const useApi = (chain: Chains): UseApi => {
   const chainApi = useContext(ApiContext)[chain]
 
   if (!chainApi) {

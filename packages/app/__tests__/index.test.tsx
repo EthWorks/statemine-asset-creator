@@ -12,6 +12,10 @@ jest.mock('use-substrate', () => ({
   useAccounts: () => ({
     allAccounts: [],
     hasAccounts: false
+  }),
+  Chains: () => ({
+    Kusama: 'kusama',
+    Statemine: 'statemine'
   })
 }))
 

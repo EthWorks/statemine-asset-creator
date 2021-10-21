@@ -1,12 +1,13 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import { useBalances, useAccounts, JACO, Account, Nodes } from 'use-substrate'
+import { useBalances, useAccounts, JACO, Account, Chains } from 'use-substrate'
 import { AccountSelect } from '../components'
 import { useEffect, useState } from 'react'
 
 const Home: NextPage =  () => {
-  const balances = useBalances(Nodes.Kusama, JACO)
+  const balances = useBalances(Chains.Kusama, JACO)
+  const statmineBalances = useBalances(Chains.Statemine, JACO)
   const accounts = useAccounts()
   const [account, setAccount] = useState<Account>(accounts.allAccounts[0])
 
@@ -27,7 +28,10 @@ const Home: NextPage =  () => {
           Welcome to Statemine
         </h1>
         <p className={styles.description}>
-         Balance: {balances?.freeBalance.toString()}
+            Balance: {balances?.freeBalance.toString()}
+        </p>
+        <p className={styles.description}>
+            Statemine Balance: {statmineBalances?.freeBalance.toString()}
         </p>
         <div>Extension accounts:</div>
         <ul>

@@ -1,11 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
-import { ALICE, Nodes, useBalances } from '../src'
+import { ALICE, Chains, useBalances } from '../src'
 import { MockedApiProvider } from './mocks/MockedApiProvider'
 
 describe('useBalances hook', () => {
   it('returns balances', async () => {
-    const { result } = renderResult(Nodes.Kusama, ALICE)
+    const { result } = renderResult(Chains.Kusama, ALICE)
     const { freeBalance, accountNonce, accountId } = result.current || {}
 
     expect(freeBalance?.toString()).toEqual('10000')
@@ -13,7 +13,7 @@ describe('useBalances hook', () => {
     expect(accountId?.toString()).toEqual(ALICE)
   })
 
-  const renderResult = (chain: Nodes, address: string) => {
+  const renderResult = (chain: Chains, address: string) => {
     const wrapper = ({ children }: { children: ReactNode }) => (
       <MockedApiProvider>
         {children}

@@ -1,4 +1,4 @@
-export enum Nodes {
+export enum Chains {
   Kusama = 'kusama',
   Statemine = 'statemine'
 }
