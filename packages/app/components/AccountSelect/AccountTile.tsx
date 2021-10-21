@@ -4,62 +4,78 @@ import { Text } from '../typography/Text'
 import Avatar from '../Avatar/Avatar'
 import AvatarIcon from '../../assets/img/avatar2.png'
 import { Label } from '../typography/Label'
-import { Arrow } from '../icons/Arrow'
 
 interface Props {
   account: Account,
-  arrow: boolean
+  hasFreeBalance?: boolean
 }
 
-export function AccountTile({ account, arrow }: Props): JSX.Element {
+export function AccountTile({ account, hasFreeBalance }: Props): JSX.Element {
   const balance = useBalances(account.address)
 
   return (
     <AccountTileWrapper>
       <AccountTileCell>
-        <Avatar  src={AvatarIcon} size='m' />
+        <Avatar src={AvatarIcon} size='m' />
         <AccountTileName>
           <TextName size='SM' color='red'>{account.name}</TextName>
-          <Text size='SM'>{account.address}</Text>
+          <TextAddress size='SM'>{account.address}</TextAddress>
         </AccountTileName>
       </AccountTileCell>
       <AccountTileCellEnd>
-        {console.log('##########################')}
-        {console.log(balance?.availableBalance)}
-        {balance?.availableBalance.toString() === '0' && <Label>transferable Balance</Label>}
+        <CellRow>
+          <Label>transferable Balance</Label>
+          <TextBalance size='SM' color='white'>{balance?.availableBalance.toString()}</TextBalance>
+          <Text size='SM'>KSM</Text>
+        </CellRow>
+        {hasFreeBalance &&
+          <CellRow>
+            <Label>Full ACCOUNT BALANCE</Label>
+            <TextBalance size='SM' color='white'>{balance?.freeBalance.toString()}</TextBalance>
+            <Text size='SM'>KSM</Text>
+          </CellRow>
+        }
       </AccountTileCellEnd>
-      <AccountTileCellEnd>
-        <TextBalance size='SM' color='white'>{balance?.freeBalance.toString()}</TextBalance>
-        <Text size='SM'>KSM</Text>
-        {/*Full Account Balance: {balance?.freeBalance.toString()}*/}
-      </AccountTileCellEnd>
-      {arrow && <StyledArrow direction='down' />}
     </AccountTileWrapper>
   )
 }
 
 const AccountTileWrapper = styled.div`
   position: relative;
-  display: grid;
-  grid-template-columns: 1fr .8fr 100px;
-  grid-gap: 12px;
-  padding: 18px 48px 18px 16px;
+  display: flex;
   justify-content: space-between;
-  color: ${({ theme }) => theme.colors.gray[400]};
+  width: 100%;
+  padding: 18px 48px 18px 16px;
 `
 
 const AccountTileName = styled.div`
   text-align: left;
+  margin-left: 8px;
 `
 
 const AccountTileCell = styled.div`
   display: flex;
   align-items: center;
+  
+  & + div {
+    margin-left: 50px;
+  }
 `
 
 const AccountTileCellEnd = styled(AccountTileCell)`
-  justify-content: flex-end;
-  text-align: right;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+`
+
+const CellRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  
+  & + div {
+    margin-top: 4px;
+  }
 `
 
 const TextName = styled(Text)`
@@ -67,12 +83,11 @@ const TextName = styled(Text)`
 `
 
 const TextBalance = styled(Text)`
-  margin-right: 4px;
+  margin: 0 4px 0 50px;
 `
 
-const StyledArrow = styled(Arrow)`
-  position: absolute;
-  top: 50%;
-  right: 16px;
-  transform: translateY(-50%);
+const TextAddress = styled(Text)`
+  overflow: hidden;
+  max-width: 210px;
+  text-overflow: ellipsis;
 `
