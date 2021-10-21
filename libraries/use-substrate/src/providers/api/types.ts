@@ -8,7 +8,7 @@ interface BaseAPI {
   connectionState: ConnectionState
 }
 
-interface APIConnecting extends BaseAPI {
+export interface APIConnecting extends BaseAPI {
   api: undefined
   isConnected: false
   connectionState: 'connecting'

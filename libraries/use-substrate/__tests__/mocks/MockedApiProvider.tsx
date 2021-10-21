@@ -7,7 +7,7 @@ import BN from 'bn.js'
 import { ApiRx } from '@polkadot/api'
 
 export function MockedApiProvider(props: { children: React.ReactNode }) {
-  const mockedValue: UseApi = {
+  const mockedKusamaApi: UseApi = {
     isConnected: true,
     api: {
       derive: {
@@ -38,8 +38,14 @@ export function MockedApiProvider(props: { children: React.ReactNode }) {
     connectionState: 'connected',
   }
 
+  const mockedStatmineApi: UseApi = {
+    api: undefined,
+    isConnected: false,
+    connectionState: 'connecting',
+  }
+
   return (
-    <ApiContext.Provider value={mockedValue}>
+    <ApiContext.Provider value={{ 'kusama': mockedKusamaApi, 'statemine': mockedStatmineApi }}>
       {props.children}
     </ApiContext.Provider>
   )

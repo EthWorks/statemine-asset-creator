@@ -1,5 +1,7 @@
+import { SupportedChain } from '../../types'
+
 export interface Config {
-  chainUrl: string
+  chains: {chain: SupportedChain, url?: string}[]
 }
 
 export interface ConfigProviderProps {

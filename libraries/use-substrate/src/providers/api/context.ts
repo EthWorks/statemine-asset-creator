@@ -1,8 +1,14 @@
 import { createContext } from 'react'
-import { UseApi } from './types'
+import { UseApi, APIConnecting } from './types'
+import { SupportedChain } from '../../types'
 
-export const ApiContext = createContext<UseApi>({
-  isConnected: false,
+const apiInitialState: APIConnecting = {
   api: undefined,
-  connectionState: 'connecting',
+  isConnected: false,
+  connectionState: 'connecting'
+}
+
+export const ApiContext = createContext<Record<SupportedChain, UseApi>>({
+  'kusama': apiInitialState,
+  'statemine': apiInitialState
 })
