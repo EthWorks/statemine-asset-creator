@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 
 export interface CardProps {
-  className?: string,
   padding?: 's' | 'm' | 'l'
 }
 
