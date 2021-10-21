@@ -1,12 +1,12 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import { useBalances, useAccounts, JACO, Account } from 'use-substrate'
+import { useBalances, useAccounts, JACO, Account, Nodes } from 'use-substrate'
 import { AccountSelect } from '../components'
 import { useEffect, useState } from 'react'
 
 const Home: NextPage =  () => {
-  const balances = useBalances(JACO)
+  const balances = useBalances(Nodes.Kusama, JACO)
   const accounts = useAccounts()
   const [account, setAccount] = useState<Account>(accounts.allAccounts[0])
 

@@ -2,11 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { ConnectionState, UseApi } from './types'
 import { ApiRx, WsProvider } from '@polkadot/api'
 
-interface Props {
-  chainUrl: string;
-}
-
-export const useChainApi = ({ chainUrl }: Props): UseApi => {
+export const useChainApi = (chainUrl: string): UseApi => {
   const [connectionState, setConnectionState] = useState<ConnectionState>('connecting')
 
   const api = useMemo(() => {

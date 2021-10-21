@@ -1,7 +1,9 @@
-import { SupportedChain } from '../../types'
+import type { Nodes } from '../../consts'
+
+export type ChainInfo = {name: Nodes, url?: string}
 
 export interface Config {
-  chains: {chain: SupportedChain, url?: string}[]
+  chains: ChainInfo[]
 }
 
 export interface ConfigProviderProps {

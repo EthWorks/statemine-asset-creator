@@ -1,15 +1,20 @@
-import { ApiRx, WsProvider } from '@polkadot/api'
-import React, { useEffect, useMemo, useState } from 'react'
-
+import React from 'react'
 import { ApiContext } from './context'
-import {APIConnecting, ConnectionState} from './types'
-import { DEFAULT_CONFIG } from '../../consts/defaultConfig'
+import { useChainApi } from './useChainApi'
+import { DEFAULT_CONFIG, mappedUrls } from '../../consts'
+import { ChainInfo } from '../config'
+import { initializeApi } from './initializeApi'
 
 interface Props {
-  chainUrl?: string
+  chains: ChainInfo[]
 }
 
-export const ApiContextProvider: React.FC<Props> = ({ children, chainUrl }): JSX.Element | null => {
-  const [connectionStates, setConnectionStates] = useState<ConnectionState>('connecting')
+const defaultChain = DEFAULT_CONFIG.chains[0]
 
+export const ApiContextProvider: React.FC<Props> = ({ children, chains }): JSX.Element | null => {
+  const chainsApis = chains.length
+    ? initializeApi(chains)
+    : { [defaultChain.name]: useChainApi(mappedUrls[defaultChain.name]) }
+
+  return <ApiContext.Provider value={chainsApis}>{children}</ApiContext.Provider>
 }
