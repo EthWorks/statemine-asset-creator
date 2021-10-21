@@ -10,11 +10,14 @@ interface GrayShades {
 }
 
 export type ColorType = 'black' | 'green' | 'indigo' | 'pink' | 'red' | 'white'
+export type BorderRadiusType = 's' | 'm' | 'l' | 'circle'
 
 export type Colors = Record<ColorType, string>
+export type BorderRadius = Record<BorderRadiusType, string>
 
 interface Theme {
   colors: { gray: GrayShades } & Colors
+  borderRadius:  BorderRadius
 }
 
 export const theme: Theme = {
@@ -35,5 +38,12 @@ export const theme: Theme = {
     pink: '#E6007A',
     red: '#EF4444',
     white: '#FFFFFF'
+  },
+  borderRadius: {
+    s: '4px',
+    m: '8px',
+    l: '10px',
+    circle: '50%'
   }
 }
+
