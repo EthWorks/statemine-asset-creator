@@ -7,7 +7,7 @@ interface ArrowProps {
   direction?: 'down' | 'left' | 'up' | 'right'
 }
 
-export const Arrow = ({ className, direction }: ArrowProps) => (
+export const Arrow = ({ className, direction }: ArrowProps): JSX.Element => (
   <Icon className={className} width="14" height="9" viewBox="0 0 14 9" fill="none" color="currentColor">
     <ArrowIconPath
       d="M12.8337 1.5L7.00033 7.33333L1.16699 1.5"
