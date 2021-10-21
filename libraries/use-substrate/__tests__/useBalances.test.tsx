@@ -13,6 +13,11 @@ describe('useBalances hook', () => {
     expect(accountId?.toString()).toEqual(ALICE)
   })
 
+  it('when using not configured chain it throws', () => {
+    const { result } = renderResult(Chains.Karura, ALICE)
+    expect(result.error?.message).toEqual('karura is not configured')
+  })
+
   const renderResult = (chain: Chains, address: string) => {
     const wrapper = ({ children }: { children: ReactNode }) => (
       <MockedApiProvider>

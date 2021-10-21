@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { ConnectionState, UseApi } from './types'
+import type { ConnectionState, UseApi } from './types'
 import { ApiRx, WsProvider } from '@polkadot/api'
 
 export const useChainApi = (chainUrl: string): UseApi => {

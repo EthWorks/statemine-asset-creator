@@ -18,7 +18,7 @@ describe('Initialize api for chains', () => {
     })
   })
 
-  it('multiple networks', async () => {
+  it('multiple networks', () => {
     const config: Config = { chains: [
       { name: Chains.Kusama, url: KUSAMA_ARCHIVE_NODE_URL },
       { name: Chains.Statemine, url: STATEMINE_ARCHIVE_NODE_URL }

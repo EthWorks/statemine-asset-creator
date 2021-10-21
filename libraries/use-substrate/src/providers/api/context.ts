@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import { UseApi, APIConnecting } from './types'
+import type { UseApi, APIConnecting } from './types'
 import { Chains } from '../../consts'
 
 const apiInitialState: APIConnecting = {

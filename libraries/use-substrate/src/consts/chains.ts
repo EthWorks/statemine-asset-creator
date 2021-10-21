@@ -1,4 +1,5 @@
 export enum Chains {
   Kusama = 'kusama',
-  Statemine = 'statemine'
+  Statemine = 'statemine',
+  Karura = 'karura'
 }
