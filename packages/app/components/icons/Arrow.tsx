@@ -22,7 +22,7 @@ const ArrowWrapper = styled.svg`
   preserveAspectRatio: none;
 `
 
-const ArrowIconPath = styled.path<ArrowProps>`
+const ArrowIconPath = styled.path`
   transform-origin: center;
   transform: ${({ direction }) => {
     switch (direction) {
