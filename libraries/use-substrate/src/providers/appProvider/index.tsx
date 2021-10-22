@@ -1,7 +1,8 @@
-import { Config, ConfigProvider } from '../config'
 import React from 'react'
+
 import { useConfig } from '../../hooks/useConfig'
 import { ApiContextProvider } from '../api'
+import { Config, ConfigProvider } from '../config'
 
 export interface AppProviderProps {
   config: Config

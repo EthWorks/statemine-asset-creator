@@ -1,5 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
+
 import { ALICE, Chains, useBalances } from '../src'
 import { MockedApiProvider } from './mocks/MockedApiProvider'
 

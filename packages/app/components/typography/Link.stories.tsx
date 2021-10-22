@@ -1,6 +1,7 @@
-import { Link } from './Link'
-import { theme } from '../../styles/styleVariables'
 import { ThemeProvider } from 'styled-components'
+
+import { theme } from '../../styles/styleVariables'
+import { Link } from './Link'
 
 const Default = {
   component: Link,

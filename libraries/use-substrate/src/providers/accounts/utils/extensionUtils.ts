@@ -1,4 +1,5 @@
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types'
+
 import { checkConditionRepeatedly } from '../../../util'
 
 export const getInjectedAccounts = async (appName: string): Promise<InjectedAccountWithMeta[]> => {

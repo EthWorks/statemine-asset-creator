@@ -1,4 +1,5 @@
 import { SubjectInfo } from '@polkadot/ui-keyring/observable/types'
+
 import { Account } from '../types'
 
 export const mapObservableToAccounts = (observableAccounts: SubjectInfo | undefined): Account[] => {

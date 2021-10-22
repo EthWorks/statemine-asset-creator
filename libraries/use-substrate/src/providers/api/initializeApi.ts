@@ -1,7 +1,8 @@
 import type { ChainInfo } from '../config'
-import { useChainApi } from './useChainApi'
-import { defaultChainUrls, Chains } from '../../consts'
 import type { UseApi } from './types'
+
+import { Chains,defaultChainUrls } from '../../consts'
+import { useChainApi } from './useChainApi'
 
 export function initializeApi(chainInfos: ChainInfo[]): Partial<Record<Chains, UseApi>> {
   return chainInfos.reduce(

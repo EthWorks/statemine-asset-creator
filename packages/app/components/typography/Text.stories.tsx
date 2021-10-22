@@ -1,5 +1,6 @@
-import { Text, TextProps } from './Text'
 import { Story } from '@storybook/react'
+
+import { Text, TextProps } from './Text'
 
 const Default = {
   title: 'Components/Text',

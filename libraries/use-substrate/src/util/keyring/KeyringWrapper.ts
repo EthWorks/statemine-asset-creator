@@ -1,4 +1,5 @@
 import type { Keyring } from '@polkadot/ui-keyring'
+
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types'
 
 export class KeyringWrapper {

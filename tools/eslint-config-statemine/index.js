@@ -18,6 +18,9 @@ module.exports = {
         "project": "./tsconfig.json",
         "sourceType": "module"
     },
+    "plugins": [
+        "simple-import-sort"
+    ],
     "rules": {
         "indent": "off",
         "@typescript-eslint/indent": ["error", 2],
@@ -45,7 +48,16 @@ module.exports = {
             "allowExpressions": true
         }],
         "eol-last": ["error", "always"],
-        "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 0 }]
+        "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 0 }],
+        'simple-import-sort/imports': [2, {
+            groups: [
+                ['^\u0000'], // all side-effects (0 at start)
+                ['\u0000$', '^@polkadot.*\u0000$','^use-substrate.*\u0000$','^\\..*\u0000$'], // types (0 at end)
+                ['^[^/\\.]'], // non-use-substrate
+                ['^use-substrate'], // use-substrate
+                ['^\\.\\.(?!/?$)', '^\\.\\./?$', '^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'] // local (. last)
+            ]
+        }],
     },
     "overrides": [
         {

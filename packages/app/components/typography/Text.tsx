@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components'
+
 import { ColorType } from '../../styles/styleVariables'
 
 type TextSize = 'XS' | 'SM' | 'Base' | 'Lg' | 'XL' | '2XL' | '3XL'| '4XL'| '5XL'| '6XL'

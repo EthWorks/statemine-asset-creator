@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { ConfigContext } from './context'
 import { ConfigProviderProps } from './types'
 
