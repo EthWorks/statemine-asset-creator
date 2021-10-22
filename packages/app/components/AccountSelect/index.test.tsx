@@ -4,6 +4,8 @@ import { Account, useAccounts } from 'use-substrate'
 import { AccountSelect } from './index'
 import { mockAccounts } from '../../__tests__/mocks/mockAccounts'
 import { PointerEvent } from '../../__tests__/helpers/events'
+import { ThemeProvider } from 'styled-components'
+import { theme } from '../../styles/styleVariables'
 
 jest.mock('use-substrate', () => ({
   useBalances: () => ({
@@ -27,11 +29,13 @@ function AccountSelectTestComponent(): JSX.Element {
   }, [accounts.allAccounts])
 
   return (
-    <AccountSelect
-      accounts={accounts.allAccounts}
-      currentAccount={account}
-      setCurrentAccount={setAccount}
-    />
+    <ThemeProvider theme={theme}>
+      <AccountSelect
+        accounts={accounts.allAccounts}
+        currentAccount={account}
+        setCurrentAccount={setAccount}
+      />
+    </ThemeProvider>
   )
 }
 
@@ -39,10 +43,10 @@ describe('Component AccountSelect', () => {
   it('Displays current account info on load', async () => {
     render(<AccountSelectTestComponent/>)
 
-    await screen.findByText(`Account Name: ${mockAccounts[0].name}`)
-    await screen.findByText(`Account Address: ${mockAccounts[0].address}`)
-    await screen.findByText('Full Account Balance: 3600')
-    await screen.findByText('Transferable Balance: 4000')
+    await screen.findByText(mockAccounts[0].name)
+    await screen.findByText(mockAccounts[0].address)
+    await screen.findByText('transferable Balance')
+    await screen.findByText('4000')
   })
 
   it('displays accounts in dropdown', async () => {
@@ -60,8 +64,8 @@ describe('Component AccountSelect', () => {
 
     const dropdownMenu = await screen.findByRole('menu')
 
-    await within(dropdownMenu).findByText('Account Name: ALICE')
-    await within(dropdownMenu).findByText('Account Name: BOB')
+    await within(dropdownMenu).findByText('ALICE')
+    await within(dropdownMenu).findByText('BOB')
   })
 
   it('sets selected account as current account', async () => {
@@ -83,7 +87,7 @@ describe('Component AccountSelect', () => {
 
     fireEvent.click(menuItems[1])
 
-    await within(openDropdownButton).findByText('Account Name: BOB')
-    expect(await within(openDropdownButton).queryAllByAltText('Account Name: ALICE')).toHaveLength(0)
+    await within(openDropdownButton).findByText('BOB')
+    expect(await within(openDropdownButton).queryAllByAltText('ALICE')).toHaveLength(0)
   })
 })
