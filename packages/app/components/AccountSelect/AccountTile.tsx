@@ -7,10 +7,10 @@ import { Label } from '../typography/Label'
 
 interface Props {
   account: Account,
-  hasFreeBalance?: boolean
+  withFreeBalance?: boolean
 }
 
-export function AccountTile({ account, hasFreeBalance }: Props): JSX.Element {
+export function AccountTile({ account, withFreeBalance }: Props): JSX.Element {
   const balance = useBalances(account.address)
 
   return (
@@ -24,13 +24,13 @@ export function AccountTile({ account, hasFreeBalance }: Props): JSX.Element {
       </AccountTileCell>
       <AccountTileCellEnd>
         <CellRow>
-          <Label>transferable Balance</Label>
+          <Label>transferable balance</Label>
           <TextBalance size='SM' color='white'>{balance?.availableBalance.toString()}</TextBalance>
           <Text size='SM'>KSM</Text>
         </CellRow>
-        {hasFreeBalance &&
+        {withFreeBalance &&
           <CellRow>
-            <Label>Full ACCOUNT BALANCE</Label>
+            <Label>full account balance</Label>
             <TextBalance size='SM' color='white'>{balance?.freeBalance.toString()}</TextBalance>
             <Text size='SM'>KSM</Text>
           </CellRow>

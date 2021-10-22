@@ -16,7 +16,7 @@ export function AccountSelect ({ accounts, currentAccount, setCurrentAccount }: 
     <DropdownMenu.Root>
       <StyledButton>
         <AccountTile account={currentAccount} />
-        <StyledArrow direction='down' />
+        <StyledArrow direction='down' width='14' height='9' />
       </StyledButton>
       <StyledDropdown>
         {accounts.map(account => (
