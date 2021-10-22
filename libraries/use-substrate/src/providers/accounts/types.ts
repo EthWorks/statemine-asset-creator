@@ -15,6 +15,7 @@ export interface Account {
 }
 
 export interface UseAccounts {
+  web3Enable: () => Promise<void>
   allAccounts: Account[]
   hasAccounts: boolean
   error?: Error

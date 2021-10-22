@@ -24,6 +24,7 @@ describe('useAccountsHook', () => {
   it('returns for no accounts in keyring', async () => {
     jest.doMock('@polkadot/extension-dapp', () => (mockExtensionDapp))
     const { result, waitForNextUpdate } = renderAccounts()
+    await result.current.web3Enable()
 
     act(() => {
       jest.runOnlyPendingTimers()
@@ -50,11 +51,13 @@ describe('useAccountsHook', () => {
 
     const { result, waitForNextUpdate } = renderAccounts()
 
+    await waitForNextUpdate()
+
     act(() => {
       jest.runOnlyPendingTimers()
     })
 
-    await waitForNextUpdate()
+    await result.current.web3Enable()
 
     act(() => {
       jest.runOnlyPendingTimers()

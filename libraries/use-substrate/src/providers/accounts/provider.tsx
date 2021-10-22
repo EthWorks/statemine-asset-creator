@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect, useState } from 'react'
 import { debounceTime } from 'rxjs'
 
 import { useObservable } from '../../hooks'
-import { error, KeyringWrapper,useAsync } from '../../util'
+import { KeyringWrapper, useAsync } from '../../util'
 import { AccountsContext } from './context'
 import { UseAccounts } from './types'
 import { checkRepeatedlyIfExtensionLoaded, getInjectedAccounts, mapObservableToAccounts } from './utils'
@@ -12,7 +12,7 @@ export interface AccountsContextProviderProps {
   children: ReactNode
 }
 
-const emptyAccounts: UseAccounts = { hasAccounts: false, allAccounts: [] }
+const emptyAccounts: UseAccounts = { hasAccounts: false, allAccounts: [], web3Enable: async () => {/**/} }
 
 export const AccountsContextProvider = ({ appName, children }: AccountsContextProviderProps): JSX.Element => {
   const [isExtensionLoaded, setIsExtensionLoaded] = useState(false)
@@ -32,32 +32,28 @@ export const AccountsContextProvider = ({ appName, children }: AccountsContextPr
     []
   )
 
-  useEffect(() => {
+  async function web3Enable(): Promise<void> {
     if (!isExtensionLoaded) {
       return
     }
 
-    const loadKeysFromExtension = async (): Promise<void> => {
-      const injectedAccounts = await getInjectedAccounts(appName)
+    const injectedAccounts = await getInjectedAccounts(appName)
 
-      if (!keyringWrapper) {
-        return
-      }
-
-      if (!keyringWrapper.isLoaded()) {
-        keyringWrapper.loadAccounts(injectedAccounts)
-      }
-
-      const { web3AccountsSubscribe } = await import('@polkadot/extension-dapp')
-
-      await web3AccountsSubscribe((accountsFromAllExtensions) => {
-        keyringWrapper.forgetAccountsRemovedFromExtension(accountsFromAllExtensions)
-        keyringWrapper.injectAccountsAddedToExtension(accountsFromAllExtensions)
-      })
+    if (!keyringWrapper) {
+      return
     }
 
-    loadKeysFromExtension().catch(error)
-  }, [isExtensionLoaded, keyringWrapper, keyringWrapper?.keyring])
+    if (!keyringWrapper.isLoaded()) {
+      keyringWrapper.loadAccounts(injectedAccounts)
+    }
+
+    const { web3AccountsSubscribe } = await import('@polkadot/extension-dapp')
+
+    await web3AccountsSubscribe((accountsFromAllExtensions) => {
+      keyringWrapper.forgetAccountsRemovedFromExtension(accountsFromAllExtensions)
+      keyringWrapper.injectAccountsAddedToExtension(accountsFromAllExtensions)
+    })
+  }
 
   const observableAccounts = useObservable(keyringWrapper?.keyring.accounts.subject.asObservable().pipe(debounceTime(20)), [keyringWrapper, keyringWrapper?.keyring])
 
@@ -66,7 +62,7 @@ export const AccountsContextProvider = ({ appName, children }: AccountsContextPr
   }
 
   const allAccounts = mapObservableToAccounts(observableAccounts)
-  const contextValue: UseAccounts = { allAccounts, hasAccounts: allAccounts.length !== 0 }
+  const contextValue: UseAccounts = { allAccounts, hasAccounts: allAccounts.length !== 0, web3Enable }
 
   if (extensionUnavailable) {
     contextValue.error = 'EXTENSION'
