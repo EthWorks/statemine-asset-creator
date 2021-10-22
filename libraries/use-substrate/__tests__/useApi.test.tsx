@@ -1,7 +1,8 @@
-import { Chains, useApi } from '../src'
-import React, { ReactNode } from 'react'
-import { MockedApiProvider } from './mocks/MockedApiProvider'
 import { renderHook } from '@testing-library/react-hooks'
+import React, { ReactNode } from 'react'
+
+import { Chains, useApi } from '../src'
+import { MockedApiProvider } from './mocks/MockedApiProvider'
 
 describe('useApi', () => {
   it('returns api status for each chain', async () => {

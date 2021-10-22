@@ -1,7 +1,8 @@
+import type { DeriveBalancesAll } from '@polkadot/api-derive/types'
+
+import { Chains } from '../consts'
 import { useApi } from './useApi'
 import { useObservable } from './useObservable'
-import type { DeriveBalancesAll } from '@polkadot/api-derive/types'
-import { Chains } from '../consts'
 
 export type UseBalances = DeriveBalancesAll | null
 

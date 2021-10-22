@@ -1,9 +1,11 @@
-import { Account, Chains, useBalances } from 'use-substrate'
 import styled from 'styled-components'
-import { Text } from '../typography/Text'
-import Avatar from '../Avatar/Avatar'
+
+import { Account, Chains, useBalances } from 'use-substrate'
+
 import AvatarIcon from '../../assets/img/avatar2.png'
+import Avatar from '../Avatar/Avatar'
 import { Label } from '../typography/Label'
+import { Text } from '../typography/Text'
 
 interface Props {
   account: Account,

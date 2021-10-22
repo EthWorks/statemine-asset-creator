@@ -1,9 +1,11 @@
-import React from 'react'
-import { ApiContext } from './context'
-import { useChainApi } from './useChainApi'
-import { DEFAULT_CONFIG, defaultChainUrls } from '../../consts'
 import type { ChainInfo } from '../config'
+
+import React from 'react'
+
+import { DEFAULT_CONFIG, defaultChainUrls } from '../../consts'
+import { ApiContext } from './context'
 import { initializeApi } from './initializeApi'
+import { useChainApi } from './useChainApi'
 
 interface Props {
   chains: ChainInfo[]

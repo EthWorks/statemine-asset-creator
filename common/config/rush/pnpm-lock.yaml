@@ -25,7 +25,6 @@ specifiers:
   '@testing-library/jest-dom': ^5.14.1
   '@testing-library/react': ^12.1.1
   '@testing-library/react-hooks': ~7.0.2
-  '@testing-library/user-event': ~13.4.1
   '@types/bn.js': ~5.1.0
   '@types/jest': ^27.0.2
   '@types/react': 17.0.24
@@ -75,7 +74,6 @@ dependencies:
   '@testing-library/jest-dom': 5.14.1
   '@testing-library/react': 12.1.2_react-dom@17.0.2+react@17.0.2
   '@testing-library/react-hooks': 7.0.2_fc2bb8a5b006d3f25c5f84ea777e678d
-  '@testing-library/user-event': 13.4.1
   '@types/bn.js': 5.1.0
   '@types/jest': 27.0.2
   '@types/react': 17.0.24
@@ -7274,6 +7272,14 @@ packages:
       string.prototype.matchall: 4.0.6
     dev: false
 
+  /eslint-plugin-simple-import-sort/7.0.0_eslint@7.32.0:
+    resolution: {integrity: sha512-U3vEDB5zhYPNfxT5TYR7u01dboFZp+HNpnGhkDB2g/2E4wZ/g1Q9Ton8UwCLfRV9yAKyYqDh62oHOamvkFxsvw==}
+    peerDependencies:
+      eslint: '>=5.0.0'
+    dependencies:
+      eslint: 7.32.0
+    dev: false
+
   /eslint-scope/4.0.3:
     resolution: {integrity: sha512-p7VutNr1O/QrxysMo3E45FjYDTeXBy0iTltPFNSqKAIfjDSXC+4dj+qfyuD8bfAXrW/y6lW3O76VaYNPKfpKrg==}
     engines: {node: '>=4.0.0'}
@@ -14309,7 +14315,7 @@ packages:
     dev: false
 
   file:projects/eslint-config-statemine.tgz_typescript@4.4.4:
-    resolution: {integrity: sha512-YCgZW6Gk+NZwAYWh5kGhxxRR0feku+xhNh3gqimNADGJ2Vna5DAfq1yAxFJnIf1JuWx7y0s3oqRUeEWU1CK4VQ==, tarball: file:projects/eslint-config-statemine.tgz}
+    resolution: {integrity: sha512-XYhasbz/xBipU3/6Tgxl7boqR9b+GGbxyDSMgpZd2VL8EFYcmkJYUOgfYulANwAVQhgJeM9tJOlRrMM8+Qb26g==, tarball: file:projects/eslint-config-statemine.tgz}
     id: file:projects/eslint-config-statemine.tgz
     name: '@rush-temp/eslint-config-statemine'
     version: 0.0.0
@@ -14318,13 +14324,14 @@ packages:
       '@typescript-eslint/parser': 4.33.0_eslint@7.32.0+typescript@4.4.4
       eslint: 7.32.0
       eslint-plugin-react-hooks: 4.2.0_eslint@7.32.0
+      eslint-plugin-simple-import-sort: 7.0.0_eslint@7.32.0
     transitivePeerDependencies:
       - supports-color
       - typescript
     dev: false
 
   file:projects/statemine-asset-creator.tgz:
-    resolution: {integrity: sha512-8jUVGgYLQNZt8wLL6PtERH4UHboH+SVXFbkaTEtFE5uzCb8SickqIoUcE1vFORcQ47h5z8lPIn/UdN0Z2q9M1g==, tarball: file:projects/statemine-asset-creator.tgz}
+    resolution: {integrity: sha512-saev6w1GbZIRuPWmT8v7lPuO+Ta1rlorPfm3xlFtbHqip1hJZULB1fItX+P3ffAHF6SvGLTXJ7EQ25B2nauUlQ==, tarball: file:projects/statemine-asset-creator.tgz}
     name: '@rush-temp/statemine-asset-creator'
     version: 0.0.0
     dependencies:
@@ -14365,7 +14372,6 @@ packages:
       - '@storybook/vue'
       - '@storybook/vue3'
       - '@storybook/web-components'
-      - '@testing-library/dom'
       - '@types/webpack'
       - bufferutil
       - canvas

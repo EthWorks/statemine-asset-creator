@@ -1,5 +1,6 @@
-import Card, { CardProps } from './Card'
 import { Story } from '@storybook/react'
+
+import Card, { CardProps } from './Card'
 
 const Default = {
   title: 'Components/Card',

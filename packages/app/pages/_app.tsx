@@ -1,13 +1,16 @@
 import type { AppProps } from 'next/app'
-import dynamic from 'next/dynamic'
-import GlobalStyle from '../styles/globalStyle'
-import { ThemeProvider } from 'styled-components'
-import { theme } from '../styles/styleVariables'
-import React from 'react'
 import type { AccountsContextProviderProps, AppProviderProps, Config } from 'use-substrate'
-import { APPLICATION_NAME } from '../globalConstants'
+
 import { IdProvider } from '@radix-ui/react-id'
-import { KUSAMA_ARCHIVE_NODE_URL, Chains, STATEMINE_ARCHIVE_NODE_URL } from 'use-substrate'
+import dynamic from 'next/dynamic'
+import React from 'react'
+import { ThemeProvider } from 'styled-components'
+
+import { Chains, KUSAMA_ARCHIVE_NODE_URL, STATEMINE_ARCHIVE_NODE_URL } from 'use-substrate'
+
+import { APPLICATION_NAME } from '../globalConstants'
+import GlobalStyle from '../styles/globalStyle'
+import { theme } from '../styles/styleVariables'
 
 const AccountsContextProvider = dynamic<AccountsContextProviderProps>(
   () => import('use-substrate').then((module) => module.AccountsContextProvider),

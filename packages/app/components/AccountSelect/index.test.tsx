@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react'
 import { fireEvent, render, screen, within } from '@testing-library/react'
-import { Account, useAccounts } from 'use-substrate'
-import { AccountSelect } from './index'
-import { mockAccounts } from '../../__tests__/mocks/mockAccounts'
-import { PointerEvent } from '../../__tests__/helpers/events'
+import React, { useEffect, useState } from 'react'
 import { ThemeProvider } from 'styled-components'
+
+import { Account, useAccounts } from 'use-substrate'
+
+import { PointerEvent } from '../../__tests__/helpers/events'
+import { mockAccounts } from '../../__tests__/mocks/mockAccounts'
 import { theme } from '../../styles/styleVariables'
+import { AccountSelect } from './index'
 
 jest.mock('use-substrate', () => ({
   useBalances: () => ({

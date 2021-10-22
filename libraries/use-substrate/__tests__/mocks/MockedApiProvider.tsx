@@ -1,10 +1,12 @@
-import React from 'react'
-import { ALICE, ApiContext, UseApi } from '../../src'
-import { from, ObservableInput } from 'rxjs'
 import type { DeriveBalancesAll, DeriveBalancesAllAccountData } from '@polkadot/api-derive/types'
-import { createType } from '../utils/createType'
-import BN from 'bn.js'
+
 import { ApiRx } from '@polkadot/api'
+import BN from 'bn.js'
+import React from 'react'
+import { from, ObservableInput } from 'rxjs'
+
+import { ALICE, ApiContext, UseApi } from '../../src'
+import { createType } from '../utils/createType'
 
 export function MockedApiProvider(props: { children: React.ReactNode }) {
   const mockedKusamaApi: UseApi = {

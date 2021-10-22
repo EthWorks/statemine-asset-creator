@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useState } from 'react'
 import type { ConnectionState, UseApi } from './types'
+
 import { ApiRx, WsProvider } from '@polkadot/api'
+import { useEffect, useMemo, useState } from 'react'
 
 export const useChainApi = (chainUrl: string): UseApi => {
   const [connectionState, setConnectionState] = useState<ConnectionState>('connecting')

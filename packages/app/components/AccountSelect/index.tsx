@@ -1,8 +1,10 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
-import { Account } from 'use-substrate'
-import { AccountTile } from './AccountTile'
 import styled from 'styled-components'
+
+import { Account } from 'use-substrate'
+
 import { Arrow } from '../icons/Arrow'
+import { AccountTile } from './AccountTile'
 
 interface Props {
   accounts: Account[],
