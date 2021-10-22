@@ -33,7 +33,7 @@ export function AccountTile({ account, withFreeBalance }: Props): JSX.Element {
         {withFreeBalance &&
           <CellRow>
             <Label>full account balance</Label>
-            <TextBalance size='SM' color='white'>{balance?.freeBalance.toString()}</TextBalance>
+            <TextBalance size='SM' color='white'>{balance?.freeBalance.add(balance.reservedBalance).toString()}</TextBalance>
             <Text size='SM'>KSM</Text>
           </CellRow>
         }

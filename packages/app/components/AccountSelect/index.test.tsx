@@ -51,8 +51,8 @@ function AccountSelectTestComponent(): JSX.Element {
   )
 }
 
-describe('Component AccountSelect', () => {
-  it('Displays current account info on load', async () => {
+describe('AccountSelect component', () => {
+  it('displays current account info on load', async () => {
     render(<AccountSelectTestComponent/>)
 
     await screen.findByText(mockAccounts[0].name)
