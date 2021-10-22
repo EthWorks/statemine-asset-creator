@@ -5,7 +5,7 @@ interface Props {
 }
 
 export function AccountTile({ account }: Props): JSX.Element {
-  const balance = useBalances(Chains.Kusama, account.address)
+  const balance = useBalances(account.address, Chains.Kusama)
 
   return (
     <div>

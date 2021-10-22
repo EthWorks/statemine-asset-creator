@@ -25,6 +25,6 @@ describe('useBalances hook', () => {
       </MockedApiProvider>
     )
 
-    return renderHook(() => useBalances(chain, address), { wrapper })
+    return renderHook(() => useBalances(address, chain), { wrapper })
   }
 })

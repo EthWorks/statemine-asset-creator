@@ -6,8 +6,8 @@ import { AccountSelect } from '../components'
 import { useEffect, useState } from 'react'
 
 const Home: NextPage =  () => {
-  const balances = useBalances(Chains.Kusama, JACO)
-  const statmineBalances = useBalances(Chains.Statemine, JACO)
+  const balances = useBalances(JACO, Chains.Kusama)
+  const statmineBalances = useBalances(JACO, Chains.Statemine)
   const accounts = useAccounts()
   const [account, setAccount] = useState<Account>(accounts.allAccounts[0])
 

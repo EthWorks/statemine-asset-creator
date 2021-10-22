@@ -5,7 +5,7 @@ import { Chains } from '../consts'
 
 export type UseBalances = DeriveBalancesAll | null
 
-export function useBalances(chain: Chains, address: string): UseBalances {
+export function useBalances(address: string, chain: Chains): UseBalances {
   const { api, connectionState } = useApi(chain)
 
   const balances = useObservable(api?.derive.balances.all(address), [api, connectionState, address])
