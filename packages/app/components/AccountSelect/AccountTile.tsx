@@ -1,4 +1,4 @@
-import { Account, useBalances } from 'use-substrate'
+import { Account, Chains, useBalances } from 'use-substrate'
 import styled from 'styled-components'
 import { Text } from '../typography/Text'
 import Avatar from '../Avatar/Avatar'
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export function AccountTile({ account, withFreeBalance }: Props): JSX.Element {
-  const balance = useBalances(account.address)
+  const balance = useBalances(account.address, Chains.Kusama)
 
   return (
     <AccountTileWrapper>

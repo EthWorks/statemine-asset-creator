@@ -4,31 +4,36 @@ import GlobalStyle from '../styles/globalStyle'
 import { ThemeProvider } from 'styled-components'
 import { theme } from '../styles/styleVariables'
 import React from 'react'
-import type { AccountsContextProviderProps } from 'use-substrate'
+import type { AccountsContextProviderProps, AppProviderProps, Config } from 'use-substrate'
 import { APPLICATION_NAME } from '../globalConstants'
 import { IdProvider } from '@radix-ui/react-id'
+import { KUSAMA_ARCHIVE_NODE_URL, Chains, STATEMINE_ARCHIVE_NODE_URL } from 'use-substrate'
 
 const AccountsContextProvider = dynamic<AccountsContextProviderProps>(
   () => import('use-substrate').then((module) => module.AccountsContextProvider),
   { ssr: false }
 )
 
-const ApiContextProvider = dynamic<JSX.ElementChildrenAttribute>(
-  () => import('use-substrate').then((module) => module.ApiContextProvider),
+const AppProvider = dynamic<AppProviderProps>(
+  () => import('use-substrate').then((module) => module.AppProvider),
   { ssr: false }
 )
+
+const config: Config = {
+  chains: [{ name: Chains.Kusama, url: KUSAMA_ARCHIVE_NODE_URL }, { name: Chains.Statemine, url: STATEMINE_ARCHIVE_NODE_URL }]
+}
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
     <IdProvider>
-      <ApiContextProvider>
+      <AppProvider config={config}>
         <AccountsContextProvider appName={APPLICATION_NAME}>
           <GlobalStyle />
           <ThemeProvider theme={theme}>
             <Component {...pageProps} />
           </ThemeProvider>
         </AccountsContextProvider>
-      </ApiContextProvider>
+      </AppProvider>
     </IdProvider>
   )
 }
