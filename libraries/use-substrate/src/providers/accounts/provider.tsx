@@ -4,7 +4,7 @@ import { debounceTime } from 'rxjs'
 import { useObservable } from '../../hooks'
 import { KeyringWrapper, useAsync } from '../../util'
 import { AccountsContext } from './context'
-import { UseAccounts } from './types'
+import { ExtensionStatus, UseAccounts } from './types'
 import { checkRepeatedlyIfExtensionLoaded, getInjectedAccounts, mapObservableToAccounts } from './utils'
 
 export interface AccountsContextProviderProps {
@@ -12,11 +12,10 @@ export interface AccountsContextProviderProps {
   children: ReactNode
 }
 
-const emptyAccounts: UseAccounts = { hasAccounts: false, allAccounts: [], web3Enable: async () => {/**/} }
+const emptyAccounts: UseAccounts = { hasAccounts: false, allAccounts: [], web3Enable: async () => {/**/}, extensionStatus: 'Loading' }
 
 export const AccountsContextProvider = ({ appName, children }: AccountsContextProviderProps): JSX.Element => {
-  const [isExtensionLoaded, setIsExtensionLoaded] = useState(false)
-  const [extensionUnavailable, setExtensionUnavailable] = useState(false)
+  const [extensionStatus, setExtensionStatus] = useState<ExtensionStatus>('Loading')
   const [keyringWrapper, setKeyringWrapper] = useState<KeyringWrapper | undefined>(undefined)
 
   useAsync(async () => {
@@ -26,14 +25,14 @@ export const AccountsContextProvider = ({ appName, children }: AccountsContextPr
 
   useEffect(
     checkRepeatedlyIfExtensionLoaded(
-      () => setIsExtensionLoaded(true),
-      () => setExtensionUnavailable(true)
+      () => setExtensionStatus('Available'),
+      () => setExtensionStatus('Unavailable')
     ),
     []
   )
 
   async function web3Enable(): Promise<void> {
-    if (!isExtensionLoaded) {
+    if (extensionStatus !== 'Available') {
       return
     }
 
@@ -62,9 +61,9 @@ export const AccountsContextProvider = ({ appName, children }: AccountsContextPr
   }
 
   const allAccounts = mapObservableToAccounts(observableAccounts)
-  const contextValue: UseAccounts = { allAccounts, hasAccounts: allAccounts.length !== 0, web3Enable }
+  const contextValue: UseAccounts = { allAccounts, hasAccounts: allAccounts.length !== 0, web3Enable, extensionStatus }
 
-  if (extensionUnavailable) {
+  if (extensionStatus === 'Unavailable') {
     contextValue.error = 'EXTENSION'
   }
 
