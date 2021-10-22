@@ -1,11 +1,11 @@
-import { Account, useBalances } from 'use-substrate'
+import { Account, Chains, useBalances } from 'use-substrate'
 
 interface Props {
   account: Account
 }
 
 export function AccountTile({ account }: Props): JSX.Element {
-  const balance = useBalances(account.address)
+  const balance = useBalances(account.address, Chains.Kusama)
 
   return (
     <div>

@@ -16,10 +16,10 @@ export const AppProvider: React.FC<AppProviderProps> = ({ config, children }): J
 }
 
 const AppWithConfig: React.FC = ({ children }) => {
-  const { chainUrl } = useConfig()
+  const { chains } = useConfig()
 
   return (
-    <ApiContextProvider chainUrl={chainUrl}>
+    <ApiContextProvider chains={chains}>
       {children}
     </ApiContextProvider>
   )

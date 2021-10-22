@@ -1,13 +1,13 @@
 import React from 'react'
 import { ALICE, ApiContext, UseApi } from '../../src'
 import { from, ObservableInput } from 'rxjs'
-import { DeriveBalancesAll, DeriveBalancesAllAccountData } from '@polkadot/api-derive/types'
+import type { DeriveBalancesAll, DeriveBalancesAllAccountData } from '@polkadot/api-derive/types'
 import { createType } from '../utils/createType'
 import BN from 'bn.js'
 import { ApiRx } from '@polkadot/api'
 
 export function MockedApiProvider(props: { children: React.ReactNode }) {
-  const mockedValue: UseApi = {
+  const mockedKusamaApi: UseApi = {
     isConnected: true,
     api: {
       derive: {
@@ -38,8 +38,14 @@ export function MockedApiProvider(props: { children: React.ReactNode }) {
     connectionState: 'connected',
   }
 
+  const mockedStatemineApi: UseApi = {
+    api: undefined,
+    isConnected: false,
+    connectionState: 'connecting',
+  }
+
   return (
-    <ApiContext.Provider value={mockedValue}>
+    <ApiContext.Provider value={{ 'kusama': mockedKusamaApi, 'statemine': mockedStatemineApi }}>
       {props.children}
     </ApiContext.Provider>
   )

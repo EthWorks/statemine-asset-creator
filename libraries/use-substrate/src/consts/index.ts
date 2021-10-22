@@ -1,2 +1,4 @@
 export * from './addresses'
-export * from './nodeUrls'
+export * from './defaultChainUrls'
+export * from './chains'
+export * from './defaultConfig'

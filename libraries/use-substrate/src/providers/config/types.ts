@@ -1,5 +1,9 @@
+import type { Chains } from '../../consts'
+
+export type ChainInfo = {name: Chains, url?: string}
+
 export interface Config {
-  chainUrl: string
+  chains: ChainInfo[]
 }
 
 export interface ConfigProviderProps {

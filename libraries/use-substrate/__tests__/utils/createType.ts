@@ -1,4 +1,4 @@
-import { Codec, DetectCodec } from '@polkadot/types/types'
+import type { Codec, DetectCodec } from '@polkadot/types/types'
 import { ApiRx } from '@polkadot/api'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -1,4 +1,4 @@
-import { InjectedWindowProvider } from '@polkadot/extension-inject/types'
+import type { InjectedWindowProvider } from '@polkadot/extension-inject/types'
 import { AccountsContextProvider, ALICE, useAccounts } from '../src'
 import React, { ReactNode } from 'react'
 import { act, renderHook } from '@testing-library/react-hooks'
