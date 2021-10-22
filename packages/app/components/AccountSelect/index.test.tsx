@@ -45,7 +45,7 @@ describe('Component AccountSelect', () => {
 
     await screen.findByText(mockAccounts[0].name)
     await screen.findByText(mockAccounts[0].address)
-    await screen.findByText('transferable Balance')
+    await screen.findByText('transferable balance')
     await screen.findByText('4000')
   })
 
