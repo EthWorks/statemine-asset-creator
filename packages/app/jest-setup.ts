@@ -1,7 +1,9 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
 import '@testing-library/jest-dom'
+
 import failOnConsole from 'jest-fail-on-console'
+
 import { PointerEvent } from './__tests__/helpers/events'
 
 failOnConsole({
@@ -11,6 +13,8 @@ failOnConsole({
 
 // @ts-ignore
 window.PointerEvent = PointerEvent
+
+global.open = jest.fn()
 
 global.ResizeObserver = class ResizeObserver {
   cb: any

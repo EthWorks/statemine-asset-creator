@@ -5,5 +5,6 @@ import { UseAccounts } from './types'
 export const AccountsContext = createContext<UseAccounts>({
   hasAccounts: false,
   allAccounts: [],
-  web3Enable: async () => {/**/}
+  web3Enable: async () => {/**/},
+  extensionStatus: 'Loading'
 })

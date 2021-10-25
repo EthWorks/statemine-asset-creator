@@ -14,7 +14,10 @@ export interface Account {
   address: Address
 }
 
+export type ExtensionStatus = 'Loading' | 'Available' | 'Unavailable'
+
 export interface UseAccounts {
+  extensionStatus: ExtensionStatus;
   web3Enable: () => Promise<void>
   allAccounts: Account[]
   hasAccounts: boolean

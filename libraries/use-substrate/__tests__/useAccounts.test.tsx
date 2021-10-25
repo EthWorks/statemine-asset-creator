@@ -71,6 +71,36 @@ describe('useAccountsHook', () => {
     expect(error).toBeUndefined()
   })
 
+  describe('extension status', () => {
+    it('initial state', () => {
+      const { result } = renderAccounts()
+
+      expect(result.current.extensionStatus).toEqual('Loading')
+    })
+
+    it('extension present', async () => {
+      const { result, waitForNextUpdate } = renderAccounts()
+
+      await waitForNextUpdate()
+      act(() => {
+        jest.runOnlyPendingTimers()
+      })
+
+      expect(result.current.extensionStatus).toEqual('Available')
+    })
+
+    it('extension not present', async () => {
+      window.injectedWeb3 = undefined
+      const { result, waitForNextUpdate } = renderAccounts()
+      await waitForNextUpdate()
+      act(() => {
+        jest.advanceTimersByTime(1000)
+      })
+
+      expect(result.current.extensionStatus).toEqual('Unavailable')
+    })
+  })
+
   afterEach(() => {
     jest.useRealTimers()
   })
