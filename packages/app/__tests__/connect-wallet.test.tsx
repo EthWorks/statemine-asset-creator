@@ -1,6 +1,6 @@
 import type { UseAccounts } from 'use-substrate'
 
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { act, render, waitFor } from '@testing-library/react'
 import * as MockRouter from 'next-router-mock'
 import { memoryRouter } from 'next-router-mock'
 import React from 'react'
@@ -9,8 +9,7 @@ import { ThemeProvider } from 'styled-components'
 import ConnectWallet from '../pages/connect-wallet'
 import { theme } from '../styles/styleVariables'
 import { POLKADOT_EXTENSION_LINK } from '../utils/consts'
-import { clickButton } from './helpers/actions'
-import { assertLocalStorage, assertNewTabOpened } from './helpers/assertions'
+import { assertLink, assertLocalStorage, assertNewTabOpened, assertText, clickButton, setLocalStorage } from './helpers'
 
 const mockWeb3Enable = jest.fn().mockResolvedValue('')
 jest.mock('next/dist/client/router', () => MockRouter)
@@ -77,15 +76,16 @@ describe('Connect wallet', () => {
   it('shows download prompt', async () => {
     renderConnectWallet()
 
-    await screen.findByText('Don’t have the Polkadot{.js} extension? Download it')
-    const downloadExtensionLink = await screen.findByRole('link')
+    await assertText('Don’t have the Polkadot{.js} extension? Download it')
 
-    expect(downloadExtensionLink.getAttribute('href')).toEqual(POLKADOT_EXTENSION_LINK)
+    await assertLink(POLKADOT_EXTENSION_LINK)
   })
 
   it('on load redirects to dashboard if extension has already been activated', async () => {
-    localStorage.setItem('extensionActivated', 'true')
+    setLocalStorage('extensionActivated', 'true')
+
     renderConnectWallet()
+
     await waitFor(() => expect(mockWeb3Enable).toBeCalled())
 
     expect(memoryRouter.asPath).toEqual('/')

@@ -1,7 +1,11 @@
 import { fireEvent, screen } from '@testing-library/react'
 
 export function clickButton(name: string) {
-  const enableWeb3Button = screen.getByRole('button', { name })
+  const button = screen.getByRole('button', { name })
 
-  fireEvent.click(enableWeb3Button)
+  fireEvent.click(button)
+}
+
+export function setLocalStorage(key: string, value: string) {
+  localStorage.setItem(key, value)
 }
