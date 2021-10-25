@@ -38,6 +38,7 @@ specifiers:
   eslint: ^7.32.0
   eslint-config-next: 11.1.2
   eslint-plugin-react-hooks: ~4.2.0
+  eslint-plugin-simple-import-sort: ~7.0.0
   identity-obj-proxy: ^3.0.0
   jest: ^27.2.3
   jest-fail-on-console: ~2.0.4
@@ -87,6 +88,7 @@ dependencies:
   eslint: 7.32.0
   eslint-config-next: 11.1.2_b254488bed7690859822a81f0a41c857
   eslint-plugin-react-hooks: 4.2.0_eslint@7.32.0
+  eslint-plugin-simple-import-sort: 7.0.0_eslint@7.32.0
   identity-obj-proxy: 3.0.0
   jest: 27.2.5
   jest-fail-on-console: 2.0.5
@@ -14331,7 +14333,7 @@ packages:
     dev: false
 
   file:projects/statemine-asset-creator.tgz:
-    resolution: {integrity: sha512-saev6w1GbZIRuPWmT8v7lPuO+Ta1rlorPfm3xlFtbHqip1hJZULB1fItX+P3ffAHF6SvGLTXJ7EQ25B2nauUlQ==, tarball: file:projects/statemine-asset-creator.tgz}
+    resolution: {integrity: sha512-wwcVXrInoBXTiZ29ZE+Mn5Zdtgj6chnTd6rCEqUJyrHGW5ocDeBIVGSxF1YtgIuprfWKK+HSOyZqFyPlURo/5g==, tarball: file:projects/statemine-asset-creator.tgz}
     name: '@rush-temp/statemine-asset-creator'
     version: 0.0.0
     dependencies:
@@ -14351,6 +14353,7 @@ packages:
       '@types/styled-components': 5.1.15
       babel-jest: 27.2.5_@babel+core@7.15.8
       babel-loader: 8.2.2_@babel+core@7.15.8
+      bn.js: 5.2.0
       eslint: 7.32.0
       eslint-config-next: 11.1.2_b254488bed7690859822a81f0a41c857
       identity-obj-proxy: 3.0.0
