@@ -9,22 +9,28 @@ import { mockAccounts } from '../../__tests__/mocks/mockAccounts'
 import { theme } from '../../styles/styleVariables'
 import { AccountSelect } from './index'
 
-jest.mock('use-substrate', () => ({
-  useBalances: () => ({
-    freeBalance: 3600,
-    availableBalance: 4000,
-    lockedBalance: 300,
-    accountNonce: 1
-  }),
-  useAccounts: () => ({
-    allAccounts: mockAccounts,
-    hasAccounts: true
-  }),
-  Chains: () => ({
-    Kusama: 'kusama',
-    Statemine: 'statemine'
-  })
-}))
+jest.mock('use-substrate', () => {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const BN = require('bn.js')
+
+  return {
+    useBalances: () => ({
+      availableBalance: 4000,
+      freeBalance: new BN(3600),
+      lockedBalance: 300,
+      reservedBalance: new BN(1000),
+      accountNonce: 1
+    }),
+    useAccounts: () => ({
+      allAccounts: mockAccounts,
+      hasAccounts: true
+    }),
+    Chains: () => ({
+      Kusama: 'kusama',
+      Statemine: 'statemine'
+    })
+  }
+})
 
 function AccountSelectTestComponent(): JSX.Element {
   const accounts = useAccounts()
@@ -53,6 +59,7 @@ describe('Component AccountSelect', () => {
     await screen.findByText(mockAccounts[0].address)
     await screen.findByText('transferable balance')
     await screen.findByText('4000')
+    await screen.findByText('4600')
   })
 
   it('displays accounts in dropdown', async () => {
