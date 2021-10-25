@@ -14333,7 +14333,7 @@ packages:
     dev: false
 
   file:projects/statemine-asset-creator.tgz:
-    resolution: {integrity: sha512-wwcVXrInoBXTiZ29ZE+Mn5Zdtgj6chnTd6rCEqUJyrHGW5ocDeBIVGSxF1YtgIuprfWKK+HSOyZqFyPlURo/5g==, tarball: file:projects/statemine-asset-creator.tgz}
+    resolution: {integrity: sha512-fFPaa9gQZbAFZx465R3CRZzCL72QeYJEOyHyzv8O4cQiiATm1ASKW5F9rPBlTY4/tlApAzaGrytNd/BRq0iKCw==, tarball: file:projects/statemine-asset-creator.tgz}
     name: '@rush-temp/statemine-asset-creator'
     version: 0.0.0
     dependencies:
@@ -14348,6 +14348,7 @@ packages:
       '@testing-library/jest-dom': 5.14.1
       '@testing-library/react': 12.1.2_react-dom@17.0.2+react@17.0.2
       '@testing-library/user-event': 13.4.1
+      '@types/bn.js': 5.1.0
       '@types/jest': 27.0.2
       '@types/react': 17.0.24
       '@types/styled-components': 5.1.15

@@ -59,7 +59,7 @@ describe('AccountSelect component', () => {
     await screen.findByText(mockAccounts[0].address)
 
     const transferableBalanceElement = (await screen.findByText('transferable balance')).parentElement
-    expect(transferableBalanceElement?.textContent).toEqual('transferable balance4000KSM')
+    expect(transferableBalanceElement?.textContent).toContain('4000KSM')
   })
 
   it('displays accounts in dropdown', async () => {
