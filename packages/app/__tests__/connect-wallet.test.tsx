@@ -8,7 +8,7 @@ import ConnectWallet from '../pages/connect-wallet'
 import { theme } from '../styles/styleVariables'
 import { POLKADOT_EXTENSION_LINK } from '../utils/consts'
 
-const mockWeb3Enable = jest.fn()
+const mockWeb3Enable = jest.fn().mockResolvedValue('')
 
 jest.mock('use-substrate', () => ({
   useAccounts: () => (mockUseAccounts),
@@ -25,6 +25,10 @@ const renderConnectWallet = () => render(<ThemeProvider theme={theme}><ConnectWa
 
 describe('Connect wallet', () => {
   describe('on button click', () => {
+    beforeEach(() => {
+      mockUseAccounts.extensionStatus = 'Available'
+    })
+
     it('calls web3Enable', () => {
       renderConnectWallet()
 
@@ -46,6 +50,16 @@ describe('Connect wallet', () => {
       fireEvent.click(enableWeb3Button)
       expect(global.open).toBeCalledWith(POLKADOT_EXTENSION_LINK, '_blank', 'noopener,noreferrer')
     })
+
+    it('adds extensionActivated to localstorage', async () => {
+      renderConnectWallet()
+
+      const enableWeb3Button = screen.getByRole('button', { name: 'Polkadot{.js} extension' })
+
+      fireEvent.click(enableWeb3Button)
+
+      expect(localStorage.getItem('extensionActivated')).toEqual('true')
+    })
   })
 
   it('shows download prompt', async () => {
@@ -55,4 +69,5 @@ describe('Connect wallet', () => {
     const downloadExtensionLink = await screen.findByRole('link')
     expect(downloadExtensionLink.getAttribute('href')).toEqual(POLKADOT_EXTENSION_LINK)
   })
+
 })

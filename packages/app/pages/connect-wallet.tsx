@@ -10,9 +10,10 @@ import { POLKADOT_EXTENSION_LINK } from '../utils/consts'
 const ConnectWallet: NextPage =  () => {
   const { web3Enable, extensionStatus } = useAccounts()
 
-  const _onClick = (): void => {
+  const _onClick = async (): Promise<void> => {
     if (extensionStatus === 'Available') {
-      web3Enable()
+      await web3Enable()
+      localStorage.setItem('extensionActivated', 'true')
     } else {
       if (typeof window !== 'undefined') {
         window.open(POLKADOT_EXTENSION_LINK, '_blank', 'noopener,noreferrer')

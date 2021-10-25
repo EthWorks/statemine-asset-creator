@@ -1,6 +1,7 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
 import '@testing-library/jest-dom'
+import 'mock-local-storage'
 
 import failOnConsole from 'jest-fail-on-console'
 
