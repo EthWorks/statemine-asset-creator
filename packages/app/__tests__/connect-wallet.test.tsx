@@ -1,6 +1,6 @@
 import type { UseAccounts } from 'use-substrate'
 
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import * as MockRouter from 'next-router-mock'
 import { memoryRouter } from 'next-router-mock'
 import React from 'react'
@@ -9,6 +9,8 @@ import { ThemeProvider } from 'styled-components'
 import ConnectWallet from '../pages/connect-wallet'
 import { theme } from '../styles/styleVariables'
 import { POLKADOT_EXTENSION_LINK } from '../utils/consts'
+import { clickButton } from './helpers/actions'
+import { assertLocalStorage, assertNewTabOpened } from './helpers/assertions'
 
 const mockWeb3Enable = jest.fn().mockResolvedValue('')
 jest.mock('next/dist/client/router', () => MockRouter)
@@ -40,15 +42,14 @@ describe('Connect wallet', () => {
     it('adds extensionActivated to localstorage and redirects to dashboard', async () => {
       renderConnectWallet()
 
-      expect(localStorage.getItem('extensionActivated')).toEqual(null)
+      assertLocalStorage('extensionActivated', null)
 
-      const enableWeb3Button = screen.getByRole('button', { name: 'Polkadot{.js} extension' })
-
-      fireEvent.click(enableWeb3Button)
+      clickButton('Polkadot{.js} extension')
 
       await waitFor(() => expect(mockWeb3Enable).toBeCalled())
 
-      expect(localStorage.getItem('extensionActivated')).toEqual('true')
+      assertLocalStorage('extensionActivated', 'true')
+
       expect(memoryRouter.asPath).toEqual('/')
     })
 
@@ -57,9 +58,8 @@ describe('Connect wallet', () => {
 
       expect(mockWeb3Enable).not.toHaveBeenCalled()
 
-      const enableWeb3Button = screen.getByRole('button', { name: 'Polkadot{.js} extension' })
+      clickButton('Polkadot{.js} extension')
 
-      fireEvent.click(enableWeb3Button)
       await waitFor(() => expect(mockWeb3Enable).toHaveBeenCalled())
     })
 
@@ -68,10 +68,9 @@ describe('Connect wallet', () => {
 
       renderConnectWallet()
 
-      const enableWeb3Button = screen.getByRole('button', { name: 'Polkadot{.js} extension' })
+      clickButton('Polkadot{.js} extension')
 
-      fireEvent.click(enableWeb3Button)
-      await (waitFor(() => expect(global.open).toBeCalledWith(POLKADOT_EXTENSION_LINK, '_blank', 'noopener,noreferrer')))
+      await waitFor(() => assertNewTabOpened(POLKADOT_EXTENSION_LINK))
     })
   })
 
@@ -80,6 +79,7 @@ describe('Connect wallet', () => {
 
     await screen.findByText('Don’t have the Polkadot{.js} extension? Download it')
     const downloadExtensionLink = await screen.findByRole('link')
+
     expect(downloadExtensionLink.getAttribute('href')).toEqual(POLKADOT_EXTENSION_LINK)
   })
 
