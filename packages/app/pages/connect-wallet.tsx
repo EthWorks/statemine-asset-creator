@@ -1,19 +1,34 @@
 import { NextPage } from 'next'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 import { useAccounts } from 'use-substrate'
 
 import { Link, Text } from '../components'
 import Card from '../components/Card/Card'
 import styles from '../styles/Home.module.css'
-import { POLKADOT_EXTENSION_LINK } from '../utils/consts'
+import { DASHBOARD_URL, POLKADOT_EXTENSION_LINK } from '../utils/consts'
+import { useAsync } from '../utils/useAsync'
 
 const ConnectWallet: NextPage =  () => {
+  const router = useRouter()
   const { web3Enable, extensionStatus } = useAccounts()
+
+  async function redirect(): Promise<void> {
+    const extensionActivated = localStorage.getItem('extensionActivated')
+    if (extensionActivated === 'true') {
+      await web3Enable()
+      await router.push(DASHBOARD_URL)
+    }
+  }
+
+  useAsync(redirect, [web3Enable])
 
   const _onClick = async (): Promise<void> => {
     if (extensionStatus === 'Available') {
       await web3Enable()
       localStorage.setItem('extensionActivated', 'true')
+      await router.push(DASHBOARD_URL)
     } else {
       if (typeof window !== 'undefined') {
         window.open(POLKADOT_EXTENSION_LINK, '_blank', 'noopener,noreferrer')
