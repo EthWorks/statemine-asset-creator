@@ -3,7 +3,7 @@ import { Story } from '@storybook/react'
 import { Text, TextProps } from './Text'
 
 const Default = {
-  title: 'Components/Text',
+  title: 'Components/Typography/Text',
   component: Text,
   argTypes: {
     color: {
@@ -15,8 +15,8 @@ const Default = {
 
 export default Default
 
-const Template: Story<TextProps> = (args ) =>
+const Template: Story<TextProps> = (args) =>
   <Text {...args}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempus nibh vitae odio tristique maximus.</Text>
 
 export const Base = Template.bind({})
-Base.args = { color:'black' }
+Base.args = { color: 'black' }

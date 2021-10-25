@@ -66,7 +66,7 @@ const StyledButton = styled(DropdownMenu.Trigger)`
 
 const StyledDropdown = styled(DropdownMenu.Content)`
   transform: translateY(4px);
-  width: calc(100% + 4px);
+  width: calc(100% + 20px);
   border-radius: ${({ theme }) => theme.borderRadius.s};
   background-color: ${({ theme }) => theme.colors.gray[800]};
 `
