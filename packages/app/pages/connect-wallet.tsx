@@ -1,6 +1,5 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
 
 import { useAccounts } from 'use-substrate'
 
@@ -14,9 +13,12 @@ const ConnectWallet: NextPage =  () => {
   const router = useRouter()
   const { web3Enable, extensionStatus } = useAccounts()
 
+  function alreadyActivated (): boolean {
+    return localStorage.getItem('extensionActivated') === 'true'
+  }
+
   async function redirect(): Promise<void> {
-    const extensionActivated = localStorage.getItem('extensionActivated')
-    if (extensionActivated === 'true') {
+    if (alreadyActivated()) {
       await web3Enable()
       await router.push(DASHBOARD_URL)
     }
@@ -34,6 +36,10 @@ const ConnectWallet: NextPage =  () => {
         window.open(POLKADOT_EXTENSION_LINK, '_blank', 'noopener,noreferrer')
       }
     }
+  }
+
+  if (alreadyActivated()) {
+    return null
   }
 
   return (
