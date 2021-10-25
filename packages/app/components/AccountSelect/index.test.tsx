@@ -1,39 +1,19 @@
+import type { Account }from 'use-substrate'
+
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import React, { useEffect, useState } from 'react'
 import { ThemeProvider } from 'styled-components'
 
-import { Account, useAccounts } from 'use-substrate'
-
 import { PointerEvent } from '../../__tests__/helpers/events'
 import { mockAccounts } from '../../__tests__/mocks/mockAccounts'
+import { mockUseSubstrate } from '../../__tests__/mocks/mockUseSubstrate'
 import { theme } from '../../styles/styleVariables'
 import { AccountSelect } from './index'
 
-jest.mock('use-substrate', () => {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const BN = require('bn.js')
-
-  return {
-    useBalances: () => ({
-      availableBalance: 4000,
-      freeBalance: new BN(3600),
-      lockedBalance: 300,
-      reservedBalance: new BN(1000),
-      accountNonce: 1
-    }),
-    useAccounts: () => ({
-      allAccounts: mockAccounts,
-      hasAccounts: true
-    }),
-    Chains: () => ({
-      Kusama: 'kusama',
-      Statemine: 'statemine'
-    })
-  }
-})
+jest.mock('use-substrate', () => mockUseSubstrate)
 
 function AccountSelectTestComponent(): JSX.Element {
-  const accounts = useAccounts()
+  const accounts = mockUseSubstrate.useAccounts()
   const [account, setAccount] = useState<Account>(accounts.allAccounts[0])
 
   useEffect(() => {

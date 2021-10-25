@@ -1,9 +1,10 @@
 import type { NextPage } from 'next'
+import type { Account } from 'use-substrate'
 
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
 
-import { Account, Chains,JACO, useAccounts, useBalances } from 'use-substrate'
+import { Chains, JACO, useAccounts, useBalances } from 'use-substrate'
 
 import { AccountSelect } from '../components'
 import styles from '../styles/Home.module.css'
