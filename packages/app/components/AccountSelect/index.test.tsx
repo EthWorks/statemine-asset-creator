@@ -57,9 +57,9 @@ describe('AccountSelect component', () => {
 
     await screen.findByText(mockAccounts[0].name)
     await screen.findByText(mockAccounts[0].address)
-    await screen.findByText('transferable balance')
-    await screen.findByText('4000')
-    await screen.findByText('4600')
+
+    const transferableBalanceElement = (await screen.findByText('transferable balance')).parentElement
+    expect(transferableBalanceElement?.textContent).toEqual('transferable balance4000KSM')
   })
 
   it('displays accounts in dropdown', async () => {
