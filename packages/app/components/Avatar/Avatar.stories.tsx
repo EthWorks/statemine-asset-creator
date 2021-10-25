@@ -1,7 +1,8 @@
 import { Story } from '@storybook/react'
 
-import AvatarImg from '/assets/img/avatar2.png'
 import Avatar, { AvatarProps } from './Avatar'
+
+import AvatarImg from '/assets/img/avatar2.png'
 
 const Default = {
   title: 'Components/Avatar',

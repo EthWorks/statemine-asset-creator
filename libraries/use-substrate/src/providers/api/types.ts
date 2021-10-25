@@ -14,7 +14,7 @@ export interface APIConnecting extends BaseAPI {
   connectionState: 'connecting'
 }
 
-interface APIConnected extends BaseAPI {
+export interface APIConnected extends BaseAPI {
   api: ApiRx
   isConnected: true
   connectionState: 'connected'

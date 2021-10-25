@@ -1,5 +1,8 @@
 import { Story } from '@storybook/react'
+import React from 'react'
 
+import { mockAccounts } from '../../__tests__/mocks/mockAccounts'
+import { MockedApiProvider } from '../../storybookHelpers/MockedApiProvider'
 import { AccountSelect, Props } from './index'
 
 const Default = {
@@ -10,6 +13,13 @@ const Default = {
 export default Default
 
 const Template: Story<Props> = (args ) =>
-  <AccountSelect {...args}/>
+  <MockedApiProvider>
+    <AccountSelect {...args}/>
+  </MockedApiProvider>
 
 export const Base = Template.bind({})
+Base.args = {
+  accounts: mockAccounts,
+  currentAccount: mockAccounts[0],
+  setCurrentAccount: () => {/**/}
+}
