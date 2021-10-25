@@ -6,7 +6,7 @@ import { Account } from 'use-substrate'
 import { Arrow } from '../icons/Arrow'
 import { AccountTile } from './AccountTile'
 
-interface Props {
+export interface Props {
   accounts: Account[],
   currentAccount: Account,
   setCurrentAccount: (arg: Account) => void
