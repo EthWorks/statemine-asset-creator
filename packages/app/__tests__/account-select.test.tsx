@@ -1,6 +1,6 @@
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
-import { memoryRouter } from 'next-router-mock'
 import * as MockRouter from 'next-router-mock'
+import { memoryRouter } from 'next-router-mock'
 import React from 'react'
 import { ThemeProvider } from 'styled-components'
 
@@ -10,7 +10,7 @@ import { bobAccount } from './mocks/mockAccounts'
 import { mockChains } from './mocks/mockChains'
 import { mockUseAccounts } from './mocks/mockUseAccounts'
 import { mockUseBalances } from './mocks/mockUseBalances'
-import { assertLocalStorage, clickButton, PointerEvent } from './helpers'
+import { assertLocalStorage, clickButton, openDropdown } from './helpers'
 
 const renderAccountSelect = () => render(<ThemeProvider theme={theme}><AccountSelectPage /></ThemeProvider>)
 
@@ -36,14 +36,7 @@ describe('account-select page', () => {
     assertLocalStorage('activeAccount', null)
 
     const openDropdownButton = await screen.findAllByRole('button')
-
-    fireEvent.pointerDown(
-      openDropdownButton[0],
-      new PointerEvent('pointerdown', {
-        ctrlKey: false,
-        button: 0,
-      })
-    )
+    openDropdown(openDropdownButton[0])
 
     const dropdownMenu = await screen.findByRole('menu')
     const menuItems = await within(dropdownMenu).findAllByRole('menuitem')

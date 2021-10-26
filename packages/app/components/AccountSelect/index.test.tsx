@@ -4,7 +4,7 @@ import { fireEvent, render, screen, within } from '@testing-library/react'
 import React, { useEffect, useState } from 'react'
 import { ThemeProvider } from 'styled-components'
 
-import { PointerEvent } from '../../__tests__/helpers'
+import { openDropdown } from '../../__tests__/helpers'
 import { mockAccounts } from '../../__tests__/mocks/mockAccounts'
 import { mockUseSubstrate } from '../../__tests__/mocks/mockUseSubstrate'
 import { theme } from '../../styles/styleVariables'
@@ -46,14 +46,7 @@ describe('AccountSelect component', () => {
     render(<AccountSelectTestComponent/>)
 
     const openDropdownButton = await screen.findByRole('button')
-
-    fireEvent.pointerDown(
-      openDropdownButton,
-      new PointerEvent('pointerdown', {
-        ctrlKey: false,
-        button: 0,
-      })
-    )
+    openDropdown(openDropdownButton)
 
     const dropdownMenu = await screen.findByRole('menu')
 
@@ -65,14 +58,7 @@ describe('AccountSelect component', () => {
     render(<AccountSelectTestComponent/>)
 
     const openDropdownButton = await screen.findByRole('button')
-
-    fireEvent.pointerDown(
-      openDropdownButton,
-      new PointerEvent('pointerdown', {
-        ctrlKey: false,
-        button: 0,
-      })
-    )
+    openDropdown(openDropdownButton)
 
     const dropdownMenu = await screen.findByRole('menu')
 
