@@ -29,7 +29,7 @@ describe('Connect wallet', () => {
       })
     })
 
-    it('adds extensionActivated to localstorage and redirects to dashboard', async () => {
+    it('adds extensionActivated to localstorage and redirects to account-select page', async () => {
       renderConnectWallet()
 
       assertLocalStorage('extensionActivated', null)
@@ -40,7 +40,7 @@ describe('Connect wallet', () => {
 
       assertLocalStorage('extensionActivated', 'true')
 
-      expect(memoryRouter.asPath).toEqual('/')
+      expect(memoryRouter.asPath).toEqual('/account-select')
     })
 
     it('calls web3Enable', async () => {
@@ -53,7 +53,7 @@ describe('Connect wallet', () => {
       await waitFor(() => expect(mockWeb3Enable).toHaveBeenCalled())
     })
 
-    it('when extension is not loaded, it opens install page and shows download prompt', async () => {
+    it('when extension is not loaded, it opens install page', async () => {
       mockUseAccounts.extensionStatus = 'Unavailable'
 
       renderConnectWallet()
@@ -72,13 +72,13 @@ describe('Connect wallet', () => {
     await assertLink(POLKADOT_EXTENSION_LINK)
   })
 
-  it('on load redirects to dashboard if extension has already been activated', async () => {
+  it('on load redirects to account-select page if extension has already been activated', async () => {
     setLocalStorage('extensionActivated', 'true')
 
     renderConnectWallet()
 
     await waitFor(() => expect(mockWeb3Enable).toBeCalled())
 
-    expect(memoryRouter.asPath).toEqual('/')
+    expect(memoryRouter.asPath).toEqual('/account-select')
   })
 })

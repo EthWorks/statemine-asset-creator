@@ -6,7 +6,7 @@ import { useAccounts } from 'use-substrate'
 import { Link, Text } from '../components'
 import Card from '../components/Card/Card'
 import styles from '../styles/Home.module.css'
-import { DASHBOARD_URL, POLKADOT_EXTENSION_LINK } from '../utils/consts'
+import { ACCOUNT_SELECT_URL, POLKADOT_EXTENSION_LINK } from '../utils/consts'
 import { useAsync } from '../utils/useAsync'
 
 const ConnectWallet: NextPage =  () => {
@@ -20,7 +20,7 @@ const ConnectWallet: NextPage =  () => {
   async function redirect(): Promise<void> {
     if (alreadyActivated()) {
       await web3Enable()
-      await router.push(DASHBOARD_URL)
+      await router.push(ACCOUNT_SELECT_URL)
     }
   }
 
@@ -30,7 +30,7 @@ const ConnectWallet: NextPage =  () => {
     if (extensionStatus === 'Available') {
       await web3Enable()
       localStorage.setItem('extensionActivated', 'true')
-      await router.push(DASHBOARD_URL)
+      await router.push(ACCOUNT_SELECT_URL)
     } else {
       if (typeof window !== 'undefined') {
         window.open(POLKADOT_EXTENSION_LINK, '_blank', 'noopener,noreferrer')
