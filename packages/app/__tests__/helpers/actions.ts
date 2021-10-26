@@ -9,3 +9,7 @@ export function clickButton(name: string) {
 export function setLocalStorage(key: string, value: string) {
   localStorage.setItem(key, value)
 }
+
+export function resetLocalStorage(key: string) {
+  localStorage.removeItem(key)
+}
