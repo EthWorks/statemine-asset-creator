@@ -14357,7 +14357,7 @@ packages:
     dev: false
 
   file:projects/statemine-asset-creator.tgz:
-    resolution: {integrity: sha512-fFPaa9gQZbAFZx465R3CRZzCL72QeYJEOyHyzv8O4cQiiATm1ASKW5F9rPBlTY4/tlApAzaGrytNd/BRq0iKCw==, tarball: file:projects/statemine-asset-creator.tgz}
+    resolution: {integrity: sha512-v99+4gk3gOCuQ1oWnqEIDn2L4psj7Q6jaybKLUYZwbGne/RzphFnfFxtTyKo/mzzuSu7UpoIZuV6opVuGrGZZA==, tarball: file:projects/statemine-asset-creator.tgz}
     name: '@rush-temp/statemine-asset-creator'
     version: 0.0.0
     dependencies:
@@ -14390,6 +14390,7 @@ packages:
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-test-renderer: 17.0.2_react@17.0.2
+      rxjs: 7.4.0
       styled-components: 5.3.1_react-dom@17.0.2+react@17.0.2
       typescript: 4.4.4
     transitivePeerDependencies:

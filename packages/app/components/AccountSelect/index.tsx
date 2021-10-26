@@ -6,18 +6,18 @@ import { Account } from 'use-substrate'
 import { Arrow } from '../icons/Arrow'
 import { AccountTile } from './AccountTile'
 
-interface Props {
+export interface Props {
   accounts: Account[],
   currentAccount: Account,
-  setCurrentAccount: (arg: Account) => void
+  setCurrentAccount: (arg: Account) => void,
+  withFreeBalance?: boolean;
 }
 
-export function AccountSelect ({ accounts, currentAccount, setCurrentAccount }: Props): JSX.Element {
-
+export function AccountSelect ({ accounts, currentAccount, setCurrentAccount, withFreeBalance = false}: Props): JSX.Element {
   return (
     <DropdownMenu.Root>
       <StyledButton>
-        <AccountTile account={currentAccount} />
+        <AccountTile withFreeBalance={withFreeBalance} account={currentAccount} />
         <StyledArrow direction='down' width='14' height='9' />
       </StyledButton>
       <StyledDropdown>
@@ -26,7 +26,7 @@ export function AccountSelect ({ accounts, currentAccount, setCurrentAccount }: 
             onClick={() => setCurrentAccount(account)}
             key={account.address}
           >
-            <AccountTile account={account}/>
+            <AccountTile withFreeBalance={withFreeBalance} account={account}/>
           </StyledDropdownItem>
         ))}
       </StyledDropdown>
@@ -66,7 +66,7 @@ const StyledButton = styled(DropdownMenu.Trigger)`
 
 const StyledDropdown = styled(DropdownMenu.Content)`
   transform: translateY(4px);
-  width: calc(100% + 4px);
+  width: calc(100% + 8px);
   border-radius: ${({ theme }) => theme.borderRadius.s};
   background-color: ${({ theme }) => theme.colors.gray[800]};
 `
