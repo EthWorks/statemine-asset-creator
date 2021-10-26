@@ -13,7 +13,6 @@ interface Props {
 }
 
 export function AccountSelect ({ accounts, currentAccount, setCurrentAccount }: Props): JSX.Element {
-
   return (
     <DropdownMenu.Root>
       <StyledButton>

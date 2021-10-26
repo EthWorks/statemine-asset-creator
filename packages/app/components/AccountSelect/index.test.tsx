@@ -4,7 +4,7 @@ import { fireEvent, render, screen, within } from '@testing-library/react'
 import React, { useEffect, useState } from 'react'
 import { ThemeProvider } from 'styled-components'
 
-import { PointerEvent } from '../../__tests__/helpers/events'
+import { PointerEvent } from '../../__tests__/helpers'
 import { mockAccounts } from '../../__tests__/mocks/mockAccounts'
 import { mockUseSubstrate } from '../../__tests__/mocks/mockUseSubstrate'
 import { theme } from '../../styles/styleVariables'

@@ -1,5 +1,3 @@
-import type { UseAccounts } from 'use-substrate'
-
 import { act, render, waitFor } from '@testing-library/react'
 import * as MockRouter from 'next-router-mock'
 import { memoryRouter } from 'next-router-mock'
@@ -9,21 +7,14 @@ import { ThemeProvider } from 'styled-components'
 import ConnectWallet from '../pages/connect-wallet'
 import { theme } from '../styles/styleVariables'
 import { POLKADOT_EXTENSION_LINK } from '../utils/consts'
+import { mockUseAccounts, mockWeb3Enable } from './mocks/mockUseAccounts'
 import { assertLink, assertLocalStorage, assertNewTabOpened, assertText, clickButton, setLocalStorage } from './helpers'
 
-const mockWeb3Enable = jest.fn().mockResolvedValue('')
 jest.mock('next/dist/client/router', () => MockRouter)
 
 jest.mock('use-substrate', () => ({
   useAccounts: () => (mockUseAccounts),
 }))
-
-const mockUseAccounts: UseAccounts = {
-  allAccounts: [],
-  hasAccounts: false,
-  web3Enable: mockWeb3Enable,
-  extensionStatus: 'Available'
-}
 
 const renderConnectWallet = () => render(<ThemeProvider theme={theme}><ConnectWallet /></ThemeProvider>)
 
