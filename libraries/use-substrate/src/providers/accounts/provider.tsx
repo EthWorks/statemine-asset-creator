@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from 'react'
+import React, { ReactNode, useCallback, useEffect, useState } from 'react'
 import { debounceTime } from 'rxjs'
 
 import { useObservable } from '../../hooks'
@@ -31,7 +31,7 @@ export const AccountsContextProvider = ({ appName, children }: AccountsContextPr
     []
   )
 
-  async function web3Enable(): Promise<void> {
+  const web3Enable: () => Promise<void> = useCallback(async () => {
     if (extensionStatus !== 'Available') {
       return
     }
@@ -52,7 +52,7 @@ export const AccountsContextProvider = ({ appName, children }: AccountsContextPr
       keyringWrapper.forgetAccountsRemovedFromExtension(accountsFromAllExtensions)
       keyringWrapper.injectAccountsAddedToExtension(accountsFromAllExtensions)
     })
-  }
+  }, [extensionStatus, keyringWrapper])
 
   const observableAccounts = useObservable(keyringWrapper?.keyring.accounts.subject.asObservable().pipe(debounceTime(20)), [keyringWrapper, keyringWrapper?.keyring])
 

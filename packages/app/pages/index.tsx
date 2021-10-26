@@ -1,19 +1,38 @@
 import type { NextPage } from 'next'
 
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 
 import { Chains, useAccounts, useBalances } from 'use-substrate'
 
 import styles from '../styles/Home.module.css'
+import { ACCOUNT_SELECT_URL, activeAccountSet, CONNECT_WALLET_URL, extensionActivated, useAsync } from '../utils'
 
 const Home: NextPage =  () => {
   const [account] = useState<string | null>(localStorage.getItem('activeAccount'))
   const balances = useBalances(account, Chains.Kusama)
   const statemineBalances = useBalances(account, Chains.Statemine)
-  const accounts = useAccounts()
+  const { allAccounts, web3Enable } = useAccounts()
+  const router = useRouter()
 
-  if (!account) return <>Loading..</>
+  async function redirect(): Promise<boolean | void> {
+    if(!extensionActivated()) {
+      return router.push(CONNECT_WALLET_URL)
+    }
+
+    await web3Enable()
+
+    if(!activeAccountSet()) {
+      return router.push(ACCOUNT_SELECT_URL)
+    }
+  }
+
+  useAsync(redirect, [web3Enable])
+
+  if (!extensionActivated() || !activeAccountSet() || !account) {
+    return <>Loading...</>
+  }
 
   return (
     <div className={styles.container}>
@@ -39,7 +58,7 @@ const Home: NextPage =  () => {
         </h1>
         <div>Extension accounts:</div>
         <ul>
-          {accounts.allAccounts.map((account, index) =>
+          {allAccounts.map((account, index) =>
             <li key={index}>address: {account.address} name: {account.name}</li>)
           }
         </ul>

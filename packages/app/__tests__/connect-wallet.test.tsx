@@ -6,14 +6,14 @@ import { ThemeProvider } from 'styled-components'
 
 import ConnectWallet from '../pages/connect-wallet'
 import { theme } from '../styles/styleVariables'
-import { POLKADOT_EXTENSION_LINK } from '../utils/consts'
-import { mockUseAccounts, mockWeb3Enable } from './mocks/mockUseAccounts'
+import { ACCOUNT_SELECT_URL, CONNECT_WALLET_URL, POLKADOT_EXTENSION_LINK } from '../utils'
 import { assertLink, assertLocalStorage, assertNewTabOpened, assertText, clickButton, setLocalStorage } from './helpers'
+import { mockUseAccounts, mockWeb3Enable } from './mocks'
 
 jest.mock('next/dist/client/router', () => MockRouter)
 
 jest.mock('use-substrate', () => ({
-  useAccounts: () => (mockUseAccounts),
+  useAccounts: () => mockUseAccounts,
 }))
 
 const renderConnectWallet = () => render(<ThemeProvider theme={theme}><ConnectWallet /></ThemeProvider>)
@@ -22,7 +22,7 @@ describe('Connect wallet', () => {
   describe('on button click', () => {
     beforeEach(() => {
       act(() => {
-        memoryRouter.setCurrentUrl('/connect-wallet')
+        memoryRouter.setCurrentUrl(CONNECT_WALLET_URL)
         localStorage.clear()
         mockUseAccounts.extensionStatus = 'Available'
         mockWeb3Enable.mockClear()
@@ -40,7 +40,7 @@ describe('Connect wallet', () => {
 
       assertLocalStorage('extensionActivated', 'true')
 
-      expect(memoryRouter.asPath).toEqual('/account-select')
+      expect(memoryRouter.asPath).toEqual(ACCOUNT_SELECT_URL)
     })
 
     it('calls web3Enable', async () => {
@@ -79,6 +79,6 @@ describe('Connect wallet', () => {
 
     await waitFor(() => expect(mockWeb3Enable).toBeCalled())
 
-    expect(memoryRouter.asPath).toEqual('/account-select')
+    expect(memoryRouter.asPath).toEqual(ACCOUNT_SELECT_URL)
   })
 })
