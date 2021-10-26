@@ -1,23 +1,19 @@
 import type { NextPage } from 'next'
-import type { Account } from 'use-substrate'
 
 import Head from 'next/head'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
-import { Chains, JACO, useAccounts, useBalances } from 'use-substrate'
+import { Chains, useAccounts, useBalances } from 'use-substrate'
 
-import { AccountSelect } from '../components'
 import styles from '../styles/Home.module.css'
 
 const Home: NextPage =  () => {
-  const balances = useBalances(JACO, Chains.Kusama)
-  const statmineBalances = useBalances(JACO, Chains.Statemine)
+  const [account] = useState<string | null>(localStorage.getItem('activeAccount'))
+  const balances = useBalances(account, Chains.Kusama)
+  const statemineBalances = useBalances(account, Chains.Statemine)
   const accounts = useAccounts()
-  const [account, setAccount] = useState<Account>(accounts.allAccounts[0])
 
-  useEffect(() => {
-    setAccount(accounts.allAccounts[0])
-  }, [accounts.allAccounts])
+  if (!account) return <>Loading..</>
 
   return (
     <div className={styles.container}>
@@ -27,25 +23,26 @@ const Home: NextPage =  () => {
       </Head>
 
       <main className={styles.main}>
+        <div data-testid='active-account-container'>
+          <p>
+            {account}
+          </p>
+          <p className={styles.description}>
+              Balance: {balances?.freeBalance.toString()}
+          </p>
+          <p className={styles.description}>
+              Statemine Balance: {statemineBalances?.freeBalance.toString()}
+          </p>
+        </div>
         <h1 className={styles.title}>
           Welcome to Statemine
         </h1>
-        <p className={styles.description}>
-            Balance: {balances?.freeBalance.toString()}
-        </p>
-        <p className={styles.description}>
-            Statemine Balance: {statmineBalances?.freeBalance.toString()}
-        </p>
         <div>Extension accounts:</div>
         <ul>
           {accounts.allAccounts.map((account, index) =>
             <li key={index}>address: {account.address} name: {account.name}</li>)
           }
         </ul>
-        {accounts && account && (
-          <AccountSelect currentAccount={account} setCurrentAccount={setAccount} accounts={accounts.allAccounts}/>
-        )}
-        { accounts.error === 'EXTENSION' && <div>No extension available</div>}
       </main>
     </div>
   )

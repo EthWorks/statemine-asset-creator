@@ -19,7 +19,12 @@ describe('useBalances hook', () => {
     expect(result.error?.message).toEqual('karura is not configured')
   })
 
-  const renderResult = (chain: Chains, address: string) => {
+  it('return undefined for null address', async () => {
+    const { result } = renderResult(Chains.Kusama, null)
+    expect(result.current).toEqual(undefined)
+  })
+
+  const renderResult = (chain: Chains, address: string | null) => {
     const wrapper = ({ children }: { children: ReactNode }) => (
       <MockedApiProvider>
         {children}

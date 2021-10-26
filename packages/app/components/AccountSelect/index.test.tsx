@@ -1,4 +1,4 @@
-import type { Account }from 'use-substrate'
+import type { Account } from 'use-substrate'
 
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import React, { useEffect, useState } from 'react'
@@ -39,7 +39,7 @@ describe('AccountSelect component', () => {
     await screen.findByText(mockAccounts[0].address)
 
     const transferableBalanceElement = (await screen.findByText('transferable balance')).parentElement
-    expect(transferableBalanceElement?.textContent).toContain('4000KSM')
+    expect(transferableBalanceElement).toHaveTextContent('4000KSM')
   })
 
   it('displays accounts in dropdown', async () => {

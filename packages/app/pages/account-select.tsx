@@ -28,6 +28,7 @@ const AccountSelectPage: NextPage =  () => {
     <Card>
       <AccountSelect accounts={accounts.allAccounts} currentAccount={account} setCurrentAccount={setAccount}/>
       <button onClick={_onClick}>Connect</button>
+      { accounts.error === 'EXTENSION' && <div>No extension available</div>}
     </Card>
   )
 }

@@ -1,6 +1,4 @@
-import type { Account } from 'use-substrate'
-
 const aliceAccount = { address: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY', name: 'ALICE' }
 export const bobAccount = { address: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty', name: 'BOB' }
 
-export const mockAccounts: Account[] = [aliceAccount, bobAccount]
+export const mockAccounts = [aliceAccount, bobAccount]
