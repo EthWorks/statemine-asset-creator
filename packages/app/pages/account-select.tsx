@@ -24,6 +24,8 @@ const AccountSelectPage: NextPage =  () => {
     setAccount(accounts.allAccounts[0])
   }, [accounts.allAccounts])
 
+  if (!accounts.allAccounts.length || !account) return <>Loading..</>
+
   return (
     <Card>
       <AccountSelect accounts={accounts.allAccounts} currentAccount={account} setCurrentAccount={setAccount}/>
