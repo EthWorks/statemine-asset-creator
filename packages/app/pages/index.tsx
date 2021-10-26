@@ -21,17 +21,17 @@ const Home: NextPage =  () => {
       return router.push(CONNECT_WALLET_URL)
     }
 
-    web3Enable()
+    await web3Enable() 
 
     if(!activeAccountSet()) {
       return router.push(ACCOUNT_SELECT_URL)
     }
   }
 
-  useAsync(redirect, [localStorage, web3Enable])
+  useAsync(redirect, [web3Enable])
 
   if (!extensionActivated() || !activeAccountSet()) {
-    return null
+    return <>Loading...</>
   }
 
   if (!account) return <>Loading..</>

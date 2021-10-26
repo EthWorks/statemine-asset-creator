@@ -32,7 +32,7 @@ describe('Home', () => {
       await waitFor(() => expect(memoryRouter.asPath).toEqual(CONNECT_WALLET_URL))
     })
 
-    it('when extension was activated but activeAccount was not selected and enables extension', async () => {
+    it('when extension was activated but activeAccount was not selected', async () => {
       setLocalStorage('extensionActivated', 'true')
 
       render(<Home />)
@@ -41,7 +41,7 @@ describe('Home', () => {
       await waitFor(() => expect(memoryRouter.asPath).toEqual(ACCOUNT_SELECT_URL))
     })
 
-    it('nowhere and enables extension', async () => {
+    it('when extension activated and account selected', async () => {
       setLocalStorage('extensionActivated', 'true')
       setLocalStorage('activeAccount', bobAccount.address)
 
