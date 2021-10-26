@@ -6,7 +6,8 @@ import { useEffect, useState } from 'react'
 
 import { Chains, JACO, useAccounts, useBalances } from 'use-substrate'
 
-import { AccountSelect } from '../components'
+import { AccountSelect, Text } from '../components'
+import Modal from '../components/Modal/Modal'
 import styles from '../styles/Home.module.css'
 
 const Home: NextPage =  () => {
@@ -14,6 +15,7 @@ const Home: NextPage =  () => {
   const statmineBalances = useBalances(JACO, Chains.Statemine)
   const accounts = useAccounts()
   const [account, setAccount] = useState<Account>(accounts.allAccounts[0])
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
   useEffect(() => {
     setAccount(accounts.allAccounts[0])
@@ -30,6 +32,17 @@ const Home: NextPage =  () => {
         <h1 className={styles.title}>
           Welcome to Statemine
         </h1>
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          size='l'
+          title='Example title'
+          padding='s'
+          headerOverModal={<Text size='3XL' color='white'>Welcome to <b>Statemine</b> Asset Creator!</Text>}
+        >
+          Modal content
+        </Modal>
+
         <p className={styles.description}>
             Balance: {balances?.freeBalance.toString()}
         </p>
@@ -46,6 +59,7 @@ const Home: NextPage =  () => {
           <AccountSelect currentAccount={account} setCurrentAccount={setAccount} accounts={accounts.allAccounts}/>
         )}
         { accounts.error === 'EXTENSION' && <div>No extension available</div>}
+        <button onClick={() => setIsModalOpen(true)}>Show Modal</button>
       </main>
     </div>
   )
