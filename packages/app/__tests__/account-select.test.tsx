@@ -6,11 +6,9 @@ import { ThemeProvider } from 'styled-components'
 
 import AccountSelectPage from '../pages/account-select'
 import { theme } from '../styles/styleVariables'
-import { bobAccount } from './mocks/mockAccounts'
-import { mockChains } from './mocks/mockChains'
-import { mockUseAccounts } from './mocks/mockUseAccounts'
-import { mockUseBalances } from './mocks/mockUseBalances'
+import { ACCOUNT_SELECT_URL, DASHBOARD_URL } from '../utils'
 import { assertLocalStorage, clickButton, openDropdown } from './helpers'
+import { bobAccount, mockChains, mockUseAccounts, mockUseBalances } from './mocks'
 
 const renderAccountSelect = () => render(<ThemeProvider theme={theme}><AccountSelectPage /></ThemeProvider>)
 
@@ -25,7 +23,7 @@ jest.mock('next/dist/client/router', () => MockRouter)
 describe('account-select page', () => {
   beforeEach(() => {
     act(() => {
-      memoryRouter.setCurrentUrl('/account-select')
+      memoryRouter.setCurrentUrl(ACCOUNT_SELECT_URL)
       localStorage.clear()
     })
   })
@@ -47,6 +45,6 @@ describe('account-select page', () => {
 
     assertLocalStorage('activeAccount', bobAccount.address)
 
-    expect(memoryRouter.asPath).toEqual('/')
+    expect(memoryRouter.asPath).toEqual(DASHBOARD_URL)
   })
 })
