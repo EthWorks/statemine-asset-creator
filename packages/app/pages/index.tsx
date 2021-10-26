@@ -21,7 +21,7 @@ const Home: NextPage =  () => {
       return router.push(CONNECT_WALLET_URL)
     }
 
-    await web3Enable() 
+    await web3Enable()
 
     if(!activeAccountSet()) {
       return router.push(ACCOUNT_SELECT_URL)
@@ -30,11 +30,9 @@ const Home: NextPage =  () => {
 
   useAsync(redirect, [web3Enable])
 
-  if (!extensionActivated() || !activeAccountSet()) {
+  if (!extensionActivated() || !activeAccountSet() || !account) {
     return <>Loading...</>
   }
-
-  if (!account) return <>Loading..</>
 
   return (
     <div className={styles.container}>
