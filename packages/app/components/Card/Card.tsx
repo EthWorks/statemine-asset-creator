@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+
 import { PaddingSize } from '../../gloablTypes/globalTypes'
 
 export interface CardProps {

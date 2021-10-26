@@ -22,9 +22,8 @@ export default Default
 
 const Template: Story<ModalProps> = (args) =>
   <Modal {...args}>
-    <h1 style={{color: '#ffffff'}}>Modal content</h1>
+    <h1 style={{ color: '#ffffff' }}>Modal content</h1>
   </Modal>
-
 
 export const Base = Template.bind({})
 Base.args = {

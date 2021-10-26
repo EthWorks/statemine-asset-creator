@@ -13,7 +13,7 @@ export interface Props {
   withFreeBalance?: boolean;
 }
 
-export function AccountSelect ({ accounts, currentAccount, setCurrentAccount, withFreeBalance = false}: Props): JSX.Element {
+export function AccountSelect ({ accounts, currentAccount, setCurrentAccount, withFreeBalance = false }: Props): JSX.Element {
   return (
     <DropdownMenu.Root>
       <StyledButton>

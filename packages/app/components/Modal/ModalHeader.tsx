@@ -1,4 +1,6 @@
+import React from 'react'
 import styled from 'styled-components'
+
 import { Header } from '../typography/Header'
 
 interface ModalHeaderProps {
@@ -7,7 +9,7 @@ interface ModalHeaderProps {
   titleCenterPosition?: boolean,
 }
 
-export const ModalHeader = ({ onClose, title, titleCenterPosition }: ModalHeaderProps) => (
+export const ModalHeader = ({ onClose, title, titleCenterPosition }: ModalHeaderProps): React.ReactElement<ModalHeaderProps> => (
   <WrapperModalHeader titleCenterPosition={titleCenterPosition}>
     <Header>{title}</Header>
     <ModalCloseBtn onClick={onClose}>X</ModalCloseBtn>

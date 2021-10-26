@@ -1,8 +1,9 @@
-import { ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 import styled from 'styled-components'
+
+import { PaddingSize } from '../../gloablTypes/globalTypes'
 import Card from '../Card/Card'
 import { ModalHeader } from './ModalHeader'
-import { PaddingSize } from '../../gloablTypes/globalTypes'
 
 export interface ModalProps {
   children: ReactNode,
@@ -12,8 +13,8 @@ export interface ModalProps {
   titleCenterPosition?: boolean
 }
 
-const Modal = ({children, padding, size, title, titleCenterPosition}: ModalProps) => {
-  const onClose = () => console.log('close');
+const Modal = ({ children, padding, size, title, titleCenterPosition }: ModalProps): React.ReactElement<ModalProps> => {
+  const onClose = (): void => console.log('close')
 
   return (
     <ModalView>

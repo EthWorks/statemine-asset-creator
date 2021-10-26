@@ -10,4 +10,4 @@ const Default = {
 
 export default Default
 
-export const Base = (): JSX.Element => <ThemeProvider theme={theme}><Header style={{ color: '#000000'}}>Header text</Header></ThemeProvider>
+export const Base = (): JSX.Element => <ThemeProvider theme={theme}><Header style={{ color: '#000000' }}>Header text</Header></ThemeProvider>
