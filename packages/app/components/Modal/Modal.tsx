@@ -23,8 +23,8 @@ interface ModalCardProps {
   size?: ModalSize,
 }
 
-const Modal = ({ children, padding, size, title, titleCenterPosition, headerOverModal, isOpen, onClose }: ModalProps) => {
-  const _onClose = () => onClose()
+const Modal = ({ children, padding, size, title, titleCenterPosition, headerOverModal, isOpen, onClose }: ModalProps): React.ReactElement<ModalProps> | null => {
+  const _onClose = (): void => onClose()
 
   if (!isOpen) return null
 
