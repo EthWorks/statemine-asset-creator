@@ -38,9 +38,11 @@ specifiers:
   eslint: ^7.32.0
   eslint-config-next: 11.1.2
   eslint-plugin-react-hooks: ~4.2.0
+  eslint-plugin-simple-import-sort: ~7.0.0
   identity-obj-proxy: ^3.0.0
   jest: ^27.2.3
   jest-fail-on-console: ~2.0.4
+  mock-local-storage: ~1.1.17
   next: 11.1.2
   react: 17.0.2
   react-dom: 17.0.2
@@ -87,9 +89,11 @@ dependencies:
   eslint: 7.32.0
   eslint-config-next: 11.1.2_b254488bed7690859822a81f0a41c857
   eslint-plugin-react-hooks: 4.2.0_eslint@7.32.0
+  eslint-plugin-simple-import-sort: 7.0.0_eslint@7.32.0
   identity-obj-proxy: 3.0.0
   jest: 27.2.5
   jest-fail-on-console: 2.0.5
+  mock-local-storage: 1.1.17
   next: 11.1.2_742da6775053912c51770e4a8773db09
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
@@ -6272,6 +6276,11 @@ packages:
     requiresBuild: true
     dev: false
 
+  /core-js/0.8.4:
+    resolution: {integrity: sha1-wiZl8eDRucPF4bCNq9HxCGleT88=}
+    deprecated: core-js@<3.3 is no longer maintained and not recommended for usage due to the number of issues. Because of the V8 engine whims, feature detection in old core-js versions could cause a slowdown up to 100x even if nothing is polyfilled. Please, upgrade your dependencies to the actual version of core-js.
+    dev: false
+
   /core-js/3.18.3:
     resolution: {integrity: sha512-tReEhtMReZaPFVw7dajMx0vlsz3oOb8ajgPoHVYGxr8ErnZ6PcYEvvmjGmXlfpnxpkYSdOQttjB+MvVbCGfvLw==}
     requiresBuild: true
@@ -10392,6 +10401,13 @@ packages:
     hasBin: true
     dev: false
 
+  /mock-local-storage/1.1.17:
+    resolution: {integrity: sha512-vF5571cY3N/XFw8Oxr+0HmY6PedvO6i2IZrpnDV35sh7alhrh1RYYFZzItuh5OhJrQoulNSruiw1KHk5QB/EQg==}
+    dependencies:
+      core-js: 0.8.4
+      global: 4.4.0
+    dev: false
+
   /move-concurrently/1.0.1:
     resolution: {integrity: sha1-viwAX9oy4LKa8fBdfEszIUxwH5I=}
     dependencies:
@@ -10478,6 +10494,16 @@ packages:
 
   /nested-error-stacks/2.1.0:
     resolution: {integrity: sha512-AO81vsIO1k1sM4Zrd6Hu7regmJN1NSiAja10gc4bX3F0wd+9rQmcuHQaHVQCYIEC8iFXnE+mavh23GOt7wBgug==}
+    dev: false
+
+  /next-router-mock/0.5.3_next@11.1.2+react@17.0.2:
+    resolution: {integrity: sha512-epyCcx7hCk1y6lKHn3uRjtXF1Rr5+jBO/QFh3NbwLlrCG8lWY2SLh+EV0rvPkusZv2phwQz0BPbr8N/ib6IAeQ==}
+    peerDependencies:
+      next: '>=10.0.0'
+      react: '>=17.0.0'
+    dependencies:
+      next: 11.1.2_742da6775053912c51770e4a8773db09
+      react: 17.0.2
     dev: false
 
   /next-tick/1.0.0:
@@ -14331,7 +14357,7 @@ packages:
     dev: false
 
   file:projects/statemine-asset-creator.tgz:
-    resolution: {integrity: sha512-saev6w1GbZIRuPWmT8v7lPuO+Ta1rlorPfm3xlFtbHqip1hJZULB1fItX+P3ffAHF6SvGLTXJ7EQ25B2nauUlQ==, tarball: file:projects/statemine-asset-creator.tgz}
+    resolution: {integrity: sha512-hdK/ScaiEpfA9+4HH2WJjBXzaYMT2PBRBJ3EwiGDxZx4jG5UcUGOfAHSFjHCtNDXrQoHsgqEhrnvE39bkiS0jA==, tarball: file:projects/statemine-asset-creator.tgz}
     name: '@rush-temp/statemine-asset-creator'
     version: 0.0.0
     dependencies:
@@ -14356,7 +14382,9 @@ packages:
       identity-obj-proxy: 3.0.0
       jest: 27.2.5
       jest-fail-on-console: 2.0.5
+      mock-local-storage: 1.1.17
       next: 11.1.2_742da6775053912c51770e4a8773db09
+      next-router-mock: 0.5.3_next@11.1.2+react@17.0.2
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-test-renderer: 17.0.2_react@17.0.2

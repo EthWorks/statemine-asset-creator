@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react'
 import React from 'react'
 
 import Home from '../pages/index'
+import { assertText } from './helpers'
 
 jest.mock('use-substrate', () => ({
   useBalances: () => ({
@@ -25,6 +26,7 @@ describe('Home', () => {
     render(<Home />)
 
     screen.getByRole('heading', { name: /welcome to Statemine/i })
-    await screen.findByText('Balance: 3600')
+
+    await assertText('Balance: 3600')
   })
 })
