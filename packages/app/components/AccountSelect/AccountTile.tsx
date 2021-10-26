@@ -27,14 +27,18 @@ export function AccountTile({ account, withFreeBalance }: Props): JSX.Element {
       <AccountTileCellEnd>
         <CellRow>
           <Label>transferable balance</Label>
-          <TextBalance size='SM' color='white'>{balance?.availableBalance.toString()}</TextBalance>
-          <Text size='SM'>KSM</Text>
+          <ValueWrapper>
+            <TextBalance size='SM' color='white'>{balance?.availableBalance.toString()}</TextBalance>
+            <Text size='SM'>KSM</Text>
+          </ValueWrapper>
         </CellRow>
         {withFreeBalance &&
           <CellRow>
             <Label>full account balance</Label>
-            <TextBalance size='SM' color='white'>{balance?.freeBalance.toString()}</TextBalance>
-            <Text size='SM'>KSM</Text>
+            <ValueWrapper>
+              <TextBalance size='SM' color='white'>{balance?.freeBalance.toString()}</TextBalance>
+              <Text size='SM'>KSM</Text>
+            </ValueWrapper>
           </CellRow>
         }
       </AccountTileCellEnd>
@@ -44,9 +48,9 @@ export function AccountTile({ account, withFreeBalance }: Props): JSX.Element {
 
 const AccountTileWrapper = styled.div`
   position: relative;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 50px;
   padding: 18px 48px 18px 16px;
 `
 
@@ -58,10 +62,6 @@ const AccountTileName = styled.div`
 const AccountTileCell = styled.div`
   display: flex;
   align-items: center;
-  
-  & + div {
-    margin-left: 50px;
-  }
 `
 
 const AccountTileCellEnd = styled(AccountTileCell)`
@@ -74,6 +74,7 @@ const CellRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
   
   & + div {
     margin-top: 4px;
@@ -85,11 +86,16 @@ const TextName = styled(Text)`
 `
 
 const TextBalance = styled(Text)`
-  margin: 0 4px 0 50px;
+  margin-right: 4px;
 `
 
 const TextAddress = styled(Text)`
   overflow: hidden;
   max-width: 210px;
   text-overflow: ellipsis;
+`
+
+const ValueWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `

@@ -12,7 +12,7 @@ const Default = {
 
 export default Default
 
-const Template: Story<Props> = (args ) =>
+const Template: Story<Props> = (args) =>
   <MockedApiProvider>
     <AccountSelect {...args}/>
   </MockedApiProvider>
@@ -21,5 +21,13 @@ export const Base = Template.bind({})
 Base.args = {
   accounts: mockAccounts,
   currentAccount: mockAccounts[0],
+  setCurrentAccount: () => {/**/}
+}
+
+export const Secondary = Template.bind({})
+Secondary.args = {
+  accounts: mockAccounts,
+  currentAccount: mockAccounts[0],
+  withFreeBalance: true,
   setCurrentAccount: () => {/**/}
 }

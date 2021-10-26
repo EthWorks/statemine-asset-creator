@@ -11,7 +11,7 @@ export function MockedApiProvider(props: { children: React.ReactNode }): JSX.Ele
         balances: {
           all: () => from([{
             availableBalance: '100',
-            freeBalance: '2'
+            freeBalance: '2',
           }])
         }
       }
