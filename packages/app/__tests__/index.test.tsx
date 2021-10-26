@@ -2,7 +2,8 @@ import { render, screen } from '@testing-library/react'
 import React from 'react'
 
 import Home from '../pages/index'
-import { assertText } from './helpers'
+import { bobAccount } from './mocks/mockAccounts'
+import { assertText, setLocalStorage } from './helpers'
 
 jest.mock('use-substrate', () => ({
   useBalances: () => ({
@@ -22,10 +23,13 @@ jest.mock('use-substrate', () => ({
 }))
 
 describe('Home', () => {
-  it('displays balance of hardcoded account', async () => {
+  it('displays kusama balance of selected account', async () => {
+    setLocalStorage('activeAccount', bobAccount.address)
     render(<Home />)
 
     screen.getByRole('heading', { name: /welcome to Statemine/i })
+    const activeAccountContainer = screen.getByTestId('active-account-container')
+    expect(activeAccountContainer).toHaveTextContent(bobAccount.address)
 
     await assertText('Balance: 3600')
   })
