@@ -1,33 +1,19 @@
+import type { Account }from 'use-substrate'
+
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import React, { useEffect, useState } from 'react'
 import { ThemeProvider } from 'styled-components'
 
-import { Account, useAccounts } from 'use-substrate'
-
 import { PointerEvent } from '../../__tests__/helpers/events'
 import { mockAccounts } from '../../__tests__/mocks/mockAccounts'
+import { mockUseSubstrate } from '../../__tests__/mocks/mockUseSubstrate'
 import { theme } from '../../styles/styleVariables'
 import { AccountSelect } from './index'
 
-jest.mock('use-substrate', () => ({
-  useBalances: () => ({
-    freeBalance: 3600,
-    availableBalance: 4000,
-    lockedBalance: 300,
-    accountNonce: 1
-  }),
-  useAccounts: () => ({
-    allAccounts: mockAccounts,
-    hasAccounts: true
-  }),
-  Chains: () => ({
-    Kusama: 'kusama',
-    Statemine: 'statemine'
-  })
-}))
+jest.mock('use-substrate', () => mockUseSubstrate)
 
 function AccountSelectTestComponent(): JSX.Element {
-  const accounts = useAccounts()
+  const accounts = mockUseSubstrate.useAccounts()
   const [account, setAccount] = useState<Account>(accounts.allAccounts[0])
 
   useEffect(() => {
@@ -45,14 +31,15 @@ function AccountSelectTestComponent(): JSX.Element {
   )
 }
 
-describe('Component AccountSelect', () => {
-  it('Displays current account info on load', async () => {
+describe('AccountSelect component', () => {
+  it('displays current account info on load', async () => {
     render(<AccountSelectTestComponent/>)
 
     await screen.findByText(mockAccounts[0].name)
     await screen.findByText(mockAccounts[0].address)
-    await screen.findByText('transferable balance')
-    await screen.findByText('4000')
+
+    const transferableBalanceElement = (await screen.findByText('transferable balance')).parentElement
+    expect(transferableBalanceElement?.textContent).toContain('4000KSM')
   })
 
   it('displays accounts in dropdown', async () => {
