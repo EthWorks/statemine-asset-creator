@@ -6,9 +6,7 @@ import { useState } from 'react'
 
 import { Chains, useAccounts, useBalances } from 'use-substrate'
 
-
-import { AccountSelect, Modal, Text, NewAssetModal } from '../components'
-
+import { NewAssetModal } from '../components'
 import styles from '../styles/Home.module.css'
 import {
   ACCOUNT_SELECT_URL,
@@ -26,7 +24,6 @@ const Home: NextPage =  () => {
   const statemineBalances = useBalances(account, Chains.Statemine)
   const { allAccounts, web3Enable } = useAccounts()
   const router = useRouter()
-
 
   async function redirect(): Promise<boolean | void> {
     if(!extensionActivated()) {

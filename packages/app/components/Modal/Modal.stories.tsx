@@ -1,7 +1,7 @@
 import { Story } from '@storybook/react'
 
-import { Text } from '../typography/Text'
-import Modal, { ModalProps } from './index'
+import { Text } from '../typography'
+import { Modal, ModalProps } from './index'
 
 const defaultHeader = <Text size='3XL' color='white'>Welcome to <b>Statemine</b> Asset Creator!</Text>
 const empty = <></>
