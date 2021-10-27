@@ -5,7 +5,7 @@ import React from 'react'
 
 import Home from '../pages/index'
 import { ACCOUNT_SELECT_URL, CONNECT_WALLET_URL, DASHBOARD_URL } from '../utils'
-import { assertText, clickButton, setLocalStorage } from './helpers'
+import { assertNoButton, assertText, clickButton, setLocalStorage } from './helpers'
 import { bobAccount, mockChains, mockUseAccounts, mockUseBalances, mockWeb3Enable } from './mocks'
 
 jest.mock('next/dist/client/router', () => MockRouter)
@@ -72,6 +72,7 @@ describe('Home', () => {
     clickButton('Create new asset')
 
     await assertText('Create asset')
+    assertNoButton('Create new asset')
 
     await screen.findByLabelText('Asset name')
     await screen.findByLabelText('Asset symbol')

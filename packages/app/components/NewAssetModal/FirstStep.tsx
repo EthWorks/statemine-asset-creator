@@ -9,7 +9,7 @@ export function FirstStep({ onNext }: Props): JSX.Element {
   const _onClick = (): void => {
     onNext()
   }
-
+  
   return (
     <div>
       <p>Create asset</p>

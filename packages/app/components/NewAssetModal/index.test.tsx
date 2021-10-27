@@ -1,11 +1,11 @@
 import { render } from '@testing-library/react'
 
 import { assertText, clickButton, fillInput } from '../../__tests__/helpers'
-import { AccountsContextProvider } from './context/provider'
+import { NewAssetModalProvider } from './context/provider'
 import NewAssetModal from './index'
 
 const renderModal = (): void => {
-  render(<AccountsContextProvider><NewAssetModal/></AccountsContextProvider>)
+  render(<NewAssetModalProvider><NewAssetModal/></NewAssetModalProvider>)
 }
 
 const fillFirstStep = (): void => {

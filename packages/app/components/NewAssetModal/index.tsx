@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 
+import { NewAssetModalProvider } from './context/provider'
 import { FirstStep } from './FirstStep'
 import { SecondStep } from './SecondStep'
 
@@ -22,9 +23,11 @@ function NewAssetModal(): JSX.Element {
   }
 
   return (
-    <div>
-      {renderStep()}
-    </div>
+    <NewAssetModalProvider>
+      <div>
+        {renderStep()}
+      </div>
+    </NewAssetModalProvider>
   )
 }
 

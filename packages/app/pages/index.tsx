@@ -49,7 +49,7 @@ const Home: NextPage =  () => {
 
       <main className={styles.main}>
         <div>
-          <button onClick={_onClick}>Create new asset</button>
+          {!isModalOpen && <button onClick={_onClick}>Create new asset</button>}
           {isModalOpen && (
             <NewAssetModal/>
           )}
