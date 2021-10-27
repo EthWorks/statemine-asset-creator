@@ -6,7 +6,7 @@ import { MockedApiProvider } from './mocks/MockedApiProvider'
 
 describe('useBalances hook', () => {
   it('returns balances', async () => {
-    const { result } = renderResult(Chains.Kusama, ALICE)
+    const { result } = renderResult(ALICE, Chains.Kusama)
     const { freeBalance, accountNonce, accountId } = result.current || {}
 
     expect(freeBalance?.toString()).toEqual('10000')
@@ -15,11 +15,16 @@ describe('useBalances hook', () => {
   })
 
   it('when using not configured chain it throws', () => {
-    const { result } = renderResult(Chains.Karura, ALICE)
+    const { result } = renderResult(ALICE, Chains.Karura)
     expect(result.error?.message).toEqual('karura is not configured')
   })
 
-  const renderResult = (chain: Chains, address: string) => {
+  it('return undefined for null address', async () => {
+    const { result } = renderResult( null, Chains.Kusama)
+    expect(result.current).toEqual(undefined)
+  })
+
+  const renderResult = (address: string | null, chain: Chains) => {
     const wrapper = ({ children }: { children: ReactNode }) => (
       <MockedApiProvider>
         {children}
