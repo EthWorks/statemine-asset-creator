@@ -6,6 +6,8 @@ import { useState } from 'react'
 
 import { Chains, useAccounts, useBalances } from 'use-substrate'
 
+import { ButtonOutline,ButtonPrimary } from '../components/button/Button'
+import CloseButton from '../components/button/CloseButton'
 import styles from '../styles/Home.module.css'
 import { ACCOUNT_SELECT_URL, activeAccountSet, CONNECT_WALLET_URL, extensionActivated, useAsync } from '../utils'
 
@@ -42,6 +44,9 @@ const Home: NextPage =  () => {
       </Head>
 
       <main className={styles.main}>
+        <ButtonPrimary large>Primary</ButtonPrimary>
+        <ButtonOutline disabled>Outline</ButtonOutline>
+        <CloseButton />
         <div data-testid='active-account-container'>
           <p>
             {account}
