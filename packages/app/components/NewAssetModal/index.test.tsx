@@ -1,11 +1,24 @@
 import { render } from '@testing-library/react'
+import React, { useState } from 'react'
 
-import { assertText, clickButton, fillInput } from '../../__tests__/helpers'
-import { NewAssetModalProvider } from './context/provider'
+import { assertText, assertTextInput, clickButton, fillInput } from '../../__tests__/helpers'
 import NewAssetModal from './index'
 
+function TestComponent(): JSX.Element {
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+
+  return (
+    <>
+      {!isOpen && <button onClick={() => setIsOpen(true)}>Create new asset</button>}
+      {isOpen && (
+        <NewAssetModal closeModal={() => setIsOpen(false)}/>
+      )}
+    </>
+  )
+}
+
 const renderModal = (): void => {
-  render(<NewAssetModalProvider><NewAssetModal/></NewAssetModalProvider>)
+  render(<TestComponent/>)
 }
 
 const fillFirstStep = (): void => {
@@ -19,6 +32,8 @@ describe('New asset modal', () => {
   it('saves data in context', async () => {
     renderModal()
 
+    clickButton('Create new asset')
+
     fillFirstStep()
     clickButton('Next')
 
@@ -27,5 +42,22 @@ describe('New asset modal', () => {
     await assertText('KSM')
     await assertText('18')
     await assertText('7')
+  })
+
+  it('closes modal and resets data on confirm', async () => {
+    renderModal()
+    clickButton('Create new asset')
+
+    fillFirstStep()
+    clickButton('Next')
+
+    clickButton('Confirm')
+
+    clickButton('Create new asset')
+
+    assertTextInput('Asset name', '')
+    assertTextInput('Asset symbol', '')
+    assertTextInput('Asset decimals', '')
+    assertTextInput('Asset ID', '')
   })
 })

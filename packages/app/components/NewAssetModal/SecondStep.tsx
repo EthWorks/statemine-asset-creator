@@ -1,6 +1,7 @@
 import { useNewAssetModal } from './context/useNewAssetModal'
+import { ModalStep } from './types'
 
-export function SecondStep(): JSX.Element {
+export function SecondStep({ onNext }: ModalStep): JSX.Element {
   const { assetName, assetSymbol, assetDecimals, assetId } = useNewAssetModal()
 
   return (
@@ -10,7 +11,7 @@ export function SecondStep(): JSX.Element {
       <p>{assetSymbol}</p>
       <p>{assetDecimals}</p>
       <p>{assetId}</p>
-      <button>Confirm</button>
+      <button onClick={onNext}>Confirm</button>
     </div>
   )
 }

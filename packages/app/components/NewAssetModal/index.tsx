@@ -4,20 +4,24 @@ import { NewAssetModalProvider } from './context/provider'
 import { FirstStep } from './FirstStep'
 import { SecondStep } from './SecondStep'
 
-function NewAssetModal(): JSX.Element {
+interface Props {
+  closeModal: () => void
+}
+
+function NewAssetModal({ closeModal }: Props): JSX.Element {
   const [activeStep, setActiveStep] = useState<number>(1)
 
-  const moveToStep = (step: number): void => {
+  const _moveToStep = (step: number): void => {
     setActiveStep(step)
   }
 
-  const renderStep: () => JSX.Element | undefined = () => {
+  const renderStep: () => JSX.Element = () => {
     switch (activeStep){
       case 1: {
-        return <FirstStep onNext={() => moveToStep(2)}/>
+        return <FirstStep onNext={() => _moveToStep(2)}/>
       }
-      case 2: {
-        return <SecondStep/>
+      default: {
+        return <SecondStep onNext={closeModal}/>
       }
     }
   }

@@ -18,6 +18,12 @@ export async function assertText(text: string) {
   await screen.findByText(text)
 }
 
+export function assertTextInput(inputName:string, text: string) {
+  const input  = screen.getByLabelText(inputName)
+
+  expect(input).toHaveTextContent(text)
+}
+
 export function assertNoButton(name: string) {
   expect(screen.queryByRole('button', { name })).not.toBeInTheDocument()
 }
