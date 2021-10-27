@@ -1,5 +1,3 @@
-import type { UseAccounts } from 'use-substrate'
-
 import { act, render, waitFor } from '@testing-library/react'
 import * as MockRouter from 'next-router-mock'
 import { memoryRouter } from 'next-router-mock'
@@ -8,22 +6,15 @@ import { ThemeProvider } from 'styled-components'
 
 import ConnectWallet from '../pages/connect-wallet'
 import { theme } from '../styles/styleVariables'
-import { POLKADOT_EXTENSION_LINK } from '../utils/consts'
+import { ACCOUNT_SELECT_URL, CONNECT_WALLET_URL, POLKADOT_EXTENSION_LINK } from '../utils'
 import { assertLink, assertLocalStorage, assertNewTabOpened, assertText, clickButton, setLocalStorage } from './helpers'
+import { mockUseAccounts, mockWeb3Enable } from './mocks'
 
-const mockWeb3Enable = jest.fn().mockResolvedValue('')
 jest.mock('next/dist/client/router', () => MockRouter)
 
 jest.mock('use-substrate', () => ({
-  useAccounts: () => (mockUseAccounts),
+  useAccounts: () => mockUseAccounts,
 }))
-
-const mockUseAccounts: UseAccounts = {
-  allAccounts: [],
-  hasAccounts: false,
-  web3Enable: mockWeb3Enable,
-  extensionStatus: 'Available'
-}
 
 const renderConnectWallet = () => render(<ThemeProvider theme={theme}><ConnectWallet /></ThemeProvider>)
 
@@ -31,14 +22,14 @@ describe('Connect wallet', () => {
   describe('on button click', () => {
     beforeEach(() => {
       act(() => {
-        memoryRouter.setCurrentUrl('/connect-wallet')
+        memoryRouter.setCurrentUrl(CONNECT_WALLET_URL)
         localStorage.clear()
         mockUseAccounts.extensionStatus = 'Available'
         mockWeb3Enable.mockClear()
       })
     })
 
-    it('adds extensionActivated to localstorage and redirects to dashboard', async () => {
+    it('adds extensionActivated to localstorage and redirects to account-select page', async () => {
       renderConnectWallet()
 
       assertLocalStorage('extensionActivated', null)
@@ -49,7 +40,7 @@ describe('Connect wallet', () => {
 
       assertLocalStorage('extensionActivated', 'true')
 
-      expect(memoryRouter.asPath).toEqual('/')
+      expect(memoryRouter.asPath).toEqual(ACCOUNT_SELECT_URL)
     })
 
     it('calls web3Enable', async () => {
@@ -62,7 +53,7 @@ describe('Connect wallet', () => {
       await waitFor(() => expect(mockWeb3Enable).toHaveBeenCalled())
     })
 
-    it('when extension is not loaded, it opens install page and shows download prompt', async () => {
+    it('when extension is not loaded, it opens install page', async () => {
       mockUseAccounts.extensionStatus = 'Unavailable'
 
       renderConnectWallet()
@@ -81,13 +72,13 @@ describe('Connect wallet', () => {
     await assertLink(POLKADOT_EXTENSION_LINK)
   })
 
-  it('on load redirects to dashboard if extension has already been activated', async () => {
+  it('on load redirects to account-select page if extension has already been activated', async () => {
     setLocalStorage('extensionActivated', 'true')
 
     renderConnectWallet()
 
     await waitFor(() => expect(mockWeb3Enable).toBeCalled())
 
-    expect(memoryRouter.asPath).toEqual('/')
+    expect(memoryRouter.asPath).toEqual(ACCOUNT_SELECT_URL)
   })
 })

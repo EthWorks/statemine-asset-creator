@@ -1,24 +1,50 @@
 import type { NextPage } from 'next'
-import type { Account } from 'use-substrate'
 
 import Head from 'next/head'
-import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
 
-import { Chains, JACO, useAccounts, useBalances } from 'use-substrate'
+import { Chains, useAccounts, useBalances } from 'use-substrate'
 
-import { AccountSelect, Modal, Text } from '../components'
+
+import { AccountSelect, Modal, Text, NewAssetModal } from '../components'
+
 import styles from '../styles/Home.module.css'
+import {
+  ACCOUNT_SELECT_URL,
+  activeAccountSet,
+  CONNECT_WALLET_URL,
+  extensionActivated,
+  useAsync,
+  useToggle
+} from '../utils'
 
 const Home: NextPage =  () => {
-  const balances = useBalances(JACO, Chains.Kusama)
-  const statmineBalances = useBalances(JACO, Chains.Statemine)
-  const accounts = useAccounts()
-  const [account, setAccount] = useState<Account>(accounts.allAccounts[0])
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  const [account] = useState<string | null>(localStorage.getItem('activeAccount'))
+  const [isModalOpen, toggleModalOpen] = useToggle(false)
+  const balances = useBalances(account, Chains.Kusama)
+  const statemineBalances = useBalances(account, Chains.Statemine)
+  const { allAccounts, web3Enable } = useAccounts()
+  const router = useRouter()
 
-  useEffect(() => {
-    setAccount(accounts.allAccounts[0])
-  }, [accounts.allAccounts])
+
+  async function redirect(): Promise<boolean | void> {
+    if(!extensionActivated()) {
+      return router.push(CONNECT_WALLET_URL)
+    }
+
+    await web3Enable()
+
+    if(!activeAccountSet()) {
+      return router.push(ACCOUNT_SELECT_URL)
+    }
+  }
+
+  useAsync(redirect, [web3Enable])
+
+  if (!extensionActivated() || !activeAccountSet() || !account) {
+    return <>Loading...</>
+  }
 
   return (
     <div className={styles.container}>
@@ -28,37 +54,33 @@ const Home: NextPage =  () => {
       </Head>
 
       <main className={styles.main}>
+        <div>
+          {!isModalOpen && <button onClick={toggleModalOpen}>Create new asset</button>}
+          {isModalOpen && (
+            <NewAssetModal closeModal={toggleModalOpen}/>
+          )}
+        </div>
+        <div data-testid='active-account-container'>
+          <p>
+            {account}
+          </p>
+          <p className={styles.description}>
+              Balance: {balances?.freeBalance.toString()}
+          </p>
+          <p className={styles.description}>
+              Statemine Balance: {statemineBalances?.freeBalance.toString()}
+          </p>
+        </div>
         <h1 className={styles.title}>
           Welcome to Statemine
         </h1>
-        <Modal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          size='l'
-          title='Example title'
-          padding='s'
-          headerOverModal={<Text size='3XL' color='white'>Welcome to <b>Statemine</b> Asset Creator!</Text>}
-        >
-          Modal content
-        </Modal>
 
-        <p className={styles.description}>
-            Balance: {balances?.freeBalance.toString()}
-        </p>
-        <p className={styles.description}>
-            Statemine Balance: {statmineBalances?.freeBalance.toString()}
-        </p>
         <div>Extension accounts:</div>
         <ul>
-          {accounts.allAccounts.map((account, index) =>
+          {allAccounts.map((account, index) =>
             <li key={index}>address: {account.address} name: {account.name}</li>)
           }
         </ul>
-        {accounts && account && (
-          <AccountSelect currentAccount={account} setCurrentAccount={setAccount} accounts={accounts.allAccounts}/>
-        )}
-        { accounts.error === 'EXTENSION' && <div>No extension available</div>}
-        <button onClick={() => setIsModalOpen(true)}>Show Modal</button>
       </main>
     </div>
   )
