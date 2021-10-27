@@ -2,7 +2,7 @@ import { render } from '@testing-library/react'
 import React, { useState } from 'react'
 
 import { assertText, assertTextInput, clickButton, fillInput } from '../../__tests__/helpers'
-import NewAssetModal from './index'
+import { NewAssetModal } from './index'
 
 function TestComponent(): JSX.Element {
   const [isOpen, setIsOpen] = useState<boolean>(false)

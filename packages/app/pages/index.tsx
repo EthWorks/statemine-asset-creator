@@ -6,7 +6,7 @@ import { useState } from 'react'
 
 import { Chains, useAccounts, useBalances } from 'use-substrate'
 
-import NewAssetModal from '../components/NewAssetModal'
+import { NewAssetModal } from '../components'
 import styles from '../styles/Home.module.css'
 import { ACCOUNT_SELECT_URL, activeAccountSet, CONNECT_WALLET_URL, extensionActivated, useAsync } from '../utils'
 

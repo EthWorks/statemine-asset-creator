@@ -1,12 +1,13 @@
-import { CustomInput } from '../FormElements/CustomInput'
+import type  { ModalStep } from './types'
+
+import { CustomInput } from '../FormElements'
 import { useNewAssetModal } from './context/useNewAssetModal'
-import { ModalStep } from './types'
 
 export function FirstStep({ onNext }: ModalStep): JSX.Element {
   const { assetName, setAssetName, assetId, assetSymbol, setAssetId, setAssetSymbol, setAssetDecimals, assetDecimals } = useNewAssetModal()
 
   return (
-    <div>
+    <>
       <p>Create asset</p>
       <CustomInput
         value={assetName}
@@ -33,6 +34,6 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
         id="asset-ID"
       />
       <button onClick={onNext}>Next</button>
-    </div>
+    </>
   )
 }

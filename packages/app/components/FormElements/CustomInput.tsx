@@ -5,7 +5,7 @@ interface CustomInputProps<T> extends Omit<React.InputHTMLAttributes<HTMLInputEl
   onChange: (newValue: T) => void,
 }
 
-export type CustomInputTextProps = CustomInputProps<string>
+type CustomInputTextProps = CustomInputProps<string>
 
 export function CustomInput({ label, id, onChange, ...args }: CustomInputTextProps): React.ReactElement<CustomInputTextProps> {
   return (

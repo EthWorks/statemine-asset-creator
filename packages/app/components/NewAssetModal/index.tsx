@@ -1,14 +1,12 @@
+import type { NewAssetModalProps } from './types'
+
 import React, { useState } from 'react'
 
 import { NewAssetModalProvider } from './context/provider'
 import { FirstStep } from './FirstStep'
 import { SecondStep } from './SecondStep'
 
-interface Props {
-  closeModal: () => void
-}
-
-function NewAssetModal({ closeModal }: Props): JSX.Element {
+export function NewAssetModal({ closeModal }: NewAssetModalProps): JSX.Element {
   const [activeStep, setActiveStep] = useState<number>(1)
 
   const _moveToStep = (step: number): void => {
@@ -34,5 +32,3 @@ function NewAssetModal({ closeModal }: Props): JSX.Element {
     </NewAssetModalProvider>
   )
 }
-
-export default NewAssetModal
