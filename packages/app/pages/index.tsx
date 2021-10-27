@@ -71,6 +71,7 @@ const Home: NextPage =  () => {
         <h1 className={styles.title}>
           Welcome to Statemine
         </h1>
+
         <div>Extension accounts:</div>
         <ul>
           {allAccounts.map((account, index) =>
