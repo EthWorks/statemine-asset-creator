@@ -1,17 +1,18 @@
 import { render } from '@testing-library/react'
-import React, { useState } from 'react'
+import React from 'react'
 
 import { assertText, assertTextInput, clickButton, fillInput } from '../../__tests__/helpers'
+import { useToggle } from '../../utils'
 import { NewAssetModal } from './index'
 
 function TestComponent(): JSX.Element {
-  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [isOpen, toggleOpen] = useToggle()
 
   return (
     <>
-      {!isOpen && <button onClick={() => setIsOpen(true)}>Create new asset</button>}
+      {!isOpen && <button onClick={toggleOpen}>Create new asset</button>}
       {isOpen && (
-        <NewAssetModal closeModal={() => setIsOpen(false)}/>
+        <NewAssetModal closeModal={toggleOpen}/>
       )}
     </>
   )

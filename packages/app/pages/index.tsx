@@ -8,11 +8,18 @@ import { Chains, useAccounts, useBalances } from 'use-substrate'
 
 import { NewAssetModal } from '../components'
 import styles from '../styles/Home.module.css'
-import { ACCOUNT_SELECT_URL, activeAccountSet, CONNECT_WALLET_URL, extensionActivated, useAsync } from '../utils'
+import {
+  ACCOUNT_SELECT_URL,
+  activeAccountSet,
+  CONNECT_WALLET_URL,
+  extensionActivated,
+  useAsync,
+  useToggle
+} from '../utils'
 
 const Home: NextPage =  () => {
   const [account] = useState<string | null>(localStorage.getItem('activeAccount'))
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  const [isModalOpen, toggleModalOpen] = useToggle(false)
   const balances = useBalances(account, Chains.Kusama)
   const statemineBalances = useBalances(account, Chains.Statemine)
   const { allAccounts, web3Enable } = useAccounts()
@@ -36,10 +43,6 @@ const Home: NextPage =  () => {
     return <>Loading...</>
   }
 
-  function _onClick(): void {
-    setIsModalOpen(true)
-  }
-
   return (
     <div className={styles.container}>
       <Head>
@@ -49,9 +52,9 @@ const Home: NextPage =  () => {
 
       <main className={styles.main}>
         <div>
-          {!isModalOpen && <button onClick={_onClick}>Create new asset</button>}
+          {!isModalOpen && <button onClick={toggleModalOpen}>Create new asset</button>}
           {isModalOpen && (
-            <NewAssetModal closeModal={() => setIsModalOpen(false)}/>
+            <NewAssetModal closeModal={toggleModalOpen}/>
           )}
         </div>
         <div data-testid='active-account-container'>
