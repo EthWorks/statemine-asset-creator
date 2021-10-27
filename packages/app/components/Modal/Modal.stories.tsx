@@ -1,7 +1,7 @@
 import { Story } from '@storybook/react'
 
 import { Text } from '../typography/Text'
-import Index, { ModalProps } from './index'
+import Modal, { ModalProps } from './index'
 
 const defaultHeader = <Text size='3XL' color='white'>Welcome to <b>Statemine</b> Asset Creator!</Text>
 const empty = <></>
@@ -10,7 +10,7 @@ const headers = { defaultHeader, empty }
 
 const Default = {
   title: 'Components/Index',
-  component: Index,
+  component: Modal,
   argTypes: {
     padding: {
       control: { type: 'select' },
@@ -38,9 +38,9 @@ const Default = {
 export default Default
 
 const Template: Story<ModalProps> = (args) =>
-  <Index {...args}>
+  <Modal {...args}>
     <h1 style={{ color: '#ffffff' }}>Modal content</h1>
-  </Index>
+  </Modal>
 
 export const Base = Template.bind({})
 Base.args = {
