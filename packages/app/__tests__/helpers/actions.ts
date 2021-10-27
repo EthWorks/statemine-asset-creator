@@ -25,3 +25,8 @@ export function openDropdown(openDropdownButton: HTMLElement) {
     })
   )
 }
+
+export function fillInput(label: string, value: string): void {
+  const input = screen.getByLabelText(label)
+  fireEvent.change(input, { target: { value } })
+}

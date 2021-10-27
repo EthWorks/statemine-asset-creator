@@ -6,11 +6,20 @@ import { useState } from 'react'
 
 import { Chains, useAccounts, useBalances } from 'use-substrate'
 
+import { NewAssetModal } from '../components'
 import styles from '../styles/Home.module.css'
-import { ACCOUNT_SELECT_URL, activeAccountSet, CONNECT_WALLET_URL, extensionActivated, useAsync } from '../utils'
+import {
+  ACCOUNT_SELECT_URL,
+  activeAccountSet,
+  CONNECT_WALLET_URL,
+  extensionActivated,
+  useAsync,
+  useToggle
+} from '../utils'
 
 const Home: NextPage =  () => {
   const [account] = useState<string | null>(localStorage.getItem('activeAccount'))
+  const [isModalOpen, toggleModalOpen] = useToggle(false)
   const balances = useBalances(account, Chains.Kusama)
   const statemineBalances = useBalances(account, Chains.Statemine)
   const { allAccounts, web3Enable } = useAccounts()
@@ -42,6 +51,12 @@ const Home: NextPage =  () => {
       </Head>
 
       <main className={styles.main}>
+        <div>
+          {!isModalOpen && <button onClick={toggleModalOpen}>Create new asset</button>}
+          {isModalOpen && (
+            <NewAssetModal closeModal={toggleModalOpen}/>
+          )}
+        </div>
         <div data-testid='active-account-container'>
           <p>
             {account}
