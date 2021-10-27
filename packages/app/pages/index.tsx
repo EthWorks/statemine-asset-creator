@@ -6,8 +6,7 @@ import { useEffect, useState } from 'react'
 
 import { Chains, JACO, useAccounts, useBalances } from 'use-substrate'
 
-import { AccountSelect, Text } from '../components'
-import Modal from '../components/Modal/Modal'
+import { AccountSelect, Modal, Text } from '../components'
 import styles from '../styles/Home.module.css'
 
 const Home: NextPage =  () => {

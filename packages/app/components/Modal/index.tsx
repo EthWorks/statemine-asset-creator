@@ -19,11 +19,10 @@ export interface ModalProps {
 }
 
 interface ModalCardProps {
-  padding?: PaddingSize,
   size?: ModalSize,
 }
 
-const Modal = ({ children, padding, size, title, titleCenterPosition, headerOverModal, isOpen, onClose }: ModalProps): React.ReactElement<ModalProps> | null => {
+export const Modal = ({ children, padding, size, title, titleCenterPosition, headerOverModal, isOpen, onClose }: ModalProps): React.ReactElement<ModalProps> | null => {
   const _onClose = (): void => onClose()
 
   if (!isOpen) return null
@@ -40,8 +39,6 @@ const Modal = ({ children, padding, size, title, titleCenterPosition, headerOver
   )
 }
 
-export default Modal
-
 const ModalView = styled.div`
   position: fixed;
   top: 0;
@@ -52,6 +49,7 @@ const ModalView = styled.div`
   width: 100vw;
   height: 100vh;
   padding-top: 100px;
+  backdrop-filter: blur(1.5px);
 `
 
 const ModalBg = styled.div`
@@ -62,7 +60,6 @@ const ModalBg = styled.div`
   height: 100vh;
   background-color: ${({ theme }) => theme.colors.gray[800]};
   opacity: .6;
-  backdrop-filter: blur(10px);
 `
 
 const ModalCard = styled(Card)<ModalCardProps>`
