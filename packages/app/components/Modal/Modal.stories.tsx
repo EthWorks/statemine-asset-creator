@@ -9,7 +9,7 @@ const empty = <></>
 const headers = { defaultHeader, empty }
 
 const Default = {
-  title: 'Components/Index',
+  title: 'Components/Modal',
   component: Modal,
   argTypes: {
     padding: {
@@ -30,7 +30,6 @@ const Default = {
           empty: ''
         },
       },
-      defaultValue: 'defaultHeader'
     },
   }
 }
