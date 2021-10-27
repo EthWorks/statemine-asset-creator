@@ -24,11 +24,13 @@ export const BaseButtonStyle = styled.button<ButtonProps>`
   display: flex;
   justify-content: center;
   align-items: center;
+  grid-gap: 8px;
   padding: 8px 16px;
   width: 200px;
   border-radius: ${({ theme }) => theme.borderRadius.s};
   font-size: 14px;
   line-height: 20px;
+  white-space: nowrap;
   cursor: pointer;
 
   ${({ large }) => large && css`
