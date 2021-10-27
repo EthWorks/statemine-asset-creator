@@ -7,7 +7,6 @@ export function SecondStep({ onNext }: ModalStep): JSX.Element {
 
   return (
     <>
-      <p>Create asset</p>
       <p>{assetName}</p>
       <p>{assetSymbol}</p>
       <p>{assetDecimals}</p>

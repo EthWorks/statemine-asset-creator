@@ -1,7 +1,6 @@
-import { render } from '@testing-library/react'
 import React from 'react'
 
-import { assertText, assertTextInput, clickButton, fillInput } from '../../__tests__/helpers'
+import { assertText, assertTextInput, clickButton, fillInput, renderWithTheme } from '../../__tests__/helpers'
 import { useToggle } from '../../utils'
 import { NewAssetModal } from './index'
 
@@ -11,15 +10,13 @@ function TestComponent(): JSX.Element {
   return (
     <>
       {!isOpen && <button onClick={toggleOpen}>Create new asset</button>}
-      {isOpen && (
-        <NewAssetModal closeModal={toggleOpen}/>
-      )}
+      <NewAssetModal isOpen={isOpen} closeModal={toggleOpen}/>
     </>
   )
 }
 
 const renderModal = (): void => {
-  render(<TestComponent/>)
+  renderWithTheme(<TestComponent/>)
 }
 
 const fillFirstStep = (): void => {

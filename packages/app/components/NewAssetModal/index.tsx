@@ -2,15 +2,21 @@ import type { NewAssetModalProps } from './types'
 
 import React, { useState } from 'react'
 
+import { Modal } from '../Modal'
 import { NewAssetModalProvider } from './context/provider'
 import { FirstStep } from './FirstStep'
 import { SecondStep } from './SecondStep'
 
-export function NewAssetModal({ closeModal }: NewAssetModalProps): JSX.Element {
+export function NewAssetModal({ isOpen, closeModal }: NewAssetModalProps): JSX.Element {
   const [activeStep, setActiveStep] = useState<number>(1)
 
   const _moveToStep = (step: number): void => {
     setActiveStep(step)
+  }
+
+  const _onConfirm = (): void => {
+    _moveToStep(1)
+    closeModal()
   }
 
   const renderStep: () => JSX.Element = () => {
@@ -19,16 +25,23 @@ export function NewAssetModal({ closeModal }: NewAssetModalProps): JSX.Element {
         return <FirstStep onNext={() => _moveToStep(2)}/>
       }
       default: {
-        return <SecondStep onNext={closeModal}/>
+        return <SecondStep onNext={_onConfirm}/>
       }
     }
   }
 
   return (
-    <NewAssetModalProvider>
-      <div>
-        {renderStep()}
-      </div>
-    </NewAssetModalProvider>
+    <Modal
+      isOpen={isOpen}
+      onClose={closeModal}
+      padding='m'
+      title='Create asset'
+    >
+      <NewAssetModalProvider>
+        <div>
+          {renderStep()}
+        </div>
+      </NewAssetModalProvider>
+    </Modal>
   )
 }
