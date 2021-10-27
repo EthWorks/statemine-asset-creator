@@ -3,6 +3,11 @@ import { Story } from '@storybook/react'
 import { Text } from '../typography/Text'
 import Modal, { ModalProps } from './Modal'
 
+const defaultHeader = <Text size='3XL' color='white'>Welcome to <b>Statemine</b> Asset Creator!</Text>
+const empty = <></>
+
+const headers = { defaultHeader, empty }
+
 const Default = {
   title: 'Components/Modal',
   component: Modal,
@@ -15,9 +20,18 @@ const Default = {
       control: { type: 'select' },
       options: ['m', 'l'],
     },
-    isOpen: true,
-    titleCenterPosition: false,
-    headerOverModal: <Text size='3XL' color='white'>Welcome to <b>Statemine</b> Asset Creator!</Text>
+    headerOverModal: {
+      options: Object.keys(headers),
+      mapping: headers,
+      control: {
+        type: 'select',
+        labels: {
+          defaultModalHeader: 'default header',
+          empty: ''
+        },
+      },
+      defaultValue: 'defaultHeader'
+    },
   }
 }
 
@@ -35,5 +49,5 @@ Base.args = {
   title: 'Modal title',
   titleCenterPosition: false,
   isOpen: true,
-  headerOverModal: <Text size='3XL' color='white'>Welcome to <b>Statemine</b> Asset Creator!</Text>
+  headerOverModal: 'defaultHeader'
 }
