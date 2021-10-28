@@ -1,6 +1,6 @@
 import { Story } from '@storybook/react'
 
-import CloseButton,{ CloseButtonProps } from './CloseButton'
+import { CloseButton } from './CloseButton'
 
 const Default = {
   title: 'Components/Button',
@@ -9,7 +9,7 @@ const Default = {
 
 export default Default
 
-const Template: Story<CloseButtonProps> = (args) =>
+const Template: Story = (args) =>
   <CloseButton {...args} />
 
 export const Close = Template.bind({})
