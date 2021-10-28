@@ -5,7 +5,7 @@ import React from 'react'
 
 import AccountSelectPage from '../pages/account-select'
 import { ACCOUNT_SELECT_URL, DASHBOARD_URL } from '../utils'
-import { assertLocalStorage, clickButton, openDropdown, renderComponent } from './helpers'
+import { assertLocalStorage, clickButton, openDropdown, renderWithTheme } from './helpers'
 import { bobAccount, mockChains, mockUseAccounts, mockUseBalances } from './mocks'
 
 jest.mock('use-substrate', () => ({
@@ -25,7 +25,7 @@ describe('account-select page', () => {
   })
 
   it('saves selected account to localstorage and redirects to dashboard', async () => {
-    renderComponent(<AccountSelectPage />)
+    renderWithTheme(<AccountSelectPage />)
 
     assertLocalStorage('activeAccount', null)
 

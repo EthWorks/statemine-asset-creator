@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { PaddingSize } from '../../globalTypes/globalTypes'
+import { PaddingSize } from '../../globalTypes'
 
 export interface CardProps {
   padding?: PaddingSize

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { assertText, assertTextInput, clickButton, fillInput, renderComponent } from '../../__tests__/helpers'
+import { assertText, assertTextInput, clickButton, fillInput, renderWithTheme } from '../../__tests__/helpers'
 import { useToggle } from '../../utils'
 import { NewAssetModal } from './index'
 
@@ -16,7 +16,7 @@ function TestComponent(): JSX.Element {
 }
 
 const renderModal = (): void => {
-  renderComponent(<TestComponent/>)
+  renderWithTheme(<TestComponent/>)
 }
 
 const fillFirstStep = (): void => {

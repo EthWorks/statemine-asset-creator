@@ -5,7 +5,7 @@ import React from 'react'
 
 import Home from '../pages/index'
 import { ACCOUNT_SELECT_URL, CONNECT_WALLET_URL, DASHBOARD_URL } from '../utils'
-import { assertNoButton, assertText, clickButton, renderComponent, setLocalStorage } from './helpers'
+import { assertNoButton, assertText, clickButton, renderWithTheme, setLocalStorage } from './helpers'
 import { bobAccount, mockChains, mockUseAccounts, mockUseBalances, mockWeb3Enable } from './mocks'
 
 jest.mock('next/dist/client/router', () => MockRouter)
@@ -27,7 +27,7 @@ describe('Home', () => {
 
   describe('redirect on load', () => {
     it('when extension was not activated', async () => {
-      renderComponent(<Home/>)
+      renderWithTheme(<Home/>)
 
       await waitFor(() => expect(memoryRouter.asPath).toEqual(CONNECT_WALLET_URL))
     })
@@ -35,7 +35,7 @@ describe('Home', () => {
     it('when extension was activated but activeAccount was not selected', async () => {
       setLocalStorage('extensionActivated', 'true')
 
-      renderComponent(<Home/>)
+      renderWithTheme(<Home/>)
 
       await waitFor(() => expect(mockWeb3Enable).toBeCalled())
       await waitFor(() => expect(memoryRouter.asPath).toEqual(ACCOUNT_SELECT_URL))
@@ -45,7 +45,7 @@ describe('Home', () => {
       setLocalStorage('extensionActivated', 'true')
       setLocalStorage('activeAccount', bobAccount.address)
 
-      renderComponent(<Home/>)
+      renderWithTheme(<Home/>)
 
       await waitFor(() => expect(mockWeb3Enable).toBeCalled())
       await waitFor(() => expect(memoryRouter.asPath).toEqual(DASHBOARD_URL))
@@ -56,7 +56,7 @@ describe('Home', () => {
     setLocalStorage('activeAccount', bobAccount.address)
     setLocalStorage('extensionActivated', 'true')
 
-    renderComponent(<Home/>)
+    renderWithTheme(<Home/>)
 
     screen.getByRole('heading', { name: /welcome to Statemine/i })
     const activeAccountContainer = screen.getByTestId('active-account-container')
@@ -69,7 +69,7 @@ describe('Home', () => {
     setLocalStorage('activeAccount', bobAccount.address)
     setLocalStorage('extensionActivated', 'true')
 
-    renderComponent(<Home/>)
+    renderWithTheme(<Home/>)
 
     clickButton('Create new asset')
 
