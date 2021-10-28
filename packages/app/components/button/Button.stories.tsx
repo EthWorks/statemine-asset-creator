@@ -2,6 +2,10 @@ import { Story } from '@storybook/react'
 
 import { BaseButtonStyle, ButtonOutline, ButtonPrimary, ButtonProps } from './Button'
 
+interface ButtonPropsStories extends ButtonProps{
+  disabled: boolean,
+}
+
 const Default = {
   title: 'Components/Button',
   component: BaseButtonStyle,
@@ -13,22 +17,24 @@ const Default = {
 
 export default Default
 
-const TemplatePrimary: Story<ButtonProps> = (args) =>
+const TemplatePrimary: Story<ButtonPropsStories> = (args) =>
   <ButtonPrimary {...args}>
     Primary button
   </ButtonPrimary>
 
-const TemplateOutline: Story<ButtonProps> = (args) =>
+const TemplateOutline: Story<ButtonPropsStories> = (args) =>
   <ButtonOutline {...args}>
     Outline button
   </ButtonOutline>
 
 export const Primary = TemplatePrimary.bind({})
 Primary.args = {
-  large: false
+  large: false,
+  disabled: false
 }
 
 export const Outline = TemplateOutline.bind({})
 Outline.args = {
-  large: false
+  large: false,
+  disabled: false
 }

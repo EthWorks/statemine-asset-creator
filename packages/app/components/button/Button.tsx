@@ -22,17 +22,17 @@ export const BaseButtonStyle = styled.button<ButtonProps>`
     width: 250px;
   `}
 
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.pinkDark};
+    background-color: ${({ theme }) => theme.colors.pinkDark};
+    color: ${({ theme }) => theme.colors.white};
+  }
+  
   &:disabled {
     background-color: ${({ theme }) => theme.colors.gray[800]};
     border-color: ${({ theme }) => theme.colors.gray[800]};
     color: ${({ theme }) => theme.colors.gray[600]};
     cursor: not-allowed;
-  }
-
-  &:hover {
-    border-color: ${({ theme }) => theme.colors.pinkDark};
-    background-color: ${({ theme }) => theme.colors.pinkDark};
-    color: ${({ theme }) => theme.colors.white};
   }
 `
 
