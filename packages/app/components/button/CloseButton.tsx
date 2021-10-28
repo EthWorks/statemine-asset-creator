@@ -1,17 +1,6 @@
-import React from 'react'
 import styled from 'styled-components'
 
-export interface CloseButtonProps {
-  onClick: () => void
-}
-
-const CloseButton = ({ onClick }: CloseButtonProps): React.ReactElement<CloseButtonProps> => (
-  <CloseButtonWrapper onClick={onClick} />
-)
-
-export default CloseButton
-
-const CloseButtonWrapper = styled.button`
+export const CloseButton = styled.button`
   position: relative;
   width: 20px;
   height: 20px;

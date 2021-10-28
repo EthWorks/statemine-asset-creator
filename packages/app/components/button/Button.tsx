@@ -1,26 +1,10 @@
-import React, { ReactNode } from 'react'
 import styled, { css } from 'styled-components'
 
 export interface ButtonProps {
-  children: ReactNode,
-  disabled?: boolean,
-  onClick?: () => void,
   large?: boolean
 }
 
-export const ButtonPrimary = ({ children, disabled, onClick, large }: ButtonProps): React.ReactElement<ButtonProps> => (
-  <StyleButtonPrimary large={large} disabled={disabled} onClick={onClick}>
-    {children}
-  </StyleButtonPrimary>
-)
-
-export const ButtonOutline = ({ children, disabled, onClick, large }: ButtonProps): React.ReactElement<ButtonProps> => (
-  <StyleButtonOutline large={large} disabled={disabled} onClick={onClick}>
-    {children}
-  </StyleButtonOutline>
-)
-
-export const BaseButtonStyle = styled.button<ButtonProps>`
+const BaseButtonStyle = styled.button<ButtonProps>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -32,6 +16,7 @@ export const BaseButtonStyle = styled.button<ButtonProps>`
   line-height: 20px;
   white-space: nowrap;
   cursor: pointer;
+  transition: .25s ease-in;
 
   ${({ large }) => large && css`
     width: 250px;
@@ -43,16 +28,22 @@ export const BaseButtonStyle = styled.button<ButtonProps>`
     color: ${({ theme }) => theme.colors.gray[600]};
     cursor: not-allowed;
   }
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.pinkDark[200]};
+    background-color: ${({ theme }) => theme.colors.pinkDark[200]};
+    color: ${({ theme }) => theme.colors.white};
+  }
 `
 
-const StyleButtonPrimary = styled(BaseButtonStyle)<ButtonProps>`
-  border: 1px solid ${({ theme }) => theme.colors.pink};
-  background-color: ${({ theme }) => theme.colors.pink};
+export const ButtonPrimary = styled(BaseButtonStyle)<ButtonProps>`
+  border: 1px solid ${({ theme }) => theme.colors.pinkLight};
+  background-color: ${({ theme }) => theme.colors.pinkLight};
   color: ${({ theme }) => theme.colors.white};
 `
 
-const StyleButtonOutline = styled(BaseButtonStyle)<ButtonProps>`
-  border: 1px solid ${({ theme }) => theme.colors.pink};
+export const ButtonOutline = styled(BaseButtonStyle)<ButtonProps>`
+  border: 1px solid ${({ theme }) => theme.colors.pinkLight};
   background-color: ${({ theme }) => theme.colors.black};
-  color: ${({ theme }) => theme.colors.pink};
+  color: ${({ theme }) => theme.colors.pinkLight};
 `
