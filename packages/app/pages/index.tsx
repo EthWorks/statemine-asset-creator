@@ -53,9 +53,7 @@ const Home: NextPage =  () => {
       <main className={styles.main}>
         <div>
           {!isModalOpen && <button onClick={toggleModalOpen}>Create new asset</button>}
-          {isModalOpen && (
-            <NewAssetModal closeModal={toggleModalOpen}/>
-          )}
+          <NewAssetModal isOpen={isModalOpen} closeModal={toggleModalOpen}/>
         </div>
         <div data-testid='active-account-container'>
           <p>
