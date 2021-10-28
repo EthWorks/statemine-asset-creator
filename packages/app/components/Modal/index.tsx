@@ -1,7 +1,8 @@
+import type { PaddingSize } from '../../gloablTypes/globalTypes'
+
 import React, { ReactNode } from 'react'
 import styled from 'styled-components'
 
-import { PaddingSize } from '../../gloablTypes/globalTypes'
 import Card from '../Card/Card'
 import { ModalHeader } from './ModalHeader'
 
