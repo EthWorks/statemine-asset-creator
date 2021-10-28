@@ -23,7 +23,11 @@ const AppProvider = dynamic<AppProviderProps>(
 )
 
 const config: Config = {
-  chains: [{ name: Chains.Kusama, url: KUSAMA_ARCHIVE_NODE_URL }, { name: Chains.Statemine, url: STATEMINE_ARCHIVE_NODE_URL }]
+  chains: [
+    { name: Chains.Kusama },
+    { name: Chains.Statemine },
+    { name: Chains.Local }
+  ]
 }
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {

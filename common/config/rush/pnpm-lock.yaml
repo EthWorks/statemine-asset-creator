@@ -10,7 +10,7 @@ specifiers:
   '@polkadot/api-derive': 6.3.2-11
   '@polkadot/extension-dapp': ~0.40.3
   '@polkadot/extension-inject': ~0.40.3
-  '@polkadot/types': ~6.3.1
+  '@polkadot/types': 6.3.2-11
   '@polkadot/ui-keyring': ~0.85.5
   '@radix-ui/react-dropdown-menu': ~0.1.0
   '@radix-ui/react-id': ~0.1.1
@@ -25,11 +25,12 @@ specifiers:
   '@testing-library/jest-dom': ^5.14.1
   '@testing-library/react': ^12.1.1
   '@testing-library/react-hooks': ~7.0.2
-  '@types/bn.js': ~5.1.0
+  '@types/bn.js': 4.11.6
   '@types/jest': ^27.0.2
   '@types/react': 17.0.24
   '@types/react-dom': ~17.0.9
   '@types/styled-components': ^5.1.15
+  '@types/testing-library__jest-dom': ~5.14.1
   '@typescript-eslint/eslint-plugin': ^4.32.0
   '@typescript-eslint/parser': ^4.32.0
   babel-jest: ^27.2.3
@@ -62,7 +63,7 @@ dependencies:
   '@polkadot/api-derive': 6.3.2-11
   '@polkadot/extension-dapp': 0.40.3_@polkadot+api@6.3.2-11
   '@polkadot/extension-inject': 0.40.3_@polkadot+api@6.3.2-11
-  '@polkadot/types': 6.3.1
+  '@polkadot/types': 6.3.2-11
   '@polkadot/ui-keyring': 0.85.5
   '@radix-ui/react-dropdown-menu': 0.1.0_3b7f7b84f013384d046f72a4522eddf8
   '@radix-ui/react-id': 0.1.1_react@17.0.2
@@ -77,11 +78,12 @@ dependencies:
   '@testing-library/jest-dom': 5.14.1
   '@testing-library/react': 12.1.2_react-dom@17.0.2+react@17.0.2
   '@testing-library/react-hooks': 7.0.2_fc2bb8a5b006d3f25c5f84ea777e678d
-  '@types/bn.js': 5.1.0
+  '@types/bn.js': 4.11.6
   '@types/jest': 27.0.2
   '@types/react': 17.0.24
   '@types/react-dom': 17.0.9
   '@types/styled-components': 5.1.15
+  '@types/testing-library__jest-dom': 5.14.1
   '@typescript-eslint/eslint-plugin': 4.33.0_cc617358c89d3f38c52462f6d809db4c
   '@typescript-eslint/parser': 4.33.0_eslint@7.32.0+typescript@4.4.4
   babel-jest: 27.2.5_@babel+core@7.15.8
@@ -2400,16 +2402,6 @@ packages:
       '@polkadot/util': 7.4.1
     dev: false
 
-  /@polkadot/types/6.3.1:
-    resolution: {integrity: sha512-ZZHwohZlyBgTAXmvISWY/lkpOfi6IvX4QAxXUNG+fH2ZB8uLB+ZPKeztPIleOqApj3HzczOCpH9QXK3he2IzHQ==}
-    engines: {node: '>=14.0.0'}
-    dependencies:
-      '@babel/runtime': 7.15.4
-      '@polkadot/util': 7.4.1
-      '@polkadot/util-crypto': 7.4.1
-      rxjs: 7.4.0
-    dev: false
-
   /@polkadot/types/6.3.2-11:
     resolution: {integrity: sha512-KEQj4DZD1bCzpNMc1SiEkTXvMBEcu7far5nJpSseHbVno4oFz4h3h7daY7lRxtgJ8zmlwLChhi+Jm8nBOcJhww==}
     engines: {node: '>=14.0.0'}
@@ -4178,12 +4170,6 @@ packages:
 
   /@types/bn.js/4.11.6:
     resolution: {integrity: sha512-pqr857jrp2kPuO9uRjZ3PwnJTjoQy+fcdxvBTvHm6dkmEL9q+hDD/2j/0ELOBPtPnS8LjCX0gI9nbl8lVkadpg==}
-    dependencies:
-      '@types/node': 16.10.5
-    dev: false
-
-  /@types/bn.js/5.1.0:
-    resolution: {integrity: sha512-QSSVYj7pYFN49kW77o2s9xTCwZ8F2xLbjLLSEVh8D2F4JUhZtPAGOFLTD+ffqksBx/u4cE/KImFjyhqCjn/LIA==}
     dependencies:
       '@types/node': 16.10.5
     dev: false
@@ -14359,7 +14345,7 @@ packages:
     dev: false
 
   file:projects/statemine-asset-creator.tgz:
-    resolution: {integrity: sha512-6HEx3MHaFtd5BAnMRw8q0HL0liLPH2lXFftLOLjC0QR+qsxbyqdDvg0hGdVxEZTJ8SEqc0FzYCVD6oghkkycwQ==, tarball: file:projects/statemine-asset-creator.tgz}
+    resolution: {integrity: sha512-q7vIHrs2zifndhC0pjp3qjKdaslwd2H9A6whrHIV2uDWO+kKIu4/JGhuqeg+6+LA+b1KiU1/CDBBP4cpc8ZKaw==, tarball: file:projects/statemine-asset-creator.tgz}
     name: '@rush-temp/statemine-asset-creator'
     version: 0.0.0
     dependencies:
@@ -14374,7 +14360,7 @@ packages:
       '@testing-library/jest-dom': 5.14.1
       '@testing-library/react': 12.1.2_react-dom@17.0.2+react@17.0.2
       '@testing-library/user-event': 13.4.1
-      '@types/bn.js': 5.1.0
+      '@types/bn.js': 4.11.6
       '@types/jest': 27.0.2
       '@types/react': 17.0.24
       '@types/styled-components': 5.1.15
@@ -14434,7 +14420,7 @@ packages:
     dev: false
 
   file:projects/use-substrate.tgz:
-    resolution: {integrity: sha512-fhgkG0TPUIqHZaDlxGFt2m+9KqV4IyBTZwhwYw74RMsmc16FOU9cHQPwzrT6VwcgWJ38xTWgyTUBAhDyfO0ssQ==, tarball: file:projects/use-substrate.tgz}
+    resolution: {integrity: sha512-pV5MoqX4Yh8Fr3aBngCwMGijEY7Qx6+NxH7G0sf6+iuyxAiAAPR2467inbE8QxP3Q75fiThoKvsE0wwIyA2rdQ==, tarball: file:projects/use-substrate.tgz}
     name: '@rush-temp/use-substrate'
     version: 0.0.0
     dependencies:
@@ -14446,13 +14432,13 @@ packages:
       '@polkadot/api-derive': 6.3.2-11
       '@polkadot/extension-dapp': 0.40.3_@polkadot+api@6.3.2-11
       '@polkadot/extension-inject': 0.40.3_@polkadot+api@6.3.2-11
-      '@polkadot/types': 6.3.1
+      '@polkadot/types': 6.3.2-11
       '@polkadot/ui-keyring': 0.85.5
       '@rushstack/eslint-patch': 1.0.7
       '@testing-library/jest-dom': 5.14.1
       '@testing-library/react': 12.1.2_react-dom@17.0.2+react@17.0.2
       '@testing-library/react-hooks': 7.0.2_fc2bb8a5b006d3f25c5f84ea777e678d
-      '@types/bn.js': 5.1.0
+      '@types/bn.js': 4.11.6
       '@types/jest': 27.0.2
       '@types/react': 17.0.24
       '@types/react-dom': 17.0.9

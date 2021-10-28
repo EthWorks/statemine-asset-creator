@@ -8,6 +8,7 @@
   },
   "include": [
     "./src",
-    "./__tests__"
-  ],
+    "./__tests__",
+    "../../common/temp/node_modules/.pnpm/@types+jest@27.0.2/node_modules/@types/jest/index.d.ts"
+  ]
 }
