@@ -4,7 +4,7 @@ export interface ButtonProps {
   large?: boolean
 }
 
-const BaseButtonStyle = styled.button<ButtonProps>`
+export const BaseButtonStyle = styled.button<ButtonProps>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -30,8 +30,8 @@ const BaseButtonStyle = styled.button<ButtonProps>`
   }
 
   &:hover {
-    border-color: ${({ theme }) => theme.colors.pinkDark[200]};
-    background-color: ${({ theme }) => theme.colors.pinkDark[200]};
+    border-color: ${({ theme }) => theme.colors.pinkDark};
+    background-color: ${({ theme }) => theme.colors.pinkDark};
     color: ${({ theme }) => theme.colors.white};
   }
 `
