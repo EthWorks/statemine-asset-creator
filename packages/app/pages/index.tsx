@@ -6,7 +6,6 @@ import { useState } from 'react'
 
 import { Chains, useAccounts, useBalances } from 'use-substrate'
 
-import { ButtonPrimary, NewAssetModal } from '../components'
 import styles from '../styles/Home.module.css'
 import {
   ACCOUNT_SELECT_URL,
@@ -78,8 +77,6 @@ const Home: NextPage =  () => {
             <li key={index}>address: {account.address} name: {account.name}</li>)
           }
         </ul>
-        
-        <ButtonPrimary disabled>Button disabled</ButtonPrimary>
       </main>
     </div>
   )

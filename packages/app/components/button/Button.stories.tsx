@@ -1,15 +1,6 @@
 import { Story } from '@storybook/react'
 
-import { BaseButtonStyle, ButtonOutline, ButtonPrimary, ButtonProps } from './Button'
-
-const Default = {
-  title: 'Components/Button',
-  component: BaseButtonStyle,
-  argTypes: {
-    disabled: { defaultValue: false, control: { type: 'boolean' } }, large: false }
-}
-
-export default Default
+import { ButtonOutline, ButtonPrimary, ButtonProps } from './Button'
 
 const TemplatePrimary: Story<ButtonProps> = (args) =>
   <ButtonPrimary {...args}>
