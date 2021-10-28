@@ -11,7 +11,7 @@ import {
   assertNewTabOpened,
   assertText,
   clickButton,
-  renderWithTheme,
+  renderComponent,
   setLocalStorage
 } from './helpers'
 import { mockUseAccounts, mockWeb3Enable } from './mocks'
@@ -34,7 +34,7 @@ describe('Connect wallet', () => {
     })
 
     it('adds extensionActivated to localstorage and redirects to account-select page', async () => {
-      renderWithTheme(<ConnectWallet />)
+      renderComponent(<ConnectWallet />)
 
       assertLocalStorage('extensionActivated', null)
 
@@ -48,7 +48,7 @@ describe('Connect wallet', () => {
     })
 
     it('calls web3Enable', async () => {
-      renderWithTheme(<ConnectWallet />)
+      renderComponent(<ConnectWallet />)
 
       expect(mockWeb3Enable).not.toHaveBeenCalled()
 
@@ -60,7 +60,7 @@ describe('Connect wallet', () => {
     it('when extension is not loaded, it opens install page', async () => {
       mockUseAccounts.extensionStatus = 'Unavailable'
 
-      renderWithTheme(<ConnectWallet />)
+      renderComponent(<ConnectWallet />)
 
       clickButton('Polkadot{.js} extension')
 
@@ -69,7 +69,7 @@ describe('Connect wallet', () => {
   })
 
   it('shows download prompt', async () => {
-    renderWithTheme(<ConnectWallet />)
+    renderComponent(<ConnectWallet />)
 
     await assertText('Don’t have the Polkadot{.js} extension? Download it')
 
@@ -79,7 +79,7 @@ describe('Connect wallet', () => {
   it('on load redirects to account-select page if extension has already been activated', async () => {
     setLocalStorage('extensionActivated', 'true')
 
-    renderWithTheme(<ConnectWallet />)
+    renderComponent(<ConnectWallet />)
 
     await waitFor(() => expect(mockWeb3Enable).toBeCalled())
 

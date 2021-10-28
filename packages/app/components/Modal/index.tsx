@@ -1,4 +1,4 @@
-import type { PaddingSize } from '../../gloablTypes/globalTypes'
+import type { PaddingSize } from '../../globalTypes/globalTypes'
 
 import React, { ReactNode } from 'react'
 import styled from 'styled-components'
