@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-type PaddingSize = 's' | 'm' | 'l'
+import { PaddingSize } from '../../gloablTypes/globalTypes'
 
 export interface CardProps {
   padding?: PaddingSize
