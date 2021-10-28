@@ -1,16 +1,12 @@
-import { act, fireEvent, render, screen, within } from '@testing-library/react'
+import { act, fireEvent, screen, within } from '@testing-library/react'
 import * as MockRouter from 'next-router-mock'
 import { memoryRouter } from 'next-router-mock'
 import React from 'react'
-import { ThemeProvider } from 'styled-components'
 
 import AccountSelectPage from '../pages/account-select'
-import { theme } from '../styles/styleVariables'
 import { ACCOUNT_SELECT_URL, DASHBOARD_URL } from '../utils'
-import { assertLocalStorage, clickButton, openDropdown } from './helpers'
+import { assertLocalStorage, clickButton, openDropdown, renderWithTheme } from './helpers'
 import { bobAccount, mockChains, mockUseAccounts, mockUseBalances } from './mocks'
-
-const renderAccountSelect = () => render(<ThemeProvider theme={theme}><AccountSelectPage /></ThemeProvider>)
 
 jest.mock('use-substrate', () => ({
   useAccounts: () => mockUseAccounts,
@@ -29,7 +25,7 @@ describe('account-select page', () => {
   })
 
   it('saves selected account to localstorage and redirects to dashboard', async () => {
-    renderAccountSelect()
+    renderWithTheme(<AccountSelectPage />)
 
     assertLocalStorage('activeAccount', null)
 
