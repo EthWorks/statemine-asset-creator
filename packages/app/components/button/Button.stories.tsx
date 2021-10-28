@@ -25,12 +25,10 @@ const TemplateOutline: Story<ButtonProps> = (args) =>
 
 export const Primary = TemplatePrimary.bind({})
 Primary.args = {
-  disabled: false,
   large: false
 }
 
 export const Outline = TemplateOutline.bind({})
 Outline.args = {
-  disabled: false,
   large: false
 }
