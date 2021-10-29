@@ -1,8 +1,11 @@
+import type { ReactNode } from 'react'
+import type { Transaction } from '../src'
+
 import { ApiRx } from '@polkadot/api'
 import { renderHook } from '@testing-library/react-hooks'
-import React, { ReactNode } from 'react'
+import React from 'react'
 
-import { ALICE, BOB, Transaction, useTransfer } from '../src'
+import { ALICE, BOB, useTransaction } from '../src'
 import { MockedApiProvider } from './mocks/MockedApiProvider'
 
 describe('useTransaction hook', () => {
@@ -19,6 +22,6 @@ describe('useTransaction hook', () => {
       </MockedApiProvider>
     )
 
-    return renderHook(() => useTransfer(transaction, params, signer), { wrapper })
+    return renderHook(() => useTransaction(transaction, params, signer), { wrapper })
   }
 })

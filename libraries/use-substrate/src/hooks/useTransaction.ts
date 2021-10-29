@@ -1,15 +1,16 @@
-import { SubmittableExtrinsic } from '@polkadot/api/types'
-import { DispatchError, EventRecord, RuntimeDispatchInfo } from '@polkadot/types/interfaces'
-import { ISubmittableResult, ITuple, RegistryError } from '@polkadot/types/types'
+import type { Observable } from 'rxjs'
+import type { SubmittableExtrinsic } from '@polkadot/api/types'
+import type { DispatchError, EventRecord, RuntimeDispatchInfo } from '@polkadot/types/interfaces'
+import type { ISubmittableResult, ITuple, RegistryError } from '@polkadot/types/types'
+
 import BN from 'bn.js'
-import { Observable } from 'rxjs'
 
 import { useObservable } from './useObservable'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Transaction = ((...args: any[]) => SubmittableExtrinsic<'rxjs'>)
 
-export function useTransfer(transaction: Transaction | undefined, params: unknown[], signer: string | null): {tx: () => Promise<void>, paymentInfo: RuntimeDispatchInfo | undefined} | undefined {
+export function useTransaction(transaction: Transaction | undefined, params: unknown[], signer: string | null): {tx: () => Promise<void>, paymentInfo: RuntimeDispatchInfo | undefined} | undefined {
   if (!transaction || !signer) {
     return
   }
@@ -17,7 +18,7 @@ export function useTransfer(transaction: Transaction | undefined, params: unknow
   const paymentInfo = useObservable((transaction(...params)).paymentInfo(signer), [transaction, signer, params])
 
   const tx = async (): Promise<void> => {
-    if (!transaction || !paymentInfo) {
+    if (!transaction || !signer || !paymentInfo) {
       return
     }
 

@@ -5,7 +5,6 @@ import React, { useState } from 'react'
 import { NewAssetModalProvider } from './context/provider'
 import { FirstStep } from './FirstStep'
 import { SecondStep } from './SecondStep'
-import {useTransfer} from "use-substrate"
 
 export function NewAssetModal({ closeModal }: NewAssetModalProps): JSX.Element {
   const [activeStep, setActiveStep] = useState<number>(1)
