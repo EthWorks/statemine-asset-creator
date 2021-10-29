@@ -4,31 +4,36 @@ import type { DispatchError, EventRecord, RuntimeDispatchInfo } from '@polkadot/
 import type { ISubmittableResult, ITuple, RegistryError } from '@polkadot/types/types'
 
 import BN from 'bn.js'
+import { useCallback, useMemo } from 'react'
 
 import { useObservable } from './useObservable'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type Transaction = ((...args: any[]) => SubmittableExtrinsic<'rxjs'>)
+type Transaction = ((...args: any[]) => SubmittableExtrinsic<'rxjs'>)
 
-export function useTransaction(transaction: Transaction | undefined, params: unknown[], signer: string | null): {tx: () => Promise<void>, paymentInfo: RuntimeDispatchInfo | undefined} | undefined {
-  if (!transaction || !signer) {
-    return
-  }
+interface UseTransaction {
+  tx: () => Promise<void>
+  paymentInfo: RuntimeDispatchInfo | undefined
+}
 
-  const paymentInfo = useObservable((transaction(...params)).paymentInfo(signer), [transaction, signer, params])
+export function useTransaction(transaction: Transaction | undefined, params: unknown[], signer: string | null): UseTransaction | undefined {
+  const memoizedTransaction  = useMemo(() => transaction && signer ? transaction(...params).paymentInfo(signer) : undefined,
+    [transaction,signer, params])
 
-  const tx = async (): Promise<void> => {
+  const paymentInfo = useObservable(memoizedTransaction, [transaction, signer, params])
+
+  const tx = useCallback(async (): Promise<void> => {
     if (!transaction || !signer || !paymentInfo) {
       return
     }
-
     const fee = paymentInfo.partialFee.toBn()
     const { web3FromAddress } = await import('@polkadot/extension-dapp')
 
     const extension = await web3FromAddress(signer)
+
     observeTransaction(transaction(...params).signAndSend(signer, { signer: extension.signer }), fee)
     console.log('SIGN_EXTERNAL')
-  }
+  }, [transaction, signer, paymentInfo])
 
   return {
     tx,
