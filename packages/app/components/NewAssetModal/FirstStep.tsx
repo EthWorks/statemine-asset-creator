@@ -8,7 +8,6 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
 
   return (
     <>
-      <p>Create asset</p>
       <CustomInput
         value={assetName}
         onChange={setAssetName}

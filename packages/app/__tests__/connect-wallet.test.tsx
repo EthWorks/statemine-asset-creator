@@ -1,13 +1,19 @@
-import { act, render, waitFor } from '@testing-library/react'
+import { act, waitFor } from '@testing-library/react'
 import * as MockRouter from 'next-router-mock'
 import { memoryRouter } from 'next-router-mock'
 import React from 'react'
-import { ThemeProvider } from 'styled-components'
 
 import ConnectWallet from '../pages/connect-wallet'
-import { theme } from '../styles/styleVariables'
 import { ACCOUNT_SELECT_URL, CONNECT_WALLET_URL, POLKADOT_EXTENSION_LINK } from '../utils'
-import { assertLink, assertLocalStorage, assertNewTabOpened, assertText, clickButton, setLocalStorage } from './helpers'
+import {
+  assertLink,
+  assertLocalStorage,
+  assertNewTabOpened,
+  assertText,
+  clickButton,
+  renderWithTheme,
+  setLocalStorage
+} from './helpers'
 import { mockUseAccounts, mockWeb3Enable } from './mocks'
 
 jest.mock('next/dist/client/router', () => MockRouter)
@@ -15,8 +21,6 @@ jest.mock('next/dist/client/router', () => MockRouter)
 jest.mock('use-substrate', () => ({
   useAccounts: () => mockUseAccounts,
 }))
-
-const renderConnectWallet = () => render(<ThemeProvider theme={theme}><ConnectWallet /></ThemeProvider>)
 
 describe('Connect wallet', () => {
   describe('on button click', () => {
@@ -30,7 +34,7 @@ describe('Connect wallet', () => {
     })
 
     it('adds extensionActivated to localstorage and redirects to account-select page', async () => {
-      renderConnectWallet()
+      renderWithTheme(<ConnectWallet />)
 
       assertLocalStorage('extensionActivated', null)
 
@@ -44,7 +48,7 @@ describe('Connect wallet', () => {
     })
 
     it('calls web3Enable', async () => {
-      renderConnectWallet()
+      renderWithTheme(<ConnectWallet />)
 
       expect(mockWeb3Enable).not.toHaveBeenCalled()
 
@@ -56,7 +60,7 @@ describe('Connect wallet', () => {
     it('when extension is not loaded, it opens install page', async () => {
       mockUseAccounts.extensionStatus = 'Unavailable'
 
-      renderConnectWallet()
+      renderWithTheme(<ConnectWallet />)
 
       clickButton('Polkadot{.js} extension')
 
@@ -65,7 +69,7 @@ describe('Connect wallet', () => {
   })
 
   it('shows download prompt', async () => {
-    renderConnectWallet()
+    renderWithTheme(<ConnectWallet />)
 
     await assertText('Don’t have the Polkadot{.js} extension? Download it')
 
@@ -75,7 +79,7 @@ describe('Connect wallet', () => {
   it('on load redirects to account-select page if extension has already been activated', async () => {
     setLocalStorage('extensionActivated', 'true')
 
-    renderConnectWallet()
+    renderWithTheme(<ConnectWallet />)
 
     await waitFor(() => expect(mockWeb3Enable).toBeCalled())
 

@@ -4,4 +4,5 @@ export interface ModalStep {
 
 export interface NewAssetModalProps {
   closeModal: () => void
+  isOpen: boolean,
 }

@@ -9,7 +9,7 @@ interface GrayShades {
   900: string
 }
 
-export type ColorType = 'black' | 'green' | 'indigo' | 'pink' | 'red' | 'white'
+export type ColorType = 'black' | 'green' | 'indigo' | 'pinkLight' | 'pinkDark' | 'red' | 'white'
 export type BorderRadiusType = 's' | 'm' | 'l' | 'circle'
 
 export type Colors = Record<ColorType, string>
@@ -35,7 +35,8 @@ export const theme: Theme = {
     black: '#000000',
     green: '#2DD4BF',
     indigo: '#828DF8',
-    pink: '#E6007A',
+    pinkLight: '#E6007A',
+    pinkDark: '#C30070',
     red: '#EF4444',
     white: '#FFFFFF'
   },
@@ -46,4 +47,3 @@ export const theme: Theme = {
     circle: '50%'
   }
 }
-
