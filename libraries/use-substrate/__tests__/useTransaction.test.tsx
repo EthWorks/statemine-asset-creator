@@ -8,7 +8,7 @@ import { MockedApiProvider } from './mocks/MockedApiProvider'
 
 describe('useTransaction hook', () => {
   it('returns tx and paymentInfo', async () => {
-    const { result } = renderResult( [BOB, 123], ALICE)
+    const { result } = renderResult( )
     const { tx, paymentInfo } = result.current || {}
 
     expect(tx).toBeInstanceOf(Function)
@@ -17,7 +17,7 @@ describe('useTransaction hook', () => {
     expect(paymentInfo?.partialFee.toNumber()).toEqual(3)
   })
 
-  const renderResult = ( params: unknown[], signer: string) => {
+  const renderResult = () => {
     const wrapper = ({ children }: { children: ReactNode }) => (
       <MockedApiProvider>
         {children}
@@ -27,7 +27,7 @@ describe('useTransaction hook', () => {
     return renderHook(() => {
       const { api } = useApi(Chains.Kusama)
 
-      return useTransaction(api?.tx.balances.transfer, params, signer)
+      return useTransaction(api?.tx.balances.transfer,  [BOB, 123], ALICE)
     }, { wrapper })
   }
 })
