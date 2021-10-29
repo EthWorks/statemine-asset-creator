@@ -9,18 +9,18 @@ import { useCallback, useMemo } from 'react'
 import { useObservable } from './useObservable'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Transaction = ((...args: any[]) => SubmittableExtrinsic<'rxjs'>)
+export type Transaction = ((...args: any[]) => SubmittableExtrinsic<'rxjs'>)
 
-interface UseTransaction {
+export interface UseTransaction {
   tx: () => Promise<void>
   paymentInfo: RuntimeDispatchInfo | undefined
 }
 
 export function useTransaction(transaction: Transaction | undefined, params: unknown[], signer: string | null): UseTransaction | undefined {
-  const memoizedTransaction  = useMemo(() => transaction && signer ? transaction(...params).paymentInfo(signer) : undefined,
-    [transaction,signer, params])
+  const memoizedTransaction = useMemo(() => transaction && signer ? transaction(...params).paymentInfo(signer) : undefined,
+    [transaction, signer, params])
 
-  const paymentInfo = useObservable(memoizedTransaction, [transaction, signer, params])
+  const paymentInfo = useObservable(memoizedTransaction, [memoizedTransaction, signer, params])
 
   const tx = useCallback(async (): Promise<void> => {
     if (!transaction || !signer || !paymentInfo) {

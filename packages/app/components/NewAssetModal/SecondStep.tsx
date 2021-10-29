@@ -9,11 +9,16 @@ export function SecondStep({ onNext }: ModalStep): JSX.Element {
   const { api } = useApi(Chains.Local)
   const account = localStorage.getItem('activeAccount')
 
-    const txs = [
-        api?.tx.assets.create(assetId, account, 100)
-    ]
+  const txs = account ? [
+    api?.tx.assets.create(assetId, account, 100),
+    api?.tx.assets.setMetadata(assetId, assetName, assetSymbol, assetDecimals)
+  ] : []
 
-  const { tx } = useTransaction(api?.tx.assets.create, [assetId, account, 100], account) || {}
+  const { tx } = useTransaction(api?.tx.utility.batch, [txs], account) || {}
+
+  console.log('api:', api)
+  console.log('account:', account)
+  console.log('tx:', tx)
 
   if (!api || !account || !tx) return <>Loading..</>
 
