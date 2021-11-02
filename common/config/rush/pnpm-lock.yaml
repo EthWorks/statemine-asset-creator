@@ -30,10 +30,12 @@ specifiers:
   '@types/react': 17.0.24
   '@types/react-dom': ~17.0.9
   '@types/styled-components': ^5.1.15
+  '@types/testing-library__jest-dom': ~5.14.1
   '@typescript-eslint/eslint-plugin': ^4.32.0
   '@typescript-eslint/parser': ^4.32.0
   babel-jest: ^27.2.3
   babel-loader: ^8.2.2
+  bignumber.js: ^9.0.1
   bn.js: ~5.2.0
   eslint: ^7.32.0
   eslint-config-next: 11.1.2
@@ -82,10 +84,12 @@ dependencies:
   '@types/react': 17.0.24
   '@types/react-dom': 17.0.9
   '@types/styled-components': 5.1.15
+  '@types/testing-library__jest-dom': 5.14.1
   '@typescript-eslint/eslint-plugin': 4.33.0_cc617358c89d3f38c52462f6d809db4c
   '@typescript-eslint/parser': 4.33.0_eslint@7.32.0+typescript@4.4.4
   babel-jest: 27.2.5_@babel+core@7.15.8
   babel-loader: 8.2.2_@babel+core@7.15.8
+  bignumber.js: 9.0.1
   bn.js: 5.2.0
   eslint: 7.32.0
   eslint-config-next: 11.1.2_b254488bed7690859822a81f0a41c857
@@ -5448,6 +5452,10 @@ packages:
 
   /big.js/5.2.2:
     resolution: {integrity: sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==}
+    dev: false
+
+  /bignumber.js/9.0.1:
+    resolution: {integrity: sha512-IdZR9mh6ahOBv/hYGiXyVuyCetmGJhtYkqLBpTStdhEGjegpPlUawydyaF3pbIOFynJTpllEs+NP+CS9jKFLjA==}
     dev: false
 
   /binary-extensions/1.13.1:
@@ -14359,7 +14367,7 @@ packages:
     dev: false
 
   file:projects/statemine-asset-creator.tgz:
-    resolution: {integrity: sha512-6HEx3MHaFtd5BAnMRw8q0HL0liLPH2lXFftLOLjC0QR+qsxbyqdDvg0hGdVxEZTJ8SEqc0FzYCVD6oghkkycwQ==, tarball: file:projects/statemine-asset-creator.tgz}
+    resolution: {integrity: sha512-OlszFWtf/uu8WhVGW+L3PMbrC111ThPQhtZr55f44dJ/1+Ln2iZwcJiUDRsogipY9okX0GdJLji70DBSqh8FOQ==, tarball: file:projects/statemine-asset-creator.tgz}
     name: '@rush-temp/statemine-asset-creator'
     version: 0.0.0
     dependencies:
@@ -14381,6 +14389,7 @@ packages:
       '@types/testing-library__jest-dom': 5.14.1
       babel-jest: 27.2.5_@babel+core@7.15.8
       babel-loader: 8.2.2_@babel+core@7.15.8
+      bignumber.js: 9.0.1
       bn.js: 5.2.0
       eslint: 7.32.0
       eslint-config-next: 11.1.2_b254488bed7690859822a81f0a41c857
