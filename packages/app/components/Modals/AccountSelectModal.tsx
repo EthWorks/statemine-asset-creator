@@ -36,5 +36,3 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
     </Modal>
   )
 }
-
-export default AccountSelectModal

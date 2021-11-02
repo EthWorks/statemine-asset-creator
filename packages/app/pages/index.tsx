@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 
 import { Chains, useAccounts, useBalances } from 'use-substrate'
 
-import { AccountSelectModal,ConnectWalletModal, NewAssetModal } from '../components'
+import { AccountSelectModal, ConnectWalletModal, NewAssetModal } from '../components'
 import styles from '../styles/Home.module.css'
 import { activeAccountSet, extensionActivated, useAsync, useToggle } from '../utils'
 
