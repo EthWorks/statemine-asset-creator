@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 
 import { useAccounts } from 'use-substrate'
 
+import { useLocalStorage } from '../../utils/hooks/useLocalStorage'
 import { AccountSelect } from '../AccountSelect'
 import { Modal, Text } from '../index'
 
@@ -15,9 +16,10 @@ interface Props {
 export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
   const accounts = useAccounts()
   const [account, setAccount] = useState<Account>(accounts.allAccounts[0])
+  const [, setActiveAccount] = useLocalStorage('activeAccount')
 
   const _onClick = async (): Promise<void> => {
-    localStorage.setItem('activeAccount', account.address)
+    setActiveAccount(account.address)
     closeModal()
   }
 

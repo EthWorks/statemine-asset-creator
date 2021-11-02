@@ -1,19 +1,21 @@
 import type { NextPage } from 'next'
 
 import Head from 'next/head'
-import { useState } from 'react'
 
 import { Chains, useAccounts, useBalances } from 'use-substrate'
 
 import { AccountSelectModal, ConnectWalletModal, NewAssetModal } from '../components'
 import styles from '../styles/Home.module.css'
-import { extensionActivated, shouldSelectAccount, useAsync, useToggle } from '../utils'
+import { activeAccountSet, useAsync, useToggle } from '../utils'
+import { useExtensionActivated } from '../utils/hooks/useExtensionActivated'
+import { useLocalStorage } from '../utils/hooks/useLocalStorage'
 
 const Home: NextPage =  () => {
-  const [account] = useState<string | null>(localStorage.getItem('activeAccount'))
+  const [account] = useLocalStorage('activeAccount')
+  const extensionActivated = useExtensionActivated()
   const [isNewAssetModalOpen, toggleNewAssetModalOpen] = useToggle()
-  const [isConnectWalletModalOpen, toggleConnectWalletModalOpen, setConnectWalletModalOpen] = useToggle(!extensionActivated())
-  const [isAccountSelectModalOpen, toggleSelectAccountModalOpen, setSelectAccountModalOpen] = useToggle(shouldSelectAccount())
+  const [isConnectWalletModalOpen, toggleConnectWalletModalOpen, setConnectWalletModalOpen] = useToggle(!extensionActivated)
+  const [isAccountSelectModalOpen, toggleSelectAccountModalOpen, setSelectAccountModalOpen] = useToggle(extensionActivated && !activeAccountSet())
 
   const balances = useBalances(account, Chains.Kusama)
   const statemineBalances = useBalances(account, Chains.Statemine)
@@ -24,13 +26,13 @@ const Home: NextPage =  () => {
     setSelectAccountModalOpen(true)
   }
 
-  async function enableWeb3(): Promise<boolean | void> {
-    if(extensionActivated()) {
+  const enableWeb3: () => Promise<boolean | void>  = async () => {
+    if(extensionActivated) {
       await web3Enable()
     }
   }
 
-  useAsync(enableWeb3, [web3Enable])
+  useAsync(enableWeb3, [extensionActivated, web3Enable])
 
   return (
     <div className={styles.container}>
