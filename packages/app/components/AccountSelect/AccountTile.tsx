@@ -6,6 +6,7 @@ import AvatarIcon from '../../assets/img/avatar2.png'
 import Avatar from '../Avatar/Avatar'
 import { Label } from '../typography/Label'
 import { Text } from '../typography/Text'
+import BalanceValue from './BalanceValue'
 
 interface Props {
   account: Account,
@@ -28,7 +29,9 @@ export function AccountTile({ account, withFreeBalance }: Props): JSX.Element {
         <CellRow>
           <Label>transferable balance</Label>
           <ValueWrapper>
-            <TextBalance size='SM' color='white'>{balance?.availableBalance.toString()}</TextBalance>
+            {/*<TextBalance size='SM' color='white'>{balance?.availableBalance.toString()}</TextBalance>*/}
+            {console.log(balance?.availableBalance)}
+            <BalanceValue value={balance?.availableBalance.toString()} />
             <Text size='SM'>KSM</Text>
           </ValueWrapper>
         </CellRow>
