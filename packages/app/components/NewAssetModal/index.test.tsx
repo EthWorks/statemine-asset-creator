@@ -1,6 +1,15 @@
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 
-import { assertText, assertTextInput, clickButton, fillInput, renderWithTheme } from '../../__tests__/helpers'
+import {
+  assertText,
+  assertTextInput,
+  clickButton,
+  fillInput,
+  renderWithTheme,
+  setLocalStorage
+} from '../../__tests__/helpers'
+import { bobAccount, mockChains } from '../../__tests__/mocks'
 import { useToggle } from '../../utils'
 import { NewAssetModal } from './index'
 
@@ -26,7 +35,44 @@ const fillFirstStep = (): void => {
   fillInput('Asset ID', '7')
 }
 
+const fillAllForms = (): void => {
+  clickButton('Create new asset')
+
+  fillFirstStep()
+  clickButton('Next')
+
+  clickButton('Confirm')
+}
+
+const mockTransaction = jest.fn()
+const mockUseTransaction = { tx: mockTransaction, paymentInfo: {} }
+const mockApi = {
+  api: {
+    tx: {
+      assets: {
+        create: () => {/**/},
+        setMetadata: () => {/**/},
+      },
+      utility: {}
+    }
+  }
+}
+
+jest.mock('use-substrate', () => ({
+  useApi: () => mockApi,
+  useTransaction: () => mockUseTransaction,
+  Chains: () => mockChains
+}))
+
 describe('New asset modal', () => {
+  beforeEach(function () {
+    setLocalStorage('activeAccount', bobAccount.address)
+  })
+
+  afterEach(function () {
+    localStorage.clear()
+  })
+
   it('saves data in context', async () => {
     renderModal()
 
@@ -35,7 +81,7 @@ describe('New asset modal', () => {
     fillFirstStep()
     clickButton('Next')
 
-    await assertText('Confirm')
+    await waitFor(() => expect(screen.getByText('Confirm')).toBeTruthy())
     await assertText('kusama')
     await assertText('KSM')
     await assertText('18')
@@ -44,18 +90,21 @@ describe('New asset modal', () => {
 
   it('closes modal and resets data on confirm', async () => {
     renderModal()
-    clickButton('Create new asset')
+    fillAllForms()
 
-    fillFirstStep()
-    clickButton('Next')
+    fireEvent.click(await screen.findByRole('button', { name : 'Create new asset' }))
 
-    clickButton('Confirm')
-
-    clickButton('Create new asset')
-
+    await screen.findByText('Create asset')
     assertTextInput('Asset name', '')
     assertTextInput('Asset symbol', '')
     assertTextInput('Asset decimals', '')
     assertTextInput('Asset ID', '')
+  })
+
+  it('sends transaction on confirm',  async () => {
+    renderModal()
+    fillAllForms()
+
+    await waitFor(() => expect(mockTransaction).toBeCalled())
   })
 })

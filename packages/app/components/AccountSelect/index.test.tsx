@@ -5,8 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { ThemeProvider } from 'styled-components'
 
 import { openDropdown } from '../../__tests__/helpers'
-import { mockAccounts } from '../../__tests__/mocks/mockAccounts'
-import { mockUseSubstrate } from '../../__tests__/mocks/mockUseSubstrate'
+import { mockAccounts, mockUseSubstrate } from '../../__tests__/mocks'
 import { theme } from '../../styles/styleVariables'
 import { AccountSelect } from './index'
 
