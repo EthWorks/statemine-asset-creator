@@ -1,19 +1,19 @@
 import type { NextPage } from 'next'
 
 import Head from 'next/head'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { Chains, useAccounts, useBalances } from 'use-substrate'
 
 import { AccountSelectModal, ConnectWalletModal, NewAssetModal } from '../components'
 import styles from '../styles/Home.module.css'
-import { activeAccountSet, extensionActivated, useAsync, useToggle } from '../utils'
+import { accountSet, extensionActivated, useAsync, useToggle } from '../utils'
 
 const Home: NextPage =  () => {
   const [account] = useState<string | null>(localStorage.getItem('activeAccount'))
   const [isNewAssetModalOpen, toggleNewAssetModalOpen] = useToggle()
-  const [isConnectWalletModalOpen, toggleConnectWalletModalOpen, setConnectWalletModalOpen] = useToggle()
-  const [isAccountSelectModalOpen, toggleSelectAccountModalOpen, setSelectAccountModalOpen] = useToggle()
+  const [isConnectWalletModalOpen, toggleConnectWalletModalOpen, setConnectWalletModalOpen] = useToggle(!extensionActivated())
+  const [isAccountSelectModalOpen, toggleSelectAccountModalOpen, setSelectAccountModalOpen] = useToggle(accountSet())
 
   const balances = useBalances(account, Chains.Kusama)
   const statemineBalances = useBalances(account, Chains.Statemine)
@@ -24,19 +24,9 @@ const Home: NextPage =  () => {
     setSelectAccountModalOpen(true)
   }
 
-  useEffect(() => {
-    if(!extensionActivated()) {
-      setConnectWalletModalOpen(true)
-    }
-  }, [])
-
   async function openAccountSelectModal(): Promise<boolean | void> {
-    if(!extensionActivated()) return
-
-    await web3Enable()
-
-    if(!activeAccountSet()) {
-      setSelectAccountModalOpen(true)
+    if(extensionActivated()) {
+      await web3Enable()
     }
   }
 

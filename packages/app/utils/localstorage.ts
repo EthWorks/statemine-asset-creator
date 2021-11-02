@@ -5,3 +5,5 @@ export function extensionActivated(): boolean {
 export function activeAccountSet(): boolean {
   return localStorage.getItem('activeAccount') !== null
 }
+
+export const accountSet = (): boolean => extensionActivated() && !activeAccountSet()
