@@ -5,6 +5,7 @@
   "scripts": {
     "build": "rm -rf dist && tsc",
     "lint": "eslint '{src,__tests__}/**/*.{ts,tsx}'",
+    "lint:fix": "eslint '{src,__tests__}/**/*.{ts,tsx}' --fix",
     "test": "jest"
   },
   "main": "./dist/src/index.js",
