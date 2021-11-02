@@ -1,47 +1,46 @@
 import type { NextPage } from 'next'
 
 import Head from 'next/head'
-import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Chains, useAccounts, useBalances } from 'use-substrate'
 
-import { NewAssetModal } from '../components'
+import { AccountSelectModal,ConnectWallet, NewAssetModal } from '../components'
 import styles from '../styles/Home.module.css'
-import {
-  ACCOUNT_SELECT_URL,
-  activeAccountSet,
-  CONNECT_WALLET_URL,
-  extensionActivated,
-  useAsync,
-  useToggle
-} from '../utils'
+import { activeAccountSet, extensionActivated, useAsync, useToggle } from '../utils'
 
 const Home: NextPage =  () => {
   const [account] = useState<string | null>(localStorage.getItem('activeAccount'))
-  const [isModalOpen, toggleModalOpen] = useToggle(false)
+  const [isNewAssetModalOpen, toggleNewAssetModalOpen] = useToggle()
+  const [isConnectWalletModalOpen, toggleConnectWalletModalOpen, setConnectWalletModalOpen] = useToggle()
+  const [isAccountSelectModalOpen, toggleSelectAccountModalOpen, setSelectAccountModalOpen] = useToggle()
+
   const balances = useBalances(account, Chains.Kusama)
   const statemineBalances = useBalances(account, Chains.Statemine)
   const { allAccounts, web3Enable } = useAccounts()
-  const router = useRouter()
 
-  async function redirect(): Promise<boolean | void> {
+  const onExtensionActivated = (): void => {
+    setConnectWalletModalOpen(false)
+    setSelectAccountModalOpen(true)
+  }
+
+  useEffect(() => {
     if(!extensionActivated()) {
-      return router.push(CONNECT_WALLET_URL)
+      setConnectWalletModalOpen(true)
     }
+  }, [])
+
+  async function openAccountSelectModal(): Promise<boolean | void> {
+    if(!extensionActivated()) return
 
     await web3Enable()
 
     if(!activeAccountSet()) {
-      return router.push(ACCOUNT_SELECT_URL)
+      setSelectAccountModalOpen(true)
     }
   }
 
-  useAsync(redirect, [web3Enable])
-
-  if (!extensionActivated() || !activeAccountSet() || !account) {
-    return <>Loading...</>
-  }
+  useAsync(openAccountSelectModal, [web3Enable])
 
   return (
     <div className={styles.container}>
@@ -51,9 +50,11 @@ const Home: NextPage =  () => {
       </Head>
 
       <main className={styles.main}>
+        <ConnectWallet isOpen={isConnectWalletModalOpen} closeModal={toggleConnectWalletModalOpen} onExtensionActivated={onExtensionActivated}/>
+        <AccountSelectModal isOpen={isAccountSelectModalOpen} closeModal={toggleSelectAccountModalOpen} />
         <div>
-          {!isModalOpen && <button onClick={toggleModalOpen}>Create new asset</button>}
-          <NewAssetModal isOpen={isModalOpen} closeModal={toggleModalOpen}/>
+          {!isNewAssetModalOpen && <button onClick={toggleNewAssetModalOpen}>Create new asset</button>}
+          <NewAssetModal isOpen={isNewAssetModalOpen} closeModal={toggleNewAssetModalOpen}/>
         </div>
         <div data-testid='active-account-container'>
           <p>

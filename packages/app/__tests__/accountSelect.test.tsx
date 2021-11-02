@@ -1,11 +1,8 @@
 import { act, fireEvent, screen, within } from '@testing-library/react'
-import * as MockRouter from 'next-router-mock'
-import { memoryRouter } from 'next-router-mock'
 import React from 'react'
 
-import AccountSelectPage from '../pages/account-select'
-import { ACCOUNT_SELECT_URL, DASHBOARD_URL } from '../utils'
-import { assertLocalStorage, clickButton, openDropdown, renderWithTheme } from './helpers'
+import Home from '../pages'
+import { assertLocalStorage, assertNoText, clickButton, openDropdown, renderWithTheme, setLocalStorage } from './helpers'
 import { bobAccount, mockChains, mockUseAccounts, mockUseBalances } from './mocks'
 
 jest.mock('use-substrate', () => ({
@@ -14,24 +11,20 @@ jest.mock('use-substrate', () => ({
   Chains: () => mockChains
 }))
 
-jest.mock('next/dist/client/router', () => MockRouter)
-
 describe('account-select page', () => {
   beforeEach(() => {
     act(() => {
-      memoryRouter.setCurrentUrl(ACCOUNT_SELECT_URL)
       localStorage.clear()
+      setLocalStorage('extensionActivated', 'true')
     })
   })
 
-  it('saves selected account to localstorage and redirects to dashboard', async () => {
-    renderWithTheme(<AccountSelectPage />)
-
+  it('saves selected account to localstorage and closes modal', async () => {
+    renderWithTheme(<Home />)
     assertLocalStorage('activeAccount', null)
 
-    const openDropdownButton = await screen.findAllByRole('button')
-    openDropdown(openDropdownButton[0])
-
+    const openDropdownButton = await screen.findByTestId('open-account-select')
+    openDropdown(openDropdownButton)
     const dropdownMenu = await screen.findByRole('menu')
     const menuItems = await within(dropdownMenu).findAllByRole('menuitem')
 
@@ -40,7 +33,6 @@ describe('account-select page', () => {
     clickButton('Connect')
 
     assertLocalStorage('activeAccount', bobAccount.address)
-
-    expect(memoryRouter.asPath).toEqual(DASHBOARD_URL)
+    assertNoText('Connect accounts')
   })
 })
