@@ -24,13 +24,13 @@ const Home: NextPage =  () => {
     setSelectAccountModalOpen(true)
   }
 
-  async function openAccountSelectModal(): Promise<boolean | void> {
+  async function enableWeb3(): Promise<boolean | void> {
     if(extensionActivated()) {
       await web3Enable()
     }
   }
 
-  useAsync(openAccountSelectModal, [web3Enable])
+  useAsync(enableWeb3, [web3Enable])
 
   return (
     <div className={styles.container}>
