@@ -33,7 +33,7 @@ export function useTransaction(transaction: Transaction | undefined, params: unk
 
     observeTransaction(transaction(...params).signAndSend(signer, { signer: extension.signer }), fee)
     console.log('SIGN_EXTERNAL')
-  }, [transaction, signer, paymentInfo])
+  }, [transaction, signer, paymentInfo, params])
 
   return {
     tx,
