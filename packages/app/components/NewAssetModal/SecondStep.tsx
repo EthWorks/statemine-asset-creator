@@ -16,10 +16,6 @@ export function SecondStep({ onNext }: ModalStep): JSX.Element {
 
   const { tx } = useTransaction(api?.tx.utility.batch, [txs], account) || {}
 
-  console.log('api:', api)
-  console.log('account:', account)
-  console.log('tx:', tx)
-
   if (!api || !account || !tx) return <>Loading..</>
 
   const _onSubmit = async (): Promise<void> => {
