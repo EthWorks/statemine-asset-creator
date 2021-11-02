@@ -17,10 +17,10 @@ export interface UseTransaction {
 }
 
 export function useTransaction(transaction: Transaction | undefined, params: unknown[], signer: string | null): UseTransaction | undefined {
-  const memoizedTransaction = useMemo(() => transaction && signer ? transaction(...params).paymentInfo(signer) : undefined,
+  const transactionPaymentInfo = useMemo(() => transaction && signer ? transaction(...params).paymentInfo(signer) : undefined,
     [transaction, signer, params])
 
-  const paymentInfo = useObservable(memoizedTransaction, [memoizedTransaction, signer, params])
+  const paymentInfo = useObservable(transactionPaymentInfo, [transactionPaymentInfo])
 
   const tx = useCallback(async (): Promise<void> => {
     if (!transaction || !signer || !paymentInfo) {
