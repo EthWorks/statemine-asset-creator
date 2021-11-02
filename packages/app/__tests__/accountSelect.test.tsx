@@ -11,7 +11,7 @@ jest.mock('use-substrate', () => ({
   Chains: () => mockChains
 }))
 
-describe('account-select page', () => {
+describe('Account select modal', () => {
   beforeEach(() => {
     act(() => {
       localStorage.clear()
@@ -19,17 +19,20 @@ describe('account-select page', () => {
     })
   })
 
-  it('saves selected account to localstorage and closes modal', async () => {
-    renderWithTheme(<Home />)
-    assertLocalStorage('activeAccount', null)
-
+  async function selectAccountFromDropdown(accountIndex: number) {
     const openDropdownButton = await screen.findByTestId('open-account-select')
     openDropdown(openDropdownButton)
     const dropdownMenu = await screen.findByRole('menu')
     const menuItems = await within(dropdownMenu).findAllByRole('menuitem')
 
-    fireEvent.click(menuItems[1])
+    fireEvent.click(menuItems[accountIndex])
+  }
 
+  it('saves selected account to localstorage and closes modal', async () => {
+    assertLocalStorage('activeAccount', null)
+
+    renderWithTheme(<Home />)
+    await selectAccountFromDropdown(1)
     clickButton('Connect')
 
     assertLocalStorage('activeAccount', bobAccount.address)

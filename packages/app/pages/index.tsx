@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 
 import { Chains, useAccounts, useBalances } from 'use-substrate'
 
-import { AccountSelectModal,ConnectWallet, NewAssetModal } from '../components'
+import { AccountSelectModal,ConnectWalletModal, NewAssetModal } from '../components'
 import styles from '../styles/Home.module.css'
 import { activeAccountSet, extensionActivated, useAsync, useToggle } from '../utils'
 
@@ -50,7 +50,7 @@ const Home: NextPage =  () => {
       </Head>
 
       <main className={styles.main}>
-        <ConnectWallet isOpen={isConnectWalletModalOpen} closeModal={toggleConnectWalletModalOpen} onExtensionActivated={onExtensionActivated}/>
+        <ConnectWalletModal isOpen={isConnectWalletModalOpen} closeModal={toggleConnectWalletModalOpen} onExtensionActivated={onExtensionActivated}/>
         <AccountSelectModal isOpen={isAccountSelectModalOpen} closeModal={toggleSelectAccountModalOpen} />
         <div>
           {!isNewAssetModalOpen && <button onClick={toggleNewAssetModalOpen}>Create new asset</button>}

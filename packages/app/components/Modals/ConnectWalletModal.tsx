@@ -9,7 +9,7 @@ interface Props {
   onExtensionActivated: () => void
 }
 
-export function ConnectWallet({ isOpen, closeModal, onExtensionActivated }: Props): JSX.Element | null {
+export function ConnectWalletModal({ isOpen, closeModal, onExtensionActivated }: Props): JSX.Element | null {
   const { web3Enable, extensionStatus } = useAccounts()
 
   const _onClick = async (): Promise<void> => {
@@ -43,4 +43,4 @@ export function ConnectWallet({ isOpen, closeModal, onExtensionActivated }: Prop
   )
 }
 
-export default ConnectWallet
+export default ConnectWalletModal

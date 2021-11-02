@@ -1,2 +1,2 @@
 export * from './AccountSelectModal'
-export * from './ConnectWallet'
+export * from './ConnectWalletModal'

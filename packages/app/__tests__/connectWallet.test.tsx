@@ -12,7 +12,7 @@ jest.mock('use-substrate', () => ({
   Chains: () => mockChains
 }))
 
-describe('Connect wallet', () => {
+describe('Connect wallet modal', () => {
   beforeEach(() => {
     act(() => {
       localStorage.clear()
@@ -27,10 +27,9 @@ describe('Connect wallet', () => {
       })
     })
 
-    it('adds extensionActivated to localstorage and opens account-select modal', async () => {
-      renderWithTheme(<Home />)
-
+    it('adds extensionActivated to localstorage and opens AccountSelect modal', async () => {
       assertLocalStorage('extensionActivated', null)
+      renderWithTheme(<Home />)
 
       clickButton('Polkadot{.js} extension')
 
