@@ -7,13 +7,13 @@ import { Chains, useAccounts, useBalances } from 'use-substrate'
 
 import { AccountSelectModal, ConnectWalletModal, NewAssetModal } from '../components'
 import styles from '../styles/Home.module.css'
-import { accountSet, extensionActivated, useAsync, useToggle } from '../utils'
+import { extensionActivated, shouldSelectAccount, useAsync, useToggle } from '../utils'
 
 const Home: NextPage =  () => {
   const [account] = useState<string | null>(localStorage.getItem('activeAccount'))
   const [isNewAssetModalOpen, toggleNewAssetModalOpen] = useToggle()
   const [isConnectWalletModalOpen, toggleConnectWalletModalOpen, setConnectWalletModalOpen] = useToggle(!extensionActivated())
-  const [isAccountSelectModalOpen, toggleSelectAccountModalOpen, setSelectAccountModalOpen] = useToggle(accountSet())
+  const [isAccountSelectModalOpen, toggleSelectAccountModalOpen, setSelectAccountModalOpen] = useToggle(shouldSelectAccount())
 
   const balances = useBalances(account, Chains.Kusama)
   const statemineBalances = useBalances(account, Chains.Statemine)
