@@ -4,12 +4,16 @@ import { render, screen, within } from '@testing-library/react'
 import React, { useEffect, useState } from 'react'
 import { ThemeProvider } from 'styled-components'
 
-import { openDropdown, selectAccountFromDropdown } from '../../__tests__/helpers'
-import { mockAccounts, mockUseSubstrate } from '../../__tests__/mocks'
-import { theme } from '../../styles/styleVariables'
-import { AccountSelect } from './index'
+import { AccountSelect } from '../components'
+import { theme } from '../styles/styleVariables'
+import { openDropdown, selectAccountFromDropdown } from './helpers'
+import { mockAccounts, mockChains, mockUseAccounts, mockUseBalances, mockUseSubstrate } from './mocks'
 
-jest.mock('use-substrate', () => mockUseSubstrate)
+jest.mock('use-substrate', () => ({
+  useAccounts: () => mockUseAccounts,
+  useBalances: () => mockUseBalances,
+  Chains: () => mockChains
+}))
 
 function AccountSelectTestComponent(): JSX.Element {
   const accounts = mockUseSubstrate.useAccounts()

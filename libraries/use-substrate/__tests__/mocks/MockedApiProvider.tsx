@@ -1,11 +1,13 @@
+import type { ObservableInput } from 'rxjs'
 import type { DeriveBalancesAll, DeriveBalancesAllAccountData } from '@polkadot/api-derive/types'
+import type { UseApi } from '../../src'
 
 import { ApiRx } from '@polkadot/api'
 import BN from 'bn.js'
 import React from 'react'
-import { from, ObservableInput } from 'rxjs'
+import { from, of } from 'rxjs'
 
-import { ALICE, ApiContext, UseApi } from '../../src'
+import { ALICE, ApiContext } from '../../src'
 import { createType } from '../utils/createType'
 
 export function MockedApiProvider(props: { children: React.ReactNode }) {
@@ -34,6 +36,16 @@ export function MockedApiProvider(props: { children: React.ReactNode }) {
             vestingTotal: createType('Balance', new BN(0)),
             votingBalance: createType('Balance', new BN(0)),
           }])
+        }
+      },
+      tx: {
+        balances: {
+          transfer: () => ({
+            paymentInfo: () => of(createType('RuntimeDispatchInfo', {
+              weight: 6,
+              partialFee: new BN(3)
+            }))
+          })
         }
       }
     } as unknown as ApiRx,

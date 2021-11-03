@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic'
 import React from 'react'
 import { ThemeProvider } from 'styled-components'
 
-import { Chains, KUSAMA_ARCHIVE_NODE_URL, STATEMINE_ARCHIVE_NODE_URL } from 'use-substrate'
+import { Chains } from 'use-substrate'
 
 import { APPLICATION_NAME } from '../globalConstants'
 import GlobalStyle from '../styles/globalStyle'
@@ -23,7 +23,11 @@ const AppProvider = dynamic<AppProviderProps>(
 )
 
 const config: Config = {
-  chains: [{ name: Chains.Kusama, url: KUSAMA_ARCHIVE_NODE_URL }, { name: Chains.Statemine, url: STATEMINE_ARCHIVE_NODE_URL }]
+  chains: [
+    { name: Chains.Kusama },
+    { name: Chains.Statemine },
+    { name: Chains.Local }
+  ]
 }
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {

@@ -47,7 +47,7 @@
     "mock-local-storage": "~1.1.17",
     "next-router-mock": "~0.5.3",
     "bn.js": "~5.2.0",
-    "@types/bn.js": "~5.1.0",
+    "@types/bn.js": "4.11.6",
     "@types/testing-library__jest-dom": "~5.14.1"
   }
 }

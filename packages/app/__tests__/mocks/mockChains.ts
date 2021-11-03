@@ -1,4 +1,5 @@
 export const mockChains = {
   Kusama: 'kusama',
-  Statemine: 'statemine'
+  Statemine: 'statemine',
+  Local: 'local'
 }
