@@ -1,13 +1,13 @@
 import type { ObservableInput } from 'rxjs'
 import type { DeriveBalancesAll, DeriveBalancesAllAccountData } from '@polkadot/api-derive/types'
-import type { UseApi } from '../../src'
+import type { FetchedAssets,UseApi } from '../../src'
 
 import { ApiRx } from '@polkadot/api'
 import BN from 'bn.js'
 import React from 'react'
 import { from, of } from 'rxjs'
 
-import { ALICE, ApiContext } from '../../src'
+import { ALICE, ApiContext, BOB } from '../../src'
 import { createType } from '../utils/createType'
 
 export function MockedApiProvider(props: { children: React.ReactNode }) {
@@ -30,12 +30,20 @@ export function MockedApiProvider(props: { children: React.ReactNode }) {
             reservedBalance: createType('Balance', new BN(0)),
             vestedBalance: createType('Balance', new BN(0)),
             vestedClaimable: createType('Balance', new BN(0)),
-            vestingEndBlock: createType('BlockNumber', 1234),
             vestingLocked: createType('Balance', new BN(0)),
-            vestingPerBlock: createType('Balance', new BN(0)),
             vestingTotal: createType('Balance', new BN(0)),
             votingBalance: createType('Balance', new BN(0)),
+            vesting: [],
           }])
+        }
+      },
+      query: {
+        assets: {
+          asset: {
+            entries: () => from<ObservableInput<FetchedAssets>>([
+              [[createType('AssetId', new BN(15)), createType('AssetDetails', { owner: createType('AccountId', BOB) })]]
+            ])
+          }
         }
       },
       tx: {
