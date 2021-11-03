@@ -6,20 +6,29 @@ import { formatBalanceValue } from '../../formaters/formaters'
 import { Text } from '../typography'
 
 interface BalanceValueProps {
-  value: BN | string | undefined
+  decimals: number,
+  token: string,
+  value: BN
 }
 
-const BalanceValue = ({ value }: BalanceValueProps): React.ReactElement<BalanceValueProps> | null => {
+const BalanceValue = ({ decimals, token, value }: BalanceValueProps): React.ReactElement<BalanceValueProps> | null => {
   if (!value) {
     return null
   }
 
-  const balanceValue = formatBalanceValue(value)
+  let balanceValue = value.toString()
+
+  balanceValue = balanceValue.substring(0, (balanceValue.length - decimals)) + '.' + balanceValue.substring((balanceValue.length - decimals), balanceValue.length)
+  balanceValue = formatBalanceValue(balanceValue)
+
   const integers = balanceValue.substr(0, balanceValue.length - 4)
   const decimalPlaces = balanceValue.substr(balanceValue.length - 4, 4)
 
   return (
-    <TextBalance data-testid='balance-value' size='SM' color='white'>{integers}<span>{decimalPlaces}</span></TextBalance>
+    <>
+      <TextBalance data-testid='balance-value' size='SM' color='white'>{integers}<span>{decimalPlaces}</span></TextBalance>
+      <Text size='SM'>{token}</Text>
+    </>
   )
 }
 

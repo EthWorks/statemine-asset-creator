@@ -1,3 +1,4 @@
+import BN from 'bn.js'
 import styled from 'styled-components'
 
 import { Account, Chains, useBalances } from 'use-substrate'
@@ -29,10 +30,7 @@ export function AccountTile({ account, withFreeBalance }: Props): JSX.Element {
         <CellRow>
           <Label>transferable balance</Label>
           <ValueWrapper>
-            {/*<TextBalance size='SM' color='white'>{balance?.availableBalance.toString()}</TextBalance>*/}
-            {console.log(balance?.availableBalance)}
-            <BalanceValue value={balance?.availableBalance.toString()} />
-            <Text size='SM'>KSM</Text>
+            <BalanceValue token='KSM' decimals={5} value={new BN('1234567891')} />
           </ValueWrapper>
         </CellRow>
         {withFreeBalance &&
