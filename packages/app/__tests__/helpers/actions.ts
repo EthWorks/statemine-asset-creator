@@ -1,4 +1,4 @@
-import { fireEvent, screen } from '@testing-library/react'
+import { fireEvent, screen, within } from '@testing-library/react'
 
 import { PointerEvent } from './events'
 
@@ -25,4 +25,13 @@ export function openDropdown(openDropdownButton: HTMLElement) {
 export function fillInput(label: string, value: string): void {
   const input = screen.getByLabelText(label)
   fireEvent.change(input, { target: { value } })
+}
+
+export async function selectAccountFromDropdown(accountIndex: number) {
+  const openDropdownButton = await screen.findByTestId('open-account-select')
+  openDropdown(openDropdownButton)
+  const dropdownMenu = await screen.findByRole('menu')
+  const menuItems = await within(dropdownMenu).findAllByRole('menuitem')
+
+  fireEvent.click(menuItems[accountIndex])
 }
