@@ -19,7 +19,7 @@ const BalanceValue = ({ value }: BalanceValueProps): React.ReactElement<BalanceV
   const decimalPlaces = balanceValue.substr(balanceValue.length - 4, 4)
 
   return (
-    <TextBalance size='SM' color='white'>{integers}<span>{decimalPlaces}</span></TextBalance>
+    <TextBalance data-testid='balance-value' size='SM' color='white'>{integers}<span>{decimalPlaces}</span></TextBalance>
   )
 }
 
