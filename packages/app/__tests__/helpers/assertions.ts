@@ -27,3 +27,7 @@ export function assertTextInput(inputName:string, text: string) {
 export function assertNoButton(name: string) {
   expect(screen.queryByRole('button', { name })).not.toBeInTheDocument()
 }
+
+export function assertNoText(text: string) {
+  expect(screen.queryByText(text)).toBeFalsy()
+}
