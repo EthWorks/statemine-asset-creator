@@ -1,6 +1,8 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 
+import { NewAssetModal } from '../components'
+import { useToggle } from '../utils'
 import {
   assertText,
   assertTextInput,
@@ -8,10 +10,8 @@ import {
   fillInput,
   renderWithTheme,
   setLocalStorage
-} from '../../__tests__/helpers'
-import { bobAccount, mockChains } from '../../__tests__/mocks'
-import { useToggle } from '../../utils'
-import { NewAssetModal } from './index'
+} from './helpers'
+import { bobAccount, mockChains } from './mocks'
 
 function TestComponent(): JSX.Element {
   const [isOpen, toggleOpen] = useToggle()
