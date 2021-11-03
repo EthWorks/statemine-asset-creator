@@ -16,7 +16,7 @@ export interface Props {
 export function AccountSelect ({ accounts, currentAccount, setCurrentAccount, withFreeBalance = false }: Props): JSX.Element {
   return (
     <DropdownMenu.Root>
-      <StyledButton>
+      <StyledButton data-testid='open-account-select'>
         <AccountTile withFreeBalance={withFreeBalance} account={currentAccount} />
         <StyledArrow direction='down' width='14' height='9' />
       </StyledButton>

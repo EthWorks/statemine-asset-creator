@@ -1,12 +1,11 @@
 import type { Account } from 'use-substrate'
 
-import { fireEvent, render, screen, within } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import React, { useEffect, useState } from 'react'
 import { ThemeProvider } from 'styled-components'
 
-import { openDropdown } from '../../__tests__/helpers'
-import { mockAccounts } from '../../__tests__/mocks/mockAccounts'
-import { mockUseSubstrate } from '../../__tests__/mocks/mockUseSubstrate'
+import { openDropdown, selectAccountFromDropdown } from '../../__tests__/helpers'
+import { mockAccounts, mockUseSubstrate } from '../../__tests__/mocks'
 import { theme } from '../../styles/styleVariables'
 import { AccountSelect } from './index'
 
@@ -57,15 +56,9 @@ describe('AccountSelect component', () => {
   it('sets selected account as current account', async () => {
     render(<AccountSelectTestComponent/>)
 
+    await selectAccountFromDropdown(1)
+
     const openDropdownButton = await screen.findByRole('button')
-    openDropdown(openDropdownButton)
-
-    const dropdownMenu = await screen.findByRole('menu')
-
-    const menuItems = await within(dropdownMenu).findAllByRole('menuitem')
-
-    fireEvent.click(menuItems[1])
-
     await within(openDropdownButton).findByText('BOB')
     expect(await within(openDropdownButton).queryAllByAltText('ALICE')).toHaveLength(0)
   })

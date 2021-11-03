@@ -4,8 +4,7 @@ import { Account, Chains, useBalances } from 'use-substrate'
 
 import AvatarIcon from '../../assets/img/avatar2.png'
 import Avatar from '../Avatar/Avatar'
-import { Label } from '../typography/Label'
-import { Text } from '../typography/Text'
+import { Label, Text } from '../typography'
 
 interface Props {
   account: Account,

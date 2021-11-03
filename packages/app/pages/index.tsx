@@ -1,47 +1,36 @@
 import type { NextPage } from 'next'
 
 import Head from 'next/head'
-import { useRouter } from 'next/router'
 import { useState } from 'react'
 
 import { Chains, useAccounts, useBalances } from 'use-substrate'
 
-import { NewAssetModal } from '../components'
+import { AccountSelectModal, ConnectWalletModal, NewAssetModal } from '../components'
 import styles from '../styles/Home.module.css'
-import {
-  ACCOUNT_SELECT_URL,
-  activeAccountSet,
-  CONNECT_WALLET_URL,
-  extensionActivated,
-  useAsync,
-  useToggle
-} from '../utils'
+import { extensionActivated, shouldSelectAccount, useAsync, useToggle } from '../utils'
 
 const Home: NextPage =  () => {
   const [account] = useState<string | null>(localStorage.getItem('activeAccount'))
-  const [isModalOpen, toggleModalOpen] = useToggle(false)
+  const [isNewAssetModalOpen, toggleNewAssetModalOpen] = useToggle()
+  const [isConnectWalletModalOpen, toggleConnectWalletModalOpen, setConnectWalletModalOpen] = useToggle(!extensionActivated())
+  const [isAccountSelectModalOpen, toggleSelectAccountModalOpen, setSelectAccountModalOpen] = useToggle(shouldSelectAccount())
+
   const balances = useBalances(account, Chains.Kusama)
   const statemineBalances = useBalances(account, Chains.Statemine)
   const { allAccounts, web3Enable } = useAccounts()
-  const router = useRouter()
 
-  async function redirect(): Promise<boolean | void> {
-    if(!extensionActivated()) {
-      return router.push(CONNECT_WALLET_URL)
-    }
+  const onExtensionActivated = (): void => {
+    setConnectWalletModalOpen(false)
+    setSelectAccountModalOpen(true)
+  }
 
-    await web3Enable()
-
-    if(!activeAccountSet()) {
-      return router.push(ACCOUNT_SELECT_URL)
+  async function enableWeb3(): Promise<boolean | void> {
+    if(extensionActivated()) {
+      await web3Enable()
     }
   }
 
-  useAsync(redirect, [web3Enable])
-
-  if (!extensionActivated() || !activeAccountSet() || !account) {
-    return <>Loading...</>
-  }
+  useAsync(enableWeb3, [web3Enable])
 
   return (
     <div className={styles.container}>
@@ -51,9 +40,11 @@ const Home: NextPage =  () => {
       </Head>
 
       <main className={styles.main}>
+        <ConnectWalletModal isOpen={isConnectWalletModalOpen} closeModal={toggleConnectWalletModalOpen} onExtensionActivated={onExtensionActivated}/>
+        <AccountSelectModal isOpen={isAccountSelectModalOpen} closeModal={toggleSelectAccountModalOpen} />
         <div>
-          {!isModalOpen && <button onClick={toggleModalOpen}>Create new asset</button>}
-          <NewAssetModal isOpen={isModalOpen} closeModal={toggleModalOpen}/>
+          {!isNewAssetModalOpen && <button onClick={toggleNewAssetModalOpen}>Create new asset</button>}
+          <NewAssetModal isOpen={isNewAssetModalOpen} closeModal={toggleNewAssetModalOpen}/>
         </div>
         <div data-testid='active-account-container'>
           <p>
