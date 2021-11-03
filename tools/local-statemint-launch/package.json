@@ -1,0 +1,19 @@
+{
+  "name": "local-statemint-launch",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "",
+    "run": "polkadot-launch config-wst.json"
+  },
+  "dependencies": {
+    "polkadot-launch": "1.8.0",
+
+  },
+  resolutions: {
+    "@polkadot/types": "6.6.1",
+    "@polkadot/api": "6.6.1",
+    "@polkadot/util": "7.4.1",
+    "@polkadot/util-crypto": "7.4.1"
+  }
+}
