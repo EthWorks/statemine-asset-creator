@@ -3,7 +3,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useState } from 'react'
 
-import { Chains, useAccounts, useAssets,useBalances } from 'use-substrate'
+import { Chains, useAccounts, useAssets, useBalances } from 'use-substrate'
 
 import { AccountSelectModal, ConnectWalletModal, NewAssetModal } from '../components'
 import styles from '../styles/Home.module.css'
@@ -48,7 +48,9 @@ const Home: NextPage =  () => {
           <NewAssetModal isOpen={isNewAssetModalOpen} closeModal={toggleNewAssetModalOpen}/>
         </div>
         <div data-testid='active-account-container'>
-          <p>{assets?.map(asset => asset.owner)}</p>
+          {assets?.map((asset, index) =>
+            <li key={index}>{asset.owner}</li>)
+          }
           <p>
             {account}
           </p>

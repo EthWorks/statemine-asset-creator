@@ -1,6 +1,6 @@
 import type { ObservableInput } from 'rxjs'
 import type { DeriveBalancesAll, DeriveBalancesAllAccountData } from '@polkadot/api-derive/types'
-import type { FetchedAssets,UseApi } from '../../src'
+import type { FetchedAssets, UseApi } from '../../src'
 
 import { ApiRx } from '@polkadot/api'
 import BN from 'bn.js'

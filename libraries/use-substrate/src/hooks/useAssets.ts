@@ -1,6 +1,5 @@
+import type { StorageKey, u32 } from '@polkadot/types'
 import type { PalletAssetsAssetDetails } from '@polkadot/types/lookup'
-
-import { StorageKey, u32 } from '@polkadot/types'
 
 import { Chains } from '../consts'
 import { useApi } from './useApi'
