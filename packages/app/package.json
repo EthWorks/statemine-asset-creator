@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint --fix",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
     "test": "jest",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
@@ -49,5 +50,8 @@
     "react-test-renderer": "^17.0.2",
     "rxjs": "7.4.0",
     "typescript": "^4.4.3"
+    "bn.js": "~5.2.0",
+    "@types/bn.js": "4.11.6",
+    "@types/testing-library__jest-dom": "~5.14.1"
   }
 }

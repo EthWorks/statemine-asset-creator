@@ -1,23 +1,24 @@
 import type { Account } from 'use-substrate'
 
-import { NextPage } from 'next'
-import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
 import { useAccounts } from 'use-substrate'
 
-import { AccountSelect } from '../components'
-import Card from '../components/Card/Card'
-import { DASHBOARD_URL } from '../utils/consts'
+import { AccountSelect } from '../AccountSelect'
+import { Modal, Text } from '../index'
 
-const AccountSelectPage: NextPage =  () => {
+interface Props {
+  closeModal: () => void
+  isOpen: boolean,
+}
+
+export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
   const accounts = useAccounts()
   const [account, setAccount] = useState<Account>(accounts.allAccounts[0])
-  const router = useRouter()
 
   const _onClick = async (): Promise<void> => {
     localStorage.setItem('activeAccount', account.address)
-    await router.push(DASHBOARD_URL)
+    closeModal()
   }
 
   useEffect(() => {
@@ -27,12 +28,11 @@ const AccountSelectPage: NextPage =  () => {
   if (!accounts.allAccounts.length || !account) return <>Loading..</>
 
   return (
-    <Card>
+    <Modal isOpen={isOpen} onClose={closeModal}>
+      <Text color='white'>Connect accounts</Text>
       <AccountSelect accounts={accounts.allAccounts} currentAccount={account} setCurrentAccount={setAccount}/>
       <button onClick={_onClick}>Connect</button>
       { accounts.error === 'EXTENSION' && <div>No extension available</div>}
-    </Card>
+    </Modal>
   )
 }
-
-export default AccountSelectPage

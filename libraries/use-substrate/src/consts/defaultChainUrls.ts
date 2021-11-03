@@ -10,5 +10,6 @@ export const KARURA_ARCHIVE_NODE_URL: ChainUrl = 'wss://karura-rpc-0.aca-api.net
 export const defaultChainUrls: Record<Chains, ChainUrl> = {
   [Chains.Kusama]: KUSAMA_ARCHIVE_NODE_URL,
   [Chains.Statemine]: STATEMINE_ARCHIVE_NODE_URL,
-  [Chains.Karura]: KARURA_ARCHIVE_NODE_URL
+  [Chains.Karura]: KARURA_ARCHIVE_NODE_URL,
+  [Chains.Local]: LOCAL_NODE_URL
 }
