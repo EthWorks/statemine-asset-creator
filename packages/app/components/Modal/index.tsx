@@ -10,6 +10,7 @@ export type ModalSize = 'm' | 'l'
 
 export interface ModalProps {
   children: ReactNode,
+  className?: string,
   headerOverModal?: ReactNode,
   padding?: PaddingSize,
   size?: ModalSize,
@@ -23,7 +24,7 @@ interface ModalCardProps {
   size?: ModalSize,
 }
 
-export const Modal = ({ children, padding, size, title, titleCenterPosition, headerOverModal, isOpen, onClose }: ModalProps): React.ReactElement<ModalProps> | null => {
+export const Modal = ({ children, className, padding, size, title, titleCenterPosition, headerOverModal, isOpen, onClose }: ModalProps): React.ReactElement<ModalProps> | null => {
   const _onClose = (): void => onClose()
 
   if (!isOpen) return null
@@ -32,7 +33,7 @@ export const Modal = ({ children, padding, size, title, titleCenterPosition, hea
     <ModalView>
       <ModalBg onClick={_onClose}/>
       <HeaderOverModal>{headerOverModal}</HeaderOverModal>
-      <ModalCard size={size} padding={padding}>
+      <ModalCard className={className} size={size} padding={padding}>
         <ModalHeader title={title} onClose={_onClose} titleCenterPosition={titleCenterPosition}/>
         {children}
       </ModalCard>
