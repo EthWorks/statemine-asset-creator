@@ -3,11 +3,12 @@ import React from 'react'
 
 import Home from '../pages/index'
 import { assertNoButton, assertText, clickButton, renderWithTheme, setLocalStorage } from './helpers'
-import { bobAccount, mockChains, mockUseAccounts, mockUseBalances, mockWeb3Enable } from './mocks'
+import { bobAccount, mockChains, mockUseAccounts, mockUseAssets, mockUseBalances, mockWeb3Enable } from './mocks'
 
 jest.mock('use-substrate', () => ({
   useBalances: () => mockUseBalances,
   useAccounts: () => mockUseAccounts,
+  useAssets: () => mockUseAssets,
   Chains: () => mockChains
 }))
 

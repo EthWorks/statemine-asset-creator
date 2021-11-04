@@ -14,8 +14,8 @@
     "./dist/src"
   ],
   "dependencies": {
-    "@polkadot/api": "6.3.2-11",
-    "@polkadot/api-derive": "6.3.2-11",
+    "@polkadot/api": "6.6.1",
+    "@polkadot/api-derive": "6.6.1",
     "@polkadot/extension-dapp": "~0.40.3",
     "@polkadot/ui-keyring": "~0.85.5",
     "react": "17.0.2",
@@ -44,6 +44,6 @@
     "@polkadot/extension-inject": "~0.40.3",
     "@types/react-dom": "~17.0.9",
     "@types/bn.js": "4.11.6",
-    "@polkadot/types": "6.3.2-11"
+    "@polkadot/types": "6.6.1"
   }
 }

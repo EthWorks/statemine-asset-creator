@@ -4,11 +4,12 @@ import React from 'react'
 import Home from '../pages'
 import { POLKADOT_EXTENSION_LINK } from '../utils'
 import { assertLink, assertLocalStorage, assertNewTabOpened, assertText, clickButton, renderWithTheme } from './helpers'
-import { mockChains, mockUseAccounts, mockUseBalances, mockWeb3Enable } from './mocks'
+import { mockChains, mockUseAccounts, mockUseAssets, mockUseBalances, mockWeb3Enable } from './mocks'
 
 jest.mock('use-substrate', () => ({
   useBalances: () => mockUseBalances,
   useAccounts: () => mockUseAccounts,
+  useAssets: () => mockUseAssets,
   Chains: () => mockChains
 }))
 
