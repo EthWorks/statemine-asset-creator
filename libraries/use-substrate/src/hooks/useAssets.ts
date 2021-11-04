@@ -1,37 +1,25 @@
-import type { StorageKey, u32 } from '@polkadot/types'
-import type { PalletAssetsAssetDetails } from '@polkadot/types/lookup'
+import type { Asset, AssetInfo, FetchedAssets, UseAssets, UseAssetsOptions } from './types/useAssets'
 
 import { Chains } from '../consts'
 import { useApi } from './useApi'
 import { useObservable } from './useObservable'
 
-export type FetchedAssets = [StorageKey<[u32]>, PalletAssetsAssetDetails][];
-
-interface AssetInfo {
-  readonly owner: string;
-  readonly issuer: string;
-  readonly admin: string;
-  readonly freezer: string;
-  readonly supply: string;
-  readonly deposit: string;
-  readonly minBalance: string;
-  readonly isSufficient: boolean;
-  readonly accounts: string;
-  readonly sufficients: string;
-  readonly approvals: string;
-  readonly isFrozen: boolean;
-}
-
-interface Asset extends AssetInfo {
-  readonly id: string;
-}
-
-type UseAssets = Asset[]
-
-export function useAssets(chain: Chains): UseAssets | undefined{
+export function useAssets(chain: Chains, options?: UseAssetsOptions): UseAssets | undefined {
   const { api, connectionState } = useApi(chain)
 
-  const assets = useObservable<FetchedAssets>(api?.query.assets.asset.entries(), [api, connectionState])
+  const fetchedAssets = useObservable<FetchedAssets>(api?.query.assets.asset.entries(), [api, connectionState])
 
+  if (!fetchedAssets) return undefined
+
+  const assets = formatAssets(fetchedAssets)
+
+  return filterByOwner(assets, options?.owner)
+}
+
+function formatAssets(assets: FetchedAssets): UseAssets {
   return assets?.map(asset => ({ ...(asset[1].toHuman() as unknown as AssetInfo), id: asset[0].toString() }))
+}
+
+function filterByOwner(assets: Asset[], owner?: string): UseAssets {
+  return owner ? assets.filter(asset => asset.owner === owner) : assets
 }
