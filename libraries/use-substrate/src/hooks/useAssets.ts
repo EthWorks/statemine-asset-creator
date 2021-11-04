@@ -22,12 +22,16 @@ interface AssetInfo {
   readonly isFrozen: boolean;
 }
 
-type UseAssets = AssetInfo[]
+interface Asset extends AssetInfo {
+  readonly id: string;
+}
+
+type UseAssets = Asset[]
 
 export function useAssets(chain: Chains): UseAssets | undefined{
   const { api, connectionState } = useApi(chain)
 
-  const assets =  useObservable<FetchedAssets>(api?.query.assets.asset.entries(), [api, connectionState])
+  const assets = useObservable<FetchedAssets>(api?.query.assets.asset.entries(), [api, connectionState])
 
-  return assets?.map(asset => asset[1].toHuman() as unknown as AssetInfo)
+  return assets?.map(asset => ({ ...(asset[1].toHuman() as unknown as AssetInfo), id: asset[0].toString() }))
 }

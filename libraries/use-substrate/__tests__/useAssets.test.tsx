@@ -10,9 +10,10 @@ describe('Use assets hook', () => {
 
     expect(result.current).toHaveLength(1)
 
-    const { owner } = (result.current ?? [{ owner: undefined }])[0]
+    const { id, owner } = (result.current ?? [{ id: undefined, owner: undefined }])[0]
 
     expect(owner).toEqual(BOB)
+    expect(id).toEqual('15')
   })
 
   const renderResult = () => {

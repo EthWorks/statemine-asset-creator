@@ -2,7 +2,6 @@ import { act } from '@testing-library/react'
 import React from 'react'
 
 import Home from '../pages'
-import { mockUseAssets } from './mocks/mockUseAssets'
 import {
   assertLocalStorage,
   assertNoText,
@@ -11,11 +10,11 @@ import {
   selectAccountFromDropdown,
   setLocalStorage
 } from './helpers'
-import { bobAccount, mockChains, mockUseAccounts, mockUseBalances } from './mocks'
+import { bobAccount, mockChains, mockUseAccounts, mockUseAssets, mockUseBalances } from './mocks'
 
 jest.mock('use-substrate', () => ({
   useAccounts: () => mockUseAccounts,
-  useAssets: () => [mockUseAssets],
+  useAssets: () => mockUseAssets,
   useBalances: () => mockUseBalances,
   Chains: () => mockChains
 }))
