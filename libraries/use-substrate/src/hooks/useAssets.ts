@@ -21,5 +21,5 @@ function formatAssets(assets: FetchedAssets): UseAssets {
 }
 
 function filterByOwner(assets: Asset[], owner?: string): UseAssets {
-  return owner? assets.filter(asset => asset.owner === owner) : assets
+  return owner ? assets.filter(asset => asset.owner === owner) : assets
 }
