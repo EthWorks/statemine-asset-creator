@@ -27,11 +27,13 @@ export function CustomInput({ label, id, onChange, hint, error, ...args }: Custo
 }
 
 const CustomInputWrapper = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
+  padding-bottom: 16px;
   
   & + & {
-    margin-top: 16px;
+    margin-top: 4px;
   }
 `
 
