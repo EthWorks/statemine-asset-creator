@@ -1,5 +1,7 @@
 import type { AssetInfo, AssetInfoWithId, AssetMeta, FetchedAssets, UseAssets, UseAssetsOptions } from './types/useAssets'
 
+import { ApiRx } from '@polkadot/api'
+import { AssetId } from '@polkadot/types/interfaces'
 import { PalletAssetsAssetMetadata } from '@polkadot/types/lookup'
 import { useEffect, useMemo, useState } from 'react'
 
@@ -8,7 +10,7 @@ import { useApi } from './useApi'
 import { useObservable } from './useObservable'
 
 export function useAssets(chain: Chains, options?: UseAssetsOptions): UseAssets | undefined {
-  const [ids, setIds] = useState<string[] | undefined>([])
+  const [ids, setIds] = useState<AssetId[] | undefined>(undefined)
   const [ownerAssets, setOwnerAssets] = useState<AssetInfoWithId[]>([])
   const { api, connectionState } = useApi(chain)
 
@@ -24,22 +26,22 @@ export function useAssets(chain: Chains, options?: UseAssetsOptions): UseAssets 
   }, [fetchedAssets, options?.owner])
 
   useEffect(() => {
-    setIds(getAssetsIds(ownerAssets))
-  }, [ownerAssets])
+    setIds(getAssetsIds(ownerAssets, api))
+  }, [ownerAssets, api])
 
   return useMemo(() => attachMetadataToAssets(ownerAssets, metadata), [ownerAssets, metadata])
 }
 
 function formatAssets(assets: FetchedAssets): AssetInfoWithId[] {
-  return assets?.map(asset => ({ ...(asset[1].toHuman() as unknown as AssetInfo), id: asset[0].toString() }))
+  return assets?.map(asset => ({ ...(asset[1].toHuman() as unknown as AssetInfo), id: asset[0].toHuman() }))
 }
 
 function filterByOwner(assets: AssetInfoWithId[], owner?: string): AssetInfoWithId[] {
   return owner ? assets.filter(asset => asset.owner === owner) : assets
 }
 
-function getAssetsIds(ownersAssets: AssetInfoWithId[] | undefined): string[] | undefined{
-  return ownersAssets?.map(asset => asset.id)
+function getAssetsIds(ownersAssets: AssetInfoWithId[] | undefined, api: ApiRx | undefined): AssetId[] | undefined{
+  return api ? ownersAssets?.map(asset => api.createType('AssetId', asset.id)) : undefined
 }
 
 function attachMetadataToAssets(ownersAssets: AssetInfoWithId[] | undefined, metadata: PalletAssetsAssetMetadata[] | undefined): UseAssets | undefined {
