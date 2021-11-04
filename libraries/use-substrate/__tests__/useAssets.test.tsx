@@ -1,12 +1,16 @@
+import { ApiRx } from '@polkadot/api'
+import { PalletAssetsAssetMetadata } from '@polkadot/types/lookup'
 import { renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
+import { from, ObservableInput } from 'rxjs'
 
-import { ALICE, BOB, Chains, useAssets } from '../src'
-import { MockedApiProvider } from './mocks/MockedApiProvider'
+import { ALICE, BOB, Chains, UseApi, useAssets } from '../src'
+import { MockedApiProvider, mockedKusamaApi } from './mocks/MockedApiProvider'
+import { createType } from './utils/createType'
 
 describe('Use assets hook', () => {
-  it('Returns all available assets', () => {
-    const { result } = renderResult()
+  it('Returns all available assets', async () => {
+    const { result } = renderResult({ customApi })
 
     expect(result.current).toHaveLength(3)
 
@@ -22,8 +26,8 @@ describe('Use assets hook', () => {
     expect(thirdOwner).toEqual(BOB)
   })
 
-  it('Returns owners assets', async () => {
-    const { result } = renderResult(BOB)
+  it('Returns owners assets', () => {
+    const { result } = renderResult({ owner: BOB })
 
     expect(result.current).toHaveLength(2)
 
@@ -36,9 +40,23 @@ describe('Use assets hook', () => {
     expect(secondOwner).toEqual(BOB)
   })
 
-  const renderResult = (owner?: string) => {
+  it('Returns asset details', () => {
+    const { result } = renderResult({ owner: BOB })
+
+    expect(result.current).toHaveLength(2)
+
+    const { id, name, symbol, decimals, owner } = (result.current ?? [{ name: undefined, symbol: undefined, decimals: undefined }])[0]
+
+    expect(id).toEqual('15')
+    expect(owner).toEqual(BOB)
+    expect(name).toEqual('TestToken')
+    expect(symbol).toEqual('TT')
+    expect(decimals).toEqual('8')
+  })
+
+  const renderResult = ({ owner, customApi }:{owner?: string, customApi?: UseApi}) => {
     const wrapper = ({ children }: { children: ReactNode }) => (
-      <MockedApiProvider>
+      <MockedApiProvider customApi={customApi}>
         {children}
       </MockedApiProvider>
     )
@@ -46,3 +64,26 @@ describe('Use assets hook', () => {
     return renderHook(() => useAssets(Chains.Kusama, { owner }), { wrapper })
   }
 })
+
+const customApi: UseApi = {
+  isConnected: true,
+  connectionState: 'connected',
+  api: {
+    ...mockedKusamaApi.api,
+    query: {
+      ...mockedKusamaApi.api!.query,
+      assets: {
+        ...mockedKusamaApi.api!.query.assets,
+        metadata: {
+          multi:  () => from<ObservableInput<PalletAssetsAssetMetadata[]>>([
+            [
+              createType('AssetMetadata', { decimals: 8, symbol: 'TT', name: 'TestToken' }),
+              createType('AssetMetadata', { decimals: 10, symbol: 'TTx', name: 'TestTokenExtra' }),
+              createType('AssetMetadata', { decimals: 12, symbol: 'KSM', name: 'Kusama' })
+            ]
+          ])
+        }
+      }
+    }
+  } as unknown as ApiRx,
+}
