@@ -41,7 +41,11 @@ export function MockedApiProvider(props: { children: React.ReactNode }) {
         assets: {
           asset: {
             entries: () => from<ObservableInput<FetchedAssets>>([
-              [[createType('AssetId', new BN(15)), createType('AssetDetails', { owner: createType('AccountId', BOB) })]]
+              [
+                [createType('AssetId', new BN(15)), createType('AssetDetails', { owner: createType('AccountId', BOB) })],
+                [createType('AssetId', new BN(24)), createType('AssetDetails', { owner: createType('AccountId', ALICE) })],
+                [createType('AssetId', new BN(37)), createType('AssetDetails', { owner: createType('AccountId', BOB) })]
+              ]
             ])
           }
         }
