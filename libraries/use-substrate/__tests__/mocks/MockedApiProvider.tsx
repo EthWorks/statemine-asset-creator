@@ -81,7 +81,7 @@ export function MockedApiProvider({ children, customApi }: { children: React.Rea
   }
 
   return (
-    <ApiContext.Provider value={{ 'kusama': customApi ? customApi : mockedKusamaApi, 'statemine': mockedStatemineApi }}>
+    <ApiContext.Provider value={{ 'kusama': customApi ?? mockedKusamaApi, 'statemine': mockedStatemineApi }}>
       {children}
     </ApiContext.Provider>
   )

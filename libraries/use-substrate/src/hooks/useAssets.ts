@@ -1,5 +1,5 @@
 import type { StorageKey } from '@polkadot/types'
-import  type { AssetId } from '@polkadot/types/interfaces'
+import type { AssetId } from '@polkadot/types/interfaces'
 import type { PalletAssetsAssetMetadata } from '@polkadot/types/lookup'
 import type { Chains } from '../consts'
 import type { AssetInfo, AssetInfoWithId, AssetMeta, FetchedAssets, UseAssets, UseAssetsOptions } from './types/useAssets'
