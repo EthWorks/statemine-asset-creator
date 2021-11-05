@@ -9,6 +9,7 @@ import React from 'react'
 import { from, of } from 'rxjs'
 
 import { ALICE, ApiContext, BOB } from '../../src'
+import { createAssetStorageKey } from '../utils/createAssetStorageKey'
 import { createType } from '../utils/createType'
 
 export const mockedKusamaApi: UseApi = {
@@ -50,9 +51,9 @@ export const mockedKusamaApi: UseApi = {
         asset: {
           entries: () => from<ObservableInput<FetchedAssets>>([
             [
-              [createType('AssetId', new BN(15)), createType('AssetDetails', { owner: createType('AccountId', BOB) })],
-              [createType('AssetId', new BN(24)), createType('AssetDetails', { owner: createType('AccountId', ALICE) })],
-              [createType('AssetId', new BN(37)), createType('AssetDetails', { owner: createType('AccountId', BOB) })]
+              [createAssetStorageKey(15), createType('AssetDetails', { owner: createType('AccountId', BOB) })],
+              [createAssetStorageKey(24), createType('AssetDetails', { owner: createType('AccountId', ALICE) })],
+              [createAssetStorageKey(1000), createType('AssetDetails', { owner: createType('AccountId', BOB) })]
             ]
           ])
         }

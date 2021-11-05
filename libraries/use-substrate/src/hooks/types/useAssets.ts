@@ -1,8 +1,8 @@
-import type { StorageKey, u32 } from '@polkadot/types'
+import type { StorageKey } from '@polkadot/types'
+import type { AssetId } from '@polkadot/types/interfaces'
 import type { PalletAssetsAssetDetails } from '@polkadot/types/lookup'
-import type { AnyJson } from '@polkadot/types/types'
 
-export type FetchedAssets = [StorageKey<[u32]>, PalletAssetsAssetDetails][];
+export type FetchedAssets = [StorageKey<[AssetId]>, PalletAssetsAssetDetails][];
 
 export interface AssetInfo {
   readonly owner: string;
@@ -28,7 +28,7 @@ export interface AssetMeta {
 }
 
 export interface AssetInfoWithId extends AssetInfo {
-  readonly id: AnyJson;
+  readonly id: AssetId;
 }
 
 export type Asset = AssetInfoWithId & AssetMeta

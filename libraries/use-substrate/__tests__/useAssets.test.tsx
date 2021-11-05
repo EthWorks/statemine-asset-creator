@@ -18,11 +18,11 @@ describe('Use assets hook', () => {
     const { id: secondId, owner: secondOwner } = (result.current ?? [{ id: undefined, owner: undefined }])[1]
     const { id: thirdId, owner: thirdOwner } = (result.current ?? [{ id: undefined, owner: undefined }])[2]
 
-    expect(firstId).toEqual('15')
+    expect(firstId?.toString()).toEqual('15')
     expect(firstOwner).toEqual(BOB)
-    expect(secondId).toEqual('24')
+    expect(secondId?.toString()).toEqual('24')
     expect(secondOwner).toEqual(ALICE)
-    expect(thirdId).toEqual('37')
+    expect(thirdId?.toString()).toEqual('1000')
     expect(thirdOwner).toEqual(BOB)
   })
 
@@ -34,9 +34,9 @@ describe('Use assets hook', () => {
     const { id: firstId, owner: firstOwner } = (result.current ?? [{ id: undefined, owner: undefined }])[0]
     const { id: secondId, owner: secondOwner } = (result.current ?? [{ id: undefined, owner: undefined }])[1]
 
-    expect(firstId).toEqual('15')
+    expect(firstId?.toString()).toEqual('15')
     expect(firstOwner).toEqual(BOB)
-    expect(secondId).toEqual('37')
+    expect(secondId?.toString()).toEqual('1000')
     expect(secondOwner).toEqual(BOB)
   })
 
@@ -47,7 +47,7 @@ describe('Use assets hook', () => {
 
     const { id, name, symbol, decimals, owner } = (result.current ?? [{ name: undefined, symbol: undefined, decimals: undefined }])[0]
 
-    expect(id).toEqual('15')
+    expect(id?.toString()).toEqual('15')
     expect(owner).toEqual(BOB)
     expect(name).toEqual('TestToken')
     expect(symbol).toEqual('TT')

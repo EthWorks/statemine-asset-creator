@@ -1,6 +1,6 @@
 import type { AssetInfo, AssetInfoWithId, AssetMeta, FetchedAssets, UseAssets, UseAssetsOptions } from './types/useAssets'
 
-import { ApiRx } from '@polkadot/api'
+import { StorageKey } from '@polkadot/types'
 import { AssetId } from '@polkadot/types/interfaces'
 import { PalletAssetsAssetMetadata } from '@polkadot/types/lookup'
 import { useEffect, useMemo, useState } from 'react'
@@ -26,22 +26,26 @@ export function useAssets(chain: Chains, options?: UseAssetsOptions): UseAssets 
   }, [fetchedAssets, options?.owner])
 
   useEffect(() => {
-    setIds(getAssetsIds(ownerAssets, api))
-  }, [ownerAssets, api])
+    setIds(getAssetsIds(ownerAssets))
+  }, [ownerAssets])
 
   return useMemo(() => attachMetadataToAssets(ownerAssets, metadata), [ownerAssets, metadata])
 }
 
 function formatAssets(assets: FetchedAssets): AssetInfoWithId[] {
-  return assets?.map(asset => ({ ...(asset[1].toHuman() as unknown as AssetInfo), id: asset[0].toHuman() }))
+  return assets.map(asset => ({ ...(asset[1].toHuman() as unknown as AssetInfo), id: extractAssetIds(asset[0]) }))
+}
+
+function extractAssetIds (key: StorageKey<[AssetId]>): AssetId {
+  return key.args[0]
 }
 
 function filterByOwner(assets: AssetInfoWithId[], owner?: string): AssetInfoWithId[] {
   return owner ? assets.filter(asset => asset.owner === owner) : assets
 }
 
-function getAssetsIds(ownersAssets: AssetInfoWithId[] | undefined, api: ApiRx | undefined): AssetId[] | undefined{
-  return api ? ownersAssets?.map(asset => api.createType('AssetId', asset.id)) : undefined
+function getAssetsIds(ownersAssets: AssetInfoWithId[] | undefined): AssetId[] | undefined {
+  return ownersAssets?.map(asset => asset.id)
 }
 
 function attachMetadataToAssets(ownersAssets: AssetInfoWithId[] | undefined, metadata: PalletAssetsAssetMetadata[] | undefined): UseAssets | undefined {
