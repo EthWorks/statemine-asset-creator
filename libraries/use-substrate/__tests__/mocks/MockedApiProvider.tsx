@@ -73,7 +73,6 @@ export const mockedKusamaApi: UseApi = {
 }
 
 export function MockedApiProvider({ children, customApi }: { children: React.ReactNode, customApi?: UseApi }) {
-  console.log('custom',!!customApi)
   const mockedStatemineApi: UseApi = {
     api: undefined,
     isConnected: false,
