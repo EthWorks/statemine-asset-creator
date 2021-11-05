@@ -47,11 +47,16 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
         <Image src={StatemineLogo} alt='Statemine' />
         <Title>Statemine account</Title>
       </SectionTitleStyle>
-      <AccountSelect accounts={accounts.allAccounts} currentAccount={account} setCurrentAccount={setAccount}/>
-      <ButtonPrimary disabled onClick={_onClick}>
+      <AccountSelect
+        label='Choose account'
+        accounts={accounts.allAccounts}
+        currentAccount={account}
+        setCurrentAccount={setAccount}
+      />
+      <StyledButtonPrimary disabled onClick={_onClick}>
         Connect
         <Arrow direction='right' width='14' height='9' />
-      </ButtonPrimary>
+      </StyledButtonPrimary>
       { accounts.error === 'EXTENSION' && <div>No extension available</div>}
     </Modal>
   )
@@ -65,4 +70,8 @@ const TextStyle = styled(Text)`
 
 const SectionTitleStyle = styled(SectionTitle)`
   margin: 24px 0;
+`
+
+const StyledButtonPrimary = styled(ButtonPrimary)`
+  margin: 24px 0 0 auto;
 `
