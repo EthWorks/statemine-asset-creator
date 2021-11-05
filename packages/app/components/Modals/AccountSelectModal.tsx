@@ -9,8 +9,7 @@ import { useAccounts } from 'use-substrate'
 import StatemineLogo from '../../assets/img/statemine.png'
 import { AccountSelect } from '../AccountSelect'
 import { Arrow } from '../icons/Arrow'
-import { Title } from '../index'
-import { ButtonPrimary, Modal, Text } from '../index'
+import { ButtonPrimary, Modal, Text, Title } from '../index'
 import { SectionTitle } from '../SectionTitle/SectionTitle'
 
 interface Props {
@@ -53,7 +52,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
         currentAccount={account}
         setCurrentAccount={setAccount}
       />
-      <StyledButtonPrimary disabled onClick={_onClick}>
+      <StyledButtonPrimary onClick={_onClick}>
         Connect
         <Arrow direction='right' width='14' height='9' />
       </StyledButtonPrimary>

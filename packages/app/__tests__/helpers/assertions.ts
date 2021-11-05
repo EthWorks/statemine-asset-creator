@@ -31,3 +31,8 @@ export function assertNoButton(name: string) {
 export function assertNoText(text: string) {
   expect(screen.queryByText(text)).toBeFalsy()
 }
+
+export async function assertLinkByText(text: string, url: string) {
+  const link = await screen.findByText(text)
+  expect(link.getAttribute('href')).toEqual(url)
+}

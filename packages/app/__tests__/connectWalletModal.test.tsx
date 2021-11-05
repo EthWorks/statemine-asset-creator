@@ -3,7 +3,14 @@ import React from 'react'
 
 import Home from '../pages'
 import { POLKADOT_EXTENSION_LINK } from '../utils'
-import { assertLink, assertLocalStorage, assertNewTabOpened, assertText, clickButton, renderWithTheme } from './helpers'
+import {
+  assertLinkByText,
+  assertLocalStorage,
+  assertNewTabOpened,
+  assertText,
+  clickButton,
+  renderWithTheme
+} from './helpers'
 import { mockChains, mockUseAccounts, mockUseBalances, mockWeb3Enable } from './mocks'
 
 jest.mock('use-substrate', () => ({
@@ -66,7 +73,7 @@ describe('Connect wallet modal', () => {
 
     await assertText('Don’t have the Polkadot{.js} extension? Download it')
 
-    await assertLink(POLKADOT_EXTENSION_LINK)
+    await assertLinkByText('here', POLKADOT_EXTENSION_LINK)
   })
 
   it('displays connect wallet modal when extension is not activated', async () => {
