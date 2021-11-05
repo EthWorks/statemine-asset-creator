@@ -36,6 +36,5 @@ export type Asset = AssetInfoWithId & AssetMeta
 export type UseAssets = Asset[]
 
 export interface UseAssetsOptions {
-  withDetails?: boolean,
   owner?: string
 }
