@@ -1,10 +1,13 @@
+import type { ObservableInput } from 'rxjs'
+import type { PalletAssetsAssetMetadata } from '@polkadot/types/lookup'
+import type { UseApi } from '../src'
+
 import { ApiRx } from '@polkadot/api'
-import { PalletAssetsAssetMetadata } from '@polkadot/types/lookup'
 import { renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
-import { from, ObservableInput } from 'rxjs'
+import { from } from 'rxjs'
 
-import { ALICE, BOB, Chains, UseApi, useAssets } from '../src'
+import { ALICE, BOB, Chains,  useAssets } from '../src'
 import { MockedApiProvider, mockedKusamaApi } from './mocks/MockedApiProvider'
 import { createType } from './utils/createType'
 

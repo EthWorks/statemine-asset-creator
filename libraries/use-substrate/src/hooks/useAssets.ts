@@ -1,11 +1,11 @@
+import type { StorageKey } from '@polkadot/types'
+import  type { AssetId } from '@polkadot/types/interfaces'
+import type { PalletAssetsAssetMetadata } from '@polkadot/types/lookup'
+import type { Chains } from '../consts'
 import type { AssetInfo, AssetInfoWithId, AssetMeta, FetchedAssets, UseAssets, UseAssetsOptions } from './types/useAssets'
 
-import { StorageKey } from '@polkadot/types'
-import { AssetId } from '@polkadot/types/interfaces'
-import { PalletAssetsAssetMetadata } from '@polkadot/types/lookup'
 import { useEffect, useMemo, useState } from 'react'
 
-import { Chains } from '../consts'
 import { useApi } from './useApi'
 import { useObservable } from './useObservable'
 

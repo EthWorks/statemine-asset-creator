@@ -1,6 +1,7 @@
-import { ApiRx } from '@polkadot/api'
+import type { ApiRx } from '@polkadot/api'
+import type { AssetId } from '@polkadot/types/interfaces'
+
 import { StorageKey } from '@polkadot/types'
-import { AssetId } from '@polkadot/types/interfaces'
 
 import { createApiWithAugmentations } from './createApiWithAugmentations'
 
