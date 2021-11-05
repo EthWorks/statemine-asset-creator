@@ -45,6 +45,11 @@ const Input = styled.input`
   font-size: 14px;
   line-height: 143%;
   color: ${({ theme }) => theme.colors.gray[50]};
+
+  &:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 30px ${({ theme }) => theme.colors.black} inset !important;
+    -webkit-text-fill-color: ${({ theme }) => theme.colors.white};
+  }
   
   &:focus,
   &:focus-visible {
