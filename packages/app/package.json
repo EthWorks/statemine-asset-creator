@@ -31,7 +31,7 @@
     "@storybook/react": "^6.3.12",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.1.1",
-    "@types/bn.js": "~5.1.0",
+    "@types/bn.js": "4.11.6",
     "@types/jest": "^27.0.2",
     "@types/react": "17.0.24",
     "@types/styled-components": "^5.1.15",
@@ -50,8 +50,5 @@
     "react-test-renderer": "^17.0.2",
     "rxjs": "7.4.0",
     "typescript": "^4.4.3"
-    "bn.js": "~5.2.0",
-    "@types/bn.js": "4.11.6",
-    "@types/testing-library__jest-dom": "~5.14.1"
   }
 }
