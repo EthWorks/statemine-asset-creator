@@ -67,6 +67,8 @@ const ModalBg = styled.div`
 const ModalCard = styled(Card)<ModalCardProps>`
   overflow: hidden;
   position: relative;
+  display: flex;
+  flex-direction: column;
   width: ${({ size }) => size === 'm' ? '500px' : '700px'};
   height: fit-content;
   color: white;

@@ -1,11 +1,17 @@
 import type { Account } from 'use-substrate'
 
+import Image from 'next/image'
 import { useEffect, useState } from 'react'
+import styled from 'styled-components'
 
 import { useAccounts } from 'use-substrate'
 
+import StatemineLogo from '../../assets/img/statemine.png'
 import { AccountSelect } from '../AccountSelect'
-import { Modal, Text } from '../index'
+import { Arrow } from '../icons/Arrow'
+import { Title } from '../index'
+import { ButtonPrimary, Modal, Text } from '../index'
+import { SectionTitle } from '../SectionTitle/SectionTitle'
 
 interface Props {
   closeModal: () => void
@@ -28,11 +34,35 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
   if (!accounts.allAccounts.length || !account) return <>Loading..</>
 
   return (
-    <Modal isOpen={isOpen} onClose={closeModal}>
-      <Text color='white'>Connect accounts</Text>
+    <Modal
+      title='Connect accounts'
+      padding='m'
+      isOpen={isOpen}
+      onClose={closeModal}
+    >
+      <TextStyle size='SM'>
+        Asset creation and transfers happen on the <b>Statemine</b> parachain. You <b>need an account with a balance on Statemine</b> for fees and deposits. However, you can also use a fresh & empty account, and send funds from your Kusama account.
+      </TextStyle>
+      <SectionTitleStyle>
+        <Image src={StatemineLogo} alt='Statemine' />
+        <Title>Statemine account</Title>
+      </SectionTitleStyle>
       <AccountSelect accounts={accounts.allAccounts} currentAccount={account} setCurrentAccount={setAccount}/>
-      <button onClick={_onClick}>Connect</button>
+      <ButtonPrimary disabled onClick={_onClick}>
+        Connect
+        <Arrow direction='right' width='14' height='9' />
+      </ButtonPrimary>
       { accounts.error === 'EXTENSION' && <div>No extension available</div>}
     </Modal>
   )
 }
+
+const TextStyle = styled(Text)`
+  b {
+    color: ${({ theme }) => theme.colors.white};
+  }
+`
+
+const SectionTitleStyle = styled(SectionTitle)`
+  margin: 24px 0;
+`
