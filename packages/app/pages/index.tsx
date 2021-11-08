@@ -3,7 +3,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useState } from 'react'
 
-import { Chains, useAccounts, useBalances } from 'use-substrate'
+import { Chains, useAccounts, useAssets, useBalances } from 'use-substrate'
 
 import { AccountSelectModal, ConnectWalletModal, NewAssetModal } from '../components'
 import styles from '../styles/Home.module.css'
@@ -17,6 +17,7 @@ const Home: NextPage =  () => {
 
   const balances = useBalances(account, Chains.Kusama)
   const statemineBalances = useBalances(account, Chains.Statemine)
+  const assets = useAssets(Chains.Statemine)
   const { allAccounts, web3Enable } = useAccounts()
 
   const onExtensionActivated = (): void => {
@@ -47,6 +48,9 @@ const Home: NextPage =  () => {
           <NewAssetModal isOpen={isNewAssetModalOpen} closeModal={toggleNewAssetModalOpen}/>
         </div>
         <div data-testid='active-account-container'>
+          {assets?.map((asset, index) =>
+            <li key={index}>{asset.owner}</li>)
+          }
           <p>
             {account}
           </p>

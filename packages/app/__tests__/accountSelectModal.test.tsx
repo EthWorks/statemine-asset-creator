@@ -10,10 +10,11 @@ import {
   selectAccountFromDropdown,
   setLocalStorage
 } from './helpers'
-import { bobAccount, mockChains, mockUseAccounts, mockUseBalances } from './mocks'
+import { bobAccount, mockChains, mockUseAccounts, mockUseAssets, mockUseBalances } from './mocks'
 
 jest.mock('use-substrate', () => ({
   useAccounts: () => mockUseAccounts,
+  useAssets: () => mockUseAssets,
   useBalances: () => mockUseBalances,
   Chains: () => mockChains
 }))
