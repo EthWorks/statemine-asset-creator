@@ -48,8 +48,8 @@ const Home: NextPage =  () => {
           <NewAssetModal isOpen={isNewAssetModalOpen} closeModal={toggleNewAssetModalOpen}/>
         </div>
         <div data-testid='active-account-container'>
-          {assets?.map((asset, index) =>
-            <li key={index}>{asset.owner}</li>)
+          {assets?.sort((a, b) => a.id.toNumber() - b.id.toNumber()).map((asset) =>
+            <li key={asset.id.toString()}>{asset.owner}, {asset.id.toString()}, {asset.name}</li>)
           }
           <p>
             {account}
