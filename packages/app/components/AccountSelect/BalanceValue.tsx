@@ -5,6 +5,8 @@ import styled from 'styled-components'
 import { formatBalanceValue } from '../../formaters/formaters'
 import { Text } from '../typography'
 
+const DECIMALS_DISPLAYED = 4
+
 interface BalanceValueProps {
   decimals: number,
   token: string,
@@ -21,8 +23,8 @@ const BalanceValue = ({ decimals, token, value }: BalanceValueProps): React.Reac
   balanceValue = balanceValue.substring(0, (balanceValue.length - decimals)) + '.' + balanceValue.substring((balanceValue.length - decimals), balanceValue.length)
   balanceValue = formatBalanceValue(balanceValue)
 
-  const integers = balanceValue.substr(0, balanceValue.length - 4)
-  const decimalPlaces = balanceValue.substr(balanceValue.length - 4, 4)
+  const integers = balanceValue.substr(0, balanceValue.length - DECIMALS_DISPLAYED)
+  const decimalPlaces = balanceValue.substr(balanceValue.length - DECIMALS_DISPLAYED, DECIMALS_DISPLAYED)
 
   return (
     <>

@@ -5,8 +5,8 @@ import { Account, Chains, useBalances } from 'use-substrate'
 
 import AvatarIcon from '../../assets/img/avatar2.png'
 import Avatar from '../Avatar/Avatar'
-import BalanceValue from './BalanceValue'
 import { Label, Text } from '../typography'
+import BalanceValue from './BalanceValue'
 
 interface Props {
   account: Account,
