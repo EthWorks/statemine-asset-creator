@@ -2,7 +2,7 @@ import { FC } from 'react'
 
 interface Props {
   account: string,
-  role: string
+  role: string[]
 }
 
 export const Account: FC<Props> = ({ account, role }) => {

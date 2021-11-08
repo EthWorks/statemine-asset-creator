@@ -72,8 +72,9 @@ const Home: NextPage =  () => {
             <li key={index}>address: {account.address} name: {account.name}</li>)
           }
         </ul>
+        <div>Dashboard</div>
+        <CreatedAssets/>
       </main>
-      <CreatedAssets assets={assets}/>
     </div>
   )
 }
