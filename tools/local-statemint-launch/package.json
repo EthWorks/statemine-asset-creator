@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "",
-    "run": "polkadot-launch config-wst.json"
+    "start": "polkadot-launch config-wst.json"
   },
   "dependencies": {
     "polkadot-launch": "1.8.0",

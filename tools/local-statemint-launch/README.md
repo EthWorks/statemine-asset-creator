@@ -29,7 +29,7 @@ ln -s /your/cumulus/dir/target/release/polkadot-collator ./bin
 ```
 #### 4. Run `polkadot-launch`
 ```shell
-rushx run
+rushx start
 ```
 Wait for message "🚀 POLKADOT LAUNCH COMPLETE 🚀".
 
@@ -37,3 +37,7 @@ Wait for message "🚀 POLKADOT LAUNCH COMPLETE 🚀".
 The Westmint parachain will start authoring blocks after the first epoch change.
 Open polkadot-js Apps and connect to one of the local relay chain nodes (eg. `127.0.0.0.1:9444`).
 Open `Network/Parachains` and verify that block numbers are updated for parachain `1000`.
+
+#### 6. Observe the logs
+If you want to observe the state of each node, or troubleshoot, logs are saved in files corresponding to 
+node name or port: `alice.log`, `9988.log`, for example.
