@@ -18,7 +18,7 @@ const Default = {
 
 export default Default
 
-const Template: Story<SectionTitleProps> = (args ) =>
+const Template: Story<SectionTitleProps> = (args) =>
   <SectionTitle {...args}>
     <Title>Example Section Title</Title>
   </SectionTitle>
