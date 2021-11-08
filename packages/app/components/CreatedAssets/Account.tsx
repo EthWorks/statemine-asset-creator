@@ -1,8 +1,10 @@
 import { FC } from 'react'
 
+import { Role } from './types'
+
 interface Props {
   account: string,
-  role: string[]
+  role: Role[]
 }
 
 export const Account: FC<Props> = ({ account, role }) => {

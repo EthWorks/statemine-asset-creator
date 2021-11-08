@@ -2,6 +2,7 @@ import { FC } from 'react'
 
 import { Asset } from 'use-substrate'
 
+import { Account } from './Account'
 import { groupRoles } from './groupRoles'
 
 interface Props {
@@ -9,8 +10,8 @@ interface Props {
 }
 
 export const AssetCard: FC<Props> = ({ asset }) => {
-  const { name, id, decimals, supply, admin, issuer, freezer, owner } = asset
-  const sortedAdmins = groupRoles({ admin, issuer, freezer })
+  const { name, id, decimals, supply, admin, issuer, freezer } = asset
+  const rolesByAccount = groupRoles({ admin, issuer, freezer })
 
   return (
     <div data-testid={`asset-card-${id.toNumber()}`}>
@@ -18,7 +19,7 @@ export const AssetCard: FC<Props> = ({ asset }) => {
       <div>id: {id.toNumber()}</div>
       <div>total supply: {supply} KSM</div>
       <div>decimals: {decimals}</div>
-      {/*{sortedAdmins.map(admin => <Account key={admin[1]} account={admin[0]} role={admin[1]}/>)}*/}
+      {rolesByAccount.map(account => <Account key={account[1]} account={account[1]} role={account[0]}/>)}
     </div>
   )
 }

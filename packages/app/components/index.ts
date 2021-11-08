@@ -9,5 +9,3 @@ export * from './Modals'
 export * from './CreatedAssets'
 export * from './CreatedAssets/AssetCard'
 export * from './CreatedAssets/Account'
-export {Role} from "./CreatedAssets/types"
-export {groupRoles} from "./CreatedAssets/groupRoles"

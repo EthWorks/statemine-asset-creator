@@ -1,5 +1,5 @@
-import { groupRoles } from '../components'
-import {aliceAccount, bobAccount, charlieAccount} from './mocks'
+import { groupRoles } from '../components/CreatedAssets/groupRoles'
+import { aliceAccount, bobAccount, charlieAccount } from './mocks'
 
 describe('sortAdmins', () => {
   it('merges accounts with multiple roles', async () => {
@@ -10,8 +10,8 @@ describe('sortAdmins', () => {
     }
 
     const result = groupRoles(admins)
-    expect(result[0]).toEqual([['admin', 'issuer'], bobAccount.address])
-    expect(result[1]).toEqual([['freezer'], aliceAccount.address])
+    expect(result[0]).toEqual([ bobAccount.address, ['admin', 'issuer']])
+    expect(result[1]).toEqual([aliceAccount.address, ['freezer']])
   })
 
   it('returns unmerged for unique users', async () => {
@@ -22,8 +22,8 @@ describe('sortAdmins', () => {
     }
 
     const result = groupRoles(admins)
-    expect(result[0]).toEqual([['admin'], bobAccount.address])
-    expect(result[0]).toEqual([['issuer'], charlieAccount.address])
-    expect(result[1]).toEqual([['freezer'], aliceAccount.address])
+    expect(result[0]).toEqual([ bobAccount.address, ['admin']])
+    expect(result[1]).toEqual([charlieAccount.address, ['issuer']])
+    expect(result[2]).toEqual([ aliceAccount.address, ['freezer']])
   })
 })
