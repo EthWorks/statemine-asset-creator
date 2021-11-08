@@ -6,7 +6,7 @@ import styled from 'styled-components'
 
 import { useAccounts } from 'use-substrate'
 
-import StatemineLogo from '../../assets/img/statemine.png'
+import StatemineLogo from '../../assets/img/statemine.svg'
 import { AccountSelect } from '../AccountSelect'
 import { Arrow } from '../icons/Arrow'
 import { ButtonPrimary, Modal, Text, Title } from '../index'
@@ -43,8 +43,10 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
         Asset creation and transfers happen on the <b>Statemine</b> parachain. You <b>need an account with a balance on Statemine</b> for fees and deposits. However, you can also use a fresh & empty account, and send funds from your Kusama account.
       </TextStyle>
       <SectionTitleStyle>
-        <Image src={StatemineLogo} alt='Statemine' />
-        <Title>Statemine account</Title>
+        <ImageWrapper>
+          <Image src={StatemineLogo} alt='Statemine' />
+        </ImageWrapper>
+        <Title color='white'>Statemine account</Title>
       </SectionTitleStyle>
       <AccountSelect
         label='Choose account'
@@ -73,4 +75,9 @@ const SectionTitleStyle = styled(SectionTitle)`
 
 const StyledButtonPrimary = styled(ButtonPrimary)`
   margin: 24px 0 0 auto;
+`
+
+const ImageWrapper = styled.div`
+  width: 32px;
+  height: 32px;
 `

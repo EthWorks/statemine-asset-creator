@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { useAccounts } from 'use-substrate'
 
-import Logo from '../../assets/img/polkadot.png'
+import Logo from '../../assets/img/polkadot.svg'
 import { POLKADOT_EXTENSION_LINK } from '../../utils'
 import { ArrowLarge } from '../icons/ArrowLarge'
 import { Link, Modal, Text } from '../index'
@@ -43,7 +43,9 @@ export function ConnectWalletModal({ isOpen, closeModal, onExtensionActivated }:
         : (
           <>
             <ConnectButton onClick={_onClick}>
-              <Image src={Logo} alt="Polkadot" />
+              <ImageWrapper>
+                <Image src={Logo} alt="Polkadot" />
+              </ImageWrapper>
               <Text size='SM' color="white">{'Polkadot{.js} extension'}</Text>
               <ArrowLarge direction='right' width='24' height='24' />
             </ConnectButton>
@@ -85,4 +87,9 @@ const ConnectButton = styled.button`
   ${Text} {
     margin: 0 16px;
   }
+`
+
+const ImageWrapper = styled.div`
+  width: 32px;
+  height: 32px;
 `

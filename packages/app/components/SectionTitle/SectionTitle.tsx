@@ -18,9 +18,9 @@ export const SectionTitle = ({ children, className }: SectionTitleProps): JSX.El
 export const SectionTitleWrapper = styled.div`
   position: relative;
   display: flex;
+  align-items: center;
   justify-content: center;
   width: 100%;
-  margin: 0 16px;
   
   &:before {
     content: '';
@@ -37,6 +37,7 @@ export const SectionTitleWrapper = styled.div`
 const SectionTitleContent = styled.div`
   position: relative;
   display: flex;
+  align-items: center;
   padding: 0 10px;
   background: ${({ theme }) => theme.colors.black};
   z-index: 1;
