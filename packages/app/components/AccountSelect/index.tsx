@@ -18,27 +18,24 @@ export interface Props {
 export function AccountSelect ({ accounts, currentAccount, setCurrentAccount, label, withFreeBalance = false }: Props): JSX.Element {
   return (
     <DropdownMenu.Root>
-      <div style={{ position: 'relative' }}>
-
-        <div>
-          {label && <StyledText size='SM'>{label}</StyledText>}
-          <StyledButton data-testid='open-account-select'>
-            <AccountTile withFreeBalance={withFreeBalance} account={currentAccount} />
-            <StyledArrow direction='down' width='14' height='9' />
-          </StyledButton>
-        </div>
-
-        <StyledDropdown>
-          {accounts.map(account => (
-            <StyledDropdownItem
-              onClick={() => setCurrentAccount(account)}
-              key={account.address}
-            >
-              <AccountTile withFreeBalance={withFreeBalance} account={account}/>
-            </StyledDropdownItem>
-          ))}
-        </StyledDropdown>
+      <div>
+        {label && <StyledText size='SM'>{label}</StyledText>}
+        <StyledButton data-testid='open-account-select'>
+          <AccountTile withFreeBalance={withFreeBalance} account={currentAccount} />
+          <StyledArrow direction='down' width='14' height='9' />
+        </StyledButton>
       </div>
+
+      <StyledDropdown>
+        {accounts.map(account => (
+          <StyledDropdownItem
+            onClick={() => setCurrentAccount(account)}
+            key={account.address}
+          >
+            <AccountTile withFreeBalance={withFreeBalance} account={account}/>
+          </StyledDropdownItem>
+        ))}
+      </StyledDropdown>
     </DropdownMenu.Root>
   )
 }
