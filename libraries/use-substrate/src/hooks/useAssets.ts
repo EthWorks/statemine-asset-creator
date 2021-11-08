@@ -10,7 +10,7 @@ import { useApi } from './useApi'
 import { useObservable } from './useObservable'
 
 export function useAssets(chain: Chains, options?: UseAssetsOptions): UseAssets | undefined {
-  const [ids, setIds] = useState<AssetId[] | undefined>(undefined)
+  const [ids, setIds] = useState<AssetId[]>()
   const [ownerAssets, setOwnerAssets] = useState<AssetInfoWithId[]>([])
   const { api, connectionState } = useApi(chain)
 
