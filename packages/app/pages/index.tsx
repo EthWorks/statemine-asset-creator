@@ -5,7 +5,7 @@ import { useState } from 'react'
 
 import { Chains, useAccounts, useAssets, useBalances } from 'use-substrate'
 
-import { AccountSelectModal, ConnectWalletModal, NewAssetModal } from '../components'
+import { AccountSelectModal, ConnectWalletModal, CreatedAssets, NewAssetModal } from '../components'
 import styles from '../styles/Home.module.css'
 import { extensionActivated, shouldSelectAccount, useAsync, useToggle } from '../utils'
 
@@ -37,12 +37,13 @@ const Home: NextPage =  () => {
     <div className={styles.container}>
       <Head>
         <title>Statemine Asset Creator</title>
-        <meta name="description" content="Application for managing assets on Statemine" />
+        <meta name="description" content="Application for managing assets on Statemine"/>
       </Head>
 
       <main className={styles.main}>
-        <ConnectWalletModal isOpen={isConnectWalletModalOpen} closeModal={toggleConnectWalletModalOpen} onExtensionActivated={onExtensionActivated}/>
-        <AccountSelectModal isOpen={isAccountSelectModalOpen} closeModal={toggleSelectAccountModalOpen} />
+        <ConnectWalletModal isOpen={isConnectWalletModalOpen} closeModal={toggleConnectWalletModalOpen}
+          onExtensionActivated={onExtensionActivated}/>
+        <AccountSelectModal isOpen={isAccountSelectModalOpen} closeModal={toggleSelectAccountModalOpen}/>
         <div>
           {!isNewAssetModalOpen && <button onClick={toggleNewAssetModalOpen}>Create new asset</button>}
           <NewAssetModal isOpen={isNewAssetModalOpen} closeModal={toggleNewAssetModalOpen}/>
@@ -55,10 +56,10 @@ const Home: NextPage =  () => {
             {account}
           </p>
           <p className={styles.description}>
-              Balance: {balances?.freeBalance.toString()}
+            Balance: {balances?.freeBalance.toString()}
           </p>
           <p className={styles.description}>
-              Statemine Balance: {statemineBalances?.freeBalance.toString()}
+            Statemine Balance: {statemineBalances?.freeBalance.toString()}
           </p>
         </div>
         <h1 className={styles.title}>
@@ -72,6 +73,7 @@ const Home: NextPage =  () => {
           }
         </ul>
       </main>
+      <CreatedAssets assets={assets}/>
     </div>
   )
 }
