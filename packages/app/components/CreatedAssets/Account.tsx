@@ -9,8 +9,8 @@ interface Props {
 
 export const Account: FC<Props> = ({ account, role }) => {
   return (
-    <div data-testid={`role-${role}`}>
-      <label>{role}</label>
+    <div data-testid={`role-${role.join('-')}`}>
+      <label>{role.join(', ')}</label>
       <div>{account}</div>
     </div>
   )

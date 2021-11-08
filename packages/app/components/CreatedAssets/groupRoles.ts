@@ -1,6 +1,5 @@
-import { AccountId } from '@polkadot/types/interfaces'
-
-import { Role } from './types'
+import type { AccountId } from '@polkadot/types/interfaces'
+import type { Role } from './types'
 
 export function groupRoles(admins: Record<Role, AccountId>): [AccountId, Role[]][] {
   const result: [AccountId, Role[]][] = []

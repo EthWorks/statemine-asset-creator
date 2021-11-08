@@ -3,15 +3,8 @@ import React from 'react'
 
 import { NewAssetModal } from '../components'
 import { useToggle } from '../utils'
-import {
-  assertText,
-  assertTextInput,
-  clickButton,
-  fillInput,
-  renderWithTheme,
-  setLocalStorage
-} from './helpers'
-import { bobAccount, mockChains } from './mocks'
+import { assertText, assertTextInput, clickButton, fillInput, renderWithTheme, setLocalStorage } from './helpers'
+import { bobAccount, mockChains, mockUseApi } from './mocks'
 
 function TestComponent(): JSX.Element {
   const [isOpen, toggleOpen] = useToggle()
@@ -46,20 +39,9 @@ const fillAllForms = (): void => {
 
 const mockTransaction = jest.fn()
 const mockUseTransaction = { tx: mockTransaction, paymentInfo: {} }
-const mockApi = {
-  api: {
-    tx: {
-      assets: {
-        create: () => {/**/},
-        setMetadata: () => {/**/},
-      },
-      utility: {}
-    }
-  }
-}
 
 jest.mock('use-substrate', () => ({
-  useApi: () => mockApi,
+  useApi: () => mockUseApi,
   useTransaction: () => mockUseTransaction,
   Chains: () => mockChains
 }))

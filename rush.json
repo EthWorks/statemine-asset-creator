@@ -28,6 +28,10 @@
       "projectFolder": "tools/eslint-config-statemine"
     },
     {
+        "packageName": "test-helpers",
+        "projectFolder": "libraries/test-helpers"
+    },
+    {
       "packageName": "use-substrate",
       "projectFolder": "libraries/use-substrate"
     },

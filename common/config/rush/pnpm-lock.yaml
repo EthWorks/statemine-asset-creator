@@ -17,6 +17,7 @@ specifiers:
   '@radix-ui/react-id': ~0.1.1
   '@rush-temp/eslint-config-statemine': file:./projects/eslint-config-statemine.tgz
   '@rush-temp/statemine-asset-creator': file:./projects/statemine-asset-creator.tgz
+  '@rush-temp/test-helpers': file:./projects/test-helpers.tgz
   '@rush-temp/use-substrate': file:./projects/use-substrate.tgz
   '@rushstack/eslint-patch': ~1.0.7
   '@storybook/addon-actions': ^6.3.12
@@ -71,6 +72,7 @@ dependencies:
   '@radix-ui/react-id': 0.1.1_react@17.0.2
   '@rush-temp/eslint-config-statemine': file:projects/eslint-config-statemine.tgz_typescript@4.4.4
   '@rush-temp/statemine-asset-creator': file:projects/statemine-asset-creator.tgz
+  '@rush-temp/test-helpers': file:projects/test-helpers.tgz
   '@rush-temp/use-substrate': file:projects/use-substrate.tgz
   '@rushstack/eslint-patch': 1.0.7
   '@storybook/addon-actions': 6.3.12_3b7f7b84f013384d046f72a4522eddf8
@@ -14356,7 +14358,7 @@ packages:
     dev: false
 
   file:projects/statemine-asset-creator.tgz:
-    resolution: {integrity: sha512-q7vIHrs2zifndhC0pjp3qjKdaslwd2H9A6whrHIV2uDWO+kKIu4/JGhuqeg+6+LA+b1KiU1/CDBBP4cpc8ZKaw==, tarball: file:projects/statemine-asset-creator.tgz}
+    resolution: {integrity: sha512-N8CsAIBxh2F08W62QQPMwx+h1tyCQ9qcLN7zEhaXT0zIcswaNmnpIjwggZMwD6bYDVa4HoE5ZMWyS51bYQ2W1g==, tarball: file:projects/statemine-asset-creator.tgz}
     name: '@rush-temp/statemine-asset-creator'
     version: 0.0.0
     dependencies:
@@ -14432,8 +14434,22 @@ packages:
       - webpack-plugin-serve
     dev: false
 
+  file:projects/test-helpers.tgz:
+    resolution: {integrity: sha512-zdh6cwAAwpOpxjjYo+FEY7WAYvsJXO372QCJmAMPC/0IH1u0UHs/Itz/H45aRXqzE53KQ/MShZE/fm5/Bzb3nQ==, tarball: file:projects/test-helpers.tgz}
+    name: '@rush-temp/test-helpers'
+    version: 0.0.0
+    dependencies:
+      '@polkadot/api': 6.6.1
+      '@polkadot/types': 6.6.1
+      '@rushstack/eslint-patch': 1.0.7
+      eslint: 7.32.0
+      typescript: 4.4.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   file:projects/use-substrate.tgz:
-    resolution: {integrity: sha512-D9U4S1ZdSfQeS1STEpd7nd0bd6fTn7ys5HXJC1LtFevuKh8c5MA4TsBX2jNyVPDSCV4p58QDYqsirWO+21OfRg==, tarball: file:projects/use-substrate.tgz}
+    resolution: {integrity: sha512-kx5dbyE/DA5wuHBBvMELZJpDHjz571Xud0FZludKqFDUI+uZLpr/lv3gMC1vQ1E0P9YMul6C7tKshIsRm17uoQ==, tarball: file:projects/use-substrate.tgz}
     name: '@rush-temp/use-substrate'
     version: 0.0.0
     dependencies:
@@ -14441,6 +14457,7 @@ packages:
       '@babel/preset-env': 7.15.8_@babel+core@7.15.8
       '@babel/preset-react': 7.14.5_@babel+core@7.15.8
       '@babel/preset-typescript': 7.15.0_@babel+core@7.15.8
+      '@babel/runtime': 7.15.4
       '@polkadot/api': 6.6.1
       '@polkadot/api-derive': 6.6.1
       '@polkadot/extension-dapp': 0.40.4_@polkadot+api@6.6.1

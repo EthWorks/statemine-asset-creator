@@ -1,4 +1,4 @@
-import { createType } from 'use-substrate/dist/__tests__/utils/createType'
+import { createType } from 'test-helpers'
 
 export const aliceAccount = { address: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY', name: 'ALICE' }
 export const bobAccount = { address: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty', name: 'BOB' }

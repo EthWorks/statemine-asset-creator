@@ -1,9 +1,9 @@
 import type { ObservableInput } from 'rxjs'
+import type { AccountId } from '@polkadot/types/interfaces'
 import type { PalletAssetsAssetMetadata } from '@polkadot/types/lookup'
 import type { UseApi } from '../src'
 
 import { ApiRx } from '@polkadot/api'
-import { AccountId } from '@polkadot/types/interfaces'
 import { renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
 import { from } from 'rxjs'
