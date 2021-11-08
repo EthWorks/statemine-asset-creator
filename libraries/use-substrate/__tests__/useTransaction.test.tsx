@@ -3,7 +3,8 @@ import type { ReactNode } from 'react'
 import { renderHook } from '@testing-library/react-hooks'
 import React from 'react'
 
-import { ALICE, BOB, Chains, useApi, useTransaction } from '../src'
+import { Chains, useApi, useTransaction } from '../src'
+import { ALICE, BOB } from './consts/addresses'
 import { MockedApiProvider } from './mocks/MockedApiProvider'
 
 describe('useTransaction hook', () => {

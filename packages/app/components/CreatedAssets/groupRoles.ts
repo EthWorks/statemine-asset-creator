@@ -1,11 +1,19 @@
+import { AccountId } from '@polkadot/types/interfaces'
+
 import { Role } from './types'
 
-export function groupRoles(admins: Record<Role, string>): [string, Role[]][] {
-  const rolesByAccount: Record<string, Role[]> = {}
+export function groupRoles(admins: Record<Role, AccountId>): [AccountId, Role[]][] {
+  const result: [AccountId, Role[]][] = []
 
-  ;(Object.entries(admins) as [Role, string][]).forEach(([role,account]) => {
-    rolesByAccount[account] = [...(rolesByAccount[account] ?? []), role]
+  ;(Object.entries(admins) as [Role, AccountId][]).forEach(([role,account]) => {
+    const index = result.findIndex(([accountId]) => accountId.eq(account))
+
+    if (index === -1) {
+      result.push([account, [role]])
+    } else {
+      result[index][1].push(role)
+    }
   })
 
-  return Object.entries(rolesByAccount)
+  return result
 }

@@ -1,8 +1,8 @@
 import type { StorageKey } from '@polkadot/types'
-import type { AssetId } from '@polkadot/types/interfaces'
+import type { AccountId, AssetId } from '@polkadot/types/interfaces'
 import type { PalletAssetsAssetMetadata } from '@polkadot/types/lookup'
 import type { Chains } from '../consts'
-import type { AssetInfo, AssetInfoWithId, AssetMeta, FetchedAssets, UseAssets, UseAssetsOptions } from './types/useAssets'
+import type { AssetInfoWithId, AssetMeta, FetchedAssets, UseAssets, UseAssetsOptions } from './types/useAssets'
 
 import { useEffect, useMemo, useState } from 'react'
 
@@ -20,7 +20,7 @@ export function useAssets(chain: Chains, options?: UseAssetsOptions): UseAssets 
   useEffect(() => {
     if (!fetchedAssets) return undefined
 
-    const assets = formatAssets(fetchedAssets)
+    const assets = convertAssets(fetchedAssets)
 
     setOwnerAssets(filterByOwner(assets, options?.owner))
   }, [fetchedAssets, options?.owner])
@@ -32,20 +32,44 @@ export function useAssets(chain: Chains, options?: UseAssetsOptions): UseAssets 
   return useMemo(() => attachMetadataToAssets(ownerAssets, metadata), [ownerAssets, metadata])
 }
 
-function formatAssets(assets: FetchedAssets): AssetInfoWithId[] {
-  return assets.map(asset => ({ ...(asset[1].toHuman() as unknown as AssetInfo), id: extractAssetIds(asset[0]) }))
+function convertAssets(assets: FetchedAssets): AssetInfoWithId[] {
+  return assets.map( asset => ({
+    id: extractAssetIds(asset[0]),
+    owner: asset[1].owner,
+    issuer: asset[1].issuer,
+    freezer: asset[1].freezer,
+    admin: asset[1].admin,
+    isSufficient: asset[1].isSufficient.toHuman(),
+    isFrozen: asset[1].isFrozen.toHuman(),
+    supply: asset[1].supply.toBn(),
+    deposit: asset[1].deposit.toBn(),
+    minBalance: asset[1].minBalance.toBn(),
+    accounts: asset[1].accounts.toBn(),
+    sufficients: asset[1].sufficients.toBn(),
+    approvals: asset[1].approvals.toBn(),
+  }))
 }
 
 function extractAssetIds (key: StorageKey<[AssetId]>): AssetId {
   return key.args[0]
 }
 
-function filterByOwner(assets: AssetInfoWithId[], owner?: string): AssetInfoWithId[] {
-  return owner ? assets.filter(asset => asset.owner === owner) : assets
+function filterByOwner(assets: AssetInfoWithId[], owner?: AccountId): AssetInfoWithId[] {
+  return owner ? assets.filter(asset => asset.owner.eq(owner)) : assets
 }
 
 function getAssetsIds(ownersAssets: AssetInfoWithId[] | undefined): AssetId[] | undefined {
   return ownersAssets?.map(asset => asset.id)
+}
+
+function convertAssetMetadata (fetchedMeta: PalletAssetsAssetMetadata): AssetMeta {
+  return {
+    deposit: fetchedMeta.deposit.toBn(),
+    isFrozen: fetchedMeta.isFrozen.toHuman(),
+    name: fetchedMeta.name.toHuman() as string,
+    decimals: fetchedMeta.decimals.toNumber(),
+    symbol: fetchedMeta.symbol.toHuman() as string
+  }
 }
 
 function attachMetadataToAssets(ownersAssets: AssetInfoWithId[] | undefined, metadata: PalletAssetsAssetMetadata[] | undefined): UseAssets | undefined {
@@ -53,5 +77,5 @@ function attachMetadataToAssets(ownersAssets: AssetInfoWithId[] | undefined, met
     return undefined
   }
 
-  return metadata && ownersAssets?.map((asset, index) => ({ ...asset, ...(metadata[index].toHuman() as unknown as AssetMeta) }))
+  return metadata && ownersAssets?.map((asset, index) => ({ ...asset, ...(convertAssetMetadata(metadata[index])) }))
 }

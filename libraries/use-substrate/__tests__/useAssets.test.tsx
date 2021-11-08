@@ -3,11 +3,13 @@ import type { PalletAssetsAssetMetadata } from '@polkadot/types/lookup'
 import type { UseApi } from '../src'
 
 import { ApiRx } from '@polkadot/api'
+import { AccountId } from '@polkadot/types/interfaces'
 import { renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
 import { from } from 'rxjs'
 
-import { ALICE, BOB, Chains,  useAssets } from '../src'
+import { Chains, useAssets } from '../src'
+import { ALICE_ID, BOB, BOB_ID, } from './consts/addresses'
 import { MockedApiProvider, mockedKusamaApi } from './mocks/MockedApiProvider'
 import { createType } from './utils/createType'
 
@@ -22,15 +24,15 @@ describe('Use assets hook', () => {
     const { id: thirdId, owner: thirdOwner } = (result.current ?? [{ id: undefined, owner: undefined }])[2]
 
     expect(firstId?.toString()).toEqual('15')
-    expect(firstOwner).toEqual(BOB)
+    expect(firstOwner).toEqual(BOB_ID)
     expect(secondId?.toString()).toEqual('24')
-    expect(secondOwner).toEqual(ALICE)
+    expect(secondOwner).toEqual(ALICE_ID)
     expect(thirdId?.toString()).toEqual('1000')
-    expect(thirdOwner).toEqual(BOB)
+    expect(thirdOwner).toEqual(BOB_ID)
   })
 
   it('Returns owners assets', () => {
-    const { result } = renderResult({ owner: BOB })
+    const { result } = renderResult({ owner: BOB_ID })
 
     expect(result.current).toHaveLength(2)
 
@@ -38,26 +40,26 @@ describe('Use assets hook', () => {
     const { id: secondId, owner: secondOwner } = (result.current ?? [{ id: undefined, owner: undefined }])[1]
 
     expect(firstId?.toString()).toEqual('15')
-    expect(firstOwner).toEqual(BOB)
+    expect(firstOwner).toEqual(BOB_ID)
     expect(secondId?.toString()).toEqual('1000')
-    expect(secondOwner).toEqual(BOB)
+    expect(secondOwner).toEqual(BOB_ID)
   })
 
   it('Returns asset details', () => {
-    const { result } = renderResult({ owner: BOB })
+    const { result } = renderResult({ owner: createType('AccountId', BOB) })
 
     expect(result.current).toHaveLength(2)
 
     const { id, name, symbol, decimals, owner } = (result.current ?? [{ name: undefined, symbol: undefined, decimals: undefined }])[0]
 
     expect(id?.toString()).toEqual('15')
-    expect(owner).toEqual(BOB)
+    expect(owner).toEqual(BOB_ID)
     expect(name).toEqual('TestToken')
     expect(symbol).toEqual('TT')
-    expect(decimals).toEqual('8')
+    expect(decimals).toEqual(8)
   })
 
-  const renderResult = ({ owner, customApi }:{owner?: string, customApi?: UseApi}) => {
+  const renderResult = ({ owner, customApi }:{owner?: AccountId, customApi?: UseApi}) => {
     const wrapper = ({ children }: { children: ReactNode }) => (
       <MockedApiProvider customApi={customApi}>
         {children}

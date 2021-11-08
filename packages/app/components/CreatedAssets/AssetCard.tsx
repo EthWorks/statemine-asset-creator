@@ -19,7 +19,7 @@ export const AssetCard: FC<Props> = ({ asset }) => {
       <div>id: {id.toNumber()}</div>
       <div>total supply: {supply} KSM</div>
       <div>decimals: {decimals}</div>
-      {rolesByAccount.map(account => <Account key={account[1]} account={account[1]} role={account[0]}/>)}
+      {rolesByAccount.map(account => <Account key={account[0].toString()} account={account[0].toString()} role={account[1]}/>)}
     </div>
   )
 }
