@@ -8,7 +8,7 @@ import { renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
 import { from } from 'rxjs'
 
-import { Chains, useAssets } from '../src'
+import { Chains,  useAssets } from '../src'
 import { ALICE_ID, BOB, BOB_ID, } from './consts/addresses'
 import { MockedApiProvider, mockedKusamaApi } from './mocks/MockedApiProvider'
 import { createType } from './utils/createType'

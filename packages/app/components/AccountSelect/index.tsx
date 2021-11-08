@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { Account } from 'use-substrate'
 
 import { Arrow } from '../icons/Arrow'
+import { Text } from '../typography'
 import { AccountTile } from './AccountTile'
 
 export interface Props {
@@ -11,15 +12,20 @@ export interface Props {
   currentAccount: Account,
   setCurrentAccount: (arg: Account) => void,
   withFreeBalance?: boolean;
+  label?: string
 }
 
-export function AccountSelect ({ accounts, currentAccount, setCurrentAccount, withFreeBalance = false }: Props): JSX.Element {
+export function AccountSelect ({ accounts, currentAccount, setCurrentAccount, label, withFreeBalance = false }: Props): JSX.Element {
   return (
     <DropdownMenu.Root>
-      <StyledButton data-testid='open-account-select'>
-        <AccountTile withFreeBalance={withFreeBalance} account={currentAccount} />
-        <StyledArrow direction='down' width='14' height='9' />
-      </StyledButton>
+      <div>
+        {label && <StyledText size='SM'>{label}</StyledText>}
+        <StyledButton data-testid='open-account-select'>
+          <AccountTile withFreeBalance={withFreeBalance} account={currentAccount} />
+          <StyledArrow direction='down' width='14' height='9' />
+        </StyledButton>
+      </div>
+
       <StyledDropdown>
         {accounts.map(account => (
           <StyledDropdownItem
@@ -45,6 +51,7 @@ const StyledButton = styled(DropdownMenu.Trigger)`
   position: relative;
   padding: 0;
   margin: 0;
+  width: 100%;
   border: 2px solid transparent;
   border-radius: ${({ theme }) => theme.borderRadius.s};
   background-color: ${({ theme }) => theme.colors.gray[800]};
@@ -82,4 +89,8 @@ const StyledDropdownItem = styled(DropdownMenu.Item)`
   &:focus-visible {
     outline: none;
   }
+`
+
+const StyledText = styled(Text)`
+  margin-bottom: 4px;
 `
