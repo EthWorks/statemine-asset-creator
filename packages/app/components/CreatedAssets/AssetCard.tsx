@@ -1,6 +1,5 @@
-import { FC } from 'react'
-
-import { Asset } from 'use-substrate'
+import type { FC } from 'react'
+import type { Asset } from 'use-substrate'
 
 import { Account } from './Account'
 import { groupRoles } from './groupRoles'
