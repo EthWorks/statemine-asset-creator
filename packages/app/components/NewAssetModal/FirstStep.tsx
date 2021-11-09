@@ -22,11 +22,11 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
 
     const STRING_LIMIT_EXCEEDED_ERROR = `Maximum length of ${stringLimit} characters exceeded`
 
-    if(assetName.length > stringLimit?.toNumber()) {
+    if(assetName.length > stringLimit.toNumber()) {
       setAssetNameError(STRING_LIMIT_EXCEEDED_ERROR)
     }
 
-    if(assetSymbol.length > stringLimit?.toNumber()) {
+    if(assetSymbol.length > stringLimit.toNumber()) {
       setAssetSymbolError(STRING_LIMIT_EXCEEDED_ERROR)
     }
   }, [assetName, assetSymbol, clearErrors, setAssetNameError, setAssetSymbolError, stringLimit])
