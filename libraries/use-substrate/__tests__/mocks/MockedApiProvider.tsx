@@ -8,7 +8,8 @@ import BN from 'bn.js'
 import React from 'react'
 import { from, of } from 'rxjs'
 
-import { ALICE, ApiContext, BOB } from '../../src'
+import { ApiContext } from '../../src'
+import { ALICE, BOB } from '../consts/addresses'
 import { createAssetStorageKey } from '../utils/createAssetStorageKey'
 import { createType } from '../utils/createType'
 

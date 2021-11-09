@@ -5,6 +5,10 @@
 
   "pnpmVersion": "6.17.0",
 
+  "pnpmOptions": {
+    strictPeerDependencies: false,
+  },
+
   "nodeSupportedVersionRange": ">=14.17.0",
 
   "ensureConsistentVersions": true,
@@ -28,12 +32,20 @@
       "projectFolder": "tools/eslint-config-statemine"
     },
     {
+        "packageName": "test-helpers",
+        "projectFolder": "libraries/test-helpers"
+    },
+    {
       "packageName": "use-substrate",
       "projectFolder": "libraries/use-substrate"
     },
     {
       "packageName": "statemine-asset-creator",
       "projectFolder": "packages/app"
+    },
+    {
+      "packageName": "local-statemint-launch",
+      "projectFolder": "tools/local-statemint-launch"
     }
   ]
 }

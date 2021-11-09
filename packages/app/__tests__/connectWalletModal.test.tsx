@@ -11,12 +11,13 @@ import {
   clickButton,
   renderWithTheme
 } from './helpers'
-import { mockChains, mockUseAccounts, mockUseAssets, mockUseBalances, mockWeb3Enable } from './mocks'
+import { mockChains, mockUseAccounts, mockUseApi, mockUseAssets, mockUseBalances, mockWeb3Enable } from './mocks'
 
 jest.mock('use-substrate', () => ({
-  useBalances: () => mockUseBalances,
   useAccounts: () => mockUseAccounts,
+  useApi: () => mockUseApi,
   useAssets: () => mockUseAssets,
+  useBalances: () => mockUseBalances,
   Chains: () => mockChains
 }))
 

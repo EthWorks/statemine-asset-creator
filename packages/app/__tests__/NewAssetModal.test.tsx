@@ -15,7 +15,7 @@ import {
   renderWithTheme,
   setLocalStorage
 } from './helpers'
-import { bobAccount, mockChains, mockStringLimit } from './mocks'
+import { bobAccount, mockChains, mockStringLimit, mockUseApi } from './mocks'
 
 function TestComponent(): JSX.Element {
   const [isOpen, toggleOpen] = useToggle()
@@ -50,20 +50,9 @@ const fillAllForms = (): void => {
 
 const mockTransaction = jest.fn()
 const mockUseTransaction = { tx: mockTransaction, paymentInfo: {} }
-const mockApi = {
-  api: {
-    tx: {
-      assets: {
-        create: () => {/**/},
-        setMetadata: () => {/**/},
-      },
-      utility: {}
-    }
-  }
-}
 
 jest.mock('use-substrate', () => ({
-  useApi: () => mockApi,
+  useApi: () => mockUseApi,
   useStringLimit: () => mockStringLimit,
   useTransaction: () => mockUseTransaction,
   Chains: () => mockChains

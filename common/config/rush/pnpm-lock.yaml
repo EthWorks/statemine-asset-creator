@@ -11,12 +11,15 @@ specifiers:
   '@polkadot/extension-dapp': ~0.40.4
   '@polkadot/extension-inject': ~0.40.3
   '@polkadot/types': 6.6.1
+  '@polkadot/types-known': 6.6.1
   '@polkadot/types-support': ~6.6.1
   '@polkadot/ui-keyring': ~0.86.3
   '@radix-ui/react-dropdown-menu': ~0.1.0
   '@radix-ui/react-id': ~0.1.1
   '@rush-temp/eslint-config-statemine': file:./projects/eslint-config-statemine.tgz
+  '@rush-temp/local-statemint-launch': file:./projects/local-statemint-launch.tgz
   '@rush-temp/statemine-asset-creator': file:./projects/statemine-asset-creator.tgz
+  '@rush-temp/test-helpers': file:./projects/test-helpers.tgz
   '@rush-temp/use-substrate': file:./projects/use-substrate.tgz
   '@rushstack/eslint-patch': ~1.0.7
   '@storybook/addon-actions': ^6.3.12
@@ -47,6 +50,7 @@ specifiers:
   mock-local-storage: ~1.1.17
   next: 11.1.2
   next-router-mock: ~0.5.3
+  polkadot-launch: 1.8.0
   react: 17.0.2
   react-dom: 17.0.2
   react-test-renderer: ^17.0.2
@@ -65,12 +69,15 @@ dependencies:
   '@polkadot/extension-dapp': 0.40.4_@polkadot+api@6.6.1
   '@polkadot/extension-inject': 0.40.3_@polkadot+api@6.6.1
   '@polkadot/types': 6.6.1
+  '@polkadot/types-known': 6.6.1
   '@polkadot/types-support': 6.6.1
   '@polkadot/ui-keyring': 0.86.3
   '@radix-ui/react-dropdown-menu': 0.1.0_3b7f7b84f013384d046f72a4522eddf8
   '@radix-ui/react-id': 0.1.1_react@17.0.2
   '@rush-temp/eslint-config-statemine': file:projects/eslint-config-statemine.tgz_typescript@4.4.4
+  '@rush-temp/local-statemint-launch': file:projects/local-statemint-launch.tgz
   '@rush-temp/statemine-asset-creator': file:projects/statemine-asset-creator.tgz
+  '@rush-temp/test-helpers': file:projects/test-helpers.tgz
   '@rush-temp/use-substrate': file:projects/use-substrate.tgz
   '@rushstack/eslint-patch': 1.0.7
   '@storybook/addon-actions': 6.3.12_3b7f7b84f013384d046f72a4522eddf8
@@ -101,6 +108,7 @@ dependencies:
   mock-local-storage: 1.1.17
   next: 11.1.2_742da6775053912c51770e4a8773db09
   next-router-mock: 0.5.3_next@11.1.2+react@17.0.2
+  polkadot-launch: 1.8.0
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
   react-test-renderer: 17.0.2_react@17.0.2
@@ -6078,6 +6086,14 @@ packages:
       colors: 1.4.0
     dev: false
 
+  /cliui/6.0.0:
+    resolution: {integrity: sha512-t6wbgtoCXvAzst7QgXxJYqPt0usEfbgQdftEPbLL/cvv6HPE5VgvqCuAIDR0NgU52ds6rFwqrgakNLrHEjCbrQ==}
+    dependencies:
+      string-width: 4.2.3
+      strip-ansi: 6.0.1
+      wrap-ansi: 6.2.0
+    dev: false
+
   /cliui/7.0.4:
     resolution: {integrity: sha512-OcRE68cOsVMXp1Yvonl/fzkQOyjLSu/8bhPDfQt0e0/Eb283TKP20Fs2MqoPsr9SwA595rRCA+QMzYc9nBP+JQ==}
     dependencies:
@@ -6625,6 +6641,11 @@ packages:
     dependencies:
       ms: 2.1.2
       supports-color: 5.5.0
+    dev: false
+
+  /decamelize/1.2.0:
+    resolution: {integrity: sha1-9lNNFRSCabIDUue+4m9QH5oZEpA=}
+    engines: {node: '>=0.10.0'}
     dev: false
 
   /decimal.js/10.3.1:
@@ -7748,6 +7769,11 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       to-regex-range: 5.0.1
+    dev: false
+
+  /filter-console/0.1.1:
+    resolution: {integrity: sha512-zrXoV1Uaz52DqPs+qEwNJWJFAWZpYJ47UNmpN9q4j+/EYsz85uV0DC9k8tRND5kYmoVzL0W+Y75q4Rg8sRJCdg==}
+    engines: {node: '>=8'}
     dev: false
 
   /finalhandler/1.1.2:
@@ -11302,6 +11328,17 @@ packages:
       '@babel/runtime': 7.15.4
     dev: false
 
+  /polkadot-launch/1.8.0:
+    resolution: {integrity: sha512-ZO+1vywDfsWV0aDPKh6tDycnHZJy8QACyuDcNFd0uTVEA6tku88siBgoexiWoHT7e8ynSgMQJy4qMuv59Xvq/A==}
+    hasBin: true
+    dependencies:
+      '@polkadot/api': 6.6.1
+      '@polkadot/util': 7.7.1
+      '@polkadot/util-crypto': 7.7.1
+      filter-console: 0.1.1
+      yargs: 15.4.1
+    dev: false
+
   /posix-character-classes/0.1.1:
     resolution: {integrity: sha1-AerA/jta9xoqbAL+q7jB/vfgDqs=}
     engines: {node: '>=0.10.0'}
@@ -12239,6 +12276,10 @@ packages:
   /require-from-string/2.0.2:
     resolution: {integrity: sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==}
     engines: {node: '>=0.10.0'}
+    dev: false
+
+  /require-main-filename/2.0.0:
+    resolution: {integrity: sha512-NKN5kMDylKuldxYLSUfrbo5Tuzh4hd+2E8NPPX02mZtn1VuREQToYe/ZdlJy+J3uCpfaiGF05e7B8W0iXbQHmg==}
     dev: false
 
   /resolve-cwd/3.0.0:
@@ -14168,6 +14209,10 @@ packages:
       is-symbol: 1.0.4
     dev: false
 
+  /which-module/2.0.0:
+    resolution: {integrity: sha1-2e8H3Od7mQK4o6j6SzHD4/fm6Ho=}
+    dev: false
+
   /which-typed-array/1.1.7:
     resolution: {integrity: sha512-vjxaB4nfDqwKI0ws7wZpxIlde1XrLX5uB0ZjpfshgmapJMD7jJWhZI+yToJTqaFByF0eNBcYxbjmCzoRP7CfEw==}
     engines: {node: '>= 0.4'}
@@ -14229,6 +14274,15 @@ packages:
     resolution: {integrity: sha512-P1WjMrUB3qgJNI9jfmpZ/htmBEjFh//6l/5y8SD9hg1Ef5zTTVVoRjTrTEzPrNBQvmhMxkoTsjOXN10GWU7aCg==}
     dependencies:
       microevent.ts: 0.1.1
+    dev: false
+
+  /wrap-ansi/6.2.0:
+    resolution: {integrity: sha512-r6lPcBGxZXlIcymEu7InxDMhdW0KDxpLgoFLcguasxCaJ/SOIZwINatK9KY/tf+ZrlywOKU0UDj3ATXUBfxJXA==}
+    engines: {node: '>=8'}
+    dependencies:
+      ansi-styles: 4.3.0
+      string-width: 4.2.3
+      strip-ansi: 6.0.1
     dev: false
 
   /wrap-ansi/7.0.0:
@@ -14312,9 +14366,34 @@ packages:
     engines: {node: '>= 6'}
     dev: false
 
+  /yargs-parser/18.1.3:
+    resolution: {integrity: sha512-o50j0JeToy/4K6OZcaQmW6lyXXKhq7csREXcDwk2omFPJEwUNOVtJKvmDr9EI1fAJZUyZcRF7kxGBWmRXudrCQ==}
+    engines: {node: '>=6'}
+    dependencies:
+      camelcase: 5.3.1
+      decamelize: 1.2.0
+    dev: false
+
   /yargs-parser/20.2.9:
     resolution: {integrity: sha512-y11nGElTIV+CT3Zv9t7VKl+Q3hTQoT9a1Qzezhhl6Rp21gJ/IVTW7Z3y9EWXhuUBC2Shnf+DX0antecpAwSP8w==}
     engines: {node: '>=10'}
+    dev: false
+
+  /yargs/15.4.1:
+    resolution: {integrity: sha512-aePbxDmcYW++PaqBsJ+HYUFwCdv4LVvdnhBy78E57PIor8/OVvhMrADFFEDh8DHDFRv/O9i3lPhsENjO7QX0+A==}
+    engines: {node: '>=8'}
+    dependencies:
+      cliui: 6.0.0
+      decamelize: 1.2.0
+      find-up: 4.1.0
+      get-caller-file: 2.0.5
+      require-directory: 2.1.1
+      require-main-filename: 2.0.0
+      set-blocking: 2.0.0
+      string-width: 4.2.3
+      which-module: 2.0.0
+      y18n: 4.0.3
+      yargs-parser: 18.1.3
     dev: false
 
   /yargs/16.2.0:
@@ -14355,8 +14434,16 @@ packages:
       - typescript
     dev: false
 
+  file:projects/local-statemint-launch.tgz:
+    resolution: {integrity: sha512-5bWYchAbLRW/SOGGFahwCHeS/WrKS3rdtuO6DSLi9FuTZiSbCM/u+/F/In6WYIOfUrVCj6ZCjs23IEFtBQ0uDA==, tarball: file:projects/local-statemint-launch.tgz}
+    name: '@rush-temp/local-statemint-launch'
+    version: 0.0.0
+    dependencies:
+      polkadot-launch: 1.8.0
+    dev: false
+
   file:projects/statemine-asset-creator.tgz:
-    resolution: {integrity: sha512-q7vIHrs2zifndhC0pjp3qjKdaslwd2H9A6whrHIV2uDWO+kKIu4/JGhuqeg+6+LA+b1KiU1/CDBBP4cpc8ZKaw==, tarball: file:projects/statemine-asset-creator.tgz}
+    resolution: {integrity: sha512-N8CsAIBxh2F08W62QQPMwx+h1tyCQ9qcLN7zEhaXT0zIcswaNmnpIjwggZMwD6bYDVa4HoE5ZMWyS51bYQ2W1g==, tarball: file:projects/statemine-asset-creator.tgz}
     name: '@rush-temp/statemine-asset-creator'
     version: 0.0.0
     dependencies:
@@ -14432,8 +14519,22 @@ packages:
       - webpack-plugin-serve
     dev: false
 
+  file:projects/test-helpers.tgz:
+    resolution: {integrity: sha512-zdh6cwAAwpOpxjjYo+FEY7WAYvsJXO372QCJmAMPC/0IH1u0UHs/Itz/H45aRXqzE53KQ/MShZE/fm5/Bzb3nQ==, tarball: file:projects/test-helpers.tgz}
+    name: '@rush-temp/test-helpers'
+    version: 0.0.0
+    dependencies:
+      '@polkadot/api': 6.6.1
+      '@polkadot/types': 6.6.1
+      '@rushstack/eslint-patch': 1.0.7
+      eslint: 7.32.0
+      typescript: 4.4.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   file:projects/use-substrate.tgz:
-    resolution: {integrity: sha512-D9U4S1ZdSfQeS1STEpd7nd0bd6fTn7ys5HXJC1LtFevuKh8c5MA4TsBX2jNyVPDSCV4p58QDYqsirWO+21OfRg==, tarball: file:projects/use-substrate.tgz}
+    resolution: {integrity: sha512-kx5dbyE/DA5wuHBBvMELZJpDHjz571Xud0FZludKqFDUI+uZLpr/lv3gMC1vQ1E0P9YMul6C7tKshIsRm17uoQ==, tarball: file:projects/use-substrate.tgz}
     name: '@rush-temp/use-substrate'
     version: 0.0.0
     dependencies:
@@ -14441,6 +14542,7 @@ packages:
       '@babel/preset-env': 7.15.8_@babel+core@7.15.8
       '@babel/preset-react': 7.14.5_@babel+core@7.15.8
       '@babel/preset-typescript': 7.15.0_@babel+core@7.15.8
+      '@babel/runtime': 7.15.4
       '@polkadot/api': 6.6.1
       '@polkadot/api-derive': 6.6.1
       '@polkadot/extension-dapp': 0.40.4_@polkadot+api@6.6.1
