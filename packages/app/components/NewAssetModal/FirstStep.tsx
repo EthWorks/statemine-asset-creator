@@ -10,6 +10,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
   const assetNameLengthLimit = 50
 
   useEffect(() => {
+    setAssetNameError(undefined)
     if(assetName.length > assetNameLengthLimit) {
       setAssetNameError(`Maximum length of ${assetNameLengthLimit} characters exceeded`)
     }

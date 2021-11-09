@@ -1,13 +1,14 @@
 import { createContext } from 'react'
 
 type stringSetter = (arg: string) => void;
+type stringOrUndefinedSetter = (arg: string | undefined) => void;
 const noop = (): void => {/**/}
 
 export interface NewAssetForm {
   assetName: string,
   setAssetName: stringSetter,
   assetNameError?: string,
-  setAssetNameError: stringSetter,
+  setAssetNameError: stringOrUndefinedSetter,
   assetId: string,
   setAssetId: stringSetter,
   assetDecimals: string,

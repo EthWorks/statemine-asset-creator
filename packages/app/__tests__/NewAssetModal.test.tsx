@@ -4,7 +4,7 @@ import React from 'react'
 import { NewAssetModal } from '../components'
 import { useToggle } from '../utils'
 import {
-  assertInputError,
+  assertInputError, assertNoInputError, assertNoText,
   assertText,
   assertTextInput,
   clickButton,
@@ -113,13 +113,30 @@ describe('New asset modal', () => {
   })
 
   describe('validates asset name length', () => {
-    it('does not allow to exceed StringLimit', async () => {
+    beforeEach(() => {
       renderModal()
       clickButton('Create new asset')
       fillFirstStep()
-      fillInput('Asset name', 'a'.repeat(KusamaStringLimit + 1))
-
-      await assertInputError('Asset name', `Maximum length of ${KusamaStringLimit} characters exceeded`)
     })
+
+    it('does not allow to exceed StringLimit', async () => {
+      fillInput('Asset name', 'a'.repeat(KusamaStringLimit + 1))
+      await assertInputError('Asset name', `Maximum length of ${KusamaStringLimit} characters exceeded`)
+
+      clickButton('Next')
+      assertNoText('Confirm')
+    })
+
+    it('does not display error when asset name length decreased', async () => {
+      fillInput('Asset name', 'a'.repeat(KusamaStringLimit + 1))
+      await assertInputError('Asset name', `Maximum length of ${KusamaStringLimit} characters exceeded`)
+
+      fillInput('Asset name', 'a'.repeat(KusamaStringLimit))
+      await assertNoInputError('Asset name')
+
+      clickButton('Next')
+      await assertText('Confirm')
+    })
+
   })
 })

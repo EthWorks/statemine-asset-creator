@@ -44,3 +44,9 @@ export async function assertInputError(inputName: string, errorText: string) {
 
   expect(inputError).toHaveTextContent(errorText)
 }
+
+export function assertNoInputError(inputName: string) {
+  const customInputComponent = screen.getByTestId(inputName)
+
+  expect(within(customInputComponent).queryByTestId('input-error')).not.toBeInTheDocument()
+}
