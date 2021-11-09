@@ -10,6 +10,7 @@ export const NewAssetModalProvider: React.FC = ({  children }) => {
   const [assetId, setAssetId] = useState<string>('')
   const [assetDecimals, setAssetDecimals] = useState<string>('')
   const [assetSymbol, setAssetSymbol] = useState<string>('')
+  const [assetSymbolError, setAssetSymbolError] = useState<string>()
   const stringLimit = useStringLimit(Chains.Statemine)
 
   return <NewAssetModalContext.Provider value={{
@@ -23,6 +24,8 @@ export const NewAssetModalProvider: React.FC = ({  children }) => {
     setAssetDecimals,
     assetSymbol,
     setAssetSymbol,
+    assetSymbolError,
+    setAssetSymbolError,
     stringLimit
   }}>{children}</NewAssetModalContext.Provider>
 }

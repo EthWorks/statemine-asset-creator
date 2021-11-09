@@ -16,6 +16,8 @@ export interface NewAssetForm {
   setAssetDecimals: stringSetter,
   assetSymbol: string,
   setAssetSymbol: stringSetter,
+  assetSymbolError?: string,
+  setAssetSymbolError: stringOrUndefinedSetter,
   stringLimit: BN | undefined,
 }
 
@@ -30,5 +32,7 @@ export const NewAssetModalContext = createContext<NewAssetForm>({
   setAssetDecimals: noop,
   assetSymbol: '',
   setAssetSymbol: noop,
+  assetSymbolError: undefined,
+  setAssetSymbolError: noop,
   stringLimit: undefined
 })

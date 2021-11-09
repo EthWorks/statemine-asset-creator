@@ -6,23 +6,36 @@ import { CustomInput } from '../FormElements'
 import { useNewAssetModal } from './context/useNewAssetModal'
 
 export function FirstStep({ onNext }: ModalStep): JSX.Element {
-  const { assetName, setAssetName, assetNameError, setAssetNameError, assetId, assetSymbol, setAssetId, setAssetSymbol, setAssetDecimals, assetDecimals, stringLimit } = useNewAssetModal()
+  const { assetName, setAssetName, assetNameError, setAssetNameError, assetId, assetSymbol, assetSymbolError, setAssetSymbolError, setAssetId, setAssetSymbol, setAssetDecimals, assetDecimals, stringLimit } = useNewAssetModal()
+
+  const clearErrors = useCallback(() => {
+    setAssetNameError(undefined)
+    setAssetSymbolError(undefined)
+  }, [setAssetNameError, setAssetSymbolError])
 
   useEffect(() => {
     if(!stringLimit) {
       return
     }
-    setAssetNameError(undefined)
+
+    clearErrors()
+
+    const STRING_LIMIT_EXCEEDED_ERROR = `Maximum length of ${stringLimit} characters exceeded`
+
     if(assetName.length > stringLimit?.toNumber()) {
-      setAssetNameError(`Maximum length of ${stringLimit} characters exceeded`)
+      setAssetNameError(STRING_LIMIT_EXCEEDED_ERROR)
     }
-  }, [assetName, setAssetNameError, stringLimit])
+
+    if(assetSymbol.length > stringLimit?.toNumber()) {
+      setAssetSymbolError(STRING_LIMIT_EXCEEDED_ERROR)
+    }
+  }, [assetName, assetSymbol, clearErrors, setAssetNameError, setAssetSymbolError, stringLimit])
 
   const _onNext = useCallback(() => {
-    if(stringLimit && !assetNameError) {
+    if(stringLimit && !assetNameError && !assetSymbolError) {
       onNext()
     }
-  }, [assetNameError, onNext, stringLimit])
+  }, [assetNameError, assetSymbolError, onNext, stringLimit])
 
   return (
     <>
@@ -34,6 +47,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
         id="asset-name"
       />
       <CustomInput
+        error={assetSymbolError}
         value={assetSymbol}
         onChange={setAssetSymbol}
         label="Asset symbol"

@@ -113,30 +113,32 @@ describe('New asset modal', () => {
     await waitFor(() => expect(mockTransaction).toBeCalled())
   })
 
-  describe('validates asset name length', () => {
+  describe('validates asset name and asset symbol length', () => {
     beforeEach(() => {
       renderModal()
       clickButton('Create new asset')
       fillFirstStep()
     })
 
-    it('does not allow to exceed StringLimit', async () => {
-      fillInput('Asset name', 'a'.repeat(mockStringLimit.toNumber() + 1))
-      await assertInputError('Asset name', `Maximum length of ${mockStringLimit.toNumber()} characters exceeded`)
+    ;['Asset name', 'Asset symbol'].forEach(inputName => {
+      it('does not allow to exceed StringLimit', async () => {
+        fillInput(inputName, 'a'.repeat(mockStringLimit.toNumber() + 1))
+        await assertInputError(inputName, `Maximum length of ${mockStringLimit.toNumber()} characters exceeded`)
 
-      clickButton('Next')
-      assertNoText('Confirm')
-    })
+        clickButton('Next')
+        assertNoText('Confirm')
+      })
 
-    it('does not display error when asset name length decreased', async () => {
-      fillInput('Asset name', 'a'.repeat(mockStringLimit.toNumber() + 1))
-      await assertInputError('Asset name', `Maximum length of ${mockStringLimit.toNumber()} characters exceeded`)
+      it('does not display error when asset name length decreased', async () => {
+        fillInput(inputName, 'a'.repeat(mockStringLimit.toNumber() + 1))
+        await assertInputError(inputName, `Maximum length of ${mockStringLimit.toNumber()} characters exceeded`)
 
-      fillInput('Asset name', 'a'.repeat(mockStringLimit.toNumber()))
-      await assertNoInputError('Asset name')
+        fillInput(inputName, 'a'.repeat(mockStringLimit.toNumber()))
+        await assertNoInputError(inputName)
 
-      clickButton('Next')
-      await assertText('Confirm')
+        clickButton('Next')
+        await assertText('Confirm')
+      })
     })
   })
 })
