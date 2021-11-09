@@ -14433,7 +14433,7 @@ packages:
     dev: false
 
   file:projects/use-substrate.tgz:
-    resolution: {integrity: sha512-D9U4S1ZdSfQeS1STEpd7nd0bd6fTn7ys5HXJC1LtFevuKh8c5MA4TsBX2jNyVPDSCV4p58QDYqsirWO+21OfRg==, tarball: file:projects/use-substrate.tgz}
+    resolution: {integrity: sha512-DxkLqfth4HfTUcr0CoCPlwHWH2X6A2mXFEAAqv146VOQKRgSmOGyKX2WsSJCvhkh1hZkwLknsLooZ0sebtclpA==, tarball: file:projects/use-substrate.tgz}
     name: '@rush-temp/use-substrate'
     version: 0.0.0
     dependencies:
@@ -14462,6 +14462,7 @@ packages:
       identity-obj-proxy: 3.0.0
       jest: 27.2.5
       jest-fail-on-console: 2.0.5
+      mock-local-storage: 1.1.17
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-test-renderer: 17.0.2_react@17.0.2

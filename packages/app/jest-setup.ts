@@ -5,7 +5,7 @@ import 'mock-local-storage'
 
 import failOnConsole from 'jest-fail-on-console'
 
-import { PointerEvent } from './__tests__/helpers/events'
+import { PointerEvent } from './__tests__/helpers'
 
 failOnConsole({
   shouldFailOnWarn: true,

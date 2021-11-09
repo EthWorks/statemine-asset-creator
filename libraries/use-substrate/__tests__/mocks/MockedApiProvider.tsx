@@ -9,12 +9,12 @@ import React from 'react'
 import { from, of } from 'rxjs'
 
 import { ALICE, ApiContext, BOB } from '../../src'
-import { createAssetStorageKey } from '../utils/createAssetStorageKey'
-import { createType } from '../utils/createType'
+import { createAssetStorageKey, createType } from '../utils'
 
 export const mockedKusamaApi: UseApi = {
   isConnected: true,
   api: {
+    createType: createType,
     derive: {
       balances: {
         all: () => from<ObservableInput<DeriveBalancesAll>>([{
