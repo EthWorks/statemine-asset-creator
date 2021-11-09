@@ -1,7 +1,8 @@
-import { AccountId } from '@polkadot/types/interfaces'
+import type { AccountId } from '@polkadot/types/interfaces'
+import type { Chains } from '../../consts'
+
 import React, { FC, useContext, useEffect, useState } from 'react'
 
-import { Chains } from '../../consts'
 import { ApiContext, UseApi } from '../api'
 import { ActiveAccountContext } from './context'
 

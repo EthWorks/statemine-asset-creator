@@ -1,13 +1,8 @@
 import { act, renderHook } from '@testing-library/react-hooks'
-import React, { ReactNode, useContext } from 'react'
+import React, { ReactNode } from 'react'
 
-import { ApiContext, BOB, BOB_ID } from '../src'
-import { ActiveAccountContext, ActiveAccountProvider, UseActiveAccount } from '../src/providers/activeAccount'
+import { ActiveAccountProvider, ApiContext, BOB, BOB_ID, useActiveAccount } from '../src'
 import { mockedKusamaApi } from './mocks/MockedApiProvider'
-
-function useActiveAccount(): UseActiveAccount {
-  return useContext(ActiveAccountContext)
-}
 
 describe('useActiveAccount', () => {
   beforeEach(() => {
