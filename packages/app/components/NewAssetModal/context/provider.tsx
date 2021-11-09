@@ -4,6 +4,7 @@ import { NewAssetModalContext } from './context'
 
 export const NewAssetModalProvider: React.FC = ({  children }) => {
   const [assetName, setAssetName] = useState<string>('')
+  const [assetNameError, setAssetNameError] = useState<string>()
   const [assetId, setAssetId] = useState<string>('')
   const [assetDecimals, setAssetDecimals] = useState<string>('')
   const [assetSymbol, setAssetSymbol] = useState<string>('')
@@ -11,6 +12,8 @@ export const NewAssetModalProvider: React.FC = ({  children }) => {
   return <NewAssetModalContext.Provider value={{
     assetName,
     setAssetName,
+    assetNameError,
+    setAssetNameError,
     assetId,
     setAssetId,
     assetDecimals,

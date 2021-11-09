@@ -1,14 +1,30 @@
-import type  { ModalStep } from './types'
+import type { ModalStep } from './types'
+
+import { useCallback, useEffect } from 'react'
 
 import { CustomInput } from '../FormElements'
 import { useNewAssetModal } from './context/useNewAssetModal'
 
 export function FirstStep({ onNext }: ModalStep): JSX.Element {
-  const { assetName, setAssetName, assetId, assetSymbol, setAssetId, setAssetSymbol, setAssetDecimals, assetDecimals } = useNewAssetModal()
+  const { assetName, setAssetName, assetNameError, setAssetNameError, assetId, assetSymbol, setAssetId, setAssetSymbol, setAssetDecimals, assetDecimals } = useNewAssetModal()
+  const assetNameLengthLimit = 50
+
+  useEffect(() => {
+    if(assetName.length > assetNameLengthLimit) {
+      setAssetNameError(`Maximum length of ${assetNameLengthLimit} characters exceeded`)
+    }
+  }, [assetName, setAssetNameError])
+
+  const _onNext = useCallback(() => {
+    if(!assetNameError) {
+      onNext()
+    }
+  }, [assetNameError, onNext])
 
   return (
     <>
       <CustomInput
+        error={assetNameError}
         value={assetName}
         onChange={setAssetName}
         label="Asset name"
@@ -32,7 +48,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
         label="Asset ID"
         id="asset-ID"
       />
-      <button onClick={onNext}>Next</button>
+      <button onClick={_onNext}>Next</button>
     </>
   )
 }

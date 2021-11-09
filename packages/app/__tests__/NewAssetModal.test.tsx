@@ -1,17 +1,21 @@
-import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import React from 'react'
 
 import { NewAssetModal } from '../components'
 import { useToggle } from '../utils'
 import {
+  assertInputError,
   assertText,
   assertTextInput,
   clickButton,
   fillInput,
+  findAndClickButton,
   renderWithTheme,
   setLocalStorage
 } from './helpers'
 import { bobAccount, mockChains } from './mocks'
+
+const KusamaStringLimit = 50
 
 function TestComponent(): JSX.Element {
   const [isOpen, toggleOpen] = useToggle()
@@ -92,9 +96,9 @@ describe('New asset modal', () => {
     renderModal()
     fillAllForms()
 
-    fireEvent.click(await screen.findByRole('button', { name : 'Create new asset' }))
+    await findAndClickButton('Create new asset')
 
-    await screen.findByText('Create asset')
+    await assertText('Create asset')
     assertTextInput('Asset name', '')
     assertTextInput('Asset symbol', '')
     assertTextInput('Asset decimals', '')
@@ -106,5 +110,16 @@ describe('New asset modal', () => {
     fillAllForms()
 
     await waitFor(() => expect(mockTransaction).toBeCalled())
+  })
+
+  describe('validates asset name length', () => {
+    it('does not allow to exceed StringLimit', async () => {
+      renderModal()
+      clickButton('Create new asset')
+      fillFirstStep()
+      fillInput('Asset name', 'a'.repeat(KusamaStringLimit + 1))
+
+      await assertInputError('Asset name', `Maximum length of ${KusamaStringLimit} characters exceeded`)
+    })
   })
 })

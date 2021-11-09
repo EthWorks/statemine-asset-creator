@@ -1,23 +1,30 @@
 import { createContext } from 'react'
 
+type stringSetter = (arg: string) => void;
+const noop = (): void => {/**/}
+
 export interface NewAssetForm {
   assetName: string,
-  setAssetName: (arg: string) => void,
+  setAssetName: stringSetter,
+  assetNameError?: string,
+  setAssetNameError: stringSetter,
   assetId: string,
-  setAssetId: (arg: string) => void,
+  setAssetId: stringSetter,
   assetDecimals: string,
-  setAssetDecimals: (arg: string) => void,
+  setAssetDecimals: stringSetter,
   assetSymbol: string,
-  setAssetSymbol: (arg: string) => void,
+  setAssetSymbol: stringSetter,
 }
 
 export const NewAssetModalContext = createContext<NewAssetForm>({
   assetName: '',
-  setAssetName: () => {/**/},
+  setAssetName: noop,
+  assetNameError: undefined,
+  setAssetNameError: noop,
   assetId: '',
-  setAssetId: () => {/**/},
+  setAssetId: noop,
   assetDecimals: '',
-  setAssetDecimals: () => {/**/},
+  setAssetDecimals: noop,
   assetSymbol: '',
-  setAssetSymbol: () => {/**/},
+  setAssetSymbol: noop,
 })
