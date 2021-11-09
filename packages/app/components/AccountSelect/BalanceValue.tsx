@@ -10,7 +10,7 @@ const DECIMALS_DISPLAYED = 4
 interface BalanceValueProps {
   decimals: number,
   token: string,
-  value: BN
+  value: BN | undefined
 }
 
 const BalanceValue = ({ decimals, token, value }: BalanceValueProps): React.ReactElement<BalanceValueProps> | null => {

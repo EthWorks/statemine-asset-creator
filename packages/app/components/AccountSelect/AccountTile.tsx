@@ -29,7 +29,7 @@ export function AccountTile({ account, withFreeBalance }: Props): JSX.Element {
         <CellRow>
           <Label>transferable balance</Label>
           <ValueWrapper>
-            <BalanceValue token='KSM' decimals={5} value={new BN('1234567891')} />
+            <BalanceValue token='KSM' decimals={5} value={balance?.availableBalance ? new BN(balance?.availableBalance) : undefined} />
           </ValueWrapper>
         </CellRow>
         {withFreeBalance &&
