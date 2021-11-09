@@ -4,7 +4,9 @@ import React from 'react'
 import { NewAssetModal } from '../components'
 import { useToggle } from '../utils'
 import {
-  assertInputError, assertNoInputError, assertNoText,
+  assertInputError,
+  assertNoInputError,
+  assertNoText,
   assertText,
   assertTextInput,
   clickButton,
@@ -13,9 +15,7 @@ import {
   renderWithTheme,
   setLocalStorage
 } from './helpers'
-import { bobAccount, mockChains } from './mocks'
-
-const KusamaStringLimit = 50
+import { bobAccount, mockChains, mockStringLimit } from './mocks'
 
 function TestComponent(): JSX.Element {
   const [isOpen, toggleOpen] = useToggle()
@@ -64,6 +64,7 @@ const mockApi = {
 
 jest.mock('use-substrate', () => ({
   useApi: () => mockApi,
+  useStringLimit: () => mockStringLimit,
   useTransaction: () => mockUseTransaction,
   Chains: () => mockChains
 }))
@@ -120,18 +121,18 @@ describe('New asset modal', () => {
     })
 
     it('does not allow to exceed StringLimit', async () => {
-      fillInput('Asset name', 'a'.repeat(KusamaStringLimit + 1))
-      await assertInputError('Asset name', `Maximum length of ${KusamaStringLimit} characters exceeded`)
+      fillInput('Asset name', 'a'.repeat(mockStringLimit.toNumber() + 1))
+      await assertInputError('Asset name', `Maximum length of ${mockStringLimit.toNumber()} characters exceeded`)
 
       clickButton('Next')
       assertNoText('Confirm')
     })
 
     it('does not display error when asset name length decreased', async () => {
-      fillInput('Asset name', 'a'.repeat(KusamaStringLimit + 1))
-      await assertInputError('Asset name', `Maximum length of ${KusamaStringLimit} characters exceeded`)
+      fillInput('Asset name', 'a'.repeat(mockStringLimit.toNumber() + 1))
+      await assertInputError('Asset name', `Maximum length of ${mockStringLimit.toNumber()} characters exceeded`)
 
-      fillInput('Asset name', 'a'.repeat(KusamaStringLimit))
+      fillInput('Asset name', 'a'.repeat(mockStringLimit.toNumber()))
       await assertNoInputError('Asset name')
 
       clickButton('Next')

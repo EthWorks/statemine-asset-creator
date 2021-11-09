@@ -1,3 +1,4 @@
+import BN from 'bn.js'
 import { createContext } from 'react'
 
 type stringSetter = (arg: string) => void;
@@ -15,6 +16,7 @@ export interface NewAssetForm {
   setAssetDecimals: stringSetter,
   assetSymbol: string,
   setAssetSymbol: stringSetter,
+  stringLimit: BN | undefined,
 }
 
 export const NewAssetModalContext = createContext<NewAssetForm>({
@@ -28,4 +30,5 @@ export const NewAssetModalContext = createContext<NewAssetForm>({
   setAssetDecimals: noop,
   assetSymbol: '',
   setAssetSymbol: noop,
+  stringLimit: undefined
 })

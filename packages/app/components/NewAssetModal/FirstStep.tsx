@@ -6,21 +6,23 @@ import { CustomInput } from '../FormElements'
 import { useNewAssetModal } from './context/useNewAssetModal'
 
 export function FirstStep({ onNext }: ModalStep): JSX.Element {
-  const { assetName, setAssetName, assetNameError, setAssetNameError, assetId, assetSymbol, setAssetId, setAssetSymbol, setAssetDecimals, assetDecimals } = useNewAssetModal()
-  const assetNameLengthLimit = 50
+  const { assetName, setAssetName, assetNameError, setAssetNameError, assetId, assetSymbol, setAssetId, setAssetSymbol, setAssetDecimals, assetDecimals, stringLimit } = useNewAssetModal()
 
   useEffect(() => {
-    setAssetNameError(undefined)
-    if(assetName.length > assetNameLengthLimit) {
-      setAssetNameError(`Maximum length of ${assetNameLengthLimit} characters exceeded`)
+    if(!stringLimit) {
+      return
     }
-  }, [assetName, setAssetNameError])
+    setAssetNameError(undefined)
+    if(assetName.length > stringLimit?.toNumber()) {
+      setAssetNameError(`Maximum length of ${stringLimit} characters exceeded`)
+    }
+  }, [assetName, setAssetNameError, stringLimit])
 
   const _onNext = useCallback(() => {
-    if(!assetNameError) {
+    if(stringLimit && !assetNameError) {
       onNext()
     }
-  }, [assetNameError, onNext])
+  }, [assetNameError, onNext, stringLimit])
 
   return (
     <>
