@@ -14,7 +14,7 @@ const Card = styled.div<CardProps>`
 `
 const paddingSizes: Record<PaddingSize, string> = {
   s: '16px',
-  m: '24px 32px',
+  m: '24px',
   l: '40px'
 }
 

@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import { CloseButton } from '../button/CloseButton'
 import { Header } from '../typography/Header'
 
 interface ModalHeaderProps {
@@ -21,9 +22,10 @@ const WrapperModalHeader = styled.header<Pick<ModalHeaderProps, 'titleCenterPosi
   display: flex;
   justify-content: ${({ titleCenterPosition }) => titleCenterPosition ? 'center' : 'flex-start'};
   margin-bottom: 24px;
+  width: 100%;
 `
 
-const ModalCloseBtn = styled.button`
+const ModalCloseBtn = styled(CloseButton)`
   position: absolute;
   top: 0;
   right: 0;
