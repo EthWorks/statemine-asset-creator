@@ -49,6 +49,8 @@ const StyledArrow = styled(Arrow)`
 
 const StyledButton = styled(DropdownMenu.Trigger)`
   position: relative;
+  width: 636px;
+  max-width: 636px;
   padding: 0;
   margin: 0;
   width: 100%;
@@ -72,10 +74,16 @@ const StyledButton = styled(DropdownMenu.Trigger)`
 `
 
 const StyledDropdown = styled(DropdownMenu.Content)`
+  overflow-y: auto;
   transform: translateY(4px);
-  width: calc(100% + 8px);
+  width: 636px;
+  max-height: 200px;
   border-radius: ${({ theme }) => theme.borderRadius.s};
   background-color: ${({ theme }) => theme.colors.gray[800]};
+  
+  &::-webkit-scrollbar {
+    width: 0;
+  }
 `
 
 const StyledDropdownItem = styled(DropdownMenu.Item)`
