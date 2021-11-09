@@ -15,6 +15,11 @@ import { createType } from '../utils/createType'
 export const mockedKusamaApi: UseApi = {
   isConnected: true,
   api: {
+    consts: {
+      assets: {
+        stringLimit: createType('u32', new BN(50))
+      }
+    },
     derive: {
       balances: {
         all: () => from<ObservableInput<DeriveBalancesAll>>([{

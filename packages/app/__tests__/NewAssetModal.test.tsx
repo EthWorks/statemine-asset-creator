@@ -137,6 +137,5 @@ describe('New asset modal', () => {
       clickButton('Next')
       await assertText('Confirm')
     })
-
   })
 })
