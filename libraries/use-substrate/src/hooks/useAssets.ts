@@ -34,7 +34,7 @@ export function useAssets(chain: Chains, options?: UseAssetsOptions): UseAssets 
 
 function convertAssets(assets: FetchedAssets): AssetInfoWithId[] {
   return assets.map( asset => ({
-    id: extractAssetIds(asset[0]),
+    id: extractAssetId(asset[0]),
     owner: asset[1].owner,
     issuer: asset[1].issuer,
     freezer: asset[1].freezer,
@@ -50,7 +50,7 @@ function convertAssets(assets: FetchedAssets): AssetInfoWithId[] {
   }))
 }
 
-function extractAssetIds (key: StorageKey<[AssetId]>): AssetId {
+function extractAssetId (key: StorageKey<[AssetId]>): AssetId {
   return key.args[0]
 }
 

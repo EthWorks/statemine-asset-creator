@@ -1,7 +1,7 @@
 import { groupRoles } from '../components/CreatedAssets/groupRoles'
 import { aliceAccountId, bobAccountId, charlieAccountId } from './mocks'
 
-describe('sortAdmins', () => {
+describe('groupRoles', () => {
   it('merges accounts with multiple roles', async () => {
     const admins = {
       admin: bobAccountId,
