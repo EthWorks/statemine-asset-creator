@@ -3,7 +3,8 @@ import type { InjectedWindowProvider } from '@polkadot/extension-inject/types'
 import { act, renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
 
-import { AccountsContextProvider, ALICE, useAccounts } from '../src'
+import { AccountsContextProvider, useAccounts } from '../src'
+import { ALICE } from './consts/addresses'
 
 describe('useAccountsHook', () => {
   beforeAll(() => {

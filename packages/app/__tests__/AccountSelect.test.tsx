@@ -12,7 +12,7 @@ import { mockAccounts, mockChains, mockUseAccounts, mockUseBalances, mockUseSubs
 jest.mock('use-substrate', () => ({
   useAccounts: () => mockUseAccounts,
   useBalances: () => mockUseBalances,
-  Chains: () => mockChains
+  Chains: () => mockChains,
 }))
 
 function AccountSelectTestComponent(): JSX.Element {
