@@ -13,9 +13,9 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
-    "next": "11.1.2",
+    "next": "12",
     "react": "17.0.2",
-    "react-dom": "17.0.2",
+    "react-dom": "~17.0.2",
     "use-substrate": "~0.1.0",
     "@radix-ui/react-dropdown-menu": "~0.1.0",
     "@radix-ui/react-id": "~0.1.1",
