@@ -6,7 +6,7 @@
   "pnpmVersion": "6.17.0",
 
   "pnpmOptions": {
-    strictPeerDependencies: false,
+    strictPeerDependencies: false
   },
 
   "nodeSupportedVersionRange": ">=14.17.0",
