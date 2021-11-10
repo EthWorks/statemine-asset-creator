@@ -51,5 +51,3 @@ export function patchDetectPackage (): void {
   })
 }
 patchDetectPackage()
-
-import '@testing-library/jest-dom'
