@@ -8,7 +8,7 @@ describe('useStringLimit hook', () => {
   it('returns string limit for a chain', () => {
     const { result: { current } } = renderResult(Chains.Kusama)
 
-    expect(current.toNumber()).toEqual(50)
+    expect(current?.toNumber()).toEqual(50)
   })
 
   const renderResult = (chain: Chains) => {
