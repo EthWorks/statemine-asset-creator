@@ -13,14 +13,14 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "next": "12",
     "@radix-ui/react-dropdown-menu": "~0.1.0",
     "@radix-ui/react-id": "~0.1.1",
     "bignumber.js": "^9.0.1",
-    "next": "11.1.2",
     "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "styled-components": "^5.3.1",
-    "use-substrate": "~0.1.0"
+    "react-dom": "~17.0.2",
+    "use-substrate": "~0.1.0",
+    "styled-components": "^5.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",
@@ -31,24 +31,26 @@
     "@storybook/react": "^6.3.12",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.1.1",
-    "@types/bn.js": "4.11.6",
     "@types/jest": "^27.0.2",
     "@types/react": "17.0.24",
     "@types/styled-components": "^5.1.15",
-    "@types/testing-library__jest-dom": "~5.14.1",
     "babel-jest": "^27.2.3",
     "babel-loader": "^8.2.2",
-    "bn.js": "~5.2.0",
     "eslint": "^7.32.0",
     "eslint-config-next": "11.1.2",
     "eslint-config-statemine": "~0.1.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.2.3",
     "jest-fail-on-console": "~2.0.4",
+    "react-test-renderer": "^17.0.2",
+    "typescript": "^4.4.3",
+    "rxjs": "7.4.0",
     "mock-local-storage": "~1.1.17",
     "next-router-mock": "~0.5.3",
-    "react-test-renderer": "^17.0.2",
-    "rxjs": "7.4.0",
-    "typescript": "^4.4.3"
+    "bn.js": "~5.2.0",
+    "@types/bn.js": "4.11.6",
+    "@types/testing-library__jest-dom": "~5.14.1",
+    "@polkadot/types": "6.6.1",
+    "test-helpers": "~0.1.0"
   }
 }

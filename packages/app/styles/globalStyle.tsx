@@ -15,6 +15,10 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     font-family: 'Space Grotesk', sans-serif;
   }
+  
+  button {
+    font-family: 'Space Grotesk', sans-serif;
+  }
 
   a {
     color: inherit;

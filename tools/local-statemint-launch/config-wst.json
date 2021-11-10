@@ -1,0 +1,55 @@
+{
+  "relaychain": {
+    "bin": "./bin/polkadot",
+    "chain": "westend-local",
+    "nodes": [
+      {
+        "name": "alice",
+        "wsPort": 9944,
+        "port": 30444
+      },
+      {
+        "name": "bob",
+        "wsPort": 9955,
+        "port": 30555
+      },
+      {
+        "name": "charlie",
+        "wsPort": 9966,
+        "port": 30666
+      }
+    ],
+    "genesis": {
+      "runtime": {
+        "configuration": {
+          "config": {
+            "validation_upgrade_frequency": 1,
+            "validation_upgrade_delay": 1
+          }
+        }
+      }
+    }
+  },
+  "parachains": [
+    {
+      "bin": "./bin/polkadot-collator",
+      "id": "1000",
+      "chain": "westmint-local",
+      "balance": "1000000000000000000000",
+      "nodes": [
+        {
+          "wsPort": 9988,
+          "port": 31200,
+          "name": "alice",
+          "flags": ["--force-authoring", "--", "--execution=wasm"]
+        }
+      ]
+    }
+  ],
+  "simpleParachains": [
+  ],
+  "hrmpChannels": [
+  ],
+  "types": {},
+  "finalization": false
+}

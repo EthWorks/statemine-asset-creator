@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "noEmit": false,
+    "incremental": true
   },
   "include": [
     "next-env.d.ts",
@@ -9,5 +10,7 @@
     "./**/*.tsx",
     "./jest.config.js"
   ],
-  "exclude": ["./stories"]
+  "exclude": [
+    "./stories"
+  ]
 }
