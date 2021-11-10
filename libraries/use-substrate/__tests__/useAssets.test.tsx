@@ -19,16 +19,19 @@ describe('Use assets hook', () => {
 
     expect(result.current).toHaveLength(3)
 
-    const { id: firstId, owner: firstOwner } = (result.current ?? [{ id: undefined, owner: undefined }])[0]
-    const { id: secondId, owner: secondOwner } = (result.current ?? [{ id: undefined, owner: undefined }])[1]
-    const { id: thirdId, owner: thirdOwner } = (result.current ?? [{ id: undefined, owner: undefined }])[2]
+    const { id: firstId, owner: firstOwner, isSufficient: firstIsSufficient } = (result.current ?? [{ id: undefined, owner: undefined }])[0]
+    const { id: secondId, owner: secondOwner, isSufficient: secondIsSufficient } = (result.current ?? [{ id: undefined, owner: undefined }])[1]
+    const { id: thirdId, owner: thirdOwner, isSufficient: thirdIsSufficient } = (result.current ?? [{ id: undefined, owner: undefined }])[2]
 
     expect(firstId?.toString()).toEqual('15')
     expect(firstOwner).toEqual(BOB_ID)
+    expect(firstIsSufficient).toEqual(false)
     expect(secondId?.toString()).toEqual('24')
     expect(secondOwner).toEqual(ALICE_ID)
+    expect(secondIsSufficient).toEqual(true)
     expect(thirdId?.toString()).toEqual('1000')
     expect(thirdOwner).toEqual(BOB_ID)
+    expect(thirdIsSufficient).toEqual(false)
   })
 
   it('Returns owners assets', () => {
