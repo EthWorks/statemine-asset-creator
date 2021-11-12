@@ -50,7 +50,7 @@ const Home: NextPage =  () => {
         </div>
         <div data-testid='active-account-container'>
           {assets?.sort((a, b) => a.id.toNumber() - b.id.toNumber()).map((asset) =>
-            <li key={asset.id.toString()}>{asset.owner}, {asset.id.toString()}, {asset.name}</li>)
+            <li key={asset.id.toString()}>{asset.owner.toString()}, {asset.id.toString()}, {asset.name}</li>)
           }
           <p>
             {account}

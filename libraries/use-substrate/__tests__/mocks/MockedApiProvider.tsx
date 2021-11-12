@@ -52,9 +52,9 @@ export const mockedKusamaApi: UseApi = {
         asset: {
           entries: () => from<ObservableInput<FetchedAssets>>([
             [
-              [createAssetStorageKey(15), createType('AssetDetails', { owner: createType('AccountId', BOB) })],
-              [createAssetStorageKey(24), createType('AssetDetails', { owner: createType('AccountId', ALICE) })],
-              [createAssetStorageKey(1000), createType('AssetDetails', { owner: createType('AccountId', BOB) })]
+              [createAssetStorageKey(15), createType('Option<AssetDetails>', { owner: createType('AccountId', BOB),  isSufficient: undefined })],
+              [createAssetStorageKey(24), createType('Option<AssetDetails>', { owner: createType('AccountId', ALICE),  isSufficient: true })],
+              [createAssetStorageKey(1000), createType('Option<AssetDetails>', { owner: createType('AccountId', BOB), })]
             ]
           ])
         }

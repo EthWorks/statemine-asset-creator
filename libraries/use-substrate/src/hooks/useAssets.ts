@@ -33,21 +33,27 @@ export function useAssets(chain: Chains, options?: UseAssetsOptions): UseAssets 
 }
 
 function convertAssets(assets: FetchedAssets): AssetInfoWithId[] {
-  return assets.map( asset => ({
-    id: extractAssetId(asset[0]),
-    owner: asset[1].owner,
-    issuer: asset[1].issuer,
-    freezer: asset[1].freezer,
-    admin: asset[1].admin,
-    isSufficient: asset[1].isSufficient.toHuman(),
-    isFrozen: asset[1].isFrozen.toHuman(),
-    supply: asset[1].supply.toBn(),
-    deposit: asset[1].deposit.toBn(),
-    minBalance: asset[1].minBalance.toBn(),
-    accounts: asset[1].accounts.toBn(),
-    sufficients: asset[1].sufficients.toBn(),
-    approvals: asset[1].approvals.toBn(),
-  }))
+  return assets.map( asset => {
+    const { owner, issuer, freezer, admin, isSufficient, isFrozen, supply, deposit,
+      minBalance, accounts, sufficients, approvals } = asset[1].unwrap()
+
+    return {
+      id: extractAssetId(asset[0]),
+      owner,
+      issuer,
+      freezer,
+      admin,
+      isSufficient: isSufficient.toHuman(),
+      isFrozen: isFrozen.toHuman(),
+      supply: supply.toBn(),
+      deposit: deposit.toBn(),
+      minBalance: minBalance.toBn(),
+      accounts: accounts.toBn(),
+      sufficients: sufficients.toBn(),
+      approvals: approvals.toBn(),
+    }
+  }
+  )
 }
 
 function extractAssetId (key: StorageKey<[AssetId]>): AssetId {
