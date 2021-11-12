@@ -7,11 +7,11 @@ import type { FetchedAssets, UseApi } from '../../src'
 import BN from 'bn.js'
 import React from 'react'
 import { from, of } from 'rxjs'
+import { createType } from 'test-helpers'
 
 import { ApiContext } from '../../src'
 import { ALICE, BOB } from '../consts/addresses'
 import { createAssetStorageKey } from '../utils/createAssetStorageKey'
-import { createType } from '../utils/createType'
 
 export const mockedKusamaApi: UseApi = {
   isConnected: true,
@@ -52,8 +52,8 @@ export const mockedKusamaApi: UseApi = {
         asset: {
           entries: () => from<ObservableInput<FetchedAssets>>([
             [
-              [createAssetStorageKey(15), createType('Option<AssetDetails>', { owner: createType('AccountId', BOB),  isSufficient: undefined })],
-              [createAssetStorageKey(24), createType('Option<AssetDetails>', { owner: createType('AccountId', ALICE),  isSufficient: true })],
+              [createAssetStorageKey(15), createType('Option<AssetDetails>', { owner: createType('AccountId', BOB), isSufficient: undefined })],
+              [createAssetStorageKey(24), createType('Option<AssetDetails>', { owner: createType('AccountId', ALICE), isSufficient: true })],
               [createAssetStorageKey(1000), createType('Option<AssetDetails>', { owner: createType('AccountId', BOB), })]
             ]
           ])

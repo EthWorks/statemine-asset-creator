@@ -110,8 +110,6 @@ describe('useAccountsHook', () => {
     window.injectedWeb3 = undefined
   })
 
-  // we might need a test for an error
-
   const renderAccounts = () => {
     const wrapper = ({ children }: { children: ReactNode }) => (
       <AccountsContextProvider appName='Statemine asset creator'>
