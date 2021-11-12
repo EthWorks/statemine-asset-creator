@@ -38,5 +38,5 @@ export type Asset = AssetInfoWithId & AssetMeta
 export type UseAssets = Asset[]
 
 export interface UseAssetsOptions {
-  owner?: AccountId
+  owner?: AccountId | string
 }

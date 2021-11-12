@@ -3,7 +3,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useState } from 'react'
 
-import { Chains, useAccounts, useAssets, useBalances } from 'use-substrate'
+import { Chains, useAccounts, useBalances } from 'use-substrate'
 
 import { AccountSelectModal, ConnectWalletModal, CreatedAssets, NewAssetModal } from '../components'
 import styles from '../styles/Home.module.css'
@@ -17,8 +17,7 @@ const Home: NextPage =  () => {
 
   const balances = useBalances(account, Chains.Kusama)
   const statemineBalances = useBalances(account, Chains.Statemine)
-  const assets = useAssets(Chains.Statemine)
-  const { allAccounts, web3Enable } = useAccounts()
+  const { web3Enable } = useAccounts()
 
   const onExtensionActivated = (): void => {
     setConnectWalletModalOpen(false)
@@ -49,9 +48,6 @@ const Home: NextPage =  () => {
           <NewAssetModal isOpen={isNewAssetModalOpen} closeModal={toggleNewAssetModalOpen}/>
         </div>
         <div data-testid='active-account-container'>
-          {assets?.sort((a, b) => a.id.toNumber() - b.id.toNumber()).map((asset) =>
-            <li key={asset.id.toString()}>{asset.owner.toString()}, {asset.id.toString()}, {asset.name}</li>)
-          }
           <p>
             {account}
           </p>
@@ -66,12 +62,6 @@ const Home: NextPage =  () => {
           Welcome to Statemine
         </h1>
 
-        <div>Extension accounts:</div>
-        <ul>
-          {allAccounts.map((account, index) =>
-            <li key={index}>address: {account.address} name: {account.name}</li>)
-          }
-        </ul>
         <div>Dashboard</div>
         <CreatedAssets/>
       </main>
