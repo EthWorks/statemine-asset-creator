@@ -60,7 +60,7 @@ function extractAssetId (key: StorageKey<[AssetId]>): AssetId {
   return key.args[0]
 }
 
-function filterByOwner(assets: AssetInfoWithId[], owner?: AccountId): AssetInfoWithId[] {
+function filterByOwner(assets: AssetInfoWithId[], owner?: AccountId | string): AssetInfoWithId[] {
   return owner ? assets.filter(asset => asset.owner.eq(owner)) : assets
 }
 
