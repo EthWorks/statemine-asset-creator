@@ -73,10 +73,12 @@ describe('useAccountsHook', () => {
   })
 
   describe('extension status', () => {
-    it('initial state', () => {
-      const { result } = renderAccounts()
+    it('initial state', async () => {
+      const { result, waitForNextUpdate } = renderAccounts()
 
       expect(result.current.extensionStatus).toEqual('Loading')
+
+      await waitForNextUpdate()
     })
 
     it('extension present', async () => {
