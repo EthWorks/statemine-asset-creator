@@ -1,3 +1,5 @@
+import '../utils/patchDetectPackage'
+
 import type { AppProps } from 'next/app'
 import type { AccountsContextProviderProps, AppProviderProps, Config } from 'use-substrate'
 

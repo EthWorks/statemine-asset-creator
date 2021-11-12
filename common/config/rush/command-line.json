@@ -17,7 +17,7 @@
         "summary": "Run build in each project",
         "enableParallelism": true,
         "ignoreMissingScript": true,
-        "allowWarningsInSuccessfulBuild": true
+        "allowWarningsInSuccessfulBuild": false
       },
     {
       "commandKind": "bulk",
