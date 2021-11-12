@@ -10,10 +10,10 @@ import { ThemeProvider } from 'styled-components'
 
 import { Chains } from 'use-substrate'
 
+import { envConfig } from '../config/envConfig'
 import { APPLICATION_NAME } from '../globalConstants'
 import GlobalStyle from '../styles/globalStyle'
 import { theme } from '../styles/styleVariables'
-import { envConfig } from './envConfig'
 
 const AccountsContextProvider = dynamic<AccountsContextProviderProps>(
   () => import('use-substrate').then((module) => module.AccountsContextProvider),
