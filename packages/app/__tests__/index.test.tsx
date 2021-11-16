@@ -5,9 +5,12 @@ import Home from '../pages/index'
 import { assertNoButton, assertText, clickButton, renderWithTheme, setLocalStorage } from './helpers'
 import {
   aliceAccount,
-  bobAccount, charlieAccount,
+  bobAccount,
+  charlieAccount,
   mockChains,
-  mockUseAccounts, mockUseApi,
+  mockUseAccounts,
+  mockUseActiveAccount,
+  mockUseApi,
   mockUseAssets,
   mockUseBalances,
   mockWeb3Enable
@@ -19,6 +22,7 @@ jest.mock('use-substrate', () => ({
   useAssets: () => mockUseAssets,
   useBalances: () => mockUseBalances,
   Chains: () => mockChains,
+  useActiveAccount: () => mockUseActiveAccount
 }))
 
 describe('Home', () => {

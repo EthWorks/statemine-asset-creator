@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
-import { useAccounts } from 'use-substrate'
+import { useAccounts, useActiveAccount } from 'use-substrate'
 
 import StatemineLogo from '../../assets/img/statemine.svg'
 import { AccountSelect } from '../AccountSelect'
@@ -20,9 +20,10 @@ interface Props {
 export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
   const accounts = useAccounts()
   const [account, setAccount] = useState<Account>(accounts.allAccounts[0])
-
+  const { setActiveAccount } = useActiveAccount()
+  
   const _onClick = async (): Promise<void> => {
-    localStorage.setItem('activeAccount', account.address)
+    setActiveAccount(account.address)
     closeModal()
   }
 

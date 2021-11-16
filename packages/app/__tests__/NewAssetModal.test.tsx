@@ -3,8 +3,8 @@ import React from 'react'
 
 import { NewAssetModal } from '../components'
 import { useToggle } from '../utils'
-import { assertText, assertTextInput, clickButton, fillInput, renderWithTheme, setLocalStorage } from './helpers'
-import { bobAccount, mockChains, mockUseApi } from './mocks'
+import { assertText, assertTextInput, clickButton, fillInput, renderWithTheme } from './helpers'
+import { mockChains, mockUseActiveAccount,mockUseApi } from './mocks'
 
 function TestComponent(): JSX.Element {
   const [isOpen, toggleOpen] = useToggle()
@@ -43,18 +43,11 @@ const mockUseTransaction = { tx: mockTransaction, paymentInfo: {} }
 jest.mock('use-substrate', () => ({
   useApi: () => mockUseApi,
   useTransaction: () => mockUseTransaction,
-  Chains: () => mockChains
+  Chains: () => mockChains,
+  useActiveAccount: () => mockUseActiveAccount
 }))
 
 describe('New asset modal', () => {
-  beforeEach(function () {
-    setLocalStorage('activeAccount', bobAccount.address)
-  })
-
-  afterEach(function () {
-    localStorage.clear()
-  })
-
   it('saves data in context', async () => {
     renderModal()
 

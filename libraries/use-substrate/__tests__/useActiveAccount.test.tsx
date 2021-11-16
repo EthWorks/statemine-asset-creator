@@ -22,11 +22,20 @@ describe('useActiveAccount', () => {
     expect(activeAccount).toEqual(BOB_ID)
   })
 
-  it('sets activeAccount in localStorage', async () => {
+  it('sets activeAccount (as accountId) in localStorage', async () => {
     const { result } = renderActiveAccount()
 
     const { setActiveAccount } = result.current
     act(() => setActiveAccount(BOB_ID))
+
+    expect(localStorage.getItem('activeAccount')).toEqual(BOB)
+  })
+
+  it('sets activeAccount (as string) in localStorage', async () => {
+    const { result } = renderActiveAccount()
+
+    const { setActiveAccount } = result.current
+    act(() => setActiveAccount(BOB))
 
     expect(localStorage.getItem('activeAccount')).toEqual(BOB)
   })

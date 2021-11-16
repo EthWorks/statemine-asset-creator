@@ -5,7 +5,7 @@ import type { AccountsContextProviderProps, AppProviderProps, Config } from 'use
 
 import { IdProvider } from '@radix-ui/react-id'
 import dynamic from 'next/dynamic'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { ThemeProvider } from 'styled-components'
 
 import { Chains } from 'use-substrate'
@@ -25,6 +25,11 @@ const AppProvider = dynamic<AppProviderProps>(
   { ssr: false }
 )
 
+const ActiveAccountProvider = dynamic<{children: ReactNode}>(
+  () => import('use-substrate').then((module) => module.ActiveAccountProvider),
+  { ssr: false }
+)
+
 const config: Config = {
   chains: [
     { name: Chains.Kusama, url: envConfig.kusamaUrl },
@@ -37,10 +42,12 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
     <IdProvider>
       <AppProvider config={config}>
         <AccountsContextProvider appName={APPLICATION_NAME}>
-          <GlobalStyle />
-          <ThemeProvider theme={theme}>
-            <Component {...pageProps} />
-          </ThemeProvider>
+          <ActiveAccountProvider>
+            <GlobalStyle />
+            <ThemeProvider theme={theme}>
+              <Component {...pageProps} />
+            </ThemeProvider>
+          </ActiveAccountProvider>
         </AccountsContextProvider>
       </AppProvider>
     </IdProvider>

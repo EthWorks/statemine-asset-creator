@@ -16,7 +16,7 @@ export interface UseTransaction {
   paymentInfo: RuntimeDispatchInfo | undefined
 }
 
-export function useTransaction(transaction: Transaction | undefined, params: unknown[], signer: string | null): UseTransaction | undefined {
+export function useTransaction(transaction: Transaction | undefined, params: unknown[], signer: string | undefined): UseTransaction | undefined {
   const transactionPaymentInfo = useMemo(() => transaction && signer ? transaction(...params).paymentInfo(signer) : undefined,
     [transaction, signer, params])
 

@@ -1,22 +1,21 @@
 import type { NextPage } from 'next'
 
 import Head from 'next/head'
-import { useState } from 'react'
 
-import { Chains, useAccounts, useBalances } from 'use-substrate'
+import { Chains, useAccounts, useActiveAccount, useBalances } from 'use-substrate'
 
 import { AccountSelectModal, ConnectWalletModal, CreatedAssets, NewAssetModal } from '../components'
 import styles from '../styles/Home.module.css'
 import { extensionActivated, shouldSelectAccount, useAsync, useToggle } from '../utils'
 
 const Home: NextPage =  () => {
-  const [account] = useState<string | null>(localStorage.getItem('activeAccount'))
+  const { activeAccount: account } = useActiveAccount()
   const [isNewAssetModalOpen, toggleNewAssetModalOpen] = useToggle()
   const [isConnectWalletModalOpen, toggleConnectWalletModalOpen, setConnectWalletModalOpen] = useToggle(!extensionActivated())
   const [isAccountSelectModalOpen, toggleSelectAccountModalOpen, setSelectAccountModalOpen] = useToggle(shouldSelectAccount())
 
-  const balances = useBalances(account, Chains.Kusama)
-  const statemineBalances = useBalances(account, Chains.Statemine)
+  const balances = useBalances(account?.toString() ?? null, Chains.Kusama)
+  const statemineBalances = useBalances(account?.toString() ?? null, Chains.Statemine)
   const { web3Enable } = useAccounts()
 
   const onExtensionActivated = (): void => {
@@ -49,7 +48,7 @@ const Home: NextPage =  () => {
         </div>
         <div data-testid='active-account-container'>
           <p>
-            {account}
+            {account?.toString()}
           </p>
           <p className={styles.description}>
             Balance: {balances?.freeBalance.toString()}

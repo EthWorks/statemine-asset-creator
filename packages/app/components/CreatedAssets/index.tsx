@@ -1,12 +1,12 @@
 import { FC } from 'react'
 
-import { Chains, useAssets } from 'use-substrate'
+import { Chains, useActiveAccount, useAssets } from 'use-substrate'
 
 import { AssetCard } from './AssetCard'
 
 export const CreatedAssets: FC = () => {
-  const account = localStorage.getItem('activeAccount') ?? undefined
-  const assets = useAssets(Chains.Statemine, { owner: account })
+  const { activeAccount } =useActiveAccount()
+  const assets = useAssets(Chains.Statemine, { owner: activeAccount })
 
   if(!assets) {
     return null
