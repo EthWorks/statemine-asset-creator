@@ -1,15 +1,19 @@
 import type { NextPage } from 'next'
 
-import Head from 'next/head'
 import { useState } from 'react'
+import styled from 'styled-components'
 
 import { Chains, useAccounts, useBalances } from 'use-substrate'
 
-import { AccountSelectModal, ConnectWalletModal, CreatedAssets, NewAssetModal } from '../components'
+import background from '../assets/background.svg'
+import { AccountSelectModal, ButtonPrimary, ConnectWalletModal, CreatedAssets, NewAssetModal, Text } from '../components'
+import Card from '../components/Card/Card'
+import PageBox from '../components/PageBox/PageBox'
+import PageTemplate from '../components/template/PageTemplate'
 import styles from '../styles/Home.module.css'
 import { extensionActivated, shouldSelectAccount, useAsync, useToggle } from '../utils'
 
-const Home: NextPage =  () => {
+const Home: NextPage = () => {
   const [account] = useState<string | null>(localStorage.getItem('activeAccount'))
   const [isNewAssetModalOpen, toggleNewAssetModalOpen] = useToggle()
   const [isConnectWalletModalOpen, toggleConnectWalletModalOpen, setConnectWalletModalOpen] = useToggle(!extensionActivated())
@@ -25,7 +29,7 @@ const Home: NextPage =  () => {
   }
 
   async function enableWeb3(): Promise<boolean | void> {
-    if(extensionActivated()) {
+    if (extensionActivated()) {
       await web3Enable()
     }
   }
@@ -33,40 +37,69 @@ const Home: NextPage =  () => {
   useAsync(enableWeb3, [web3Enable])
 
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Statemine Asset Creator</title>
-        <meta name="description" content="Application for managing assets on Statemine"/>
-      </Head>
-
-      <main className={styles.main}>
-        <ConnectWalletModal isOpen={isConnectWalletModalOpen} closeModal={toggleConnectWalletModalOpen}
-          onExtensionActivated={onExtensionActivated}/>
-        <AccountSelectModal isOpen={isAccountSelectModalOpen} closeModal={toggleSelectAccountModalOpen}/>
+    <PageTemplate
+      background={background}
+      title="Dashboard"
+      header={
         <div>
-          {!isNewAssetModalOpen && <button onClick={toggleNewAssetModalOpen}>Create new asset</button>}
-          <NewAssetModal isOpen={isNewAssetModalOpen} closeModal={toggleNewAssetModalOpen}/>
+          {!localStorage.getItem('activeAccount') && <ButtonPrimary onClick={toggleConnectWalletModalOpen}>Connect</ButtonPrimary>}
         </div>
-        <div data-testid='active-account-container'>
-          <p>
-            {account}
-          </p>
-          <p className={styles.description}>
-            Balance: {balances?.freeBalance.toString()}
-          </p>
-          <p className={styles.description}>
-            Statemine Balance: {statemineBalances?.freeBalance.toString()}
-          </p>
-        </div>
-        <h1 className={styles.title}>
-          Welcome to Statemine
-        </h1>
+      }
+    >
+      <PageBox size='large' title='Created assets'>
+        <StyledCard padding='m'>
+          <StyledCardTitle size="SM" color="white">You haven’t created any assets yet.</StyledCardTitle>
+          <Text size="SM">Here you can create fungible assets, which will be governed by you and accounts you
+            designate.</Text>
+          <div>
+            {localStorage.getItem('activeAccount') ?
+              <StyledButton onClick={toggleNewAssetModalOpen}>Create new asset</StyledButton>
+              : <StyledButton onClick={toggleConnectWalletModalOpen} large>Connect to create your asset</StyledButton>
+            }
+          </div>
+        </StyledCard>
+      </PageBox>
+      <PageBox size='large' title='In your wallet'>
+        <StyledCard padding='m'>
+          <StyledCardTitle size="SM" color="white">You don’t have any assets in your wallet</StyledCardTitle>
+          <Text size="SM">Balance of your Statemine Assets will show here</Text>
+        </StyledCard>
+      </PageBox>
 
-        <div>Dashboard</div>
-        <CreatedAssets/>
-      </main>
-    </div>
+      <NewAssetModal isOpen={isNewAssetModalOpen} closeModal={toggleNewAssetModalOpen}/>
+      <ConnectWalletModal isOpen={isConnectWalletModalOpen} closeModal={toggleConnectWalletModalOpen} onExtensionActivated={onExtensionActivated}/>
+      <AccountSelectModal isOpen={isAccountSelectModalOpen} closeModal={toggleSelectAccountModalOpen}/>
+      <div data-testid='active-account-container'>
+        <p>
+          {account}
+        </p>
+        <p className={styles.description}>
+          Balance: {balances?.freeBalance.toString()}
+        </p>
+        <p className={styles.description}>
+          Statemine Balance: {statemineBalances?.freeBalance.toString()}
+        </p>
+      </div>
+      <CreatedAssets/>
+    </PageTemplate>
   )
 }
 
 export default Home
+
+export const StyledCard = styled(Card)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+
+const StyledCardTitle = styled(Text)`
+  margin-bottom: 16px;
+  font-weight: 500;
+  line-height: 18px;
+`
+
+const StyledButton = styled(ButtonPrimary)`
+  margin-top: 16px;
+`
