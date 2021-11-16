@@ -15,7 +15,7 @@ import {
   renderWithTheme,
   setLocalStorage
 } from './helpers'
-import { bobAccount, mockChains, mockStringLimit, mockUseApi } from './mocks'
+import { bobAccount, mockChains, mockUseApi,mockUseAssetsConstants } from './mocks'
 
 function TestComponent(): JSX.Element {
   const [isOpen, toggleOpen] = useToggle()
@@ -53,10 +53,12 @@ const mockUseTransaction = { tx: mockTransaction, paymentInfo: {} }
 
 jest.mock('use-substrate', () => ({
   useApi: () => mockUseApi,
-  useStringLimit: () => mockStringLimit,
+  useAssetsConstants: () => mockUseAssetsConstants,
   useTransaction: () => mockUseTransaction,
   Chains: () => mockChains
 }))
+
+const mockedStringLimit = mockUseAssetsConstants.stringLimit.toNumber()
 
 describe('New asset modal', () => {
   beforeEach(function () {
@@ -111,18 +113,18 @@ describe('New asset modal', () => {
 
     ;['Asset name', 'Asset symbol'].forEach(inputName => {
       it('does not allow to exceed StringLimit', async () => {
-        fillInput(inputName, 'a'.repeat(mockStringLimit.toNumber() + 1))
-        await assertInputError(inputName, `Maximum length of ${mockStringLimit.toNumber()} characters exceeded`)
+        fillInput(inputName, 'a'.repeat(mockedStringLimit + 1))
+        await assertInputError(inputName, `Maximum length of ${mockedStringLimit} characters exceeded`)
 
         clickButton('Next')
         assertNoText('Confirm')
       })
 
       it('does not display error when asset name length decreased', async () => {
-        fillInput(inputName, 'a'.repeat(mockStringLimit.toNumber() + 1))
-        await assertInputError(inputName, `Maximum length of ${mockStringLimit.toNumber()} characters exceeded`)
+        fillInput(inputName, 'a'.repeat(mockedStringLimit + 1))
+        await assertInputError(inputName, `Maximum length of ${mockedStringLimit} characters exceeded`)
 
-        fillInput(inputName, 'a'.repeat(mockStringLimit.toNumber()))
+        fillInput(inputName, 'a'.repeat(mockedStringLimit))
         await assertNoInputError(inputName)
 
         clickButton('Next')

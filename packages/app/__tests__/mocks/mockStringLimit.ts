@@ -1,3 +1,3 @@
 import BN from 'bn.js'
 
-export const mockStringLimit = new BN(50)
+export const mockUseAssetsConstants = { stringLimit: new BN(50) }

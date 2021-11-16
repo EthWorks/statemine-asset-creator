@@ -1,14 +1,14 @@
 import { renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
 
-import { Chains, useStringLimit } from '../src'
+import { Chains, useAssetsConstants } from '../src'
 import { MockedApiProvider } from './mocks/MockedApiProvider'
 
-describe('useStringLimit hook', () => {
+describe('useAssetsConstants hook', () => {
   it('returns string limit for a chain', () => {
     const { result: { current } } = renderResult(Chains.Kusama)
 
-    expect(current?.toNumber()).toEqual(50)
+    expect(current.stringLimit?.toNumber()).toEqual(50)
   })
 
   const renderResult = (chain: Chains) => {
@@ -18,6 +18,6 @@ describe('useStringLimit hook', () => {
       </MockedApiProvider>
     )
 
-    return renderHook(() => useStringLimit(chain), { wrapper })
+    return renderHook(() => useAssetsConstants(chain), { wrapper })
   }
 })

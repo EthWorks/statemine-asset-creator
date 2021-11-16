@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Chains, useStringLimit } from 'use-substrate'
+import { Chains, useAssetsConstants } from 'use-substrate'
 
 import { NewAssetModalContext } from './context'
 
@@ -11,7 +11,7 @@ export const NewAssetModalProvider: React.FC = ({  children }) => {
   const [assetDecimals, setAssetDecimals] = useState<string>('')
   const [assetSymbol, setAssetSymbol] = useState<string>('')
   const [assetSymbolError, setAssetSymbolError] = useState<string>()
-  const stringLimit = useStringLimit(Chains.Statemine)
+  const { stringLimit } = useAssetsConstants(Chains.Statemine)
 
   return <NewAssetModalContext.Provider value={{
     assetName,
