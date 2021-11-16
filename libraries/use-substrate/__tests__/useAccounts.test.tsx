@@ -73,10 +73,12 @@ describe('useAccountsHook', () => {
   })
 
   describe('extension status', () => {
-    it('initial state', () => {
-      const { result } = renderAccounts()
+    it('initial state', async () => {
+      const { result, waitForNextUpdate } = renderAccounts()
 
       expect(result.current.extensionStatus).toEqual('Loading')
+
+      await waitForNextUpdate()
     })
 
     it('extension present', async () => {
@@ -109,8 +111,6 @@ describe('useAccountsHook', () => {
   afterAll(() => {
     window.injectedWeb3 = undefined
   })
-
-  // we might need a test for an error
 
   const renderAccounts = () => {
     const wrapper = ({ children }: { children: ReactNode }) => (

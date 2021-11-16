@@ -7,11 +7,11 @@ import { ApiRx } from '@polkadot/api'
 import { renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
 import { from } from 'rxjs'
+import { createType } from 'test-helpers'
 
-import { Chains,  useAssets } from '../src'
-import { ALICE_ID, BOB, BOB_ID, } from './consts/addresses'
+import { Chains, useAssets } from '../src'
+import { ALICE_ID, BOB, BOB_ID } from './consts/addresses'
 import { MockedApiProvider, mockedKusamaApi } from './mocks/MockedApiProvider'
-import { createType } from './utils/createType'
 
 describe('Use assets hook', () => {
   it('Returns all available assets', async () => {
@@ -19,16 +19,19 @@ describe('Use assets hook', () => {
 
     expect(result.current).toHaveLength(3)
 
-    const { id: firstId, owner: firstOwner } = (result.current ?? [{ id: undefined, owner: undefined }])[0]
-    const { id: secondId, owner: secondOwner } = (result.current ?? [{ id: undefined, owner: undefined }])[1]
-    const { id: thirdId, owner: thirdOwner } = (result.current ?? [{ id: undefined, owner: undefined }])[2]
+    const { id: firstId, owner: firstOwner, isSufficient: firstIsSufficient } = (result.current ?? [{ id: undefined, owner: undefined }])[0]
+    const { id: secondId, owner: secondOwner, isSufficient: secondIsSufficient } = (result.current ?? [{ id: undefined, owner: undefined }])[1]
+    const { id: thirdId, owner: thirdOwner, isSufficient: thirdIsSufficient } = (result.current ?? [{ id: undefined, owner: undefined }])[2]
 
     expect(firstId?.toString()).toEqual('15')
     expect(firstOwner).toEqual(BOB_ID)
+    expect(firstIsSufficient).toEqual(false)
     expect(secondId?.toString()).toEqual('24')
     expect(secondOwner).toEqual(ALICE_ID)
+    expect(secondIsSufficient).toEqual(true)
     expect(thirdId?.toString()).toEqual('1000')
     expect(thirdOwner).toEqual(BOB_ID)
+    expect(thirdIsSufficient).toEqual(false)
   })
 
   it('Returns owners assets', () => {
