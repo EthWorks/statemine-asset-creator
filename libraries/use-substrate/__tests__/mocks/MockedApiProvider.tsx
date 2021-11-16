@@ -11,9 +11,7 @@ import { createType } from 'test-helpers'
 
 import { ApiContext } from '../../src'
 import { ALICE, BOB } from '../consts/addresses'
-import { createAssetStorageKey } from '../utils/createAssetStorageKey'
-import { ALICE, ApiContext, BOB } from '../../src'
-import { createAssetStorageKey, createType } from '../utils'
+import { createAssetStorageKey } from '../utils'
 
 export const mockedKusamaApi: UseApi = {
   isConnected: true,

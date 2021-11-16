@@ -1,7 +1,8 @@
 import { act, renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
 
-import { ActiveAccountProvider, ApiContext, BOB, BOB_ID, useActiveAccount } from '../src'
+import { ActiveAccountProvider, ApiContext, useActiveAccount } from '../src'
+import { BOB, BOB_ID } from './consts/addresses'
 import { mockedKusamaApi } from './mocks/MockedApiProvider'
 
 describe('useActiveAccount', () => {
