@@ -1,0 +1,25 @@
+{
+  "name": "test-helpers",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "rm -rf dist && tsc",
+    "lint": "eslint 'src/*.{ts,tsx}'",
+    "lint:fix": "eslint '{src}/**/*.{ts,tsx}' --fix"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "./dist/src"
+  ],
+  "dependencies": {
+    "@polkadot/api": "6.6.1",
+    "@polkadot/types": "6.6.1"
+  },
+  "devDependencies": {
+    "typescript": "^4.4.3",
+    "eslint": "^7.32.0",
+    "eslint-config-statemine": "~0.1.0",
+    "@rushstack/eslint-patch": "~1.0.7"
+  }
+}

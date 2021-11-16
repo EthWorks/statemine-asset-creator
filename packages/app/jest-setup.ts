@@ -3,14 +3,7 @@
 import '@testing-library/jest-dom'
 import 'mock-local-storage'
 
-import failOnConsole from 'jest-fail-on-console'
-
 import { PointerEvent } from './__tests__/helpers'
-
-failOnConsole({
-  shouldFailOnWarn: true,
-  shouldFailOnError: true,
-})
 
 // @ts-ignore
 window.PointerEvent = PointerEvent

@@ -1,29 +1,31 @@
-import type { StorageKey } from '@polkadot/types'
-import type { AssetId } from '@polkadot/types/interfaces'
+import type { Option,StorageKey } from '@polkadot/types'
+import type { AccountId, AssetId } from '@polkadot/types/interfaces'
 import type { PalletAssetsAssetDetails } from '@polkadot/types/lookup'
 
-export type FetchedAssets = [StorageKey<[AssetId]>, PalletAssetsAssetDetails][];
+import BN from 'bn.js'
+
+export type FetchedAssets = [StorageKey<[AssetId]>, Option<PalletAssetsAssetDetails>][];
 
 export interface AssetInfo {
-  readonly owner: string;
-  readonly issuer: string;
-  readonly admin: string;
-  readonly freezer: string;
-  readonly supply: string;
-  readonly deposit: string;
-  readonly minBalance: string;
+  readonly owner: AccountId;
+  readonly issuer: AccountId;
+  readonly admin: AccountId;
+  readonly freezer: AccountId;
+  readonly supply: BN;
+  readonly deposit: BN;
+  readonly minBalance: BN;
   readonly isSufficient: boolean;
-  readonly accounts: string;
-  readonly sufficients: string;
-  readonly approvals: string;
+  readonly accounts: BN;
+  readonly sufficients: BN;
+  readonly approvals: BN;
   readonly isFrozen: boolean;
 }
 
 export interface AssetMeta {
-  readonly deposit: string;
+  readonly deposit: BN;
   readonly name: string;
   readonly symbol: string;
-  readonly decimals: string;
+  readonly decimals: number;
   readonly isFrozen: boolean;
 }
 
@@ -36,5 +38,5 @@ export type Asset = AssetInfoWithId & AssetMeta
 export type UseAssets = Asset[]
 
 export interface UseAssetsOptions {
-  owner?: string
+  owner?: AccountId | string
 }

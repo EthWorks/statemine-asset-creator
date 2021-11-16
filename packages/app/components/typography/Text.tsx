@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components'
 
 import { ColorType } from '../../styles/styleVariables'
 
-type TextSize = 'XS' | 'SM' | 'Base' | 'Lg' | 'XL' | '2XL' | '3XL'| '4XL'| '5XL'| '6XL'
+type TextSize = 'XXS' | 'XS' | 'SM' | 'Base' | 'Lg' | 'XL' | '2XL' | '3XL'| '4XL'| '5XL'| '6XL'
 
 export interface TextProps {
   bold?: boolean
@@ -40,6 +40,10 @@ interface TextProperties {
 }
 
 const sizes: Record<TextSize, TextProperties> = {
+  XXS:  {
+    fontSize: '10px',
+    lineHeight: '16px'
+  },
   XS:  {
     fontSize: '12px',
     lineHeight: '16px'

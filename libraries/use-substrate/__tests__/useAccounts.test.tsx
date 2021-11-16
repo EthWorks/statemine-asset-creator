@@ -3,7 +3,8 @@ import type { InjectedWindowProvider } from '@polkadot/extension-inject/types'
 import { act, renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
 
-import { AccountsContextProvider, ALICE, useAccounts } from '../src'
+import { AccountsContextProvider, useAccounts } from '../src'
+import { ALICE } from './consts/addresses'
 
 describe('useAccountsHook', () => {
   beforeAll(() => {
@@ -72,10 +73,12 @@ describe('useAccountsHook', () => {
   })
 
   describe('extension status', () => {
-    it('initial state', () => {
-      const { result } = renderAccounts()
+    it('initial state', async () => {
+      const { result, waitForNextUpdate } = renderAccounts()
 
       expect(result.current.extensionStatus).toEqual('Loading')
+
+      await waitForNextUpdate()
     })
 
     it('extension present', async () => {
@@ -108,8 +111,6 @@ describe('useAccountsHook', () => {
   afterAll(() => {
     window.injectedWeb3 = undefined
   })
-
-  // we might need a test for an error
 
   const renderAccounts = () => {
     const wrapper = ({ children }: { children: ReactNode }) => (

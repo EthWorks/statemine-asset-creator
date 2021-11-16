@@ -1,0 +1,12 @@
+{
+  "name": "local-statemint-launch",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "",
+    "start": "polkadot-launch config-wst.json"
+  },
+  "dependencies": {
+    "polkadot-launch": "1.8.0"
+  }
+}
