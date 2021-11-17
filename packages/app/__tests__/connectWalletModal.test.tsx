@@ -11,14 +11,23 @@ import {
   clickButton,
   renderWithTheme
 } from './helpers'
-import { mockChains, mockUseAccounts, mockUseApi, mockUseAssets, mockUseBalances, mockWeb3Enable } from './mocks'
+import {
+  mockChains,
+  mockUseAccounts,
+  mockUseActiveAccount,
+  mockUseApi,
+  mockUseAssets,
+  mockUseBalances,
+  mockWeb3Enable
+} from './mocks'
 
 jest.mock('use-substrate', () => ({
   useAccounts: () => mockUseAccounts,
   useApi: () => mockUseApi,
   useAssets: () => mockUseAssets,
   useBalances: () => mockUseBalances,
-  Chains: () => mockChains
+  Chains: () => mockChains,
+  useActiveAccount: () => mockUseActiveAccount
 }))
 
 describe('Connect wallet modal', () => {

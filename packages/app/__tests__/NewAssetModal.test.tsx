@@ -13,9 +13,8 @@ import {
   fillInput,
   findAndClickButton,
   renderWithTheme,
-  setLocalStorage
 } from './helpers'
-import { bobAccount, mockChains, mockUseApi, mockUseAssets, mockUseAssetsConstants } from './mocks'
+import { mockChains, mockUseActiveAccount, mockUseApi, mockUseAssets, mockUseAssetsConstants } from './mocks'
 
 function TestComponent(): JSX.Element {
   const [isOpen, toggleOpen] = useToggle()
@@ -56,20 +55,13 @@ jest.mock('use-substrate', () => ({
   useAssets: () => mockUseAssets,
   useAssetsConstants: () => mockUseAssetsConstants,
   useTransaction: () => mockUseTransaction,
-  Chains: () => mockChains
+  Chains: () => mockChains,
+  useActiveAccount: () => mockUseActiveAccount
 }))
 
 const mockedStringLimit = mockUseAssetsConstants.stringLimit.toNumber()
 
 describe('New asset modal', () => {
-  beforeEach(function () {
-    setLocalStorage('activeAccount', bobAccount.address)
-  })
-
-  afterEach(function () {
-    localStorage.clear()
-  })
-
   it('saves data in context', async () => {
     renderModal()
 

@@ -11,11 +11,12 @@ import { createType } from 'test-helpers'
 
 import { ApiContext } from '../../src'
 import { ALICE, BOB } from '../consts/addresses'
-import { createAssetStorageKey } from '../utils/createAssetStorageKey'
+import { createAssetStorageKey } from '../utils'
 
 export const mockedKusamaApi: UseApi = {
   isConnected: true,
   api: {
+    createType: createType,
     consts: {
       assets: {
         stringLimit: createType('u32', new BN(50))
