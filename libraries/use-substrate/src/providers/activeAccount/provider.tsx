@@ -5,7 +5,7 @@ import type { UseApi } from '../api'
 
 import React, { useContext, useEffect, useState } from 'react'
 
-import { isString } from '../../util'
+import { isString, localStorageExists } from '../../util/checks'
 import { ApiContext } from '../api'
 import { ActiveAccountContext } from './context'
 
@@ -26,12 +26,16 @@ export const ActiveAccountProvider: FC = ({ children }) => {
   const [activeAccount, setActiveAccount] = useState<AccountId>()
 
   useEffect(() => {
-    const initValue = localStorage.getItem('activeAccount')
-    setActiveAccount(initValue ? api?.api?.createType('AccountId', initValue) : undefined)
+    if (localStorageExists()) {
+      const initValue = localStorage.getItem('activeAccount')
+      setActiveAccount(initValue ? api?.api?.createType('AccountId', initValue) : undefined)
+    }
   }, [api])
 
   const _setActiveAccount = (accountId: AccountId | string): void => {
-    localStorage.setItem('activeAccount', isString(accountId) ? accountId : accountId.toHuman())
+    if (localStorageExists()) {
+      localStorage.setItem('activeAccount', isString(accountId) ? accountId : accountId.toHuman())
+    }
     setActiveAccount(isString(accountId) ? api?.api?.createType('AccountId', accountId) : accountId)
   }
 
