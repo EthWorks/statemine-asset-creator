@@ -2,15 +2,21 @@ import { act, fireEvent, screen, within } from '@testing-library/react'
 import React from 'react'
 
 import Home from '../pages'
-import { assertLocalStorage, assertNoText, renderWithTheme, selectAccountFromDropdown, setLocalStorage } from './helpers'
+import { assertNoText, renderWithTheme, selectAccountFromDropdown, setLocalStorage } from './helpers'
 import { bobAccount, mockChains, mockUseAccounts, mockUseApi, mockUseAssets, mockUseBalances } from './mocks'
+
+const mockedSetter = jest.fn()
 
 jest.mock('use-substrate', () => ({
   useApi: () => mockUseApi,
   useAccounts: () => mockUseAccounts,
   useAssets: () => mockUseAssets,
   useBalances: () => mockUseBalances,
-  Chains: () => mockChains
+  Chains: () => mockChains,
+  useActiveAccount: () => ({
+    activeAccount: undefined,
+    setActiveAccount: mockedSetter
+  })
 }))
 
 describe('Account select modal', () => {
@@ -21,9 +27,7 @@ describe('Account select modal', () => {
     })
   })
 
-  it('saves selected account to localstorage and closes modal', async () => {
-    assertLocalStorage('activeAccount', null)
-
+  it('saves selected account with useActiveAccount hook and closes modal', async () => {
     renderWithTheme(<Home />)
     await selectAccountFromDropdown(1)
 
@@ -31,7 +35,7 @@ describe('Account select modal', () => {
     const connectButton = await within(connectModal).findByRole('button', { name: 'Connect' })
     fireEvent.click(connectButton)
 
-    assertLocalStorage('activeAccount', bobAccount.address)
+    expect(mockedSetter).toBeCalledWith(bobAccount.address)
     assertNoText('Connect accounts')
   })
 })

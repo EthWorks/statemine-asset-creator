@@ -1,24 +1,33 @@
 import type { NextPage } from 'next'
 
 import Head from 'next/head'
-import { useState } from 'react'
 import styled from 'styled-components'
 
-import { Chains, useAccounts, useBalances } from 'use-substrate'
+import { Chains, useAccounts, useActiveAccount, useBalances } from 'use-substrate'
 
 import background from '../assets/background.svg'
-import { AccountSelectModal, ButtonPrimary, Card, ConnectWalletModal, CreatedAssets, NewAssetModal, PageBox, PageTemplate, Text } from '../components'
+import {
+  AccountSelectModal,
+  ButtonPrimary,
+  Card,
+  ConnectWalletModal,
+  CreatedAssets,
+  NewAssetModal,
+  PageBox,
+  PageTemplate,
+  Text
+} from '../components'
 import styles from '../styles/Home.module.css'
 import { extensionActivated, shouldSelectAccount, useAsync, useToggle } from '../utils'
 
-const Home: NextPage = () => {
-  const [account] = useState<string | null>(localStorage.getItem('activeAccount'))
+const Home: NextPage =  () => {
+  const { activeAccount: account } = useActiveAccount()
   const [isNewAssetModalOpen, toggleNewAssetModalOpen] = useToggle()
   const [isConnectWalletModalOpen, toggleConnectWalletModalOpen, setConnectWalletModalOpen] = useToggle(!extensionActivated())
   const [isAccountSelectModalOpen, toggleSelectAccountModalOpen, setSelectAccountModalOpen] = useToggle(shouldSelectAccount())
 
-  const balances = useBalances(account, Chains.Kusama)
-  const statemineBalances = useBalances(account, Chains.Statemine)
+  const balances = useBalances(account?.toString(), Chains.Kusama)
+  const statemineBalances = useBalances(account?.toString(), Chains.Statemine)
   const { web3Enable } = useAccounts()
 
   const onExtensionActivated = (): void => {
@@ -27,7 +36,7 @@ const Home: NextPage = () => {
   }
 
   async function enableWeb3(): Promise<boolean | void> {
-    if (extensionActivated()) {
+    if(extensionActivated()) {
       await web3Enable()
     }
   }
@@ -74,7 +83,7 @@ const Home: NextPage = () => {
         <AccountSelectModal isOpen={isAccountSelectModalOpen} closeModal={toggleSelectAccountModalOpen}/>
         <div data-testid='active-account-container'>
           <p>
-            {account}
+            {account?.toString()}
           </p>
           <p className={styles.description}>
             Balance: {balances?.freeBalance.toString()}

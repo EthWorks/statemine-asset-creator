@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react'
+import { screen, within } from '@testing-library/react'
 
 export function assertLocalStorage(key: string, value: unknown) {
   expect(localStorage.getItem(key)).toEqual(value)
@@ -19,7 +19,7 @@ export async function assertText(text: string) {
 }
 
 export function assertTextInput(inputName:string, text: string) {
-  const input  = screen.getByLabelText(inputName)
+  const input = screen.getByLabelText(inputName)
 
   expect(input).toHaveTextContent(text)
 }
@@ -34,5 +34,19 @@ export function assertNoText(text: string) {
 
 export async function assertLinkByText(text: string, url: string) {
   const link = await screen.findByText(text)
+
   expect(link.getAttribute('href')).toEqual(url)
+}
+
+export async function assertInputError(inputName: string, errorText: string) {
+  const customInputComponent = screen.getByTestId(inputName)
+  const inputError = await within(customInputComponent).findByTestId('input-error')
+
+  expect(inputError).toHaveTextContent(errorText)
+}
+
+export function assertNoInputError(inputName: string) {
+  const customInputComponent = screen.getByTestId(inputName)
+
+  expect(within(customInputComponent).queryByTestId('input-error')).not.toBeInTheDocument()
 }

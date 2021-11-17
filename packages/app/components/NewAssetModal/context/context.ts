@@ -1,23 +1,38 @@
+import BN from 'bn.js'
 import { createContext } from 'react'
+
+type stringSetter = (arg: string) => void;
+type stringOrUndefinedSetter = (arg: string | undefined) => void;
+const noop = (): void => {/**/}
 
 export interface NewAssetForm {
   assetName: string,
-  setAssetName: (arg: string) => void,
+  setAssetName: stringSetter,
+  assetNameError?: string,
+  setAssetNameError: stringOrUndefinedSetter,
   assetId: string,
-  setAssetId: (arg: string) => void,
+  setAssetId: stringSetter,
   assetDecimals: string,
-  setAssetDecimals: (arg: string) => void,
+  setAssetDecimals: stringSetter,
   assetSymbol: string,
-  setAssetSymbol: (arg: string) => void,
+  setAssetSymbol: stringSetter,
+  assetSymbolError?: string,
+  setAssetSymbolError: stringOrUndefinedSetter,
+  stringLimit: BN | undefined,
 }
 
 export const NewAssetModalContext = createContext<NewAssetForm>({
   assetName: '',
-  setAssetName: () => {/**/},
+  setAssetName: noop,
+  assetNameError: undefined,
+  setAssetNameError: noop,
   assetId: '',
-  setAssetId: () => {/**/},
+  setAssetId: noop,
   assetDecimals: '',
-  setAssetDecimals: () => {/**/},
+  setAssetDecimals: noop,
   assetSymbol: '',
-  setAssetSymbol: () => {/**/},
+  setAssetSymbol: noop,
+  assetSymbolError: undefined,
+  setAssetSymbolError: noop,
+  stringLimit: undefined
 })
