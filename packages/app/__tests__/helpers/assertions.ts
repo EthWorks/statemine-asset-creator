@@ -50,3 +50,13 @@ export function assertNoInputError(inputName: string) {
 
   expect(within(customInputComponent).queryByTestId('input-error')).not.toBeInTheDocument()
 }
+
+export function assertButtonNotDisabled(name: string) {
+  const button = screen.getByRole('button', { name })
+  expect(button).not.toBeDisabled()
+}
+
+export function assertButtonDisabled(name: string) {
+  const button = screen.getByRole('button', { name })
+  expect(button).toBeDisabled()
+}

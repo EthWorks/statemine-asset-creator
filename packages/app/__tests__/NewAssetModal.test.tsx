@@ -4,9 +4,10 @@ import React from 'react'
 import { NewAssetModal } from '../components'
 import { useToggle } from '../utils'
 import {
+  assertButtonDisabled,
+  assertButtonNotDisabled,
   assertInputError,
   assertNoInputError,
-  assertNoText,
   assertText,
   assertTextInput,
   clickButton,
@@ -102,27 +103,38 @@ describe('New asset modal', () => {
       renderModal()
       clickButton('Create new asset')
       fillFirstStep()
+      assertButtonNotDisabled('Next')
     })
+    
+    describe('Disables Next button when input is empty', () => {
+      ;['Asset name', 'Asset symbol', 'Asset ID', 'Asset decimals'].forEach(inputName => {
+        it(`for ${inputName}`, async () => {
+          fillInput(inputName, '')
 
+          assertButtonDisabled('Next')
+        })
+      })
+    })
+    
     ;['Asset name', 'Asset symbol'].forEach(inputName => {
       describe(inputName, () => {
         it('does not allow to exceed StringLimit', async () => {
           fillInput(inputName, 'a'.repeat(mockedStringLimit + 1))
           await assertInputError(inputName, `Maximum length of ${mockedStringLimit} characters exceeded`)
 
-          clickButton('Next')
-          assertNoText('Confirm')
+          assertButtonDisabled('Next')
         })
 
         it('does not display error when asset name length decreased', async () => {
           fillInput(inputName, 'a'.repeat(mockedStringLimit + 1))
           await assertInputError(inputName, `Maximum length of ${mockedStringLimit} characters exceeded`)
 
+          assertButtonDisabled('Next')
+
           fillInput(inputName, 'a'.repeat(mockedStringLimit))
           await assertNoInputError(inputName)
 
-          clickButton('Next')
-          await assertText('Confirm')
+          assertButtonNotDisabled('Next')
         })
       })
     })
@@ -132,24 +144,28 @@ describe('New asset modal', () => {
         fillInput('Asset ID', 'invalid')
 
         await assertInputError('Asset ID', 'Value must be a positive number')
+        assertButtonDisabled('Next')
       })
 
       it('allows numeric inputs', async () => {
         fillInput('Asset ID', 100)
 
         assertNoInputError('Asset ID')
+        assertButtonNotDisabled('Next')
       })
 
       it('allows only positive numbers', async () => {
         fillInput('Asset ID', -1)
 
         await assertInputError('Asset ID', 'Value must be a positive number')
+        assertButtonDisabled('Next')
       })
 
       it('accepts only unique id values', async () => {
         fillInput('Asset ID', mockUseAssets[0].id)
 
         await assertInputError('Asset ID', 'Value cannot match an already-existing asset id.')
+        assertButtonDisabled('Next')
       })
     })
   })
