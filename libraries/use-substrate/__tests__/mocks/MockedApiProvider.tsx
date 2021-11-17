@@ -16,6 +16,11 @@ import { createAssetStorageKey } from '../utils'
 export const mockedKusamaApi: UseApi = {
   isConnected: true,
   api: {
+    consts: {
+      assets: {
+        stringLimit: createType('u32', new BN(50))
+      }
+    },
     createType: createType,
     derive: {
       balances: {

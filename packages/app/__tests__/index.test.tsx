@@ -12,6 +12,7 @@ import {
   mockUseActiveAccount,
   mockUseApi,
   mockUseAssets,
+  mockUseAssetsConstants,
   mockUseBalances,
   mockWeb3Enable
 } from './mocks'
@@ -20,6 +21,7 @@ jest.mock('use-substrate', () => ({
   useAccounts: () => mockUseAccounts,
   useApi: () => mockUseApi,
   useAssets: () => mockUseAssets,
+  useAssetsConstants: () => mockUseAssetsConstants,
   useBalances: () => mockUseBalances,
   Chains: () => mockChains,
   useActiveAccount: () => mockUseActiveAccount

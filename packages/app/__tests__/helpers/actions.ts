@@ -8,6 +8,12 @@ export function clickButton(name: string) {
   fireEvent.click(button)
 }
 
+export async function findAndClickButton(name: string) {
+  const button = await screen.findByRole('button', { name })
+
+  fireEvent.click(button)
+}
+
 export function setLocalStorage(key: string, value: string) {
   localStorage.setItem(key, value)
 }

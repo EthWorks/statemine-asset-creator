@@ -12,7 +12,7 @@ interface InputHintProps {
 export const InputHint = ({ error, hint }: InputHintProps): JSX.Element => (
   <InputHintWrapper>
     {error && (
-      <HintError>
+      <HintError data-testid='input-error'>
         <AlertIcon width='12px' height='11px' />
         <Text size="XXS" color="red">{error}</Text>
       </HintError>

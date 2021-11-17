@@ -14,7 +14,7 @@ type CustomInputTextProps = CustomInputProps<string>
 
 export function CustomInput({ label, id, onChange, hint, error, ...args }: CustomInputTextProps): React.ReactElement<CustomInputTextProps> {
   return (
-    <CustomInputWrapper>
+    <CustomInputWrapper data-testid={label}>
       <InputLabel htmlFor={id}>{label}</InputLabel>
       <Input
         id={id}
