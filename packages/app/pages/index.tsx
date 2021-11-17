@@ -14,8 +14,8 @@ const Home: NextPage =  () => {
   const [isConnectWalletModalOpen, toggleConnectWalletModalOpen, setConnectWalletModalOpen] = useToggle(!extensionActivated())
   const [isAccountSelectModalOpen, toggleSelectAccountModalOpen, setSelectAccountModalOpen] = useToggle(shouldSelectAccount())
 
-  const balances = useBalances(account?.toString() ?? null, Chains.Kusama)
-  const statemineBalances = useBalances(account?.toString() ?? null, Chains.Statemine)
+  const balances = useBalances(account?.toString(), Chains.Kusama)
+  const statemineBalances = useBalances(account?.toString(), Chains.Statemine)
   const { web3Enable } = useAccounts()
 
   const onExtensionActivated = (): void => {

@@ -21,11 +21,11 @@ describe('useBalances hook', () => {
   })
 
   it('return undefined for null address', async () => {
-    const { result } = renderResult( null, Chains.Kusama)
+    const { result } = renderResult( undefined, Chains.Kusama)
     expect(result.current).toEqual(undefined)
   })
 
-  const renderResult = (address: string | null, chain: Chains) => {
+  const renderResult = (address: string | undefined, chain: Chains) => {
     const wrapper = ({ children }: { children: ReactNode }) => (
       <MockedApiProvider>
         {children}
