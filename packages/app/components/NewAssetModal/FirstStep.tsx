@@ -47,7 +47,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
       setAssetIdError('Value must be a positive number')
     }
     
-    if(assetId && !isAssetIdUnique()) {
+    if(assetId && isValidInteger() && !isAssetIdUnique()) {
       setAssetIdError('Value cannot match an already-existing asset id.')
     }
   }, [assetId, assetName, assetSymbol, clearErrors, setAssetNameError, setAssetSymbolError, setAssetIdError, stringLimit, isValidInteger, isAssetIdUnique])
