@@ -12,7 +12,7 @@ import { useNewAssetModal } from './context/useNewAssetModal'
 export function FirstStep({ onNext }: ModalStep): JSX.Element {
   const { assetName, setAssetName, assetNameError, setAssetNameError, assetId, assetIdError, setAssetIdError, assetSymbol, assetSymbolError, setAssetSymbolError, setAssetId, setAssetSymbol, setAssetDecimals, assetDecimals, stringLimit } = useNewAssetModal()
   const existingAssets = useAssets(Chains.Statemine)
-    
+
   const clearErrors = useCallback(() => {
     setAssetNameError(undefined)
     setAssetSymbolError(undefined)
@@ -24,13 +24,13 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
   const isDisabled = !isFilled || !isValid
 
   const isValidInteger = useCallback(() => {
-    const integer = parseInt(assetId)
+    const integer = +assetId
 
     return !!(integer && integer > 0)
   }, [assetId])
-    
+
   const isAssetIdUnique = useCallback(() => !existingAssets?.find(({ id }: Asset) => id.toString() === assetId), [existingAssets, assetId])
-    
+
   useEffect(() => {
     if(!stringLimit) {
       return
@@ -51,8 +51,8 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
     if(assetId && !isValidInteger()) {
       setAssetIdError('Value must be a positive number')
     }
-    
-    if(assetId && !isAssetIdUnique()) {
+
+    if(assetId && isValidInteger() && !isAssetIdUnique()) {
       setAssetIdError('Value cannot match an already-existing asset id.')
     }
   }, [assetId, assetName, assetSymbol, clearErrors, setAssetNameError, setAssetSymbolError, setAssetIdError, stringLimit, isValidInteger, isAssetIdUnique])

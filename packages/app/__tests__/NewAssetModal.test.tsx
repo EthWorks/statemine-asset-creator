@@ -147,13 +147,6 @@ describe('New asset modal', () => {
         assertButtonDisabled('Next')
       })
 
-      it('allows numeric inputs', async () => {
-        fillInput('Asset ID', 100)
-
-        assertNoInputError('Asset ID')
-        assertButtonNotDisabled('Next')
-      })
-
       it('allows only positive numbers', async () => {
         fillInput('Asset ID', -1)
 
