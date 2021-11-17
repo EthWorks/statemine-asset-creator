@@ -2,7 +2,7 @@ import { Story } from '@storybook/react'
 
 import { StyledCard } from '../../pages'
 import { Text } from '../typography'
-import PageBox, { PageBoxContent,PageBoxProps, PageBoxWrapper, StyledText } from './PageBox'
+import { PageBox, PageBoxContent,PageBoxProps, PageBoxWrapper, StyledText } from './index'
 
 const Default = {
   title: 'Components/PageBox',

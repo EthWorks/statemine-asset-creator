@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import Image from 'next/image'
 import { ReactNode } from 'react'
 import styled from 'styled-components'
@@ -6,24 +5,18 @@ import styled from 'styled-components'
 import { Text } from '../typography'
 
 export interface PageTemplateProps {
-  background?: string,
+  background: string,
   children: ReactNode,
   header?: ReactNode,
   title?: string
 }
 
-const PageTemplate = ({ background, children, header, title }: PageTemplateProps): JSX.Element => (
+export const PageTemplate = ({ background, children, header, title }: PageTemplateProps): JSX.Element => (
   <>
-    <Head>
-      <title>Statemine Asset Creator</title>
-      <meta name="description" content="Application for managing assets on Statemine"/>
-    </Head>
     <PageWrapper>
-      {background &&
-        <PageBg>
-          <Image src={background} />
-        </PageBg>
-      }
+      <PageBg>
+        <Image src={background} />
+      </PageBg>
       {header && <MainHeader>{header}</MainHeader>}
       <PgeTitleWrapper>
         <Text size='2XL' color='white' bold>{title}</Text>
@@ -33,9 +26,7 @@ const PageTemplate = ({ background, children, header, title }: PageTemplateProps
   </>
 )
 
-export default PageTemplate
-
-export const PageWrapper = styled.div`
+export const PageWrapper = styled.main`
   position: relative;
   min-height: 100vh;
 `

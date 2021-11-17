@@ -9,7 +9,7 @@ export interface PageBoxProps {
   title?: string
 }
 
-const PageBox = ({ children, size, title }:PageBoxProps): JSX.Element => (
+export const PageBox = ({ children, size, title }:PageBoxProps): JSX.Element => (
   <PageBoxWrapper>
     <StyledText size="SM" color="white">{title}</StyledText>
     <PageBoxContent size={size}>
@@ -17,8 +17,6 @@ const PageBox = ({ children, size, title }:PageBoxProps): JSX.Element => (
     </PageBoxContent>
   </PageBoxWrapper>
 )
-
-export default PageBox
 
 export const PageBoxWrapper = styled.div`
   margin-bottom: 36px;

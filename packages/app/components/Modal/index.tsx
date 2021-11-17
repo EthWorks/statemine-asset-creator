@@ -3,7 +3,7 @@ import type { PaddingSize } from '../../globalTypes'
 import React, { ReactNode } from 'react'
 import styled from 'styled-components'
 
-import Card from '../Card/Card'
+import { Card } from '../Card'
 import { ModalHeader } from './ModalHeader'
 
 export type ModalSize = 'm' | 'l'
