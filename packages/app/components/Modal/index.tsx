@@ -30,7 +30,7 @@ export const Modal = ({ children, className, padding, size, title, titleCenterPo
   if (!isOpen) return null
 
   return (
-    <ModalView>
+    <ModalView data-testid='modal'>
       <ModalBg onClick={_onClose}/>
       <HeaderOverModal>{headerOverModal}</HeaderOverModal>
       <ModalCard className={className} size={size} padding={padding}>

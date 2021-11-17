@@ -6,7 +6,7 @@ export interface CardProps {
   padding?: PaddingSize
 }
 
-export  const Card = styled.div<CardProps>`
+export const Card = styled.div<CardProps>`
   border-radius: ${({ theme }) => theme.borderRadius.m};
   background-color: ${({ theme }) => theme.colors.black};
   padding: ${({ padding }) => padding ? paddingSizes[padding] : '0px'};
