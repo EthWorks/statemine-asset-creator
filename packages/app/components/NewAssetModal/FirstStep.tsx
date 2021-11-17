@@ -1,18 +1,31 @@
+import type { Asset } from 'use-substrate'
 import type { ModalStep } from './types'
 
 import { useCallback, useEffect } from 'react'
+
+import { Chains, useAssets } from 'use-substrate'
 
 import { CustomInput } from '../FormElements'
 import { useNewAssetModal } from './context/useNewAssetModal'
 
 export function FirstStep({ onNext }: ModalStep): JSX.Element {
-  const { assetName, setAssetName, assetNameError, setAssetNameError, assetId, assetSymbol, assetSymbolError, setAssetSymbolError, setAssetId, setAssetSymbol, setAssetDecimals, assetDecimals, stringLimit } = useNewAssetModal()
-
+  const { assetName, setAssetName, assetNameError, setAssetNameError, assetId, assetIdError, setAssetIdError, assetSymbol, assetSymbolError, setAssetSymbolError, setAssetId, setAssetSymbol, setAssetDecimals, assetDecimals, stringLimit } = useNewAssetModal()
+  const existingAssets = useAssets(Chains.Statemine)
+    
   const clearErrors = useCallback(() => {
     setAssetNameError(undefined)
     setAssetSymbolError(undefined)
-  }, [setAssetNameError, setAssetSymbolError])
+    setAssetIdError(undefined)
+  }, [setAssetNameError, setAssetSymbolError, setAssetIdError])
 
+  const isValidInteger = useCallback(() => {
+    const integer = +assetId
+
+    return !!(integer && integer > 0)
+  }, [assetId])
+    
+  const isAssetIdUnique = useCallback(() => !existingAssets?.find(({ id }: Asset) => id.toString() === assetId), [existingAssets, assetId])
+    
   useEffect(() => {
     if(!stringLimit) {
       return
@@ -29,7 +42,15 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
     if(assetSymbol.length > stringLimit.toNumber()) {
       setAssetSymbolError(STRING_LIMIT_EXCEEDED_ERROR)
     }
-  }, [assetName, assetSymbol, clearErrors, setAssetNameError, setAssetSymbolError, stringLimit])
+
+    if(assetId && !isValidInteger()) {
+      setAssetIdError('Value must be a positive number')
+    }
+    
+    if(assetId && isValidInteger() && !isAssetIdUnique()) {
+      setAssetIdError('Value cannot match an already-existing asset id.')
+    }
+  }, [assetId, assetName, assetSymbol, clearErrors, setAssetNameError, setAssetSymbolError, setAssetIdError, stringLimit, isValidInteger, isAssetIdUnique])
 
   const _onNext = useCallback(() => {
     if(stringLimit && !assetNameError && !assetSymbolError) {
@@ -60,6 +81,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
         id="asset-decimals"
       />
       <CustomInput
+        error={assetIdError}
         value={assetId}
         onChange={setAssetId}
         label="Asset ID"

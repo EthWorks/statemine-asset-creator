@@ -14,7 +14,7 @@ import {
   findAndClickButton,
   renderWithTheme,
 } from './helpers'
-import { mockChains, mockUseActiveAccount, mockUseApi, mockUseAssetsConstants } from './mocks'
+import { mockChains, mockUseActiveAccount, mockUseApi, mockUseAssets, mockUseAssetsConstants } from './mocks'
 
 function TestComponent(): JSX.Element {
   const [isOpen, toggleOpen] = useToggle()
@@ -52,6 +52,7 @@ const mockUseTransaction = { tx: mockTransaction, paymentInfo: {} }
 
 jest.mock('use-substrate', () => ({
   useApi: () => mockUseApi,
+  useAssets: () => mockUseAssets,
   useAssetsConstants: () => mockUseAssetsConstants,
   useTransaction: () => mockUseTransaction,
   Chains: () => mockChains,
@@ -96,7 +97,7 @@ describe('New asset modal', () => {
     await waitFor(() => expect(mockTransaction).toBeCalled())
   })
 
-  describe('validates asset name and asset symbol length', () => {
+  describe('validates inputs', () => {
     beforeEach(() => {
       renderModal()
       clickButton('Create new asset')
@@ -104,23 +105,45 @@ describe('New asset modal', () => {
     })
 
     ;['Asset name', 'Asset symbol'].forEach(inputName => {
-      it('does not allow to exceed StringLimit', async () => {
-        fillInput(inputName, 'a'.repeat(mockedStringLimit + 1))
-        await assertInputError(inputName, `Maximum length of ${mockedStringLimit} characters exceeded`)
+      describe(inputName, () => {
+        it('does not allow to exceed StringLimit', async () => {
+          fillInput(inputName, 'a'.repeat(mockedStringLimit + 1))
+          await assertInputError(inputName, `Maximum length of ${mockedStringLimit} characters exceeded`)
 
-        clickButton('Next')
-        assertNoText('Confirm')
+          clickButton('Next')
+          assertNoText('Confirm')
+        })
+
+        it('does not display error when asset name length decreased', async () => {
+          fillInput(inputName, 'a'.repeat(mockedStringLimit + 1))
+          await assertInputError(inputName, `Maximum length of ${mockedStringLimit} characters exceeded`)
+
+          fillInput(inputName, 'a'.repeat(mockedStringLimit))
+          await assertNoInputError(inputName)
+
+          clickButton('Next')
+          await assertText('Confirm')
+        })
+      })
+    })
+
+    describe('Asset id', () => {
+      it('does not allow non numeric values', async () => {
+        fillInput('Asset ID', '12345invalid')
+
+        await assertInputError('Asset ID', 'Value must be a positive number')
       })
 
-      it('does not display error when asset name length decreased', async () => {
-        fillInput(inputName, 'a'.repeat(mockedStringLimit + 1))
-        await assertInputError(inputName, `Maximum length of ${mockedStringLimit} characters exceeded`)
+      it('allows only positive numbers', async () => {
+        fillInput('Asset ID', -1)
 
-        fillInput(inputName, 'a'.repeat(mockedStringLimit))
-        await assertNoInputError(inputName)
+        await assertInputError('Asset ID', 'Value must be a positive number')
+      })
 
-        clickButton('Next')
-        await assertText('Confirm')
+      it('accepts only unique id values', async () => {
+        fillInput('Asset ID', mockUseAssets[0].id)
+
+        await assertInputError('Asset ID', 'Value cannot match an already-existing asset id.')
       })
     })
   })

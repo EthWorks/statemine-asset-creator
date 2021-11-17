@@ -52,8 +52,7 @@ function convertAssets(assets: FetchedAssets): AssetInfoWithId[] {
       sufficients: sufficients.toBn(),
       approvals: approvals.toBn(),
     }
-  }
-  )
+  })
 }
 
 function extractAssetId (key: StorageKey<[AssetId]>): AssetId {
