@@ -1,34 +1,19 @@
 import type { FC } from 'react'
 import type { AccountId } from '@polkadot/types/interfaces'
-import type { Chains } from '../../consts'
-import type { UseApi } from '../api'
+import type { ActiveAccountProviderProps } from './types'
 
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { isString, localStorageExists } from '../../util/checks'
-import { ApiContext } from '../api'
 import { ActiveAccountContext } from './context'
 
-function useAnyApi(): UseApi | undefined {
-  const [api, setApi] = useState<UseApi>()
-  const apis = useContext(ApiContext)
-
-  useEffect(() => {
-    const key = Object.keys(apis)[0]
-    setApi(apis[key as Chains])
-  }, [apis])
-
-  return api
-}
-
-export const ActiveAccountProvider: FC = ({ children }) => {
-  const api = useAnyApi()
+export const ActiveAccountProvider: FC<ActiveAccountProviderProps> = ({ children, api }) => {
   const [activeAccount, setActiveAccount] = useState<AccountId>()
 
   useEffect(() => {
     if (localStorageExists()) {
       const initValue = localStorage.getItem('activeAccount')
-      setActiveAccount(initValue ? api?.api?.createType('AccountId', initValue) : undefined)
+      setActiveAccount(initValue ? api?.createType('AccountId', initValue) : undefined)
     }
   }, [api])
 
@@ -36,7 +21,7 @@ export const ActiveAccountProvider: FC = ({ children }) => {
     if (localStorageExists()) {
       localStorage.setItem('activeAccount', isString(accountId) ? accountId : accountId.toHuman())
     }
-    setActiveAccount(isString(accountId) ? api?.api?.createType('AccountId', accountId) : accountId)
+    setActiveAccount(isString(accountId) ? api?.createType('AccountId', accountId) : accountId)
   }
 
   return (

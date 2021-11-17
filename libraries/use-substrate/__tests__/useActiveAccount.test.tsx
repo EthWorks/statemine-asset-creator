@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
 
-import { ActiveAccountProvider, ApiContext, useActiveAccount } from '../src'
+import { ActiveAccountProvider, useActiveAccount } from '../src'
 import { BOB, BOB_ID } from './consts/addresses'
 import { mockedKusamaApi } from './mocks/MockedApiProvider'
 
@@ -92,11 +92,9 @@ describe('useActiveAccount', () => {
   
   const renderActiveAccount = () => {
     const wrapper = ({ children }: { children: ReactNode }) => (
-      <ApiContext.Provider value={{ 'kusama':  mockedKusamaApi }}>
-        <ActiveAccountProvider>
-          {children}
-        </ActiveAccountProvider>
-      </ApiContext.Provider>
+      <ActiveAccountProvider api={mockedKusamaApi.api}>
+        {children}
+      </ActiveAccountProvider>
     )
 
     return renderHook(() => useActiveAccount(), { wrapper })
