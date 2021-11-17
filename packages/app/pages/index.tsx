@@ -54,7 +54,7 @@ const Home: NextPage =  () => {
         title="Dashboard"
         header={
           <div>
-            {!localStorage.getItem('activeAccount') && <ButtonPrimary onClick={toggleConnectWalletModalOpen}>Connect</ButtonPrimary>}
+            {!account && <ButtonPrimary onClick={toggleConnectWalletModalOpen}>Connect</ButtonPrimary>}
           </div>
         }
       >
@@ -64,8 +64,8 @@ const Home: NextPage =  () => {
             <Text size="SM">Here you can create fungible assets, which will be governed by you and accounts you
               designate.</Text>
             <div>
-              {localStorage.getItem('activeAccount') ?
-                <StyledButton onClick={toggleNewAssetModalOpen}>Create new asset</StyledButton>
+              {account 
+                ? <StyledButton onClick={toggleNewAssetModalOpen}>Create new asset</StyledButton>
                 : <StyledButton onClick={toggleConnectWalletModalOpen} large>Connect to create your asset</StyledButton>
               }
             </div>
