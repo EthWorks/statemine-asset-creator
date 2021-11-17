@@ -8,6 +8,7 @@ export const NewAssetModalProvider: React.FC = ({  children }) => {
   const [assetName, setAssetName] = useState<string>('')
   const [assetNameError, setAssetNameError] = useState<string>()
   const [assetId, setAssetId] = useState<string>('')
+  const [assetIdError, setAssetIdError] = useState<string>()
   const [assetDecimals, setAssetDecimals] = useState<string>('')
   const [assetSymbol, setAssetSymbol] = useState<string>('')
   const [assetSymbolError, setAssetSymbolError] = useState<string>()
@@ -19,6 +20,8 @@ export const NewAssetModalProvider: React.FC = ({  children }) => {
     assetNameError,
     setAssetNameError,
     assetId,
+    assetIdError,
+    setAssetIdError,
     setAssetId,
     assetDecimals,
     setAssetDecimals,
