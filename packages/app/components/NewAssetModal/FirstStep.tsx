@@ -19,7 +19,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
   }, [setAssetNameError, setAssetSymbolError, setAssetIdError])
 
   const isValidInteger = useCallback(() => {
-    const integer = parseInt(assetId)
+    const integer = +assetId
 
     return !!(integer && integer > 0)
   }, [assetId])
