@@ -8,9 +8,11 @@ jest.mock('../src/providers/api/useChainApi', () => ({
   useChainApi: () => (DEFAULT_API_STATE)
 }))
 
+const appName = 'test app'
+
 describe('Initialize api for chains', () => {
   it('one network', () => {
-    const config: Config = { chains: [{ name: Chains.Kusama, url: KUSAMA_ARCHIVE_NODE_URL }] }
+    const config: Config = { chains: [{ name: Chains.Kusama, url: KUSAMA_ARCHIVE_NODE_URL }], appName }
     const networkState = initializeApi(config.chains)
     expect(networkState).toEqual({
       'kusama': DEFAULT_API_STATE
@@ -18,10 +20,13 @@ describe('Initialize api for chains', () => {
   })
 
   it('multiple networks', () => {
-    const config: Config = { chains: [
-      { name: Chains.Kusama, url: KUSAMA_ARCHIVE_NODE_URL },
-      { name: Chains.Statemine, url: STATEMINE_ARCHIVE_NODE_URL }
-    ] }
+    const config: Config = { 
+      chains: [
+        { name: Chains.Kusama, url: KUSAMA_ARCHIVE_NODE_URL },
+        { name: Chains.Statemine, url: STATEMINE_ARCHIVE_NODE_URL }
+      ],
+      appName
+    }
 
     const networkState = initializeApi(config.chains)
     expect(networkState).toEqual({

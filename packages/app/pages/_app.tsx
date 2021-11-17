@@ -1,7 +1,7 @@
 import '../utils/patchDetectPackage'
 
 import type { AppProps } from 'next/app'
-import type { AccountsContextProviderProps, AppProviderProps, Config } from 'use-substrate'
+import type { AppProviderProps, Config } from 'use-substrate'
 
 import { IdProvider } from '@radix-ui/react-id'
 import dynamic from 'next/dynamic'
@@ -15,11 +15,6 @@ import { APPLICATION_NAME } from '../globalConstants'
 import GlobalStyle from '../styles/globalStyle'
 import { theme } from '../styles/styleVariables'
 
-const AccountsContextProvider = dynamic<AccountsContextProviderProps>(
-  () => import('use-substrate').then((module) => module.AccountsContextProvider),
-  { ssr: false }
-)
-
 const AppProvider = dynamic<AppProviderProps>(
   () => import('use-substrate').then((module) => module.AppProvider),
   { ssr: false }
@@ -29,19 +24,18 @@ const config: Config = {
   chains: [
     { name: Chains.Kusama, url: envConfig.kusamaUrl },
     { name: Chains.Statemine, url: envConfig.statemineUrl },
-  ]
+  ],
+  appName: APPLICATION_NAME
 }
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
     <IdProvider>
       <AppProvider config={config}>
-        <AccountsContextProvider appName={APPLICATION_NAME}>
-          <GlobalStyle />
-          <ThemeProvider theme={theme}>
-            <Component {...pageProps} />
-          </ThemeProvider>
-        </AccountsContextProvider>
+        <GlobalStyle />
+        <ThemeProvider theme={theme}>
+          <Component {...pageProps} />
+        </ThemeProvider>
       </AppProvider>
     </IdProvider>
   )

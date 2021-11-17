@@ -1,6 +1,8 @@
 import React from 'react'
 
-import { useConfig } from '../../hooks/useConfig'
+import { useApi, useConfig } from '../../hooks'
+import { AccountsContextProvider } from '../accounts'
+import { ActiveAccountProvider } from '../activeAccount'
 import { ApiContextProvider } from '../api'
 import { Config, ConfigProvider } from '../config'
 
@@ -21,7 +23,22 @@ const AppWithConfig: React.FC = ({ children }) => {
 
   return (
     <ApiContextProvider chains={chains}>
-      {children}
+      <AccountsProvider>
+        {children}
+      </AccountsProvider>
     </ApiContextProvider>
+  )
+}
+
+const AccountsProvider: React.FC = ({ children }) => {
+  const { chains, appName } = useConfig()
+  const { api } = useApi(chains[0].name)
+
+  return (
+    <AccountsContextProvider appName={appName}>
+      <ActiveAccountProvider api={api}>
+        {children}
+      </ActiveAccountProvider>
+    </AccountsContextProvider>
   )
 }
