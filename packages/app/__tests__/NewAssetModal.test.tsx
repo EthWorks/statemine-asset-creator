@@ -128,12 +128,6 @@ describe('New asset modal', () => {
     })
 
     describe('Asset id', () => {
-      it('allows only positive numbers', async () => {
-        fillInput('Asset ID', -1)
-
-        await assertInputError('Asset ID', 'Value must be a positive number')
-      })
-
       it('accepts only unique id values', async () => {
         fillInput('Asset ID', mockUseAssets[0].id)
 

@@ -18,12 +18,6 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
     setAssetIdError(undefined)
   }, [setAssetNameError, setAssetSymbolError, setAssetIdError])
 
-  const isValidInteger = useCallback(() => {
-    const integer = +assetId
-
-    return !!(integer && integer > 0)
-  }, [assetId])
-    
   const isAssetIdUnique = useCallback(() => !existingAssets?.find(({ id }: Asset) => id.toString() === assetId), [existingAssets, assetId])
     
   useEffect(() => {
@@ -43,14 +37,10 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
       setAssetSymbolError(STRING_LIMIT_EXCEEDED_ERROR)
     }
 
-    if(assetId && !isValidInteger()) {
-      setAssetIdError('Value must be a positive number')
-    }
-    
-    if(assetId && isValidInteger() && !isAssetIdUnique()) {
+    if(assetId && !isAssetIdUnique()) {
       setAssetIdError('Value cannot match an already-existing asset id.')
     }
-  }, [assetId, assetName, assetSymbol, clearErrors, setAssetNameError, setAssetSymbolError, setAssetIdError, stringLimit, isValidInteger, isAssetIdUnique])
+  }, [assetId, assetName, assetSymbol, clearErrors, setAssetNameError, setAssetSymbolError, setAssetIdError, stringLimit, isAssetIdUnique])
 
   const _onNext = useCallback(() => {
     if(stringLimit && !assetNameError && !assetSymbolError) {
@@ -66,6 +56,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
         onChange={setAssetName}
         label="Asset name"
         id="asset-name"
+        required
       />
       <TextInput
         error={assetSymbolError}
@@ -73,12 +64,16 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
         onChange={setAssetSymbol}
         label="Asset symbol"
         id="asset-symbol"
+        required
       />
       <NumericInput
         value={assetDecimals}
         onChange={setAssetDecimals}
         label="Asset decimals"
         id="asset-decimals"
+        nonNegative
+        nonDecimal
+        required
       />
       <NumericInput
         error={assetIdError}
@@ -86,6 +81,9 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
         onChange={setAssetId}
         label="Asset ID"
         id="asset-ID"
+        nonNegative
+        nonDecimal
+        required
       />
       <button onClick={_onNext}>Next</button>
     </>

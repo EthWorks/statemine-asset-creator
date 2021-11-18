@@ -2,11 +2,11 @@ import React from 'react'
 
 import { CustomInputProps, InputBase } from './InputBase'
 
-export interface TextInputProps extends Omit<CustomInputProps, 'onChange'> {
+interface TextInputProps extends Omit<CustomInputProps, 'onChange'> {
   onChange: (newValue: string) => void,
 }
 
-export function TextInput({ label, id, onChange, hint, error, ...args }: TextInputProps): React.ReactElement<TextInputProps> {
+export function TextInput({ label, id, onChange, hint, error, ...args }: TextInputProps):JSX.Element {
   return (
     <InputBase 
       type='text' 
