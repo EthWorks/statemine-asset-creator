@@ -31,7 +31,7 @@ const RANDOM_INPUT = '/--1&&11A,D.2.&^%22  ..2-'
 
 describe('NumericInput component', () => {
   describe('by default', () => {
-    it('input takes negative, decimal numbers', async () => {
+    it('takes negative, decimal numbers', async () => {
       renderWithTheme(<NumericInputTestComponent/>)
 
       fillInput('-111.2222')
