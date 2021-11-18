@@ -7,6 +7,7 @@ interface NumericInputProps extends Omit<CustomInputProps, 'onChange'> {
   nonDecimal?: boolean
   nonNegative?: boolean
 }
+
 const DEFAULT_PATTERN = /^-?[0-9]\d*\.?\d*$/
 const NON_DECIMAL_PATTERN = /^-?[1-9]\d*$/
 const NON_NEGATIVE_PATTERN = /^[0-9]\d*\.?\d*$/
@@ -31,7 +32,7 @@ function getPattern(nonDecimal: boolean, nonNegative: boolean): RegExp {
 export function NumericInput ({ id, label, onChange, hint, error, value, nonDecimal = false, nonNegative = false, ...args }: NumericInputProps): JSX.Element {
   const pattern =  useMemo(() => getPattern(nonDecimal, nonNegative), [nonNegative, nonDecimal])
 
-  const _updateNumber: React.ChangeEventHandler<HTMLInputElement> = (event): void => {
+  const _onChange: React.ChangeEventHandler<HTMLInputElement> = (event): void => {
     const val = event.target.value
     // If the current value passes the validity test then apply that to state
     if (event.target.value.match(pattern)) {
@@ -55,7 +56,7 @@ export function NumericInput ({ id, label, onChange, hint, error, value, nonDeci
       error={error}
       type='tel'
       value={value}
-      onChange={_updateNumber}
+      onChange={_onChange}
     />
   )
 }
