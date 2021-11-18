@@ -5,10 +5,10 @@ import { CustomInputProps, InputBase } from './InputBase'
 export type NumericInputType = 'DEFAULT' | 'INTEGER' | 'POSITIVE' | 'NATURAL'
 
 const patterns: Record<NumericInputType, RegExp> = {
-  DEFAULT: /^-?[0-9]\d*\.?\d*$/,
-  INTEGER: /^-?[1-9]\d*$/,
-  POSITIVE: /^[0-9]\d*\.?\d*$/,
-  NATURAL: /^[1-9]\d*$/
+  DEFAULT: /^-?0$|^-?[1-9]\d*$|^-?0\.\d*$|^-?[1-9]\d*\.\d*$/,
+  INTEGER: /^-?(0|[1-9]\d*)$/,
+  POSITIVE: /^0$|^[1-9]\d*$|^0\.\d*$|^[1-9]\d*\.\d*$/,
+  NATURAL: /^0$|^[1-9]\d*$/
 }
 
 interface NumericInputProps extends Omit<CustomInputProps, 'onChange'> {

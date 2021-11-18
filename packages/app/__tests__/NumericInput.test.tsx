@@ -32,87 +32,186 @@ const RANDOM_INPUT = '/--1&&11A,D.2.&^%22  ..2-'
 
 describe('NumericInput component', () => {
   describe('by default', () => {
-    it('takes negative, decimal numbers', async () => {
+    beforeEach(() => {
       renderWithTheme(<NumericInputTestComponent/>)
+    })
+        
+    ;['-', ''].forEach(sign => {
+      const signDescription = sign === '-' ? 'negative' : 'positive'
+      describe(`${signDescription}`, () => {
+        it('takes decimals', async () => {
+          fillInput(`${sign}111.2222`)
 
-      fillInput('-111.2222')
+          await expectValue(`Value: ${sign}111.2222`)
+        })
+
+        it('ignores letters', async () => {
+          fillInput(`${sign}1a11.a22a22`)
+
+          await expectValue(`Value: ${sign}111.2222`)
+        })
+
+        it('accepts only one dot in a fraction', async () => {
+          fillInput(`${sign}111.2.22..2`)
+
+          await expectValue(`Value: ${sign}111.2222`)
+        })
+
+        describe('handles values starting with zero', () => {
+          it('decimal', async () => {
+            fillInput(`${sign}000.12`)
+
+            await expectValue(`Value: ${sign}0.12`)
+          })
+
+          it('followed by non zero digits', async () => {
+            fillInput(`${sign}0123`)
+
+            await expectValue(`Value: ${sign}0`)
+          })
+
+          it('followed by multiple zeroes', async () => {
+            fillInput(`${sign}0000`)
+
+            await expectValue(`Value: ${sign}0`)
+          })
+        })
+      })
+    })
+    
+    it('random input test', async () => {
+      fillInput(RANDOM_INPUT)
 
       await expectValue('Value: -111.2222')
+    })
+  })
+
+  describe('integer', () => {
+    beforeEach(() => {
+      renderWithTheme(<NumericInputTestComponent inputType='INTEGER'/>)
+    })
+    
+    ;['-', ''].forEach(sign => {
+      const signDescription = sign === '-' ? 'negative' : 'positive'
+      
+      describe(`${signDescription}`, () => {
+        it('ignores fraction dots', async () => {
+          fillInput(`${sign}111.2.22..2`)
+
+          await expectValue(`Value: ${sign}1112222`)
+        })
+
+        it('ignores letters', async () => {
+          fillInput(`${sign}1a11.a22a22`)
+
+          await expectValue(`Value: ${sign}1112222`)
+        })
+
+        describe('handles values starting with zero', () => {
+          it('followed by non zero digits', async () => {
+            fillInput(`${sign}0123`)
+
+            await expectValue(`Value: ${sign}0`)
+          })
+
+          it('followed by multiple zeroes', async () => {
+            fillInput(`${sign}0000`)
+
+            await expectValue(`Value: ${sign}0`)
+          })
+        })
+      })
+    })
+
+    it('random input test', async () => {
+      fillInput(RANDOM_INPUT)
+
+      await expectValue('Value: -1112222')
+    })
+  })
+
+  describe('positive', () => {
+    beforeEach(() => {
+      renderWithTheme(<NumericInputTestComponent inputType='POSITIVE'/>)
+    })
+
+    it('ignores the "-" sign', async () => {
+      fillInput('-111.2222')
+
+      await expectValue('Value: 111.2222')
     })
 
     it('ignores letters', async () => {
-      renderWithTheme(<NumericInputTestComponent/>)
+      fillInput('1a11.a22a22')
 
-      fillInput('-1a11.a22a22')
-
-      await expectValue('Value: -111.2222')
+      await expectValue('Value: 111.2222')
     })
 
     it('accepts only one dot in a fraction', async () => {
-      renderWithTheme(<NumericInputTestComponent/>)
-
-      fillInput('-111.2.22..2')
-
-      await expectValue('Value: -111.2222')
-    })
-
-    it('random input test', async () => {
-      renderWithTheme(<NumericInputTestComponent/>)
-
-      fillInput(RANDOM_INPUT)
-
-      await expectValue('Value: -111.2222')
-    })
-  })
-
-  describe('non decimal', () => {
-    it('ignores fraction dots', async () => {
-      renderWithTheme(<NumericInputTestComponent inputType='INTEGER'/>)
-
-      fillInput('-111.2.22..2')
-
-      await expectValue('Value: -1112222')
-    })
-
-    it('random input test', async () => {
-      renderWithTheme(<NumericInputTestComponent inputType='INTEGER'/>)
-
-      fillInput(RANDOM_INPUT)
-
-      await expectValue('Value: -1112222')
-    })
-  })
-
-  describe('non negative', () => {
-    it('ignores the "-" sign', async () => {
-      renderWithTheme(<NumericInputTestComponent inputType='POSITIVE'/>)
-
-      fillInput('-111.2222')
+      fillInput('111.2.22..2')
 
       await expectValue('Value: 111.2222')
     })
 
-    it('random input test', async () => {
-      renderWithTheme(<NumericInputTestComponent inputType='POSITIVE'/>)
+    describe('handles values starting with zero', () => {
+      it('decimal', async () => {
+        fillInput('000.12')
 
+        await expectValue('Value: 0.12')
+      })
+
+      it('followed by non zero digits', async () => {
+        fillInput('0123')
+
+        await expectValue('Value: 0')
+      })
+
+      it('followed by multiple zeroes', async () => {
+        fillInput('0000')
+
+        await expectValue('Value: 0')
+      })
+    })
+
+    it('random input test', async () => {
       fillInput(RANDOM_INPUT)
 
       await expectValue('Value: 111.2222')
     })
   })
 
-  describe('non negative & non decimal', () => {
-    it('ignores the "-" sign and decimal dot', async () => {
+  describe('Natural', () => {
+    beforeEach(() => {
       renderWithTheme(<NumericInputTestComponent inputType='NATURAL'/>)
+    })
 
+    it('ignores the "-" sign and decimal dot', async () => {
       fillInput('-111.2222')
 
       await expectValue('Value: 1112222')
     })
 
-    it('random input test', async () => {
-      renderWithTheme(<NumericInputTestComponent inputType='NATURAL'/>)
+    it('ignores letters', async () => {
+      fillInput('1a11.a22a22')
 
+      await expectValue('Value: 1112222')
+    })
+
+    describe('handles values starting with zero', () => {
+      it('followed by non zero digits', async () => {
+        fillInput('0123')
+
+        await expectValue('Value: 0')
+      })
+
+      it('followed by multiple zeroes', async () => {
+        fillInput('0000')
+
+        await expectValue('Value: 0')
+      })
+    })
+
+    it('random input test', async () => {
       fillInput(RANDOM_INPUT)
 
       await expectValue('Value: 1112222')
