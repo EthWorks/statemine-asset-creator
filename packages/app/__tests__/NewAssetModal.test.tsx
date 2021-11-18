@@ -128,12 +128,6 @@ describe('New asset modal', () => {
     })
 
     describe('Asset id', () => {
-      it('does not allow non numeric values', async () => {
-        fillInput('Asset ID', '12345invalid')
-
-        await assertInputError('Asset ID', 'Value must be a positive number')
-      })
-
       it('allows only positive numbers', async () => {
         fillInput('Asset ID', -1)
 
