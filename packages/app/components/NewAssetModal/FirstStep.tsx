@@ -5,7 +5,7 @@ import { useCallback, useEffect } from 'react'
 
 import { Chains, useAssets } from 'use-substrate'
 
-import { TextInput } from '../FormElements'
+import { NumericInput, TextInput } from '../FormElements'
 import { useNewAssetModal } from './context/useNewAssetModal'
 
 export function FirstStep({ onNext }: ModalStep): JSX.Element {
@@ -74,13 +74,13 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
         label="Asset symbol"
         id="asset-symbol"
       />
-      <TextInput
+      <NumericInput
         value={assetDecimals}
         onChange={setAssetDecimals}
         label="Asset decimals"
         id="asset-decimals"
       />
-      <TextInput
+      <NumericInput
         error={assetIdError}
         value={assetId}
         onChange={setAssetId}
