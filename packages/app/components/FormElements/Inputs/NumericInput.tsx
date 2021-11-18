@@ -42,7 +42,7 @@ export function NumericInput ({ id, label, onChange, hint, error, value, nonDeci
     // then apply that value to state - we still have to validate this input before processing
     // it to some other component or data structure, but it frees up our input the way a user
     // would expect to interact with this component
-    else if (!nonNegative && (val === '' || val === '-')) {
+    else if ((!nonNegative && val === '-') || val === '') {
       onChange(val)
     }
   }
