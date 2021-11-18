@@ -11,6 +11,7 @@ export const NewAssetModalProvider: React.FC = ({  children }) => {
   const [assetIdError, setAssetIdError] = useState<string>()
   const [assetDecimals, setAssetDecimals] = useState<string>('')
   const [assetSymbol, setAssetSymbol] = useState<string>('')
+  const [minBalance, setMinBalance] = useState<string>('')
   const [assetSymbolError, setAssetSymbolError] = useState<string>()
   const { stringLimit } = useAssetsConstants(Chains.Statemine)
 
@@ -28,6 +29,8 @@ export const NewAssetModalProvider: React.FC = ({  children }) => {
     assetSymbol,
     setAssetSymbol,
     assetSymbolError,
+    minBalance,
+    setMinBalance,
     setAssetSymbolError,
     stringLimit
   }}>{children}</NewAssetModalContext.Provider>
