@@ -3,7 +3,7 @@ import type { PaddingSize } from '../../globalTypes'
 import React, { ReactNode } from 'react'
 import styled from 'styled-components'
 
-import Card from '../Card/Card'
+import { Card } from '../Card'
 import { ModalHeader } from './ModalHeader'
 
 export type ModalSize = 'm' | 'l'
@@ -30,7 +30,7 @@ export const Modal = ({ children, className, padding, size, title, titleCenterPo
   if (!isOpen) return null
 
   return (
-    <ModalView>
+    <ModalView data-testid='modal'>
       <ModalBg onClick={_onClose}/>
       <HeaderOverModal>{headerOverModal}</HeaderOverModal>
       <ModalCard className={className} size={size} padding={padding}>

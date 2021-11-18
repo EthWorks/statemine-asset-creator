@@ -1,10 +1,22 @@
 import type { NextPage } from 'next'
 
 import Head from 'next/head'
+import styled from 'styled-components'
 
 import { Chains, useAccounts, useActiveAccount, useBalances } from 'use-substrate'
 
-import { AccountSelectModal, ConnectWalletModal, CreatedAssets, NewAssetModal } from '../components'
+import background from '../assets/background.svg'
+import {
+  AccountSelectModal,
+  ButtonPrimary,
+  Card,
+  ConnectWalletModal,
+  CreatedAssets,
+  NewAssetModal,
+  PageBox,
+  PageTemplate,
+  Text
+} from '../components'
 import styles from '../styles/Home.module.css'
 import { extensionActivated, shouldSelectAccount, useAsync, useToggle } from '../utils'
 
@@ -32,20 +44,43 @@ const Home: NextPage =  () => {
   useAsync(enableWeb3, [web3Enable])
 
   return (
-    <div className={styles.container}>
+    <>
       <Head>
         <title>Statemine Asset Creator</title>
         <meta name="description" content="Application for managing assets on Statemine"/>
       </Head>
+      <PageTemplate
+        background={background}
+        title="Dashboard"
+        header={
+          <div>
+            {!account && <ButtonPrimary onClick={toggleConnectWalletModalOpen}>Connect</ButtonPrimary>}
+          </div>
+        }
+      >
+        <PageBox size='large' title='Created assets'>
+          <StyledCard padding='m'>
+            <StyledCardTitle size="SM" color="white">You haven’t created any assets yet.</StyledCardTitle>
+            <Text size="SM">Here you can create fungible assets, which will be governed by you and accounts you
+              designate.</Text>
+            <div>
+              {account 
+                ? <StyledButton onClick={toggleNewAssetModalOpen}>Create new asset</StyledButton>
+                : <StyledButton onClick={toggleConnectWalletModalOpen} large>Connect to create your asset</StyledButton>
+              }
+            </div>
+          </StyledCard>
+        </PageBox>
+        <PageBox size='large' title='In your wallet'>
+          <StyledCard padding='m'>
+            <StyledCardTitle size="SM" color="white">You don’t have any assets in your wallet</StyledCardTitle>
+            <Text size="SM">Balance of your Statemine Assets will show here</Text>
+          </StyledCard>
+        </PageBox>
 
-      <main className={styles.main}>
-        <ConnectWalletModal isOpen={isConnectWalletModalOpen} closeModal={toggleConnectWalletModalOpen}
-          onExtensionActivated={onExtensionActivated}/>
+        <NewAssetModal isOpen={isNewAssetModalOpen} closeModal={toggleNewAssetModalOpen}/>
+        <ConnectWalletModal isOpen={isConnectWalletModalOpen} closeModal={toggleConnectWalletModalOpen} onExtensionActivated={onExtensionActivated}/>
         <AccountSelectModal isOpen={isAccountSelectModalOpen} closeModal={toggleSelectAccountModalOpen}/>
-        <div>
-          {!isNewAssetModalOpen && <button onClick={toggleNewAssetModalOpen}>Create new asset</button>}
-          <NewAssetModal isOpen={isNewAssetModalOpen} closeModal={toggleNewAssetModalOpen}/>
-        </div>
         <div data-testid='active-account-container'>
           <p>
             {account?.toString()}
@@ -57,15 +92,27 @@ const Home: NextPage =  () => {
             Statemine Balance: {statemineBalances?.freeBalance.toString()}
           </p>
         </div>
-        <h1 className={styles.title}>
-          Welcome to Statemine
-        </h1>
-
-        <div>Dashboard</div>
         <CreatedAssets/>
-      </main>
-    </div>
+      </PageTemplate>
+    </>
   )
 }
 
 export default Home
+
+export const StyledCard = styled(Card)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+
+const StyledCardTitle = styled(Text)`
+  margin-bottom: 16px;
+  font-weight: 500;
+  line-height: 18px;
+`
+
+const StyledButton = styled(ButtonPrimary)`
+  margin-top: 16px;
+`
