@@ -2,35 +2,27 @@ import React, { useMemo } from 'react'
 
 import { CustomInputProps, InputBase } from './InputBase'
 
+export type NumericInputType = 'DEFAULT' | 'INTEGER' | 'POSITIVE' | 'NATURAL'
+
+const patterns: Record<NumericInputType, RegExp> = {
+  DEFAULT: /^-?[0-9]\d*\.?\d*$/,
+  INTEGER: /^-?[1-9]\d*$/,
+  POSITIVE: /^[0-9]\d*\.?\d*$/,
+  NATURAL: /^[1-9]\d*$/
+}
+
 interface NumericInputProps extends Omit<CustomInputProps, 'onChange'> {
   onChange: (newValue: string) => void,
-  nonDecimal?: boolean
-  nonNegative?: boolean
+  inputType?: NumericInputType
 }
 
-const DEFAULT_PATTERN = /^-?[0-9]\d*\.?\d*$/
-const NON_DECIMAL_PATTERN = /^-?[1-9]\d*$/
-const NON_NEGATIVE_PATTERN = /^[0-9]\d*\.?\d*$/
-const NON_DECIMAL_NON_NEGATIVE_PATTERN = /^[1-9]\d*$/
-
-function getPattern(nonDecimal: boolean, nonNegative: boolean): RegExp {
-  if (nonNegative && nonDecimal) {
-    return NON_DECIMAL_NON_NEGATIVE_PATTERN
-  }
-
-  if (nonDecimal) {
-    return NON_DECIMAL_PATTERN
-  }
-    
-  if(nonNegative) {
-    return NON_NEGATIVE_PATTERN
-  }
-
-  return DEFAULT_PATTERN
+function getPattern(numericInputType: NumericInputType): RegExp {
+  return patterns[numericInputType]
 }
 
-export function NumericInput ({ id, label, onChange, hint, error, value, nonDecimal = false, nonNegative = false, ...args }: NumericInputProps): JSX.Element {
-  const pattern =  useMemo(() => getPattern(nonDecimal, nonNegative), [nonNegative, nonDecimal])
+export function NumericInput ({ id, label, onChange, hint, error, value, inputType = 'DEFAULT', ...args }: NumericInputProps): JSX.Element {
+  const pattern =  useMemo(() => getPattern(inputType), [inputType])
+  const isNonNegative = useMemo(() => inputType === 'POSITIVE' || inputType === 'NATURAL', [inputType])
 
   const _onChange: React.ChangeEventHandler<HTMLInputElement> = (event): void => {
     const val = event.target.value
@@ -42,7 +34,7 @@ export function NumericInput ({ id, label, onChange, hint, error, value, nonDeci
     // then apply that value to state - we still have to validate this input before processing
     // it to some other component or data structure, but it frees up our input the way a user
     // would expect to interact with this component
-    else if ((!nonNegative && val === '-') || val === '') {
+    else if ((!isNonNegative && val === '-' ) || val === '') {
       onChange(val)
     }
   }

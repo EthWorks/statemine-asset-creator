@@ -1,3 +1,5 @@
+import type { NumericInputType } from '../components'
+
 import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React, { useState } from 'react'
@@ -6,11 +8,10 @@ import { NumericInput } from '../components'
 import { renderWithTheme } from './helpers'
 
 interface Props {
-  nonDecimal?: boolean
-  nonNegative?: boolean
+  inputType?: NumericInputType
 }
 
-function NumericInputTestComponent({ nonDecimal = false, nonNegative = false }: Props): JSX.Element {
+function NumericInputTestComponent({ inputType = 'DEFAULT' }: Props): JSX.Element {
   const [value, setValue] = useState<string>('')
 
   return (
@@ -21,8 +22,8 @@ function NumericInputTestComponent({ nonDecimal = false, nonNegative = false }: 
         label='NumericInput'
         value={value}
         onChange={setValue}
-        nonDecimal={nonDecimal}
-        nonNegative={nonNegative}/>
+        inputType={inputType}
+      />
     </>
   )
 }
@@ -66,7 +67,7 @@ describe('NumericInput component', () => {
 
   describe('non decimal', () => {
     it('ignores fraction dots', async () => {
-      renderWithTheme(<NumericInputTestComponent nonDecimal/>)
+      renderWithTheme(<NumericInputTestComponent inputType='INTEGER'/>)
 
       fillInput('-111.2.22..2')
 
@@ -74,7 +75,7 @@ describe('NumericInput component', () => {
     })
 
     it('random input test', async () => {
-      renderWithTheme(<NumericInputTestComponent nonDecimal/>)
+      renderWithTheme(<NumericInputTestComponent inputType='INTEGER'/>)
 
       fillInput(RANDOM_INPUT)
 
@@ -84,7 +85,7 @@ describe('NumericInput component', () => {
 
   describe('non negative', () => {
     it('ignores the "-" sign', async () => {
-      renderWithTheme(<NumericInputTestComponent nonNegative/>)
+      renderWithTheme(<NumericInputTestComponent inputType='POSITIVE'/>)
 
       fillInput('-111.2222')
 
@@ -92,7 +93,7 @@ describe('NumericInput component', () => {
     })
 
     it('random input test', async () => {
-      renderWithTheme(<NumericInputTestComponent nonNegative/>)
+      renderWithTheme(<NumericInputTestComponent inputType='POSITIVE'/>)
 
       fillInput(RANDOM_INPUT)
 
@@ -102,7 +103,7 @@ describe('NumericInput component', () => {
 
   describe('non negative & non decimal', () => {
     it('ignores the "-" sign and decimal dot', async () => {
-      renderWithTheme(<NumericInputTestComponent nonNegative nonDecimal/>)
+      renderWithTheme(<NumericInputTestComponent inputType='NATURAL'/>)
 
       fillInput('-111.2222')
 
@@ -110,7 +111,7 @@ describe('NumericInput component', () => {
     })
 
     it('random input test', async () => {
-      renderWithTheme(<NumericInputTestComponent nonNegative nonDecimal/>)
+      renderWithTheme(<NumericInputTestComponent inputType='NATURAL'/>)
 
       fillInput(RANDOM_INPUT)
 
@@ -121,6 +122,7 @@ describe('NumericInput component', () => {
 
 async function expectValue(expectedValue: string): Promise<void> {
   const valueContainer = await screen.findByTestId('input-state')
+  
   await within(valueContainer).findByText(expectedValue)
 }
 

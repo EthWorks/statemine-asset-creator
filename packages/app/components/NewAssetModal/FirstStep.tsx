@@ -69,8 +69,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
         onChange={setAssetDecimals}
         label="Asset decimals"
         id="asset-decimals"
-        nonNegative
-        nonDecimal
+        inputType='NATURAL'
       />
       <NumericInput
         error={assetIdError}
@@ -78,8 +77,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
         onChange={setAssetId}
         label="Asset ID"
         id="asset-ID"
-        nonNegative
-        nonDecimal
+        inputType='NATURAL'
       />
       <button onClick={_onNext}>Next</button>
     </>
