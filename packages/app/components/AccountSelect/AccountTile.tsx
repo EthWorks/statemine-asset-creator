@@ -1,10 +1,9 @@
+import BaseIdentityIcon from '@polkadot/react-identicon'
 import BN from 'bn.js'
 import styled from 'styled-components'
 
 import { Account, Chains, useBalances } from 'use-substrate'
 
-import AvatarIcon from '../../assets/img/avatar2.png'
-import Avatar from '../Avatar/Avatar'
 import { Label, Text } from '../typography'
 import BalanceValue from './BalanceValue'
 
@@ -15,11 +14,17 @@ interface Props {
 
 export function AccountTile({ account, withFreeBalance }: Props): JSX.Element {
   const balance = useBalances(account.address, Chains.Kusama)
-
+  const size = 32
+  const theme = 'polkadot'
+  
   return (
     <AccountTileWrapper>
       <AccountTileCell>
-        <Avatar src={AvatarIcon} size='m' />
+        <BaseIdentityIcon
+          value={account.address}
+          size={size}
+          theme={theme}
+        />
         <AccountTileName>
           <TextName size='SM' color='red'>{account.name}</TextName>
           <TextAddress size='SM'>{account.address}</TextAddress>

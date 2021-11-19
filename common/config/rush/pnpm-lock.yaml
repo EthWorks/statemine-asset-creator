@@ -2464,6 +2464,28 @@ packages:
       '@babel/runtime': 7.16.3
     dev: false
 
+  /@polkadot/react-identicon/0.86.5_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-4EWlvfYOtw1kQXySUDj6CBFtfz8zh2bS21tGu237s7lgNkOQmW1pufyz7NwdPPy7Px0RT3mG9ti6Dr9/9O+bUw==}
+    peerDependencies:
+      react: '*'
+      react-dom: '*'
+      react-is: '*'
+    dependencies:
+      '@babel/runtime': 7.16.3
+      '@polkadot/keyring': 7.8.2
+      '@polkadot/ui-settings': 0.86.5
+      '@polkadot/ui-shared': 0.86.5_eba1b5d7f02ee6441ebb0946cf4ea5d4
+      '@polkadot/util': 7.8.2
+      '@polkadot/util-crypto': 7.8.2
+      color: 3.2.1
+      ethereum-blockies-base64: 1.0.2
+      jdenticon: 3.1.1
+      react: 17.0.2
+      react-copy-to-clipboard: 5.0.4_react@17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      styled-components: 5.3.3_react-dom@17.0.2+react@17.0.2
+    dev: false
+
   /@polkadot/rpc-core/6.6.1:
     resolution: {integrity: sha512-gkisBehhlDuapXmQUut7seNBk3AuAfYjB1JvnphlgvF6V3ShyZD2Y19VCWmwqUXFkgsNCpYrmKYkngXUN1rvAQ==}
     engines: {node: '>=14.0.0'}
@@ -2538,6 +2560,18 @@ packages:
       '@polkadot/util': 7.8.2
       eventemitter3: 4.0.7
       store: 2.0.12
+    dev: false
+
+  /@polkadot/ui-shared/0.86.5_eba1b5d7f02ee6441ebb0946cf4ea5d4:
+    resolution: {integrity: sha512-oOLpB0nMilDq+KilevA3VQBfpI0TaB1DGeBGDVpYZM5Yclu9s9aPNHMsdzwyINcp2T+3FqHNhTXpeMmd92maDA==}
+    peerDependencies:
+      '@polkadot/util': '*'
+      '@polkadot/util-crypto': '*'
+    dependencies:
+      '@babel/runtime': 7.16.3
+      '@polkadot/util': 7.8.2
+      '@polkadot/util-crypto': 7.8.2
+      color: 3.2.1
     dev: false
 
   /@polkadot/util-crypto/7.4.1:
@@ -5536,6 +5570,18 @@ packages:
       styled-components: 5.3.1_react-dom@17.0.2+react@17.0.2
     dev: false
 
+  /babel-plugin-styled-components/1.13.3_styled-components@5.3.3:
+    resolution: {integrity: sha512-meGStRGv+VuKA/q0/jXxrPNWEm4LPfYIqxooDTdmh8kFsP/Ph7jJG5rUPwUPX3QHUvggwdbgdGpo88P/rRYsVw==}
+    peerDependencies:
+      styled-components: '>= 2'
+    dependencies:
+      '@babel/helper-annotate-as-pure': 7.15.4
+      '@babel/helper-module-imports': 7.15.4
+      babel-plugin-syntax-jsx: 6.18.0
+      lodash: 4.17.21
+      styled-components: 5.3.3_react-dom@17.0.2+react@17.0.2
+    dev: false
+
   /babel-plugin-syntax-jsx/6.18.0:
     resolution: {integrity: sha1-CvMqmm4Tyno/1QaeYtew9Y0NiUY=}
     dev: false
@@ -6050,6 +6096,12 @@ packages:
     resolution: {integrity: sha512-YzBnspggWV5hep1m9Z6sZVLOt7vrju8xWooFAgN6BA5qvy98qPAPb7vNUzypFaoh2pb3vlfzbDO8tB57UPGbtw==}
     dev: false
 
+  /canvas-renderer/2.2.0:
+    resolution: {integrity: sha512-Itdq9pwXcs4IbbkRCXc7reeGBk6i6tlDtZTjE1yc+KvYkx1Mt3WLf6tidZ/Ixbm7Vmi+jpWKG0dRBor67x9yGw==}
+    dependencies:
+      '@types/node': 16.10.5
+    dev: false
+
   /capture-exit/2.0.0:
     resolution: {integrity: sha512-PiT/hQmTonHhl/HFGN+Lx3JJUznrVYJ3+AQsnthneZbvW7x+f08Tk7yLJTLEOUvBTbduLeeBkxEaYXUOUrRq6g==}
     engines: {node: 6.* || 8.* || >= 10.*}
@@ -6300,6 +6352,20 @@ packages:
 
   /color-name/1.1.4:
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
+    dev: false
+
+  /color-string/1.6.0:
+    resolution: {integrity: sha512-c/hGS+kRWJutUBEngKKmk4iH3sD59MBkoxVapS/0wgpCz2u7XsNloxknyvBhzwEs1IbV36D9PwqLPJ2DTu3vMA==}
+    dependencies:
+      color-name: 1.1.4
+      simple-swizzle: 0.2.2
+    dev: false
+
+  /color/3.2.1:
+    resolution: {integrity: sha512-aBl7dZI9ENN6fUGC7mWpMTPNHmWUSNan9tuWN6ahh5ZLNk9baLJOnSMlrQkHcrfFgz2/RigjUVAjdx36VcemKA==}
+    dependencies:
+      color-convert: 1.9.3
+      color-string: 1.6.0
     dev: false
 
   /colorette/1.4.0:
@@ -7633,6 +7699,12 @@ packages:
     engines: {node: '>= 0.6'}
     dev: false
 
+  /ethereum-blockies-base64/1.0.2:
+    resolution: {integrity: sha512-Vg2HTm7slcWNKaRhCUl/L3b4KrB8ohQXdd5Pu3OI897EcR6tVRvUqdTwAyx+dnmoDzj8e2bwBLDQ50ByFmcz6w==}
+    dependencies:
+      pnglib: 0.0.1
+    dev: false
+
   /eventemitter2/5.0.1:
     resolution: {integrity: sha1-YZegldX7a1folC9v1+qtY6CclFI=}
     dev: false
@@ -8937,6 +9009,10 @@ packages:
     resolution: {integrity: sha1-d8mYQFJ6qOyxqLppe4BkWnqSap0=}
     dev: false
 
+  /is-arrayish/0.3.2:
+    resolution: {integrity: sha512-eVRqCvVlZbuw3GrM63ovNSNAeA1K16kaR/LRY/92w0zxQ5/1YzwblUX652i4Xs9RwAGjW9d9y6X88t8OaAJfWQ==}
+    dev: false
+
   /is-bigint/1.0.4:
     resolution: {integrity: sha512-zB9CruMamjym81i2JZ3UMn54PKGsQzsJeo6xvN3HJJ4CAsQNB6iRutp2To77OfCNuoxspsIhzaPoO1zyCEhFOg==}
     dependencies:
@@ -9370,6 +9446,14 @@ packages:
     dependencies:
       es-get-iterator: 1.1.2
       iterate-iterator: 1.0.2
+    dev: false
+
+  /jdenticon/3.1.1:
+    resolution: {integrity: sha512-/m0Kk5ou7tPHjW6YovCysRETqPlFcTabWG96r8NbbSsEK+eQ3jHiGULaGOtp4XBqkRxWS1XMopLRGwdhet5ezw==}
+    engines: {node: '>=6.4.0'}
+    hasBin: true
+    dependencies:
+      canvas-renderer: 2.2.0
     dev: false
 
   /jest-changed-files/27.2.5:
@@ -11457,6 +11541,10 @@ packages:
     resolution: {integrity: sha512-fnWVljUchTro6RiCFvCXBbNhJc2NijN7oIQxbwsyL0buWJPG85v81ehlHI9fXrJsMNgTofEoWIQeClKpgxFLrg==}
     dev: false
 
+  /pnglib/0.0.1:
+    resolution: {integrity: sha1-+atvnGiPSp1Xmti+KIeKcW4wwJY=}
+    dev: false
+
   /pnp-webpack-plugin/1.6.4_typescript@4.4.4:
     resolution: {integrity: sha512-7Wjy+9E3WwLOEL30D+m8TSTF7qJJUJLONBnwQp0518siuMxUQUbgZwssaFX+QKlZkjHZcw/IpZCt/H0srrntSg==}
     engines: {node: '>=6'}
@@ -11877,6 +11965,16 @@ packages:
     dependencies:
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
+    dev: false
+
+  /react-copy-to-clipboard/5.0.4_react@17.0.2:
+    resolution: {integrity: sha512-IeVAiNVKjSPeGax/Gmkqfa/+PuMTBhutEvFUaMQLwE2tS0EXrAdgOpWDX26bWTXF3HrioorR7lr08NqeYUWQCQ==}
+    peerDependencies:
+      react: ^15.3.0 || ^16.0.0 || ^17.0.0
+    dependencies:
+      copy-to-clipboard: 3.3.1
+      prop-types: 15.7.2
+      react: 17.0.2
     dev: false
 
   /react-dev-utils/11.0.4:
@@ -12795,6 +12893,12 @@ packages:
     dev: false
     optional: true
 
+  /simple-swizzle/0.2.2:
+    resolution: {integrity: sha1-pNprY1/8zMoz9w0Xy5JZLeleVXo=}
+    dependencies:
+      is-arrayish: 0.3.2
+    dev: false
+
   /sisteransi/1.0.5:
     resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
     dev: false
@@ -13243,6 +13347,28 @@ packages:
       '@emotion/stylis': 0.8.5
       '@emotion/unitless': 0.7.5
       babel-plugin-styled-components: 1.13.3_styled-components@5.3.1
+      css-to-react-native: 3.0.0
+      hoist-non-react-statics: 3.3.2
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      shallowequal: 1.1.0
+      supports-color: 5.5.0
+    dev: false
+
+  /styled-components/5.3.3_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-++4iHwBM7ZN+x6DtPPWkCI4vdtwumQ+inA/DdAsqYd4SVgUKJie5vXyzotA00ttcFdQkCng7zc6grwlfIfw+lw==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>= 16.8.0'
+      react-dom: '>= 16.8.0'
+      react-is: '>= 16.8.0'
+    dependencies:
+      '@babel/helper-module-imports': 7.15.4
+      '@babel/traverse': 7.15.4_supports-color@5.5.0
+      '@emotion/is-prop-valid': 0.8.8
+      '@emotion/stylis': 0.8.5
+      '@emotion/unitless': 0.7.5
+      babel-plugin-styled-components: 1.13.3_styled-components@5.3.3
       css-to-react-native: 3.0.0
       hoist-non-react-statics: 3.3.2
       react: 17.0.2
@@ -14596,12 +14722,13 @@ packages:
     dev: false
 
   file:projects/statemine-asset-creator.tgz:
-    resolution: {integrity: sha512-JRQXX2Wj+dGb6BaEYsQeRoDd9BFKYib1Y/GIBnBiYH79FEUTndkHLoykvS79AvKquaelbng4ZSCqqrV1OPsBCA==, tarball: file:projects/statemine-asset-creator.tgz}
+    resolution: {integrity: sha512-g62uPW7+s1yE9VWWg5skHDWRnqQn3FxNwRqUKcKPrc+YGjsR5KKojZn/EEF/BVMgukn98D1YRUwiU5AQM5WQeQ==, tarball: file:projects/statemine-asset-creator.tgz}
     name: '@rush-temp/statemine-asset-creator'
     version: 0.0.0
     dependencies:
       '@babel/core': 7.15.8
       '@babel/runtime': 7.15.4
+      '@polkadot/react-identicon': 0.86.5_react-dom@17.0.2+react@17.0.2
       '@polkadot/types': 6.6.1
       '@radix-ui/react-dropdown-menu': 0.1.0_3b7f7b84f013384d046f72a4522eddf8
       '@radix-ui/react-id': 0.1.1_react@17.0.2
@@ -14687,7 +14814,7 @@ packages:
     dev: false
 
   file:projects/use-substrate.tgz:
-    resolution: {integrity: sha512-NDniQLp6AP4ktXD3H5Yl0M1k++UZfDuyEi4IIfcYWqDodzQe97q4r5kXcVeBbZI/LhTf3ePeyVylrytgDDGjdQ==, tarball: file:projects/use-substrate.tgz}
+    resolution: {integrity: sha512-lzmXY/jpABqp23ElWzqm4pXyzSL++iKXcOBt+4hjg+tLWCt8baQKsDFoQjn9to44WGPzjhDMz9zIvy6r9diaNg==, tarball: file:projects/use-substrate.tgz}
     name: '@rush-temp/use-substrate'
     version: 0.0.0
     dependencies:
@@ -14699,7 +14826,7 @@ packages:
       '@polkadot/api': 6.6.1
       '@polkadot/api-derive': 6.6.1
       '@polkadot/extension-dapp': 0.40.4_@polkadot+api@6.6.1
-      '@polkadot/extension-inject': 0.40.3_@polkadot+api@6.6.1
+      '@polkadot/extension-inject': 0.40.4_@polkadot+api@6.6.1
       '@polkadot/types': 6.6.1
       '@polkadot/types-support': 6.6.1
       '@polkadot/ui-keyring': 0.86.5
