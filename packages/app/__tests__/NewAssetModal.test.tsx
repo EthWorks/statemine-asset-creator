@@ -163,6 +163,7 @@ describe('New asset modal', () => {
     describe('Asset decimals', () => {
       beforeEach(() => {
         fillFirstStep()
+        clearInput('Asset decimals')
       })
 
       it('allows 0', () => {
@@ -173,7 +174,6 @@ describe('New asset modal', () => {
       })
 
       it('does not accept decimals', async () => {
-        clearInput('Asset decimals')
         typeInInput('Asset decimals', '1.5')
 
         assertInputValue('Asset decimals', '15')
