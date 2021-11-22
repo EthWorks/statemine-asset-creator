@@ -4,7 +4,9 @@ import React from 'react'
 import { NewAssetModal } from '../components'
 import { useToggle } from '../utils'
 import {
+  assertButtonNotDisabled,
   assertInputError,
+  assertInputValue,
   assertNoInputError,
   assertNoText,
   assertText,
@@ -13,6 +15,7 @@ import {
   fillInput,
   findAndClickButton,
   renderWithTheme,
+  typeInInput,
 } from './helpers'
 import { mockChains, mockUseActiveAccount, mockUseApi, mockUseAssets, mockUseAssetsConstants } from './mocks'
 
@@ -45,6 +48,10 @@ const fillAllForms = (): void => {
   clickButton('Next')
 
   clickButton('Confirm')
+}
+
+const clearInput = (inputName: string) => {
+  fillInput(inputName, '')
 }
 
 const mockTransaction = jest.fn()
@@ -132,6 +139,26 @@ describe('New asset modal', () => {
         fillInput('Asset ID', mockUseAssets[0].id)
 
         await assertInputError('Asset ID', 'Value cannot match an already-existing asset id.')
+      })
+    })
+
+    describe('Asset decimals', () => {
+      beforeEach(() => {
+        fillFirstStep()
+      })
+
+      it('allows 0', () => {
+        fillInput('Asset decimals', '0')
+
+        assertInputValue('Asset decimals', '0')
+        assertButtonNotDisabled('Next')
+      })
+
+      it('does not accept decimals', async () => {
+        clearInput('Asset decimals')
+        typeInInput('Asset decimals', '1.5')
+
+        assertInputValue('Asset decimals', '15')
       })
     })
   })

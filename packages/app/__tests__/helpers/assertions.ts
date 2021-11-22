@@ -24,10 +24,6 @@ export function assertTextInput(inputName:string, text: string) {
   expect(input).toHaveTextContent(text)
 }
 
-export function assertNoButton(name: string) {
-  expect(screen.queryByRole('button', { name })).not.toBeInTheDocument()
-}
-
 export function assertNoText(text: string) {
   expect(screen.queryByText(text)).toBeFalsy()
 }
@@ -49,4 +45,16 @@ export function assertNoInputError(inputName: string) {
   const customInputComponent = screen.getByTestId(inputName)
 
   expect(within(customInputComponent).queryByTestId('input-error')).not.toBeInTheDocument()
+}
+
+export function assertButtonNotDisabled(name: string) {
+  const button = screen.getByRole('button', { name })
+
+  expect(button).not.toBeDisabled()
+}
+
+export function assertInputValue(inputName: string, value: string) {
+  const input = screen.getByLabelText(inputName)
+
+  expect(input).toHaveValue(value)
 }
