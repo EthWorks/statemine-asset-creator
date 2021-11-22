@@ -10,6 +10,7 @@ import {
   charlieAccount,
   mockChains,
   mockUseAccounts,
+  mockUseActiveAccount,
   mockUseApi,
   mockUseAssets,
   mockUseAssetsConstants,
@@ -26,8 +27,8 @@ jest.mock('use-substrate', () => ({
   useBalances: () => mockUseBalances,
   Chains: () => mockChains,
   useActiveAccount: () => ({
+    ...mockUseActiveAccount,
     activeAccount: mockActiveAccount,
-    setActiveAccount: () => {/**/}
   })
 }))
 

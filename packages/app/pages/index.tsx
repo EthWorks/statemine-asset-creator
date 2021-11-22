@@ -72,8 +72,7 @@ const Home: NextPage =  () => {
             <div>
               {account
                 ? <StyledButton onClick={toggleNewAssetModalOpen}>Create new asset</StyledButton>
-                :
-                <StyledButton onClick={toggleConnectWalletModalOpen} large>Connect to create your asset</StyledButton>
+                : <StyledButton onClick={toggleConnectWalletModalOpen} large>Connect to create your asset</StyledButton>
               }
             </div>
           </StyledCard>
@@ -86,8 +85,11 @@ const Home: NextPage =  () => {
         </PageBox>
 
         <NewAssetModal isOpen={isNewAssetModalOpen} closeModal={toggleNewAssetModalOpen}/>
-        <ConnectWalletModal isOpen={isConnectWalletModalOpen} closeModal={toggleConnectWalletModalOpen}
-          onExtensionActivated={onExtensionActivated}/>
+        <ConnectWalletModal 
+          isOpen={isConnectWalletModalOpen} 
+          closeModal={toggleConnectWalletModalOpen}
+          onExtensionActivated={onExtensionActivated}
+        />
         <AccountSelectModal isOpen={isAccountSelectModalOpen} closeModal={toggleSelectAccountModalOpen}/>
         <CreatedAssets/>
       </PageTemplate>
