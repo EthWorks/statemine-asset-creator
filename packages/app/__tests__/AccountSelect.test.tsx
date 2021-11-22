@@ -15,7 +15,7 @@ jest.mock('use-substrate', () => ({
   Chains: () => mockChains,
 }))
 
-function AccountSelectTestComponent({ withFreeBalance }: {withFreeBalance?: boolean}): JSX.Element {
+function AccountSelectTestComponent({ withFreeBalance }: { withFreeBalance?: boolean }): JSX.Element {
   const accounts = mockUseSubstrate.useAccounts()
   const [account, setAccount] = useState<Account>(accounts.allAccounts[0])
 
