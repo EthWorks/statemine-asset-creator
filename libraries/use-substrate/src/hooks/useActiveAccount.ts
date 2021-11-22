@@ -1,4 +1,4 @@
-import type {  UseActiveAccount } from '../providers'
+import type { UseActiveAccount } from '../providers'
 
 import { useContext } from 'react'
 

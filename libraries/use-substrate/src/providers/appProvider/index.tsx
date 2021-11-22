@@ -10,7 +10,7 @@ export interface AppProviderProps {
   config: Config
 }
 
-export const AppProvider: React.FC<AppProviderProps> = ({ config, children }): JSX.Element =>  {
+export const AppProvider: React.FC<AppProviderProps> = ({ config, children }): JSX.Element => {
   return (
     <ConfigProvider config={config}>
       <AppWithConfig>{children}</AppWithConfig>

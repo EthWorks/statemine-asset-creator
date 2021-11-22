@@ -33,6 +33,13 @@
       "summary": "Run linter in each project",
       "enableParallelism": true,
       "ignoreMissingScript": true
+    },
+    {
+      "commandKind": "bulk",
+      "name": "lint:fix",
+      "summary": "Run linter with --fix flag in each project",
+      "enableParallelism": true,
+      "ignoreMissingScript": true
     }
     // {
     //   /**

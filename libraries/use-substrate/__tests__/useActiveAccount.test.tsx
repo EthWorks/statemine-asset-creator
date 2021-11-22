@@ -18,7 +18,7 @@ describe('useActiveAccount', () => {
       act(() => setActiveAccount(BOB_ID))
 
       rerender()
-      const {  activeAccount } = result.current
+      const { activeAccount } = result.current
 
       expect(activeAccount).toEqual(BOB_ID)
     })
@@ -78,7 +78,7 @@ describe('useActiveAccount', () => {
       act(() => setActiveAccount(BOB_ID))
 
       rerender()
-      const {  activeAccount } = result.current
+      const { activeAccount } = result.current
 
       expect(activeAccount).toEqual(BOB_ID)
     })

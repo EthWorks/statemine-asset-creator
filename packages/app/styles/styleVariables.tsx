@@ -17,7 +17,7 @@ export type BorderRadius = Record<BorderRadiusType, string>
 
 interface Theme {
   colors: { gray: GrayShades } & Colors
-  borderRadius:  BorderRadius
+  borderRadius: BorderRadius
 }
 
 export const theme: Theme = {

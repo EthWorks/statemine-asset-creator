@@ -20,7 +20,7 @@ import {
 import styles from '../styles/Home.module.css'
 import { extensionActivated, shouldSelectAccount, useAsync, useToggle } from '../utils'
 
-const Home: NextPage =  () => {
+const Home: NextPage = () => {
   const { activeAccount: account } = useActiveAccount()
   const [isNewAssetModalOpen, toggleNewAssetModalOpen] = useToggle()
   const [isConnectWalletModalOpen, toggleConnectWalletModalOpen, setConnectWalletModalOpen] = useToggle(!extensionActivated())

@@ -21,7 +21,7 @@ function getPattern(numericInputType: NumericInputType): RegExp {
 }
 
 export function NumericInput ({ id, label, onChange, hint, error, value, inputType = 'DEFAULT', ...args }: NumericInputProps): JSX.Element {
-  const pattern =  useMemo(() => getPattern(inputType), [inputType])
+  const pattern = useMemo(() => getPattern(inputType), [inputType])
   const isNonNegative = useMemo(() => inputType === 'POSITIVE' || inputType === 'NATURAL', [inputType])
 
   const _onChange: React.ChangeEventHandler<HTMLInputElement> = (event): void => {

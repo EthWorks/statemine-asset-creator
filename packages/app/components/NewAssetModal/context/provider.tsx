@@ -4,7 +4,7 @@ import { Chains, useAssetsConstants } from 'use-substrate'
 
 import { NewAssetModalContext } from './context'
 
-export const NewAssetModalProvider: React.FC = ({  children }) => {
+export const NewAssetModalProvider: React.FC = ({ children }) => {
   const [assetName, setAssetName] = useState<string>('')
   const [assetNameError, setAssetNameError] = useState<string>()
   const [assetId, setAssetId] = useState<string>('')
