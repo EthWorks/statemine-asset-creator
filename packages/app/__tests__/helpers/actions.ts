@@ -1,4 +1,5 @@
 import { fireEvent, screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { PointerEvent } from './events'
 
@@ -41,4 +42,9 @@ export async function selectAccountFromDropdown(accountIndex: number) {
   const menuItems = await within(dropdownMenu).findAllByRole('menuitem')
 
   fireEvent.click(menuItems[accountIndex])
+}
+
+export function typeInInput(inputName: string, value: string) {
+  const decimalsInput = screen.getByLabelText(inputName)
+  userEvent.type(decimalsInput, value)
 }
