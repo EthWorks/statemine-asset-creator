@@ -2,8 +2,8 @@ import BN from 'bn.js'
 import React from 'react'
 import styled from 'styled-components'
 
-import { formatBalanceValue } from '../../formaters/formaters'
-import { Text } from '../typography'
+import { formatBalanceValue } from '../formaters/formaters'
+import { Text } from './typography'
 
 const DECIMALS_DISPLAYED = 4
 

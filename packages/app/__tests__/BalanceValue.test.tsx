@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react'
 import BN from 'bn.js'
 
-import BalanceValue from '../components/AccountSelect/BalanceValue'
+import BalanceValue from '../components/BalanceValue'
 import { renderWithTheme } from './helpers'
 
 describe('BalanceValue component', () => {
