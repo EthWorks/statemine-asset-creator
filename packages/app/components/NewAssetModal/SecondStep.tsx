@@ -5,12 +5,12 @@ import { Chains, useActiveAccount, useApi, useTransaction } from 'use-substrate'
 import { useNewAssetModal } from './context/useNewAssetModal'
 
 export function SecondStep({ onNext }: ModalStep): JSX.Element {
-  const { assetName, assetSymbol, assetDecimals, assetId } = useNewAssetModal()
-  const { api } = useApi(Chains.Kusama)
+  const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
+  const { api } = useApi(Chains.Statemine)
   const { activeAccount } = useActiveAccount()
 
   const txs = activeAccount ? [
-    api?.tx.assets.create(assetId, activeAccount.toString(), 100),
+    api?.tx.assets.create(assetId, activeAccount.toString(), minBalance),
     api?.tx.assets.setMetadata(assetId, assetName, assetSymbol, assetDecimals)
   ] : []
 
@@ -29,6 +29,7 @@ export function SecondStep({ onNext }: ModalStep): JSX.Element {
       <p>{assetSymbol}</p>
       <p>{assetDecimals}</p>
       <p>{assetId}</p>
+      <p>{minBalance}</p>
       <button onClick={_onSubmit}>Confirm</button>
     </>
   )

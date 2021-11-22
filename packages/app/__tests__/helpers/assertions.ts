@@ -8,12 +8,6 @@ export function assertNewTabOpened(url: string) {
   return expect(global.open).toBeCalledWith(url, '_blank', 'noopener,noreferrer')
 }
 
-export async function assertLink(url: string) {
-  const link = await screen.findByRole('link')
-
-  expect(link.getAttribute('href')).toEqual(url)
-}
-
 export async function assertText(text: string) {
   await screen.findByText(text)
 }
@@ -45,6 +39,12 @@ export function assertNoInputError(inputName: string) {
   const customInputComponent = screen.getByTestId(inputName)
 
   expect(within(customInputComponent).queryByTestId('input-error')).not.toBeInTheDocument()
+}
+
+export function assertButtonDisabled(name: string) {
+  const button = screen.getByRole('button', { name })
+
+  expect(button).toBeDisabled()
 }
 
 export function assertButtonNotDisabled(name: string) {

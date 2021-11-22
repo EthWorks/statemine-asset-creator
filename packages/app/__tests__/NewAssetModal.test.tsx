@@ -4,11 +4,11 @@ import React from 'react'
 import { NewAssetModal } from '../components'
 import { useToggle } from '../utils'
 import {
+  assertButtonDisabled,
   assertButtonNotDisabled,
   assertInputError,
   assertInputValue,
   assertNoInputError,
-  assertNoText,
   assertText,
   assertTextInput,
   clickButton,
@@ -39,6 +39,7 @@ const fillFirstStep = (): void => {
   fillInput('Asset symbol', 'KSM')
   fillInput('Asset decimals', '18')
   fillInput('Asset ID', '7')
+  fillInput('Minimum balance', '300')
 }
 
 const fillAllForms = (): void => {
@@ -69,6 +70,10 @@ jest.mock('use-substrate', () => ({
 const mockedStringLimit = mockUseAssetsConstants.stringLimit.toNumber()
 
 describe('New asset modal', () => {
+  beforeEach(() => {
+    mockTransaction.mockClear()
+  })
+
   it('saves data in context', async () => {
     renderModal()
 
@@ -82,6 +87,7 @@ describe('New asset modal', () => {
     await assertText('KSM')
     await assertText('18')
     await assertText('7')
+    await assertText('300')
   })
 
   it('closes modal and resets data on confirm', async () => {
@@ -109,6 +115,17 @@ describe('New asset modal', () => {
       renderModal()
       clickButton('Create new asset')
       fillFirstStep()
+      assertButtonNotDisabled('Next')
+    })
+
+    describe('Disables Next button when input is empty', () => {
+      ;['Asset name', 'Asset symbol', 'Asset ID', 'Asset decimals', 'Minimum balance'].forEach(inputName => {
+        it(`for ${inputName}`, async () => {
+          fillInput(inputName, '')
+
+          assertButtonDisabled('Next')
+        })
+      })
     })
 
     ;['Asset name', 'Asset symbol'].forEach(inputName => {
@@ -117,19 +134,19 @@ describe('New asset modal', () => {
           fillInput(inputName, 'a'.repeat(mockedStringLimit + 1))
           await assertInputError(inputName, `Maximum length of ${mockedStringLimit} characters exceeded`)
 
-          clickButton('Next')
-          assertNoText('Confirm')
+          assertButtonDisabled('Next')
         })
 
         it('does not display error when asset name length decreased', async () => {
           fillInput(inputName, 'a'.repeat(mockedStringLimit + 1))
           await assertInputError(inputName, `Maximum length of ${mockedStringLimit} characters exceeded`)
 
+          assertButtonDisabled('Next')
+
           fillInput(inputName, 'a'.repeat(mockedStringLimit))
           await assertNoInputError(inputName)
 
-          clickButton('Next')
-          await assertText('Confirm')
+          assertButtonNotDisabled('Next')
         })
       })
     })
@@ -139,6 +156,7 @@ describe('New asset modal', () => {
         fillInput('Asset ID', mockUseAssets[0].id)
 
         await assertInputError('Asset ID', 'Value cannot match an already-existing asset id.')
+        assertButtonDisabled('Next')
       })
     })
 

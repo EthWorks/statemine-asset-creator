@@ -1,3 +1,4 @@
+import type { FormEvent } from 'react'
 import type { Asset } from 'use-substrate'
 import type { ModalStep } from './types'
 
@@ -5,21 +6,28 @@ import { useCallback, useEffect } from 'react'
 
 import { Chains, useAssets } from 'use-substrate'
 
+import { ButtonPrimary } from '../button/Button'
 import { NumericInput, TextInput } from '../FormElements'
 import { useNewAssetModal } from './context/useNewAssetModal'
 
 export function FirstStep({ onNext }: ModalStep): JSX.Element {
-  const { assetName, setAssetName, assetNameError, setAssetNameError, assetId, assetIdError, setAssetIdError, assetSymbol, assetSymbolError, setAssetSymbolError, setAssetId, setAssetSymbol, setAssetDecimals, assetDecimals, stringLimit } = useNewAssetModal()
+  const { assetName, setAssetName, assetNameError, setAssetNameError, assetId, assetIdError, setAssetIdError, assetSymbol,
+    assetSymbolError, setAssetSymbolError, setAssetId, setAssetSymbol, setAssetDecimals, minBalance, setMinBalance,
+    assetDecimals, stringLimit } = useNewAssetModal()
   const existingAssets = useAssets(Chains.Statemine)
-    
+
   const clearErrors = useCallback(() => {
     setAssetNameError(undefined)
     setAssetSymbolError(undefined)
     setAssetIdError(undefined)
   }, [setAssetNameError, setAssetSymbolError, setAssetIdError])
 
+  const isFilled = !!assetName && !!assetSymbol && !!assetId && !!assetDecimals && !!minBalance
+  const isValid = !assetNameError && !assetSymbolError && !assetIdError
+  const isDisabled = !isFilled || !isValid
+
   const isAssetIdUnique = useCallback(() => !existingAssets?.find(({ id }: Asset) => id.toString() === assetId), [existingAssets, assetId])
-    
+
   useEffect(() => {
     if(!stringLimit) {
       return
@@ -42,14 +50,15 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
     }
   }, [assetId, assetName, assetSymbol, clearErrors, setAssetNameError, setAssetSymbolError, setAssetIdError, stringLimit, isAssetIdUnique])
 
-  const _onNext = useCallback(() => {
+  const _onNext = useCallback((e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     if(stringLimit && !assetNameError && !assetSymbolError) {
       onNext()
     }
   }, [assetNameError, assetSymbolError, onNext, stringLimit])
 
   return (
-    <>
+    <form onSubmit={_onNext}>
       <TextInput
         error={assetNameError}
         value={assetName}
@@ -79,7 +88,14 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
         id="asset-ID"
         inputType='NATURAL'
       />
-      <button onClick={_onNext}>Next</button>
-    </>
+      <NumericInput
+        value={minBalance}
+        onChange={setMinBalance}
+        label="Minimum balance"
+        id="min-balance"
+        inputType='POSITIVE'
+      />
+      <ButtonPrimary type='submit' disabled={isDisabled}>Next</ButtonPrimary>
+    </form>
   )
 }
