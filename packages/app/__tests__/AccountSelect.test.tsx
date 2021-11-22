@@ -75,6 +75,6 @@ describe('AccountSelect component', () => {
     await screen.findByText(mockAccounts[0].address)
 
     const transferableBalanceElement = (await screen.findByText('full account balance')).parentElement
-    expect(transferableBalanceElement).toHaveTextContent('6,000.0000KSM')
+    expect(transferableBalanceElement).toHaveTextContent('6,100.0000KSM')
   })
 })

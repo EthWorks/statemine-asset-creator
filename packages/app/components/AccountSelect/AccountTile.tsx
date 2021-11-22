@@ -1,5 +1,6 @@
 import type { Account } from 'use-substrate'
 
+import { useMemo } from 'react'
 import styled from 'styled-components'
 
 import { Chains, useBalances } from 'use-substrate'
@@ -19,11 +20,12 @@ const DECIMALS = 12
 
 export function AccountTile({ account, withFreeBalance }: Props): JSX.Element {
   const balance = useBalances(account.address, Chains.Kusama)
+  const fullBalance = useMemo(() => balance?.freeBalance.add(balance.reservedBalance), [balance])
 
   return (
     <AccountTileWrapper>
       <AccountTileCell>
-        <Avatar src={AvatarIcon} size='m' />
+        <Avatar src={AvatarIcon} size='m'/>
         <AccountTileName>
           <TextName size='SM' color='red'>{account.name}</TextName>
           <TextAddress size='SM'>{account.address}</TextAddress>
@@ -32,12 +34,12 @@ export function AccountTile({ account, withFreeBalance }: Props): JSX.Element {
       <AccountTileCellEnd>
         <CellRow>
           <Label>transferable balance</Label>
-          <BalanceValue token={TOKEN} decimals={DECIMALS} value={balance?.availableBalance} />
+          <BalanceValue token={TOKEN} decimals={DECIMALS} value={balance?.availableBalance}/>
         </CellRow>
         {withFreeBalance &&
           <CellRow>
             <Label>full account balance</Label>
-            <BalanceValue token={TOKEN} decimals={DECIMALS} value={balance?.freeBalance} />
+            <BalanceValue token={TOKEN} decimals={DECIMALS} value={fullBalance}/>
           </CellRow>
         }
       </AccountTileCellEnd>

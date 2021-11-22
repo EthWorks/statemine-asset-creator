@@ -34,7 +34,7 @@ const BalanceValue = ({ decimals, token, value }: BalanceValueProps): React.Reac
   const decimalPlaces = balanceValue.substr(balanceValue.length - DECIMALS_DISPLAYED, DECIMALS_DISPLAYED)
 
   return (
-    <ValueWrapper data-testid='balance-value' >
+    <ValueWrapper data-testid='balance-value'>
       <TextBalance size='SM' color='white'>{integers}<span>{decimalPlaces}</span></TextBalance>
       <Text size='SM'>{token}</Text>
     </ValueWrapper>
