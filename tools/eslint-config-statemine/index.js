@@ -34,6 +34,7 @@ module.exports = {
         "prefer-const": ["error", {"destructuring": "all"}],
         "semi": ["error", "never"],
         "no-extra-semi": "off",
+        "no-multi-spaces": "error",
         "@typescript-eslint/no-extra-semi": "off",
         "padding-line-between-statements": [
             "error",

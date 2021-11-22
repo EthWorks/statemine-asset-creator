@@ -103,7 +103,7 @@ describe('New asset modal', () => {
     assertTextInput('Asset ID', '')
   })
 
-  it('sends transaction on confirm',  async () => {
+  it('sends transaction on confirm', async () => {
     renderModal()
     fillAllForms()
 
