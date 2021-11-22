@@ -1,12 +1,13 @@
+import type { FormEvent } from 'react'
 import type { Asset } from 'use-substrate'
 import type { ModalStep } from './types'
 
-import { FormEvent, useCallback, useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 
 import { Chains, useAssets } from 'use-substrate'
 
 import { ButtonPrimary } from '../button/Button'
-import { CustomInput } from '../FormElements'
+import { NumericInput, TextInput } from '../FormElements'
 import { useNewAssetModal } from './context/useNewAssetModal'
 
 export function FirstStep({ onNext }: ModalStep): JSX.Element {
@@ -22,12 +23,6 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
   const isFilled = !!assetName && !!assetSymbol && !!assetId && !!assetDecimals
   const isValid = !assetNameError && !assetSymbolError && !assetIdError
   const isDisabled = !isFilled || !isValid
-
-  const isValidInteger = useCallback(() => {
-    const integer = +assetId
-
-    return !!(integer && integer > 0)
-  }, [assetId])
 
   const isAssetIdUnique = useCallback(() => !existingAssets?.find(({ id }: Asset) => id.toString() === assetId), [existingAssets, assetId])
 
@@ -48,14 +43,10 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
       setAssetSymbolError(STRING_LIMIT_EXCEEDED_ERROR)
     }
 
-    if(assetId && !isValidInteger()) {
-      setAssetIdError('Value must be a positive number')
-    }
-
-    if(assetId && isValidInteger() && !isAssetIdUnique()) {
+    if(assetId && !isAssetIdUnique()) {
       setAssetIdError('Value cannot match an already-existing asset id.')
     }
-  }, [assetId, assetName, assetSymbol, clearErrors, setAssetNameError, setAssetSymbolError, setAssetIdError, stringLimit, isValidInteger, isAssetIdUnique])
+  }, [assetId, assetName, assetSymbol, clearErrors, setAssetNameError, setAssetSymbolError, setAssetIdError, stringLimit, isAssetIdUnique])
 
   const _onNext = useCallback((e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -66,32 +57,34 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
 
   return (
     <form onSubmit={_onNext}>
-      <CustomInput
+      <TextInput
         error={assetNameError}
         value={assetName}
         onChange={setAssetName}
         label="Asset name"
         id="asset-name"
       />
-      <CustomInput
+      <TextInput
         error={assetSymbolError}
         value={assetSymbol}
         onChange={setAssetSymbol}
         label="Asset symbol"
         id="asset-symbol"
       />
-      <CustomInput
+      <NumericInput
         value={assetDecimals}
         onChange={setAssetDecimals}
         label="Asset decimals"
         id="asset-decimals"
+        inputType='NATURAL'
       />
-      <CustomInput
+      <NumericInput
         error={assetIdError}
         value={assetId}
         onChange={setAssetId}
         label="Asset ID"
         id="asset-ID"
+        inputType='NATURAL'
       />
       <ButtonPrimary type='submit' disabled={isDisabled}>Next</ButtonPrimary>
     </form>

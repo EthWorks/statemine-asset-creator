@@ -1664,7 +1664,7 @@ packages:
       '@emotion/core': ^10.0.28
       react: '>=16.3.0'
     dependencies:
-      '@babel/runtime': 7.15.4
+      '@babel/runtime': 7.16.3
       '@emotion/core': 10.1.1_react@17.0.2
       '@emotion/is-prop-valid': 0.8.8
       '@emotion/serialize': 0.11.16
@@ -2743,7 +2743,7 @@ packages:
   /@radix-ui/popper/0.1.0:
     resolution: {integrity: sha512-uzYeElL3w7SeNMuQpXiFlBhTT+JyaNMCwDfjKkrzugEcYrf5n52PHqncNdQPUtR42hJh8V9FsqyEDbDxkeNjJQ==}
     dependencies:
-      '@babel/runtime': 7.15.4
+      '@babel/runtime': 7.16.3
       csstype: 3.0.9
     dev: false
 
@@ -2758,7 +2758,7 @@ packages:
     peerDependencies:
       react: ^16.8 || ^17.0
     dependencies:
-      '@babel/runtime': 7.15.4
+      '@babel/runtime': 7.16.3
       '@radix-ui/react-primitive': 0.1.0_react@17.0.2
       react: 17.0.2
     dev: false
@@ -2989,7 +2989,7 @@ packages:
     peerDependencies:
       react: ^16.8 || ^17.0
     dependencies:
-      '@babel/runtime': 7.15.4
+      '@babel/runtime': 7.16.3
       '@radix-ui/react-use-layout-effect': 0.1.0_react@17.0.2
       react: 17.0.2
     dev: false
@@ -3027,7 +3027,7 @@ packages:
     peerDependencies:
       react: ^16.8 || ^17.0
     dependencies:
-      '@babel/runtime': 7.15.4
+      '@babel/runtime': 7.16.3
       '@radix-ui/react-use-callback-ref': 0.1.0_react@17.0.2
       react: 17.0.2
     dev: false
@@ -3037,7 +3037,7 @@ packages:
     peerDependencies:
       react: ^16.8 || ^17.0
     dependencies:
-      '@babel/runtime': 7.15.4
+      '@babel/runtime': 7.16.3
       react: 17.0.2
     dev: false
 
@@ -3046,7 +3046,7 @@ packages:
     peerDependencies:
       react: ^16.8 || ^17.0
     dependencies:
-      '@babel/runtime': 7.15.4
+      '@babel/runtime': 7.16.3
       '@radix-ui/rect': 0.1.0
       react: 17.0.2
     dev: false
@@ -3056,14 +3056,14 @@ packages:
     peerDependencies:
       react: ^16.8 || ^17.0
     dependencies:
-      '@babel/runtime': 7.15.4
+      '@babel/runtime': 7.16.3
       react: 17.0.2
     dev: false
 
   /@radix-ui/rect/0.1.0:
     resolution: {integrity: sha512-YcQuy5hUDnS8CkmIKJA6lE8wQpMqv8KN3SoO3dtOg7FQmZo1lgF1yAtrp5STJYxs1n7UChW3eEhrKXl/LmbHJQ==}
     dependencies:
-      '@babel/runtime': 7.15.4
+      '@babel/runtime': 7.16.3
     dev: false
 
   /@reach/router/1.3.4_react-dom@17.0.2+react@17.0.2:
@@ -4307,13 +4307,13 @@ packages:
       react-dom: 17.0.2_react@17.0.2
     dev: false
 
-  /@testing-library/user-event/13.4.1:
-    resolution: {integrity: sha512-WcnVwi96MmFsHLMNvBz03aPMVDU3UOgucXcn85fNXKKdtd7CHi2NAgE3hASt157yTB9krym0ikFVKbqYghKRCg==}
+  /@testing-library/user-event/13.5.0:
+    resolution: {integrity: sha512-5Kwtbo3Y/NowpkbRuSepbyMFkZmHgD+vPzYB/RJ4oxt5Gj/avFFBYjhw27cqSVPVw/3a67NK1PbiIr9k4Gwmdg==}
     engines: {node: '>=10', npm: '>=6'}
     peerDependencies:
       '@testing-library/dom': '>=7.21.4'
     dependencies:
-      '@babel/runtime': 7.15.4
+      '@babel/runtime': 7.16.3
     dev: false
 
   /@tootallnate/once/1.1.2:
@@ -5444,7 +5444,7 @@ packages:
   /babel-plugin-macros/2.8.0:
     resolution: {integrity: sha512-SEP5kJpfGYqYKpBrj5XU3ahw5p5GOHJ0U5ssOSQ/WBVdwkD2Dzlce95exQTs3jOVWPPKLBN2rlEWkCK7dSmLvg==}
     dependencies:
-      '@babel/runtime': 7.15.4
+      '@babel/runtime': 7.16.3
       cosmiconfig: 6.0.0
       resolve: 1.20.0
     dev: false
@@ -7061,7 +7061,7 @@ packages:
     peerDependencies:
       react: '>=16.12.0'
     dependencies:
-      '@babel/runtime': 7.15.4
+      '@babel/runtime': 7.16.3
       compute-scroll-into-view: 1.0.17
       prop-types: 15.7.2
       react: 17.0.2
@@ -11995,7 +11995,7 @@ packages:
       react: ^16.6.0 || ^17.0.0
       react-dom: ^16.6.0 || ^17.0.0
     dependencies:
-      '@babel/runtime': 7.15.4
+      '@babel/runtime': 7.16.3
       invariant: 2.2.4
       prop-types: 15.7.2
       react: 17.0.2
@@ -14596,7 +14596,7 @@ packages:
     dev: false
 
   file:projects/statemine-asset-creator.tgz:
-    resolution: {integrity: sha512-JRQXX2Wj+dGb6BaEYsQeRoDd9BFKYib1Y/GIBnBiYH79FEUTndkHLoykvS79AvKquaelbng4ZSCqqrV1OPsBCA==, tarball: file:projects/statemine-asset-creator.tgz}
+    resolution: {integrity: sha512-8iQ0cPYZGbikZkULimfhC6hZ1I82vSeqeZxMN2DVxJ46+iLPjjXOV67vbPSqQafm9LDHSivV8Yqxy6S7pkgCUg==, tarball: file:projects/statemine-asset-creator.tgz}
     name: '@rush-temp/statemine-asset-creator'
     version: 0.0.0
     dependencies:
@@ -14611,7 +14611,7 @@ packages:
       '@storybook/react': 6.3.12_aafac283b11394e1786a0fa0103e197e
       '@testing-library/jest-dom': 5.14.1
       '@testing-library/react': 12.1.2_react-dom@17.0.2+react@17.0.2
-      '@testing-library/user-event': 13.4.1
+      '@testing-library/user-event': 13.5.0
       '@types/bn.js': 4.11.6
       '@types/jest': 27.0.2
       '@types/react': 17.0.24
@@ -14645,6 +14645,7 @@ packages:
       - '@storybook/vue'
       - '@storybook/vue3'
       - '@storybook/web-components'
+      - '@testing-library/dom'
       - '@types/webpack'
       - bufferutil
       - canvas
@@ -14687,7 +14688,7 @@ packages:
     dev: false
 
   file:projects/use-substrate.tgz:
-    resolution: {integrity: sha512-NDniQLp6AP4ktXD3H5Yl0M1k++UZfDuyEi4IIfcYWqDodzQe97q4r5kXcVeBbZI/LhTf3ePeyVylrytgDDGjdQ==, tarball: file:projects/use-substrate.tgz}
+    resolution: {integrity: sha512-lzmXY/jpABqp23ElWzqm4pXyzSL++iKXcOBt+4hjg+tLWCt8baQKsDFoQjn9to44WGPzjhDMz9zIvy6r9diaNg==, tarball: file:projects/use-substrate.tgz}
     name: '@rush-temp/use-substrate'
     version: 0.0.0
     dependencies:
@@ -14699,7 +14700,7 @@ packages:
       '@polkadot/api': 6.6.1
       '@polkadot/api-derive': 6.6.1
       '@polkadot/extension-dapp': 0.40.4_@polkadot+api@6.6.1
-      '@polkadot/extension-inject': 0.40.3_@polkadot+api@6.6.1
+      '@polkadot/extension-inject': 0.40.4_@polkadot+api@6.6.1
       '@polkadot/types': 6.6.1
       '@polkadot/types-support': 6.6.1
       '@polkadot/ui-keyring': 0.86.5

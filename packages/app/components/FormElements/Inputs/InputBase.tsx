@@ -3,23 +3,19 @@ import styled from 'styled-components'
 
 import { InputHint } from './InputHint'
 
-interface CustomInputProps<T> extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
+export interface CustomInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string,
-  onChange: (newValue: T) => void,
   hint?: string,
   error?: string
 }
 
-type CustomInputTextProps = CustomInputProps<string>
-
-export function CustomInput({ label, id, onChange, hint, error, ...args }: CustomInputTextProps): React.ReactElement<CustomInputTextProps> {
+export function InputBase({ id, label,  hint, error, ...arg }: CustomInputProps): JSX.Element {
   return (
     <CustomInputWrapper data-testid={label}>
       <InputLabel htmlFor={id}>{label}</InputLabel>
       <Input
         id={id}
-        onChange={event => onChange(event.currentTarget.value)}
-        {...args}
+        {...arg}
       />
       <InputHint hint={hint} error={error} />
     </CustomInputWrapper>
