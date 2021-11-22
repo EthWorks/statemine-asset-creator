@@ -43,7 +43,7 @@ describe('Home', () => {
     const activeAccountContainer = screen.getByTestId('active-account-container')
     expect(activeAccountContainer).toHaveTextContent(bobAccount.address)
 
-    await assertText('Balance: 360000')
+    await assertText('Balance: 6000000000000000')
   })
 
   it('opens create asset modal', async () => {

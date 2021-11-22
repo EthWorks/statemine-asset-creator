@@ -1,7 +1,8 @@
-import BN from 'bn.js'
+import type { Account } from 'use-substrate'
+
 import styled from 'styled-components'
 
-import { Account, Chains, useBalances } from 'use-substrate'
+import { Chains, useBalances } from 'use-substrate'
 
 import AvatarIcon from '../../assets/img/avatar2.png'
 import Avatar from '../Avatar/Avatar'
@@ -12,6 +13,9 @@ interface Props {
   account: Account,
   withFreeBalance?: boolean
 }
+
+const TOKEN = 'KSM'
+const DECIMALS = 12
 
 export function AccountTile({ account, withFreeBalance }: Props): JSX.Element {
   const balance = useBalances(account.address, Chains.Kusama)
@@ -28,17 +32,12 @@ export function AccountTile({ account, withFreeBalance }: Props): JSX.Element {
       <AccountTileCellEnd>
         <CellRow>
           <Label>transferable balance</Label>
-          <ValueWrapper>
-            <BalanceValue token='KSM' decimals={5} value={balance?.availableBalance ? new BN(balance?.availableBalance) : undefined} />
-          </ValueWrapper>
+          <BalanceValue token={TOKEN} decimals={DECIMALS} value={balance?.availableBalance} />
         </CellRow>
         {withFreeBalance &&
           <CellRow>
             <Label>full account balance</Label>
-            <ValueWrapper>
-              <TextBalance size='SM' color='white'>{balance?.freeBalance.toString()}</TextBalance>
-              <Text size='SM'>KSM</Text>
-            </ValueWrapper>
+            <BalanceValue token={TOKEN} decimals={DECIMALS} value={balance?.freeBalance} />
           </CellRow>
         }
       </AccountTileCellEnd>
@@ -85,17 +84,8 @@ const TextName = styled(Text)`
   color: ${({ theme }) => theme.colors.gray[50]};
 `
 
-const TextBalance = styled(Text)`
-  margin-right: 4px;
-`
-
 const TextAddress = styled(Text)`
   overflow: hidden;
   max-width: 210px;
   text-overflow: ellipsis;
-`
-
-const ValueWrapper = styled.div`
-  display: flex;
-  align-items: center;
 `

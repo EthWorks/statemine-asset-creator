@@ -34,10 +34,10 @@ const BalanceValue = ({ decimals, token, value }: BalanceValueProps): React.Reac
   const decimalPlaces = balanceValue.substr(balanceValue.length - DECIMALS_DISPLAYED, DECIMALS_DISPLAYED)
 
   return (
-    <>
-      <TextBalance data-testid='balance-value' size='SM' color='white'>{integers}<span>{decimalPlaces}</span></TextBalance>
+    <ValueWrapper data-testid='balance-value' >
+      <TextBalance size='SM' color='white'>{integers}<span>{decimalPlaces}</span></TextBalance>
       <Text size='SM'>{token}</Text>
-    </>
+    </ValueWrapper>
   )
 }
 
@@ -49,4 +49,9 @@ const TextBalance = styled(Text)`
   span {
     color: ${({ theme }) => theme.colors.gray[400]};
   }
+`
+
+const ValueWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `
