@@ -7,7 +7,7 @@ import { Chains, useBalances } from 'use-substrate'
 
 import AvatarIcon from '../../assets/img/avatar2.png'
 import Avatar from '../Avatar/Avatar'
-import BalanceValue from '../BalanceValue'
+import FormatBalance from '../FormatBalance'
 import { Label, Text } from '../typography'
 
 interface Props {
@@ -34,12 +34,12 @@ export function AccountTile({ account, withFreeBalance }: Props): JSX.Element {
       <AccountTileCellEnd>
         <CellRow>
           <Label>transferable balance</Label>
-          <BalanceValue token={TOKEN} decimals={DECIMALS} value={balance?.availableBalance}/>
+          <FormatBalance token={TOKEN} decimalPlaces={DECIMALS} value={balance?.availableBalance}/>
         </CellRow>
         {withFreeBalance &&
           <CellRow>
             <Label>full account balance</Label>
-            <BalanceValue token={TOKEN} decimals={DECIMALS} value={fullBalance}/>
+            <FormatBalance token={TOKEN} decimalPlaces={DECIMALS} value={fullBalance}/>
           </CellRow>
         }
       </AccountTileCellEnd>
