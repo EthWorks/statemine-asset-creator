@@ -111,9 +111,9 @@ describe('New asset modal', () => {
       fillFirstStep()
       assertButtonNotDisabled('Next')
     })
-    
+
     describe('Disables Next button when input is empty', () => {
-      ;['Asset name', 'Asset symbol', 'Asset ID', 'Asset decimals'].forEach(inputName => {
+      ;['Asset name', 'Asset symbol', 'Asset ID', 'Asset decimals', 'Minimum balance'].forEach(inputName => {
         it(`for ${inputName}`, async () => {
           fillInput(inputName, '')
 
@@ -121,7 +121,7 @@ describe('New asset modal', () => {
         })
       })
     })
-    
+
     ;['Asset name', 'Asset symbol'].forEach(inputName => {
       describe(inputName, () => {
         it('does not allow to exceed StringLimit', async () => {
@@ -146,20 +146,6 @@ describe('New asset modal', () => {
     })
 
     describe('Asset id', () => {
-      it('does not allow non numeric values', async () => {
-        fillInput('Asset ID', '12345invalid')
-
-        await assertInputError('Asset ID', 'Value must be a positive number')
-        assertButtonDisabled('Next')
-      })
-
-      it('allows only positive numbers', async () => {
-        fillInput('Asset ID', -1)
-
-        await assertInputError('Asset ID', 'Value must be a positive number')
-        assertButtonDisabled('Next')
-      })
-
       it('accepts only unique id values', async () => {
         fillInput('Asset ID', mockUseAssets[0].id)
 

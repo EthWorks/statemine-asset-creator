@@ -2,7 +2,7 @@ import { act, screen, within } from '@testing-library/react'
 import React from 'react'
 
 import Home from '../pages/index'
-import { assertNoButton, assertText, clickButton, renderWithTheme, setLocalStorage } from './helpers'
+import { assertText, clickButton, renderWithTheme, setLocalStorage } from './helpers'
 import {
   aliceAccount,
   bobAccount,
@@ -40,7 +40,6 @@ describe('Home', () => {
   it('displays kusama balance of selected account', async () => {
     renderWithTheme(<Home/>)
 
-    screen.getByRole('heading', { name: /welcome to Statemine/i })
     const activeAccountContainer = screen.getByTestId('active-account-container')
     expect(activeAccountContainer).toHaveTextContent(bobAccount.address)
 
@@ -49,11 +48,9 @@ describe('Home', () => {
 
   it('opens create asset modal', async () => {
     renderWithTheme(<Home/>)
-
     clickButton('Create new asset')
 
     await assertText('Create asset')
-    assertNoButton('Create new asset')
 
     await screen.findByLabelText('Asset name')
     await screen.findByLabelText('Asset symbol')
