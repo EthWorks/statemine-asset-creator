@@ -11,7 +11,9 @@ import { NumericInput, TextInput } from '../FormElements'
 import { useNewAssetModal } from './context/useNewAssetModal'
 
 export function FirstStep({ onNext }: ModalStep): JSX.Element {
-  const { assetName, setAssetName, assetNameError, setAssetNameError, assetId, assetIdError, setAssetIdError, assetSymbol, assetSymbolError, setAssetSymbolError, setAssetId, setAssetSymbol, setAssetDecimals, assetDecimals, stringLimit } = useNewAssetModal()
+  const { assetName, setAssetName, assetNameError, setAssetNameError, assetId, assetIdError, setAssetIdError, assetSymbol,
+    assetSymbolError, setAssetSymbolError, setAssetId, setAssetSymbol, setAssetDecimals, minBalance, setMinBalance,
+    assetDecimals, stringLimit } = useNewAssetModal()
   const existingAssets = useAssets(Chains.Statemine)
 
   const clearErrors = useCallback(() => {
@@ -20,7 +22,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
     setAssetIdError(undefined)
   }, [setAssetNameError, setAssetSymbolError, setAssetIdError])
 
-  const isFilled = !!assetName && !!assetSymbol && !!assetId && !!assetDecimals
+  const isFilled = !!assetName && !!assetSymbol && !!assetId && !!assetDecimals && !!minBalance
   const isValid = !assetNameError && !assetSymbolError && !assetIdError
   const isDisabled = !isFilled || !isValid
 
@@ -85,6 +87,13 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
         label="Asset ID"
         id="asset-ID"
         inputType='NATURAL'
+      />
+      <NumericInput
+        value={minBalance}
+        onChange={setMinBalance}
+        label="Minimum balance"
+        id="min-balance"
+        inputType='POSITIVE'
       />
       <ButtonPrimary type='submit' disabled={isDisabled}>Next</ButtonPrimary>
     </form>

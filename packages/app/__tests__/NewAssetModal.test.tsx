@@ -37,6 +37,7 @@ const fillFirstStep = (): void => {
   fillInput('Asset symbol', 'KSM')
   fillInput('Asset decimals', '18')
   fillInput('Asset ID', '7')
+  fillInput('Minimum balance', '300')
 }
 
 const fillAllForms = (): void => {
@@ -63,6 +64,10 @@ jest.mock('use-substrate', () => ({
 const mockedStringLimit = mockUseAssetsConstants.stringLimit.toNumber()
 
 describe('New asset modal', () => {
+  beforeEach(() => {
+    mockTransaction.mockClear()
+  })
+
   it('saves data in context', async () => {
     renderModal()
 
@@ -76,6 +81,7 @@ describe('New asset modal', () => {
     await assertText('KSM')
     await assertText('18')
     await assertText('7')
+    await assertText('300')
   })
 
   it('closes modal and resets data on confirm', async () => {
@@ -107,7 +113,7 @@ describe('New asset modal', () => {
     })
 
     describe('Disables Next button when input is empty', () => {
-      ;['Asset name', 'Asset symbol', 'Asset ID', 'Asset decimals'].forEach(inputName => {
+      ;['Asset name', 'Asset symbol', 'Asset ID', 'Asset decimals', 'Minimum balance'].forEach(inputName => {
         it(`for ${inputName}`, async () => {
           fillInput(inputName, '')
 

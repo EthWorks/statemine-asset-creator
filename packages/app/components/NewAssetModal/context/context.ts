@@ -19,6 +19,8 @@ export interface NewAssetForm {
   assetSymbol: string,
   setAssetSymbol: stringSetter,
   assetSymbolError?: string,
+  minBalance: string,
+  setMinBalance: stringSetter,
   setAssetSymbolError: stringOrUndefinedSetter,
   stringLimit: BN | undefined,
 }
@@ -37,6 +39,8 @@ export const NewAssetModalContext = createContext<NewAssetForm>({
   assetSymbol: '',
   setAssetSymbol: noop,
   assetSymbolError: undefined,
+  minBalance: '',
+  setMinBalance: noop,
   setAssetSymbolError: noop,
   stringLimit: undefined
 })
