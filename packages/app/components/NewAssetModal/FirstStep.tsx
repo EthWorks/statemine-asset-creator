@@ -1,31 +1,36 @@
 import type { Asset } from 'use-substrate'
 import type { ModalStep } from './types'
 
-import { useCallback, useEffect } from 'react'
+import { FormEvent, useCallback, useEffect } from 'react'
 
 import { Chains, useAssets } from 'use-substrate'
 
+import { ButtonPrimary } from '../button/Button'
 import { CustomInput } from '../FormElements'
 import { useNewAssetModal } from './context/useNewAssetModal'
 
 export function FirstStep({ onNext }: ModalStep): JSX.Element {
   const { assetName, setAssetName, assetNameError, setAssetNameError, assetId, assetIdError, setAssetIdError, assetSymbol, assetSymbolError, setAssetSymbolError, setAssetId, setAssetSymbol, setAssetDecimals, assetDecimals, stringLimit } = useNewAssetModal()
   const existingAssets = useAssets(Chains.Statemine)
-    
+
   const clearErrors = useCallback(() => {
     setAssetNameError(undefined)
     setAssetSymbolError(undefined)
     setAssetIdError(undefined)
   }, [setAssetNameError, setAssetSymbolError, setAssetIdError])
 
+  const isFilled = !!assetName && !!assetSymbol && !!assetId && !!assetDecimals
+  const isValid = !assetNameError && !assetSymbolError && !assetIdError
+  const isDisabled = !isFilled || !isValid
+
   const isValidInteger = useCallback(() => {
     const integer = +assetId
 
     return !!(integer && integer > 0)
   }, [assetId])
-    
+
   const isAssetIdUnique = useCallback(() => !existingAssets?.find(({ id }: Asset) => id.toString() === assetId), [existingAssets, assetId])
-    
+
   useEffect(() => {
     if(!stringLimit) {
       return
@@ -46,20 +51,21 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
     if(assetId && !isValidInteger()) {
       setAssetIdError('Value must be a positive number')
     }
-    
+
     if(assetId && isValidInteger() && !isAssetIdUnique()) {
       setAssetIdError('Value cannot match an already-existing asset id.')
     }
   }, [assetId, assetName, assetSymbol, clearErrors, setAssetNameError, setAssetSymbolError, setAssetIdError, stringLimit, isValidInteger, isAssetIdUnique])
 
-  const _onNext = useCallback(() => {
+  const _onNext = useCallback((e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     if(stringLimit && !assetNameError && !assetSymbolError) {
       onNext()
     }
   }, [assetNameError, assetSymbolError, onNext, stringLimit])
 
   return (
-    <>
+    <form onSubmit={_onNext}>
       <CustomInput
         error={assetNameError}
         value={assetName}
@@ -87,7 +93,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
         label="Asset ID"
         id="asset-ID"
       />
-      <button onClick={_onNext}>Next</button>
-    </>
+      <ButtonPrimary type='submit' disabled={isDisabled}>Next</ButtonPrimary>
+    </form>
   )
 }

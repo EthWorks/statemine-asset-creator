@@ -6,7 +6,7 @@ import { useNewAssetModal } from './context/useNewAssetModal'
 
 export function SecondStep({ onNext }: ModalStep): JSX.Element {
   const { assetName, assetSymbol, assetDecimals, assetId } = useNewAssetModal()
-  const { api } = useApi(Chains.Kusama)
+  const { api } = useApi(Chains.Statemine)
   const { activeAccount } = useActiveAccount()
 
   const txs = activeAccount ? [
