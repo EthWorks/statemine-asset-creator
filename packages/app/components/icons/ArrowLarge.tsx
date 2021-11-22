@@ -12,7 +12,7 @@ export const ArrowLarge = ({ className, direction, height, width }: ArrowLargePr
   <ArrowWrapper className={className} width={width} height={height} viewBox="0 0 25 24" fill="none" color="currentColor">
     <ArrowIconPath
       d="M17.5 8L21.5 12M21.5 12L17.5 16M21.5 12H3.5"
-      stroke="#E6007A"
+      stroke="currentColor"
       troke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
@@ -20,6 +20,8 @@ export const ArrowLarge = ({ className, direction, height, width }: ArrowLargePr
     />
   </ArrowWrapper>
 )
+
+// #E6007A
 
 const ArrowWrapper = styled.svg`
   preserveAspectRatio: none;

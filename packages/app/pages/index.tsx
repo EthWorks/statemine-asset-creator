@@ -29,6 +29,7 @@ const Home: NextPage =  () => {
   const balances = useBalances(account?.toString(), Chains.Kusama)
   const statemineBalances = useBalances(account?.toString(), Chains.Statemine)
   const { web3Enable } = useAccounts()
+  const assets = ['asset']
 
   const onExtensionActivated = (): void => {
     setConnectWalletModalOpen(false)
@@ -58,19 +59,25 @@ const Home: NextPage =  () => {
           </div>
         }
       >
-        <PageBox size='large' title='Created assets'>
-          <StyledCard padding='m'>
-            <StyledCardTitle size="SM" color="white">You haven’t created any assets yet.</StyledCardTitle>
-            <Text size="SM">Here you can create fungible assets, which will be governed by you and accounts you
-              designate.</Text>
-            <div>
-              {account 
-                ? <StyledButton onClick={toggleNewAssetModalOpen}>Create new asset</StyledButton>
-                : <StyledButton onClick={toggleConnectWalletModalOpen} large>Connect to create your asset</StyledButton>
-              }
-            </div>
-          </StyledCard>
-        </PageBox>
+        {assets.length > 0
+          ? <PageBox size='full' title='Created assets [5]'>
+              <CreatedAssets/>
+            </PageBox>
+          : <PageBox size='large' title='Created assets'>
+            <StyledCard padding='m'>
+              <StyledCardTitle size="SM" color="white">You haven’t created any assets yet.</StyledCardTitle>
+              <Text size="SM">Here you can create fungible assets, which will be governed by you and accounts you
+                designate.</Text>
+              <div>
+                {account
+                  ? <StyledButton onClick={toggleNewAssetModalOpen}>Create new asset</StyledButton>
+                  :
+                  <StyledButton onClick={toggleConnectWalletModalOpen} large>Connect to create your asset</StyledButton>
+                }
+              </div>
+            </StyledCard>
+          </PageBox>
+        }
         <PageBox size='large' title='In your wallet'>
           <StyledCard padding='m'>
             <StyledCardTitle size="SM" color="white">You don’t have any assets in your wallet</StyledCardTitle>
@@ -92,7 +99,6 @@ const Home: NextPage =  () => {
             Statemine Balance: {statemineBalances?.freeBalance.toString()}
           </p>
         </div>
-        <CreatedAssets/>
       </PageTemplate>
     </>
   )
