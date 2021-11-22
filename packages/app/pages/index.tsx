@@ -1,13 +1,15 @@
 import type { NextPage } from 'next'
 
 import Head from 'next/head'
+import { useEffect } from 'react'
 import styled from 'styled-components'
 
-import { Chains, useAccounts, useActiveAccount, useBalances } from 'use-substrate'
+import { useAccounts, useActiveAccount } from 'use-substrate'
 
 import background from '../assets/background.svg'
 import {
   AccountSelectModal,
+  ActiveAccountBar,
   ButtonPrimary,
   Card,
   ConnectWalletModal,
@@ -17,17 +19,18 @@ import {
   PageTemplate,
   Text
 } from '../components'
-import styles from '../styles/Home.module.css'
-import { extensionActivated, shouldSelectAccount, useAsync, useToggle } from '../utils'
+import { extensionActivated, useAsync, useToggle } from '../utils'
 
 const Home: NextPage =  () => {
   const { activeAccount: account } = useActiveAccount()
   const [isNewAssetModalOpen, toggleNewAssetModalOpen] = useToggle()
   const [isConnectWalletModalOpen, toggleConnectWalletModalOpen, setConnectWalletModalOpen] = useToggle(!extensionActivated())
-  const [isAccountSelectModalOpen, toggleSelectAccountModalOpen, setSelectAccountModalOpen] = useToggle(shouldSelectAccount())
+  const [isAccountSelectModalOpen, toggleSelectAccountModalOpen, setSelectAccountModalOpen] = useToggle()
 
-  const balances = useBalances(account?.toString(), Chains.Kusama)
-  const statemineBalances = useBalances(account?.toString(), Chains.Statemine)
+  useEffect(() => {
+    setSelectAccountModalOpen(extensionActivated() && !account)
+  }, [account, setSelectAccountModalOpen])
+
   const { web3Enable } = useAccounts()
 
   const onExtensionActivated = (): void => {
@@ -53,8 +56,11 @@ const Home: NextPage =  () => {
         background={background}
         title="Dashboard"
         header={
-          <div>
-            {!account && <ButtonPrimary onClick={toggleConnectWalletModalOpen}>Connect</ButtonPrimary>}
+          <div data-testid='page-header'>
+            {account 
+              ? <ActiveAccountBar onClick={toggleSelectAccountModalOpen}/>
+              : <ButtonPrimary onClick={toggleConnectWalletModalOpen}>Connect</ButtonPrimary>
+            }
           </div>
         }
       >
@@ -64,9 +70,10 @@ const Home: NextPage =  () => {
             <Text size="SM">Here you can create fungible assets, which will be governed by you and accounts you
               designate.</Text>
             <div>
-              {account 
+              {account
                 ? <StyledButton onClick={toggleNewAssetModalOpen}>Create new asset</StyledButton>
-                : <StyledButton onClick={toggleConnectWalletModalOpen} large>Connect to create your asset</StyledButton>
+                :
+                <StyledButton onClick={toggleConnectWalletModalOpen} large>Connect to create your asset</StyledButton>
               }
             </div>
           </StyledCard>
@@ -79,19 +86,9 @@ const Home: NextPage =  () => {
         </PageBox>
 
         <NewAssetModal isOpen={isNewAssetModalOpen} closeModal={toggleNewAssetModalOpen}/>
-        <ConnectWalletModal isOpen={isConnectWalletModalOpen} closeModal={toggleConnectWalletModalOpen} onExtensionActivated={onExtensionActivated}/>
+        <ConnectWalletModal isOpen={isConnectWalletModalOpen} closeModal={toggleConnectWalletModalOpen}
+          onExtensionActivated={onExtensionActivated}/>
         <AccountSelectModal isOpen={isAccountSelectModalOpen} closeModal={toggleSelectAccountModalOpen}/>
-        <div data-testid='active-account-container'>
-          <p>
-            {account?.toString()}
-          </p>
-          <p className={styles.description}>
-            Balance: {balances?.freeBalance.toString()}
-          </p>
-          <p className={styles.description}>
-            Statemine Balance: {statemineBalances?.freeBalance.toString()}
-          </p>
-        </div>
         <CreatedAssets/>
       </PageTemplate>
     </>
