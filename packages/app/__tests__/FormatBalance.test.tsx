@@ -4,7 +4,7 @@ import BN from 'bn.js'
 import FormatBalance from '../components/FormatBalance'
 import { renderWithTheme } from './helpers'
 
-describe('BalanceValue component', () => {
+describe('FormatBalance component', () => {
   it('formats data', async () => {
     renderWithTheme(<FormatBalance value={new BN('1234567891')} token='KSM' decimalPlaces={6} />)
 
