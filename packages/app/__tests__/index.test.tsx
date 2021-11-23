@@ -2,6 +2,7 @@ import { act, screen, within } from '@testing-library/react'
 import React from 'react'
 
 import Home from '../pages/index'
+import { mockUseBestNumber } from './mocks/mockUseBestNumber'
 import { assertText, clickButton, renderWithTheme, setLocalStorage } from './helpers'
 import {
   aliceAccount,
@@ -24,6 +25,7 @@ jest.mock('use-substrate', () => ({
   useApi: () => mockUseApi,
   useAssets: () => mockUseAssets,
   useAssetsConstants: () => mockUseAssetsConstants,
+  useBestNumber: () => mockUseBestNumber,
   useBalances: () => mockUseBalances,
   Chains: () => mockChains,
   useActiveAccount: () => ({
