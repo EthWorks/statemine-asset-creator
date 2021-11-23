@@ -8,7 +8,7 @@ export const CreatedAssets: FC = () => {
   const { activeAccounts } = useActiveAccounts()
   const assets = useAssets(Chains.Statemine, { owner: activeAccounts[Chains.Statemine] })
 
-  if(!assets) {
+  if (!assets || !activeAccounts[Chains.Statemine]) {
     return null
   }
 
