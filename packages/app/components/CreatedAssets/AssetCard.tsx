@@ -8,23 +8,33 @@ interface Props {
   asset: Asset
 }
 
+import { useRef } from 'react'
 import styled from 'styled-components'
 
+import { useOutsideClick,useToggle } from '../../utils'
+import BalanceValue from '../AccountSelect/BalanceValue'
 import { ButtonSquare } from '../button/Button'
 import { Card } from '../Card'
 import { Text } from '../typography'
+import { AssetsCardMenu } from './AssetsCardMenu'
 
 export const AssetCard: FC<Props> = ({ asset }) => {
   const { name, id, decimals, supply, admin, issuer, freezer } = asset
   const rolesByAccount = groupRoles({ admin, issuer, freezer })
+  const [isOpen, toggleOpen, setIsOpen] = useToggle()
+  const cardMenuContainerRef = useRef(null)
+  useOutsideClick(cardMenuContainerRef, () => setIsOpen(false))
 
   return (
     <StyledCard padding='s' data-testid={`asset-card-${id.toNumber()}`}>
       <CardHeader>
         <CardTitle size='SM'>{name}</CardTitle>
-        <StyledButtonSquare>
-          <Dot />
-        </StyledButtonSquare>
+        <CardMenuContainer ref={cardMenuContainerRef}>
+          <StyledButtonSquare onClick={toggleOpen}>
+            <Dot />
+          </StyledButtonSquare>
+          <AssetsCardMenu isOpen={isOpen} />
+        </CardMenuContainer>
       </CardHeader>
       <CardContent>
         <Circle>
@@ -37,7 +47,7 @@ export const AssetCard: FC<Props> = ({ asset }) => {
           </CardInfo>
           <CardInfo>
             <Text size='XXS' bold>total supply:</Text>
-            <Text size='XS' color='white'>{supply.toString()} KSM</Text>
+            <BalanceValue token='KSM' decimals={decimals} value={supply} />
           </CardInfo>
           <CardInfo>
             <Text size='XXS' bold>decimals:</Text>
@@ -52,6 +62,7 @@ export const AssetCard: FC<Props> = ({ asset }) => {
 }
 
 const StyledCard = styled(Card)`
+  overflow: hidden;
   min-height: 276px;
 `
 
@@ -142,4 +153,8 @@ const Dot = styled.span`
   &:after {
     transform: translate(-50%, calc(-50% + 6px));
   }
+`
+
+const CardMenuContainer = styled.div`
+  position: relative;
 `

@@ -3,7 +3,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import styled from 'styled-components'
 
-import { Chains, useAccounts, useActiveAccount, useBalances } from 'use-substrate'
+import { Chains, useAccounts, useActiveAccount, useAssets, useBalances } from 'use-substrate'
 
 import background from '../assets/background.svg'
 import {
@@ -29,7 +29,9 @@ const Home: NextPage =  () => {
   const balances = useBalances(account?.toString(), Chains.Kusama)
   const statemineBalances = useBalances(account?.toString(), Chains.Statemine)
   const { web3Enable } = useAccounts()
-  const assets = ['asset']
+  const assets = useAssets(Chains.Statemine)
+  // const { activeAccount } =useActiveAccount()
+  // const assets = useAssets(Chains.Statemine, {owner: activeAccount})
 
   const onExtensionActivated = (): void => {
     setConnectWalletModalOpen(false)
@@ -59,10 +61,10 @@ const Home: NextPage =  () => {
           </div>
         }
       >
-        {assets.length > 0
-          ? <PageBox size='full' title='Created assets [5]'>
-              <CreatedAssets/>
-            </PageBox>
+        {assets?.length
+          ? <PageBox size='full' title={`Created assets [ ${assets.length} ]`}>
+            <CreatedAssets assets={assets}/>
+          </PageBox>
           : <PageBox size='large' title='Created assets'>
             <StyledCard padding='m'>
               <StyledCardTitle size="SM" color="white">You haven’t created any assets yet.</StyledCardTitle>

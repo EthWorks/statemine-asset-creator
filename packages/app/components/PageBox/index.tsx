@@ -6,7 +6,7 @@ import { Text } from '../typography'
 export interface PageBoxProps {
   children: ReactNode,
   size: 'large' | 'full',
-  title?: string
+  title?: ReactNode
 }
 
 export const PageBox = ({ children, size, title }:PageBoxProps): JSX.Element => (
