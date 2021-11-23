@@ -6,6 +6,7 @@ import { assertText, clickButton, renderWithTheme, setLocalStorage } from './hel
 import {
   aliceAccount,
   bobAccount,
+  bobAccountId,
   charlieAccount,
   mockChains,
   mockUseAccounts,
@@ -17,6 +18,7 @@ import {
   mockWeb3Enable
 } from './mocks'
 
+let mockActiveAccount = bobAccountId
 jest.mock('use-substrate', () => ({
   useAccounts: () => mockUseAccounts,
   useApi: () => mockUseApi,
@@ -24,7 +26,10 @@ jest.mock('use-substrate', () => ({
   useAssetsConstants: () => mockUseAssetsConstants,
   useBalances: () => mockUseBalances,
   Chains: () => mockChains,
-  useActiveAccount: () => mockUseActiveAccount
+  useActiveAccount: () => ({
+    ...mockUseActiveAccount,
+    activeAccount: mockActiveAccount,
+  })
 }))
 
 describe('Home', () => {
@@ -32,7 +37,6 @@ describe('Home', () => {
     act(() => {
       mockWeb3Enable.mockClear()
       localStorage.clear()
-      setLocalStorage('activeAccount', bobAccount.address)
       setLocalStorage('extensionActivated', 'true')
     })
   })
@@ -40,10 +44,10 @@ describe('Home', () => {
   it('displays kusama balance of selected account', async () => {
     renderWithTheme(<Home/>)
 
-    const activeAccountContainer = screen.getByTestId('active-account-container')
+    const activeAccountContainer = screen.getByTestId('active-account-bar')
     expect(activeAccountContainer).toHaveTextContent(bobAccount.address)
 
-    await assertText('Balance: 3600')
+    await assertText('KUSAMA 3600 KSM')
   })
 
   it('opens create asset modal', async () => {
@@ -65,6 +69,7 @@ describe('Home', () => {
       await assertText('Dashboard')
       await assertText('Created assets [2]')
     })
+    
     describe('asset cards', () => {
       it('displays main asset infos', async () => {
         renderWithTheme(<Home/>)
@@ -107,6 +112,27 @@ describe('Home', () => {
         within(secondAssetAdmin).getByText('admin, issuer, freezer')
         within(secondAssetAdmin).getByText(bobAccount.address)
       })
+    })
+  })
+  
+  describe('page header', () => {
+    it('displays Connect button when no active account', async () => {
+      mockActiveAccount = undefined
+      renderWithTheme(<Home/>)
+      const header = await screen.findByTestId('page-header')
+
+      await within(header).findByRole('button', { name: 'Connect' })
+    })
+    
+    it('displays Active Account Bar when account selected', async () => {
+      renderWithTheme(<Home/>)
+      const header = await screen.findByTestId('page-header')
+
+      await within(header).findByTestId('active-account-bar')
+    })
+
+    afterEach(() => {
+      mockActiveAccount = bobAccountId
     })
   })
 })

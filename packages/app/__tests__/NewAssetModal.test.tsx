@@ -4,15 +4,18 @@ import React from 'react'
 import { NewAssetModal } from '../components'
 import { useToggle } from '../utils'
 import {
+  assertButtonDisabled,
+  assertButtonNotDisabled,
   assertInputError,
+  assertInputValue,
   assertNoInputError,
-  assertNoText,
   assertText,
   assertTextInput,
   clickButton,
   fillInput,
   findAndClickButton,
   renderWithTheme,
+  typeInInput,
 } from './helpers'
 import { mockChains, mockUseActiveAccount, mockUseApi, mockUseAssets, mockUseAssetsConstants } from './mocks'
 
@@ -36,6 +39,7 @@ const fillFirstStep = (): void => {
   fillInput('Asset symbol', 'KSM')
   fillInput('Asset decimals', '18')
   fillInput('Asset ID', '7')
+  fillInput('Minimum balance', '300')
 }
 
 const fillAllForms = (): void => {
@@ -45,6 +49,10 @@ const fillAllForms = (): void => {
   clickButton('Next')
 
   clickButton('Confirm')
+}
+
+const clearInput = (inputName: string) => {
+  fillInput(inputName, '')
 }
 
 const mockTransaction = jest.fn()
@@ -62,6 +70,10 @@ jest.mock('use-substrate', () => ({
 const mockedStringLimit = mockUseAssetsConstants.stringLimit.toNumber()
 
 describe('New asset modal', () => {
+  beforeEach(() => {
+    mockTransaction.mockClear()
+  })
+
   it('saves data in context', async () => {
     renderModal()
 
@@ -75,6 +87,7 @@ describe('New asset modal', () => {
     await assertText('KSM')
     await assertText('18')
     await assertText('7')
+    await assertText('300')
   })
 
   it('closes modal and resets data on confirm', async () => {
@@ -90,7 +103,7 @@ describe('New asset modal', () => {
     assertTextInput('Asset ID', '')
   })
 
-  it('sends transaction on confirm',  async () => {
+  it('sends transaction on confirm', async () => {
     renderModal()
     fillAllForms()
 
@@ -102,6 +115,17 @@ describe('New asset modal', () => {
       renderModal()
       clickButton('Create new asset')
       fillFirstStep()
+      assertButtonNotDisabled('Next')
+    })
+
+    describe('Disables Next button when input is empty', () => {
+      ;['Asset name', 'Asset symbol', 'Asset ID', 'Asset decimals', 'Minimum balance'].forEach(inputName => {
+        it(`for ${inputName}`, async () => {
+          fillInput(inputName, '')
+
+          assertButtonDisabled('Next')
+        })
+      })
     })
 
     ;['Asset name', 'Asset symbol'].forEach(inputName => {
@@ -110,40 +134,49 @@ describe('New asset modal', () => {
           fillInput(inputName, 'a'.repeat(mockedStringLimit + 1))
           await assertInputError(inputName, `Maximum length of ${mockedStringLimit} characters exceeded`)
 
-          clickButton('Next')
-          assertNoText('Confirm')
+          assertButtonDisabled('Next')
         })
 
         it('does not display error when asset name length decreased', async () => {
           fillInput(inputName, 'a'.repeat(mockedStringLimit + 1))
           await assertInputError(inputName, `Maximum length of ${mockedStringLimit} characters exceeded`)
 
+          assertButtonDisabled('Next')
+
           fillInput(inputName, 'a'.repeat(mockedStringLimit))
           await assertNoInputError(inputName)
 
-          clickButton('Next')
-          await assertText('Confirm')
+          assertButtonNotDisabled('Next')
         })
       })
     })
 
     describe('Asset id', () => {
-      it('does not allow non numeric values', async () => {
-        fillInput('Asset ID', '12345invalid')
-
-        await assertInputError('Asset ID', 'Value must be a positive number')
-      })
-
-      it('allows only positive numbers', async () => {
-        fillInput('Asset ID', -1)
-
-        await assertInputError('Asset ID', 'Value must be a positive number')
-      })
-
       it('accepts only unique id values', async () => {
         fillInput('Asset ID', mockUseAssets[0].id)
 
         await assertInputError('Asset ID', 'Value cannot match an already-existing asset id.')
+        assertButtonDisabled('Next')
+      })
+    })
+
+    describe('Asset decimals', () => {
+      beforeEach(() => {
+        fillFirstStep()
+        clearInput('Asset decimals')
+      })
+
+      it('allows 0', () => {
+        fillInput('Asset decimals', '0')
+
+        assertInputValue('Asset decimals', '0')
+        assertButtonNotDisabled('Next')
+      })
+
+      it('does not accept decimals', async () => {
+        typeInInput('Asset decimals', '1.5')
+
+        assertInputValue('Asset decimals', '15')
       })
     })
   })
