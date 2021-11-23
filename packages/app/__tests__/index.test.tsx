@@ -47,7 +47,7 @@ describe('Home', () => {
     const activeAccountContainer = screen.getByTestId('active-account-bar')
     expect(activeAccountContainer).toHaveTextContent(bobAccount.address)
 
-    await assertText('KUSAMA 3600 KSM')
+    await assertText('KUSAMA 6000000000000000 KSM')
   })
 
   it('opens create asset modal', async () => {
@@ -69,7 +69,7 @@ describe('Home', () => {
       await assertText('Dashboard')
       await assertText('Created assets [2]')
     })
-    
+
     describe('asset cards', () => {
       it('displays main asset infos', async () => {
         renderWithTheme(<Home/>)
@@ -114,7 +114,7 @@ describe('Home', () => {
       })
     })
   })
-  
+
   describe('page header', () => {
     it('displays Connect button when no active account', async () => {
       mockActiveAccount = undefined
@@ -123,7 +123,7 @@ describe('Home', () => {
 
       await within(header).findByRole('button', { name: 'Connect' })
     })
-    
+
     it('displays Active Account Bar when account selected', async () => {
       renderWithTheme(<Home/>)
       const header = await screen.findByTestId('page-header')
