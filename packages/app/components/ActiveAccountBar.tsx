@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import { Chains, useActiveAccount, useBalances } from 'use-substrate'
+import { Chains, useActiveAccounts, useBalances } from 'use-substrate'
 
 import styles from '../styles/Home.module.css'
 
@@ -9,9 +9,9 @@ interface Props {
 }
 
 export const ActiveAccountBar: FC<Props> = ({ onClick }) => {
-  const { activeAccount } = useActiveAccount()
-  const { freeBalance: kusamaFreeBalance } = useBalances(activeAccount?.toString(), Chains.Kusama) || {}
-  const { freeBalance: statemineFreeBalance } = useBalances(activeAccount?.toString(), Chains.Statemine) || {}
+  const { activeAccounts } = useActiveAccounts()
+  const { freeBalance: kusamaFreeBalance } = useBalances(activeAccounts[Chains.Kusama]?.toString(), Chains.Kusama) || {}
+  const { freeBalance: statemineFreeBalance } = useBalances(activeAccounts[Chains.Statemine]?.toString(), Chains.Statemine) || {}
 
   if (!kusamaFreeBalance || !statemineFreeBalance) return null
     
@@ -21,7 +21,7 @@ export const ActiveAccountBar: FC<Props> = ({ onClick }) => {
       onClick={onClick}
     >
       <p>
-        {activeAccount?.toString()}
+        {activeAccounts[Chains.Kusama]?.toString()}
       </p>
       <p className={styles.description}>
         KUSAMA {kusamaFreeBalance.toString()} KSM

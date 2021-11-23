@@ -1,32 +1,52 @@
 import type { FC } from 'react'
 import type { AccountId } from '@polkadot/types/interfaces'
-import type { ActiveAccountProviderProps } from './types'
+import type { ActiveAccountProviderProps, ActiveAccounts } from './types'
 
 import React, { useEffect, useState } from 'react'
 
+import { Chains } from '../../consts'
 import { isString, localStorageExists } from '../../util/checks'
-import { ActiveAccountContext } from './context'
+import { ActiveAccountsContext } from './context'
 
 export const ActiveAccountProvider: FC<ActiveAccountProviderProps> = ({ children, api }) => {
-  const [activeAccount, setActiveAccount] = useState<AccountId>()
+  const [activeAccounts, setActiveAccounts] = useState<ActiveAccounts>({})
 
   useEffect(() => {
     if (localStorageExists()) {
-      const initValue = localStorage.getItem('activeAccount')
-      setActiveAccount(initValue ? api?.createType('AccountId', initValue) : undefined)
+      const initValue = localStorage.getItem('activeAccounts')
+      const parsed = initValue ? JSON.parse(initValue) : undefined
+      
+      if(!parsed || !api) {
+        setActiveAccounts({})
+
+        return
+      }
+      
+      Object.entries(parsed).map(([chain, accountId]) => {
+        if (isString(accountId)) {
+          parsed[chain] = api.createType('AccountId', accountId)
+        }
+      })
+
+      setActiveAccounts(parsed)
     }
   }, [api])
 
-  const _setActiveAccount = (accountId: AccountId | string): void => {
+  const _setActiveAccounts = (chain: Chains, accountId: AccountId | string): void => {
     if (localStorageExists()) {
-      localStorage.setItem('activeAccount', isString(accountId) ? accountId : accountId.toHuman())
+      const accounts = { ...activeAccounts, [chain]: accountId }
+      localStorage.setItem('activeAccounts', JSON.stringify(accounts))
     }
-    setActiveAccount(isString(accountId) ? api?.createType('AccountId', accountId) : accountId)
+    
+    setActiveAccounts({
+      ...activeAccounts,
+      [chain]: isString(accountId) ? api?.createType('AccountId', accountId) : accountId
+    })
   }
 
   return (
-    <ActiveAccountContext.Provider value={{ activeAccount, setActiveAccount: _setActiveAccount }}>
+    <ActiveAccountsContext.Provider value={{ activeAccounts, setActiveAccounts: _setActiveAccounts }}>
       {children}
-    </ActiveAccountContext.Provider>
+    </ActiveAccountsContext.Provider>
   )
 }

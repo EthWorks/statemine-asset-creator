@@ -1,8 +1,8 @@
 import { createContext } from 'react'
 
-import { UseActiveAccount } from './types'
+import { UseActiveAccounts } from './types'
 
-export const ActiveAccountContext = createContext<UseActiveAccount>({
-  activeAccount: undefined,
-  setActiveAccount: () => {/**/}
+export const ActiveAccountsContext = createContext<UseActiveAccounts>({
+  activeAccounts: {},
+  setActiveAccounts: () => {/**/}
 })

@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 
 import Home from '../pages'
 import { assertText, renderWithTheme, setLocalStorage } from './helpers'
-import { bobAccount, mockChains, mockUseAccounts, mockUseActiveAccount, mockUseApi, mockUseBalances } from './mocks'
+import { bobAccount, mockChains, mockUseAccounts, mockUseActiveAccounts, mockUseApi, mockUseBalances } from './mocks'
 
 jest.mock('use-substrate', () => ({
   useApi: () => mockUseApi,
@@ -11,7 +11,7 @@ jest.mock('use-substrate', () => ({
   useAssets: () => [],
   useBalances: () => mockUseBalances,
   Chains: () => mockChains,
-  useActiveAccount: () => mockUseActiveAccount
+  useActiveAccounts: () => mockUseActiveAccounts
 }))
 
 describe('Active account bar', () => {
