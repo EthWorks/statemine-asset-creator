@@ -16,7 +16,7 @@ const FormatBalance = ({ chainDecimals, token, value }: BalanceValueProps): Reac
 
   return (
     <ValueWrapper data-testid='balance-value'>
-      <TextBalance size='SM' color='white'>{integers}<span>{decimals}</span></TextBalance>
+      <TextBalance size='SM' color='white'>{integers}.<span>{decimals}</span></TextBalance>
       <Text size='SM'>{token}</Text>
     </ValueWrapper>
   )

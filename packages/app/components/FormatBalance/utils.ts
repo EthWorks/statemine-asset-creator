@@ -14,8 +14,7 @@ export function formatBalance(value: BN | undefined, chainDecimals: number): { i
   const balanceWithSeparator = balanceWithPaddedZeroes.substring(0, integerPartLength) + '.' + balanceWithPaddedZeroes.substring(integerPartLength, balanceWithPaddedZeroes.length)
 
   const roundedBalance = roundBalance(balanceWithSeparator, DECIMALS_DISPLAYED)
-  const integers = roundedBalance?.substr(0, roundedBalance.length - DECIMALS_DISPLAYED)
-  const decimals = roundedBalance?.substr(roundedBalance.length - DECIMALS_DISPLAYED, DECIMALS_DISPLAYED)
+  const [integers, decimals] = roundedBalance.split('.')
 
   return { integers, decimals }
 }
