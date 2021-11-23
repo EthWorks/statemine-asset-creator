@@ -1,6 +1,7 @@
 import type { ObservableInput } from 'rxjs'
 import type { ApiRx } from '@polkadot/api'
 import type { DeriveBalancesAll, DeriveBalancesAllAccountData } from '@polkadot/api-derive/types'
+import type { BlockNumber } from '@polkadot/types/interfaces'
 import type { PalletAssetsAssetMetadata } from '@polkadot/types/lookup'
 import type { FetchedAssets, UseApi } from '../../src'
 
@@ -43,6 +44,9 @@ export const mockedKusamaApi: UseApi = {
           votingBalance: createType('Balance', new BN(0)),
           vesting: [],
         }])
+      },
+      chain: {
+        bestNumber: () => from<ObservableInput<BlockNumber>>([createType('BlockNumber', new BN('966'))])
       }
     },
     query: {
