@@ -34,12 +34,12 @@ export function AccountTile({ account, withFreeBalance }: Props): JSX.Element {
       <AccountTileCellEnd>
         <CellRow>
           <Label>transferable balance</Label>
-          <FormatBalance token={TOKEN} decimalPlaces={DECIMALS} value={balance?.availableBalance}/>
+          <FormatBalance token={TOKEN} chainDecimals={DECIMALS} value={balance?.availableBalance}/>
         </CellRow>
         {withFreeBalance &&
           <CellRow>
             <Label>full account balance</Label>
-            <FormatBalance token={TOKEN} decimalPlaces={DECIMALS} value={fullBalance}/>
+            <FormatBalance token={TOKEN} chainDecimals={DECIMALS} value={fullBalance}/>
           </CellRow>
         }
       </AccountTileCellEnd>

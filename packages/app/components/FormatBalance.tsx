@@ -8,7 +8,7 @@ import { Text } from './typography'
 const DECIMALS_DISPLAYED = 4
 
 interface BalanceValueProps {
-  decimalPlaces: number,
+  chainDecimals: number,
   token: string,
   value: BN | undefined
 }
@@ -23,14 +23,14 @@ function padLeadingZeros(balance: BN, decimals: number): string {
   return balanceAsString
 }
 
-const FormatBalance = ({ decimalPlaces, token, value }: BalanceValueProps): React.ReactElement<BalanceValueProps> | null => {
+const FormatBalance = ({ chainDecimals, token, value }: BalanceValueProps): React.ReactElement<BalanceValueProps> | null => {
   const { integers, decimals } = useMemo(() => {
     if (!value) {
       return undefined
     }
     
-    const balanceWithPaddedZeroes = padLeadingZeros(value, decimalPlaces)
-    const integerPartLength = balanceWithPaddedZeroes.length - decimalPlaces
+    const balanceWithPaddedZeroes = padLeadingZeros(value, chainDecimals)
+    const integerPartLength = balanceWithPaddedZeroes.length - chainDecimals
     const balanceWithSeparator = balanceWithPaddedZeroes.substring(0, integerPartLength) + '.' + balanceWithPaddedZeroes.substring(integerPartLength, balanceWithPaddedZeroes.length)
 
     const roundedBalance = roundBalance(balanceWithSeparator, DECIMALS_DISPLAYED)
@@ -38,7 +38,7 @@ const FormatBalance = ({ decimalPlaces, token, value }: BalanceValueProps): Reac
     const decimals = roundedBalance?.substr(roundedBalance.length - DECIMALS_DISPLAYED, DECIMALS_DISPLAYED)
 
     return { integers, decimals }
-  }, [decimalPlaces, value]) || {}
+  }, [chainDecimals, value]) || {}
 
   return (
     <ValueWrapper data-testid='balance-value'>
