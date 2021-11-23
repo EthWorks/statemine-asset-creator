@@ -17,7 +17,7 @@ interface CreatedAssetsProps {
   assets: UseAssets
 }
 
-export const CreatedAssets: FC<CreatedAssetsProps> | null = ({ assets }:CreatedAssetsProps) => {
+export const CreatedAssets: FC<CreatedAssetsProps> = ({ assets }:CreatedAssetsProps) => {
   if(!assets) {
     return null
   }

@@ -15,7 +15,7 @@ export const PageTemplate = ({ background, children, header, title }: PageTempla
   <>
     <PageWrapper>
       <PageBg>
-        <Image src={background} />
+        <Image src={background} alt='' />
       </PageBg>
       {header && <MainHeader>{header}</MainHeader>}
       <PgeTitleWrapper>

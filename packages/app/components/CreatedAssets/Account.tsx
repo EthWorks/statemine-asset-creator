@@ -3,8 +3,8 @@ import type { Role } from './types'
 
 import styled from 'styled-components'
 
-import { Text } from '../typography'
 import { shortAddress } from '../../formaters/formaters'
+import { Text } from '../typography'
 
 interface Props {
   account: string,

@@ -29,9 +29,8 @@ const Home: NextPage =  () => {
   const balances = useBalances(account?.toString(), Chains.Kusama)
   const statemineBalances = useBalances(account?.toString(), Chains.Statemine)
   const { web3Enable } = useAccounts()
-  const assets = useAssets(Chains.Statemine)
-  // const { activeAccount } =useActiveAccount()
-  // const assets = useAssets(Chains.Statemine, {owner: activeAccount})
+  const { activeAccount } =useActiveAccount()
+  const assets = useAssets(Chains.Statemine, {owner: activeAccount})
 
   const onExtensionActivated = (): void => {
     setConnectWalletModalOpen(false)
