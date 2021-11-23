@@ -8,7 +8,7 @@ export function SecondStep({ onNext }: ModalStep): JSX.Element {
   const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
   const { api } = useApi(Chains.Statemine)
   const { activeAccounts } = useActiveAccounts()
-  const activeAccount = activeAccounts[Chains.Statemine]
+  const activeAccount = activeAccounts[Chains.Kusama] //to be changed for Statemine when we have account select
 
   const txs = activeAccount ? [
     api?.tx.assets.create(assetId, activeAccount.toString(), minBalance),
