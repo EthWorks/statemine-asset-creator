@@ -12,7 +12,7 @@ describe('FormatBalance component', () => {
     expect(balanceValue).toHaveTextContent('1,234.5679KSM')
   })
 
-  it('formats when value.length has smaller value than decimals.value', async () => {
+  it('formats when requested decimal places exceed number of digits in value', async () => {
     renderWithTheme(<FormatBalance value={new BN('1234')} token='KSM' decimalPlaces={6} />)
 
     const balanceValue = await screen.findByTestId('balance-value')
@@ -33,7 +33,7 @@ describe('FormatBalance component', () => {
     expect(balanceValue).toHaveTextContent('0.0000TT')
   })
 
-  it('formats for no decimals', async () => {
+  it('formats for zero decimal places', async () => {
     renderWithTheme(<FormatBalance value={new BN('1000000')} token='KSM' decimalPlaces={0} />)
 
     const balanceValue = await screen.findByTestId('balance-value')
