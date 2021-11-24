@@ -10,7 +10,7 @@ import { ModalFooter } from '../Modal/ModalFooter'
 import { Label, Text } from '../typography'
 import { useNewAssetModal } from './context/useNewAssetModal'
 
-export function SecondStep({ onNext }: ModalStep): JSX.Element {
+export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element {
   const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
   const { api } = useApi(Chains.Statemine)
   const { activeAccount } = useActiveAccount()
@@ -45,7 +45,7 @@ export function SecondStep({ onNext }: ModalStep): JSX.Element {
       </InfoContainer>
 
       <ModalFooter contentPosition='between'>
-        <ButtonOutline>
+        <ButtonOutline onClick={onBack}>
           <Arrow direction='left' width='14' height='9' />
           Back
         </ButtonOutline>

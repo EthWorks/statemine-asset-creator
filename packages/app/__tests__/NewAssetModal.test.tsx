@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 
 import { NewAssetModal } from '../components'
@@ -6,11 +6,11 @@ import { useToggle } from '../utils'
 import {
   assertButtonDisabled,
   assertButtonNotDisabled,
+  assertInput,
   assertInputError,
   assertInputValue,
   assertNoInputError,
   assertText,
-  assertTextInput,
   clickButton,
   fillInput,
   findAndClickButton,
@@ -42,6 +42,22 @@ const fillFirstStep = (): void => {
   fillInput('Minimum balance', '300')
 }
 
+const assertFirstStepFilled = () => {
+  assertInput('Asset name', 'kusama')
+  assertInput('Asset symbol', 'KSM')
+  assertInput('Asset decimals', '18')
+  assertInput('Asset ID', '7')
+  assertInput('Minimum balance', '300')
+}
+
+function assertFirstStepEmpty() {
+  assertInput('Asset name', '')
+  assertInput('Asset symbol', '')
+  assertInput('Asset decimals', '')
+  assertInput('Asset ID', '')
+  assertInput('Minimum balance', '')
+}
+
 const fillAllForms = (): void => {
   clickButton('Create new asset')
 
@@ -69,6 +85,16 @@ jest.mock('use-substrate', () => ({
 
 const mockedStringLimit = mockUseAssetsConstants.stringLimit.toNumber()
 
+const closeModal = async () => {
+  const closeButton = await screen.findByTestId('modal-close-button')
+
+  fireEvent.click(closeButton)
+}
+
+async function openModal() {
+  await findAndClickButton('Create new asset')
+}
+
 describe('New asset modal', () => {
   beforeEach(() => {
     mockTransaction.mockClear()
@@ -90,17 +116,41 @@ describe('New asset modal', () => {
     await assertText('300')
   })
 
-  it('closes modal and resets data on confirm', async () => {
+  describe('closes modal and resets data', () => {
+    beforeEach(async () => {
+      renderModal()
+      await openModal()
+      fillFirstStep()
+      clickButton('Next')
+    })
+    
+    it('on confirm', async () => {
+      clickButton('Confirm')
+      await openModal()
+      
+      await assertText('Create asset')
+      assertFirstStepEmpty()
+    })
+    
+    it('on close', async () => {
+      await closeModal()
+      await openModal()
+
+      await assertText('Create asset')
+      assertFirstStepEmpty()
+    })
+  })
+ 
+  it('allows to go back to first step', () => {
     renderModal()
-    fillAllForms()
 
-    await findAndClickButton('Create new asset')
+    clickButton('Create new asset')
 
-    await assertText('Create asset')
-    assertTextInput('Asset name', '')
-    assertTextInput('Asset symbol', '')
-    assertTextInput('Asset decimals', '')
-    assertTextInput('Asset ID', '')
+    fillFirstStep()
+    clickButton('Next')
+    clickButton('Back')
+
+    assertFirstStepFilled()
   })
 
   it('sends transaction on confirm', async () => {
