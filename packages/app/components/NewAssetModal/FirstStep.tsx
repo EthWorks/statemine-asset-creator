@@ -1,16 +1,18 @@
 import type { FormEvent } from 'react'
 import type { Asset } from 'use-substrate'
 import type { ModalStep } from './types'
-import Image from 'next/image'
-import Coin from '../../assets/coin.gif'
 
+import Image from 'next/image'
 import { useCallback, useEffect } from 'react'
 import styled from 'styled-components'
 
 import { Chains, useAssets } from 'use-substrate'
 
+import Coin from '../../assets/coin.gif'
 import { ButtonPrimary } from '../button/Button'
 import { NumericInput, TextInput } from '../FormElements'
+import { Arrow } from '../icons/Arrow'
+import { ModalFooter } from '../Modal/ModalFooter'
 import { useNewAssetModal } from './context/useNewAssetModal'
 
 export function FirstStep({ onNext }: ModalStep): JSX.Element {
@@ -106,7 +108,10 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
         inputType='POSITIVE'
       />
       <ModalFooter>
-        <ButtonPrimary type='submit' disabled={isDisabled}>Next</ButtonPrimary>
+        <ButtonPrimary type='submit' disabled={isDisabled}>
+          Next
+          <Arrow direction='right' width='14' height='9' />
+        </ButtonPrimary>
       </ModalFooter>
     </form>
   )
@@ -128,9 +133,4 @@ const CoinWrapper = styled.div`
     height: 100%;
     object-fit: cover;
   }
-`
-
-const ModalFooter = styled.footer`
-  display: flex;
-  justify-content: flex-end;
 `
