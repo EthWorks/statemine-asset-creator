@@ -1,4 +1,4 @@
-import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 
 import { NewAssetModal } from '../components'
@@ -58,13 +58,31 @@ function assertFirstStepEmpty() {
   assertInput('Minimum balance', '')
 }
 
-const fillAllForms = (): void => {
-  clickButton('Create new asset')
+async function assertSummary() {
+  await assertText('kusama')
+  await assertText('KSM')
+  await assertText('18')
+  await assertText('7')
+  await assertText('300')
+}
+
+const createAsset = async (): Promise<void> => {
+  await openModal()
 
   fillFirstStep()
   clickButton('Next')
 
   clickButton('Confirm')
+}
+
+const closeModal = async () => {
+  const closeButton = await screen.findByTestId('modal-close-button')
+
+  fireEvent.click(closeButton)
+}
+
+const openModal = async (): Promise<void> => {
+  await findAndClickButton('Create new asset')
 }
 
 const clearInput = (inputName: string) => {
@@ -85,16 +103,6 @@ jest.mock('use-substrate', () => ({
 
 const mockedStringLimit = mockUseAssetsConstants.stringLimit.toNumber()
 
-const closeModal = async () => {
-  const closeButton = await screen.findByTestId('modal-close-button')
-
-  fireEvent.click(closeButton)
-}
-
-async function openModal() {
-  await findAndClickButton('Create new asset')
-}
-
 describe('New asset modal', () => {
   beforeEach(() => {
     mockTransaction.mockClear()
@@ -103,17 +111,12 @@ describe('New asset modal', () => {
   it('saves data in context', async () => {
     renderModal()
 
-    clickButton('Create new asset')
-
+    await openModal()
     fillFirstStep()
     clickButton('Next')
 
     await waitFor(() => expect(screen.getByText('Confirm')).toBeTruthy())
-    await assertText('kusama')
-    await assertText('KSM')
-    await assertText('18')
-    await assertText('7')
-    await assertText('300')
+    await assertSummary()
   })
 
   describe('closes modal and resets data', () => {
@@ -141,11 +144,10 @@ describe('New asset modal', () => {
     })
   })
  
-  it('allows to go back to first step', () => {
+  it('allows to go back to first step', async () => {
     renderModal()
 
-    clickButton('Create new asset')
-
+    await openModal()
     fillFirstStep()
     clickButton('Next')
     clickButton('Back')
@@ -155,7 +157,7 @@ describe('New asset modal', () => {
 
   it('sends transaction on confirm', async () => {
     renderModal()
-    fillAllForms()
+    await act(async () => await createAsset())
 
     await waitFor(() => expect(mockTransaction).toBeCalled())
   })
