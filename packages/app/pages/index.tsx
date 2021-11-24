@@ -67,7 +67,7 @@ const Home: NextPage = () => {
         }
       >
         {assets?.length
-          ? <PageBox size='full' title={`Created assets [ ${assets.length} ]`}>
+          ? <PageBox size='full' title={`Created assets [${assets.length}]`}>
             <CreatedAssets assets={assets}/>
           </PageBox>
           : <PageBox size='large' title='Created assets'>

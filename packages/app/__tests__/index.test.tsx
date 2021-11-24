@@ -1,13 +1,13 @@
+import type { UseAssets } from 'use-substrate'
+
 import { act, screen, within } from '@testing-library/react'
 import React from 'react'
 
 import Home from '../pages/index'
 import { assertText, clickButton, renderWithTheme, setLocalStorage } from './helpers'
 import {
-  aliceAccount,
   bobAccount,
   bobAccountId,
-  charlieAccount,
   mockChains,
   mockUseAccounts,
   mockUseActiveAccount,
@@ -15,14 +15,18 @@ import {
   mockUseAssets,
   mockUseAssetsConstants,
   mockUseBalances,
-  mockWeb3Enable
+  mockWeb3Enable,
+  shortenedAliceAddress,
+  shortenedBobAddress,
+  shortenedCharlieAddress
 } from './mocks'
 
+let mockAssets: UseAssets = []
 let mockActiveAccount = bobAccountId
 jest.mock('use-substrate', () => ({
   useAccounts: () => mockUseAccounts,
   useApi: () => mockUseApi,
-  useAssets: () => mockUseAssets,
+  useAssets: () => mockAssets,
   useAssetsConstants: () => mockUseAssetsConstants,
   useBalances: () => mockUseBalances,
   Chains: () => mockChains,
@@ -63,6 +67,14 @@ describe('Home', () => {
   })
 
   describe('created asset list', () => {
+    beforeEach(() => {
+      mockAssets = mockUseAssets
+    })
+
+    afterEach(() => {
+      mockAssets = []
+    })
+
     it('shows created assets amount', async () => {
       renderWithTheme(<Home/>)
 
@@ -81,14 +93,14 @@ describe('Home', () => {
         within(firstAssetCard).getByText('Bob\'s Asset')
         within(secondAssetCard).getByText('Bob\'s Asset 2')
 
-        within(firstAssetCard).getByText('id: 9')
-        within(secondAssetCard).getByText('id: 11')
+        expect(firstAssetCard).toHaveTextContent('id:9')
+        expect(secondAssetCard).toHaveTextContent('id:11')
+        
+        expect(firstAssetCard).toHaveTextContent('total supply:1,000.0000KSM')
+        expect(secondAssetCard).toHaveTextContent('total supply:876.6000KSM')
 
-        within(firstAssetCard).getByText('total supply: 100000 KSM')
-        within(secondAssetCard).getByText('total supply: 8766 KSM')
-
-        within(firstAssetCard).getByText('decimals: 18')
-        within(secondAssetCard).getByText('decimals: 12')
+        expect(firstAssetCard).toHaveTextContent('decimals:18')
+        expect(secondAssetCard).toHaveTextContent('decimals:12')
       })
 
       it('displays user roles', async () => {
@@ -100,17 +112,17 @@ describe('Home', () => {
 
         const firstAssetAdmin = within(firstAssetCard).getByTestId('role-admin')
         within(firstAssetAdmin).getByText('admin')
-        within(firstAssetAdmin).getByText(bobAccount.address)
+        within(firstAssetAdmin).getByText(shortenedBobAddress)
         const firstAssetIssuer = within(firstAssetCard).getByTestId('role-issuer')
         within(firstAssetIssuer).getByText('issuer')
-        within(firstAssetIssuer).getByText(aliceAccount.address)
+        within(firstAssetIssuer).getByText(shortenedAliceAddress)
         const firstAssetFreezer = within(firstAssetCard).getByTestId('role-freezer')
         within(firstAssetFreezer).getByText('freezer')
-        within(firstAssetFreezer).getByText(charlieAccount.address)
+        within(firstAssetFreezer).getByText(shortenedCharlieAddress)
 
         const secondAssetAdmin = within(secondAssetCard).getByTestId('role-admin-issuer-freezer')
         within(secondAssetAdmin).getByText('admin, issuer, freezer')
-        within(secondAssetAdmin).getByText(bobAccount.address)
+        within(secondAssetAdmin).getByText(shortenedBobAddress)
       })
     })
   })
