@@ -4,6 +4,7 @@ import React from 'react'
 import { Chains as mockChains } from 'use-substrate'
 
 import Home from '../pages/index'
+import { mockUseBestNumber } from './mocks/mockUseBestNumber'
 import { assertText, clickButton, renderWithTheme, setLocalStorage } from './helpers'
 import {
   aliceAccount,
@@ -25,6 +26,7 @@ jest.mock('use-substrate', () => ({
   useApi: () => mockUseApi,
   useAssets: () => mockUseAssets,
   useAssetsConstants: () => mockUseAssetsConstants,
+  useBestNumber: () => mockUseBestNumber,
   useBalances: () => mockUseBalances,
   Chains: () => mockChains,
   useActiveAccounts: () => ({
@@ -45,10 +47,9 @@ describe('Home', () => {
   it('displays kusama balance of selected account', async () => {
     renderWithTheme(<Home/>)
 
-    const activeAccountContainer = screen.getByTestId('active-account-bar')
+    const activeAccountContainer = await screen.findByTestId('active-account-bar')
     expect(activeAccountContainer).toHaveTextContent(bobAccount.address)
-
-    await assertText('KUSAMA 6000000000000000 KSM')
+    expect(activeAccountContainer).toHaveTextContent('Kusama6,000.0000KSM')
   })
 
   it('opens create asset modal', async () => {

@@ -3,6 +3,7 @@ import React from 'react'
 
 import Home from '../pages'
 import { POLKADOT_EXTENSION_LINK } from '../utils'
+import { mockUseBestNumber } from './mocks/mockUseBestNumber'
 import {
   assertLinkByText,
   assertLocalStorage,
@@ -26,6 +27,7 @@ jest.mock('use-substrate', () => ({
   useApi: () => mockUseApi,
   useAssets: () => mockUseAssets,
   useBalances: () => mockUseBalances,
+  useBestNumber: () => mockUseBestNumber,
   Chains: () => mockChains,
   useActiveAccounts: () => mockUseActiveAccounts
 }))
