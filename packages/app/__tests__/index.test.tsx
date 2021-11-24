@@ -46,10 +46,9 @@ describe('Home', () => {
   it('displays kusama balance of selected account', async () => {
     renderWithTheme(<Home/>)
 
-    const activeAccountContainer = screen.getByTestId('active-account-bar')
+    const activeAccountContainer = await screen.findByTestId('active-account-bar')
     expect(activeAccountContainer).toHaveTextContent(bobAccount.address)
-
-    await assertText('KUSAMA 6000000000000000 KSM')
+    expect(activeAccountContainer).toHaveTextContent('Kusama6,000.0000KSM')
   })
 
   it('opens create asset modal', async () => {

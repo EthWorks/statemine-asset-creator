@@ -33,8 +33,8 @@ describe('Active account bar', () => {
     const statemineActiveAccount = activeAccountBar.children[1] as HTMLElement
 
     await within(kusamaActiveAccount).findByText(bobAccount.address)
-    await within(kusamaActiveAccount).findByText('KUSAMA 6000000000000000 KSM')
-    await within(statemineActiveAccount).findByText('STATEMINE 6000000000000000 KSM')
+    expect(kusamaActiveAccount).toHaveTextContent('Kusama6,000.0000KSM')
+    expect(statemineActiveAccount).toHaveTextContent('Statemine6,000.0000KSM')
   })
 
   it('opens select account modal',async () => {

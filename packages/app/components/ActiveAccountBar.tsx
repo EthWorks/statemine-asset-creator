@@ -2,7 +2,7 @@ import type { FC } from 'react'
 
 import { Chains, useActiveAccount, useBalances, useBestNumber } from 'use-substrate'
 
-import styles from '../styles/Home.module.css'
+import FormatBalance from './FormatBalance'
 
 interface Props {
   onClick: () => void
@@ -23,26 +23,28 @@ export const ActiveAccountBar: FC<Props> = ({ onClick }) => {
       onClick={onClick}
     >
       <div>
-        <p className={styles.description}>
-          KUSAMA {kusamaFreeBalance.toString()} KSM
-        </p>
-        <p className={styles.description}>
-          Current block #{kusamaBlockNumber?.toString()}
-        </p>
-        <p>
+        <div>
+          <p>Kusama</p>
+          <FormatBalance token={'KSM'} chainDecimals={12} value={kusamaFreeBalance}/>
+          <p>Current block
+            #{kusamaBlockNumber?.toString()}
+          </p>
+        </div>
+        <div>
           {activeAccount?.toString()}
-        </p>
+        </div>
       </div>
       <div>
-        <p className={styles.description}>
-          Current block #{statemineBlockNumber?.toString()}
-        </p>
-        <p className={styles.description}>
-          STATEMINE {statemineFreeBalance.toString()} KSM
-        </p>
-        <p>
+        <div>
+          <p>Statemine</p>
+          <FormatBalance token={'KSM'} chainDecimals={12} value={statemineFreeBalance}/>
+          <p>Current block
+            #{statemineBlockNumber?.toString()}
+          </p>
+        </div>
+        <div>
           {activeAccount?.toString()}
-        </p>
+        </div>
       </div>
     </div>
   )
