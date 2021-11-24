@@ -4,8 +4,7 @@ import Head from 'next/head'
 import { useEffect } from 'react'
 import styled from 'styled-components'
 
-
-import { Chains, useAccounts, useActiveAccount, useAssets, useBalances } from 'use-substrate'
+import { Chains, useAccounts, useActiveAccount, useAssets } from 'use-substrate'
 
 import background from '../assets/background.svg'
 import {
@@ -34,7 +33,7 @@ const Home: NextPage = () => {
 
   const { web3Enable } = useAccounts()
   const { activeAccount } =useActiveAccount()
-  const assets = useAssets(Chains.Statemine, {owner: activeAccount})
+  const assets = useAssets(Chains.Statemine, { owner: activeAccount })
 
   const onExtensionActivated = (): void => {
     setConnectWalletModalOpen(false)
@@ -99,17 +98,6 @@ const Home: NextPage = () => {
           onExtensionActivated={onExtensionActivated}
         />
         <AccountSelectModal isOpen={isAccountSelectModalOpen} closeModal={toggleSelectAccountModalOpen}/>
-        <div data-testid='active-account-container'>
-          <p>
-            {account?.toString()}
-          </p>
-          <p className={styles.description}>
-            Balance: {balances?.freeBalance.toString()}
-          </p>
-          <p className={styles.description}>
-            Statemine Balance: {statemineBalances?.freeBalance.toString()}
-          </p>
-        </div>
       </PageTemplate>
     </>
   )

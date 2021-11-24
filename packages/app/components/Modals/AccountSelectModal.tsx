@@ -8,7 +8,7 @@ import { useAccounts, useActiveAccount } from 'use-substrate'
 
 import StatemineLogo from '../../assets/img/statemine.svg'
 import { AccountSelect } from '../AccountSelect'
-import { Arrow } from '../icons/Arrow'
+import { Arrow } from '../icons'
 import { ButtonPrimary, Modal, Text, Title } from '../index'
 import { SectionTitle } from '../SectionTitle/SectionTitle'
 
