@@ -35,6 +35,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
 
   useEffect(() => {
     setStatemineAccount(accounts.allAccounts[0])
+    setKusamaAccount(accounts.allAccounts[0])
   }, [accounts.allAccounts])
 
   if (!accounts.allAccounts.length || !statemineAccount) return <>Loading..</>
@@ -79,6 +80,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
             accounts={accounts.allAccounts}
             currentAccount={kusamaAccount}
             setCurrentAccount={setKusamaAccount}
+            onClose={toggleKusamaAccountSelectVisible}
           />
         </>
       )}

@@ -57,7 +57,7 @@ describe('Account select modal', () => {
     })
 
     it('shows "Add Kusama account" button', async () => {
-      renderWithTheme(<Home />)
+      renderWithTheme(<Home/>)
 
       const button = await screen.findByRole('button', { name: 'Add Kusama account' })
 
@@ -65,12 +65,28 @@ describe('Account select modal', () => {
     })
 
     it('button click displays account select for kusama account', async () => {
-      renderWithTheme(<Home />)
+      renderWithTheme(<Home/>)
 
       await findAndClickButton('Add Kusama account')
-      
+
       const accountSelects = screen.getAllByTestId('open-account-select')
       expect(accountSelects).toHaveLength(2)
+      await assertNoText('Add Kusama account')
+    })
+
+    it('hides kusama account select', async () => {
+      renderWithTheme(<Home/>)
+
+      await findAndClickButton('Add Kusama account')
+
+      const accountSelects = screen.getAllByTestId('open-account-select')
+      expect(accountSelects).toHaveLength(2)
+
+      const closeAccountSelect = await screen.findByTestId('close-account-select')
+      fireEvent.click(closeAccountSelect)
+
+      const accountSelectsAfterClose = screen.getAllByTestId('open-account-select')
+      expect(accountSelectsAfterClose).toHaveLength(1)
     })
   })
 })

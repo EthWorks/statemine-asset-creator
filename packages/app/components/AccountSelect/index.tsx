@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import { Account } from 'use-substrate'
 
+import { CloseButton } from '../button/CloseButton'
 import { Arrow } from '../icons/Arrow'
 import { Text } from '../typography'
 import { AccountTile } from './AccountTile'
@@ -11,15 +12,19 @@ export interface Props {
   accounts: Account[],
   currentAccount: Account,
   setCurrentAccount: (arg: Account) => void,
-  withFreeBalance?: boolean;
-  label?: string
+  withFreeBalance?: boolean,
+  label?: string,
+  onClose?: () => void,  
 }
 
-export function AccountSelect ({ accounts, currentAccount, setCurrentAccount, label, withFreeBalance = false }: Props): JSX.Element {
+export function AccountSelect ({ accounts, currentAccount, setCurrentAccount, label, withFreeBalance = false, onClose }: Props): JSX.Element {
   return (
     <DropdownMenu.Root>
       <div>
-        {label && <StyledText size='SM'>{label}</StyledText>}
+        <Label>
+          {label && <StyledText size='SM'>{label}</StyledText>}
+          {onClose && <StyledCloseButton data-testid='close-account-select' onClick={onClose}/>}
+        </Label>
         <StyledButton data-testid='open-account-select'>
           <AccountTile withFreeBalance={withFreeBalance} account={currentAccount} />
           <StyledArrow direction='down' width='14' height='9' />
@@ -49,7 +54,6 @@ const StyledArrow = styled(Arrow)`
 
 const StyledButton = styled(DropdownMenu.Trigger)`
   position: relative;
-  width: 636px;
   max-width: 636px;
   padding: 0;
   margin: 0;
@@ -101,4 +105,13 @@ const StyledDropdownItem = styled(DropdownMenu.Item)`
 
 const StyledText = styled(Text)`
   margin-bottom: 4px;
+`
+
+const Label = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+const StyledCloseButton = styled(CloseButton)`
+    margin-left: auto;
 `
