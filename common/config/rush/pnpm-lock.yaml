@@ -29,6 +29,7 @@ specifiers:
   '@testing-library/jest-dom': ^5.14.1
   '@testing-library/react': ^12.1.1
   '@testing-library/react-hooks': ~7.0.2
+  '@testing-library/user-event': ~13.5.0
   '@types/bn.js': 4.11.6
   '@types/jest': ^27.0.2
   '@types/react': 17.0.24
@@ -57,6 +58,7 @@ specifiers:
   react-test-renderer: ^17.0.2
   rxjs: 7.4.0
   styled-components: ^5.3.1
+  swiper: ~7.3.0
   typescript: ^4.4.3
 
 dependencies:
@@ -88,6 +90,7 @@ dependencies:
   '@testing-library/jest-dom': 5.14.1
   '@testing-library/react': 12.1.2_react-dom@17.0.2+react@17.0.2
   '@testing-library/react-hooks': 7.0.2_fc2bb8a5b006d3f25c5f84ea777e678d
+  '@testing-library/user-event': 13.5.0
   '@types/bn.js': 4.11.6
   '@types/jest': 27.0.2
   '@types/react': 17.0.24
@@ -116,6 +119,7 @@ dependencies:
   react-test-renderer: 17.0.2_react@17.0.2
   rxjs: 7.4.0
   styled-components: 5.3.1_react-dom@17.0.2+react@17.0.2
+  swiper: 7.3.0
   typescript: 4.4.4
 
 packages:
@@ -6984,6 +6988,12 @@ packages:
     resolution: {integrity: sha512-6QvTW9mrGeIegrFXdtQi9pk7O/nSK6lSdXW2eqUspN5LWD7UTji2Fqw5V2YLjBpHEoU9Xl/eUWNpDeZvoyOv2w==}
     dev: false
 
+  /dom7/4.0.1:
+    resolution: {integrity: sha512-y/RWjw3gK3qQnZz6IqDaIoqH6+xBhcB3Wsh5HFwl0abwuO/NAgbSB31ZbxtBDcuDe8jAX5NYUNDLTx4Ul48sIw==}
+    dependencies:
+      ssr-window: 4.0.1
+    dev: false
+
   /domain-browser/1.2.0:
     resolution: {integrity: sha512-jnjyiM6eRyZl2H+W8Q/zLMA481hzi0eszAaBUzIVnmYVDBbnLxVNnfu1HgEBvCbL+71FrxMl3E6lpKH7Ge3OXA==}
     engines: {node: '>=0.4', npm: '>=1.2'}
@@ -12277,7 +12287,7 @@ packages:
   /regenerator-transform/0.14.5:
     resolution: {integrity: sha512-eOf6vka5IO151Jfsw2NO9WpGX58W6wWmefK3I1zEGr0lOD0u8rwPaNqQL1aRxUaxLeKO3ArNh3VYg1KbaD+FFw==}
     dependencies:
-      '@babel/runtime': 7.15.4
+      '@babel/runtime': 7.16.3
     dev: false
 
   /regex-not/1.0.2:
@@ -12939,6 +12949,10 @@ packages:
     resolution: {integrity: sha1-BOaSb2YolTVPPdAVIDYzuFcpfiw=}
     dev: false
 
+  /ssr-window/4.0.1:
+    resolution: {integrity: sha512-5q936lkCk5Lg5hM6tG8Nutdym4vNiuFSWorslTzOn71PWb3Wnx44q/k2Ryn1LWA1G4FtxMzjywUFOiOxPkVGrA==}
+    dev: false
+
   /ssri/6.0.2:
     resolution: {integrity: sha512-cepbSq/neFK7xB6A50KHN0xHDotYzq58wWCa5LeWqnPrHG8GzfEjO/4O8kpmcGW+oaxkvhEJCWgbgNk4/ZV93Q==}
     dependencies:
@@ -13312,6 +13326,15 @@ packages:
     dependencies:
       has-flag: 4.0.0
       supports-color: 7.2.0
+    dev: false
+
+  /swiper/7.3.0:
+    resolution: {integrity: sha512-pABfs5licxu2fmA53NrwVyeLMBKAMWBRfVbwKTF0PG40bCk3HDNWWqp1l/D3SQoO6/jx2rbKgVPymnAoXrcpKw==}
+    engines: {node: '>= 4.7.0'}
+    requiresBuild: true
+    dependencies:
+      dom7: 4.0.1
+      ssr-window: 4.0.1
     dev: false
 
   /symbol-tree/3.2.4:
@@ -14596,7 +14619,7 @@ packages:
     dev: false
 
   file:projects/statemine-asset-creator.tgz:
-    resolution: {integrity: sha512-8iQ0cPYZGbikZkULimfhC6hZ1I82vSeqeZxMN2DVxJ46+iLPjjXOV67vbPSqQafm9LDHSivV8Yqxy6S7pkgCUg==, tarball: file:projects/statemine-asset-creator.tgz}
+    resolution: {integrity: sha512-8QUSFe96JoIRpCqVPV/uh2cUpBW5lwU5KYPXWzsli+ZGROpbwRAEAcKg9JmzDinZ+5RX5TSr9i5Ync10oIBGMw==, tarball: file:projects/statemine-asset-creator.tgz}
     name: '@rush-temp/statemine-asset-creator'
     version: 0.0.0
     dependencies:
@@ -14634,6 +14657,7 @@ packages:
       react-test-renderer: 17.0.2_react@17.0.2
       rxjs: 7.4.0
       styled-components: 5.3.1_react-dom@17.0.2+react@17.0.2
+      swiper: 7.3.0
       typescript: 4.4.4
     transitivePeerDependencies:
       - '@storybook/angular'
