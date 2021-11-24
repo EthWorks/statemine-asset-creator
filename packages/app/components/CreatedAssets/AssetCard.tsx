@@ -12,9 +12,9 @@ import { useRef } from 'react'
 import styled from 'styled-components'
 
 import { useOutsideClick,useToggle } from '../../utils'
-import BalanceValue from '../AccountSelect/BalanceValue'
 import { ButtonSquare } from '../button/Button'
 import { Card } from '../Card'
+import FormatBalance from '../FormatBalance'
 import { Text } from '../typography'
 import { AssetsCardMenu } from './AssetsCardMenu'
 
@@ -47,7 +47,7 @@ export const AssetCard: FC<Props> = ({ asset }) => {
           </CardInfo>
           <CardInfo>
             <Text size='XXS' bold>total supply:</Text>
-            <BalanceValue token='KSM' decimals={decimals} value={supply} />
+            <FormatBalance token='KSM' chainDecimals={decimals} value={supply} />
           </CardInfo>
           <CardInfo>
             <Text size='XXS' bold>decimals:</Text>
