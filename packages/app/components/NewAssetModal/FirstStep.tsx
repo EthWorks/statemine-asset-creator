@@ -1,8 +1,11 @@
 import type { FormEvent } from 'react'
 import type { Asset } from 'use-substrate'
 import type { ModalStep } from './types'
+import Image from 'next/image'
+import Coin from '../../assets/coin.gif'
 
 import { useCallback, useEffect } from 'react'
+import styled from 'styled-components'
 
 import { Chains, useAssets } from 'use-substrate'
 
@@ -59,13 +62,20 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
 
   return (
     <form onSubmit={_onNext}>
-      <TextInput
-        error={assetNameError}
-        value={assetName}
-        onChange={setAssetName}
-        label="Asset name"
-        id="asset-name"
-      />
+      <FormHead>
+        <CoinWrapper>
+          <Image src={Coin} alt='' />
+        </CoinWrapper>
+        <TextInput
+          error={assetNameError}
+          value={assetName}
+          onChange={setAssetName}
+          label="Asset name"
+          id="asset-name"
+          large
+          autoFocus
+        />
+      </FormHead>
       <TextInput
         error={assetSymbolError}
         value={assetSymbol}
@@ -95,7 +105,32 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
         id="min-balance"
         inputType='POSITIVE'
       />
-      <ButtonPrimary type='submit' disabled={isDisabled}>Next</ButtonPrimary>
+      <ModalFooter>
+        <ButtonPrimary type='submit' disabled={isDisabled}>Next</ButtonPrimary>
+      </ModalFooter>
     </form>
   )
 }
+
+const FormHead = styled.div`
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  grid-column-gap: 48px;
+  align-items: center;
+  margin: 24px 0;
+`
+
+const CoinWrapper = styled.div`
+  height: 120px;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`
+
+const ModalFooter = styled.footer`
+  display: flex;
+  justify-content: flex-end;
+`
