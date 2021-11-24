@@ -4,12 +4,14 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
-import { Chains, useAccounts, useActiveAccounts } from 'use-substrate'
+import { Chains, useAccounts, useActiveAccounts, useBalances } from 'use-substrate'
 
+import KusamaLogo from '../../assets/img/kusama.png'
 import StatemineLogo from '../../assets/img/statemine.svg'
+import { BN_ZERO, useToggle } from '../../utils'
 import { AccountSelect } from '../AccountSelect'
 import { Arrow } from '../icons/Arrow'
-import { ButtonPrimary, Modal, Text, Title } from '../index'
+import { ButtonPrimary, ButtonTertiary, Modal, Text, Title } from '../index'
 import { SectionTitle } from '../SectionTitle/SectionTitle'
 
 interface Props {
@@ -19,19 +21,23 @@ interface Props {
 
 export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
   const accounts = useAccounts()
-  const [account, setAccount] = useState<Account>(accounts.allAccounts[0])
   const { setActiveAccounts } = useActiveAccounts()
-  
+  const [statemineAccount, setStatemineAccount] = useState<Account>(accounts.allAccounts[0])
+  const [kusamaAccount, setKusamaAccount] = useState<Account>(accounts.allAccounts[0])
+  const [isKusamaAccountSelectVisible, toggleKusamaAccountSelectVisible] = useToggle()
+  const { freeBalance } = useBalances(statemineAccount?.address, Chains.Statemine) || {}
+  const hasFreeBalance = freeBalance?.gt(BN_ZERO)
+
   const _onClick = async (): Promise<void> => {
-    setActiveAccounts(Chains.Kusama, account.address)
+    setActiveAccounts(Chains.Kusama, statemineAccount.address)
     closeModal()
   }
 
   useEffect(() => {
-    setAccount(accounts.allAccounts[0])
+    setStatemineAccount(accounts.allAccounts[0])
   }, [accounts.allAccounts])
 
-  if (!accounts.allAccounts.length || !account) return <>Loading..</>
+  if (!accounts.allAccounts.length || !statemineAccount) return <>Loading..</>
 
   return (
     <Modal
@@ -52,9 +58,30 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
       <AccountSelect
         label='Choose account'
         accounts={accounts.allAccounts}
-        currentAccount={account}
-        setCurrentAccount={setAccount}
+        currentAccount={statemineAccount}
+        setCurrentAccount={setStatemineAccount}
       />
+      {!hasFreeBalance && !isKusamaAccountSelectVisible &&(
+        <Centered>
+          <ButtonTertiary onClick={toggleKusamaAccountSelectVisible}>Add Kusama account</ButtonTertiary>
+        </Centered>
+      )}
+      {isKusamaAccountSelectVisible && (
+        <>
+          <SectionTitleStyle>
+            <ImageWrapper>
+              <Image src={KusamaLogo} alt='Kusama' />
+            </ImageWrapper>
+            <Title color='white'>Kusama account</Title>
+          </SectionTitleStyle>
+          <AccountSelect
+            label='Choose account'
+            accounts={accounts.allAccounts}
+            currentAccount={kusamaAccount}
+            setCurrentAccount={setKusamaAccount}
+          />
+        </>
+      )}
       <StyledButtonPrimary onClick={_onClick}>
         Connect
         <Arrow direction='right' width='14' height='9' />
@@ -81,4 +108,11 @@ const StyledButtonPrimary = styled(ButtonPrimary)`
 const ImageWrapper = styled.div`
   width: 32px;
   height: 32px;
+`
+
+const Centered = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 32px 0 8px;
 `
