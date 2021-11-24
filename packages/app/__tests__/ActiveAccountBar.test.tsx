@@ -26,8 +26,8 @@ describe('Active account bar', () => {
     renderWithTheme(<Home/>)
 
     await assertText(bobAccount.address)
-    await assertText('KUSAMA 3600 KSM')
-    await assertText('STATEMINE 3600 KSM')
+    await assertText('KUSAMA 6000000000000000 KSM')
+    await assertText('STATEMINE 6000000000000000 KSM')
   })
 
   it('opens select account modal',async () => {

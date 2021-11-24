@@ -15,7 +15,7 @@ jest.mock('use-substrate', () => ({
   Chains: () => mockChains,
 }))
 
-function AccountSelectTestComponent(): JSX.Element {
+function AccountSelectTestComponent({ withFreeBalance }: { withFreeBalance?: boolean }): JSX.Element {
   const accounts = mockUseSubstrate.useAccounts()
   const [account, setAccount] = useState<Account>(accounts.allAccounts[0])
 
@@ -29,6 +29,7 @@ function AccountSelectTestComponent(): JSX.Element {
         accounts={accounts.allAccounts}
         currentAccount={account}
         setCurrentAccount={setAccount}
+        withFreeBalance={withFreeBalance}
       />
     </ThemeProvider>
   )
@@ -42,7 +43,7 @@ describe('AccountSelect component', () => {
     await screen.findByText(mockAccounts[0].address)
 
     const transferableBalanceElement = (await screen.findByText('transferable balance')).parentElement
-    expect(transferableBalanceElement).toHaveTextContent('4000KSM')
+    expect(transferableBalanceElement).toHaveTextContent('4,000.0000KSM')
   })
 
   it('displays accounts in dropdown', async () => {
@@ -65,5 +66,15 @@ describe('AccountSelect component', () => {
     const openDropdownButton = await screen.findByRole('button')
     await within(openDropdownButton).findByText('BOB')
     expect(await within(openDropdownButton).queryAllByAltText('ALICE')).toHaveLength(0)
+  })
+
+  it('shows free balance', async () => {
+    render(<AccountSelectTestComponent withFreeBalance/>)
+
+    await screen.findByText(mockAccounts[0].name)
+    await screen.findByText(mockAccounts[0].address)
+
+    const transferableBalanceElement = (await screen.findByText('full account balance')).parentElement
+    expect(transferableBalanceElement).toHaveTextContent('6,100.0000KSM')
   })
 })
