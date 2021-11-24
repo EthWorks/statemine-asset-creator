@@ -11,7 +11,7 @@ describe('useActiveAccount', () => {
       localStorage.clear()
     })
 
-    it('can set and get activeAccounts via hook', async () => {
+    it('can set and get active account via hook', async () => {
       const { result, rerender } = renderActiveAccount()
 
       const { setActiveAccounts } = result.current
@@ -23,15 +23,15 @@ describe('useActiveAccount', () => {
       expect(activeAccounts && activeAccounts[Chains.Kusama]).toEqual(BOB_ID)
     })
 
-    it('can set and get multiple activeAccounts via hook', async () => {
+    it('can set and get multiple active accounts via hook', async () => {
       const { result, rerender } = renderActiveAccount()
 
       const { setActiveAccounts } = result.current
       act(() => setActiveAccounts(Chains.Kusama, BOB_ID))
 
       rerender()
-      const { setActiveAccounts: setAfterRerender } = result.current
-      act(() => setAfterRerender(Chains.Statemine, ALICE_ID))
+      const { setActiveAccounts: setSecondActiveAccount } = result.current
+      act(() => setSecondActiveAccount(Chains.Statemine, ALICE_ID))
 
       rerender()
       const { activeAccounts } = result.current
@@ -40,7 +40,7 @@ describe('useActiveAccount', () => {
       expect(activeAccounts && activeAccounts[Chains.Statemine]).toEqual(ALICE_ID)
     })
 
-    it('can override activeAccounts', async () => {
+    it('can override an active account', async () => {
       const { result, rerender } = renderActiveAccount()
 
       const { setActiveAccounts } = result.current
