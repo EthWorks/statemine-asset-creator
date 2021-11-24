@@ -2,7 +2,7 @@ import React from 'react'
 
 import { useApi, useConfig } from '../../hooks'
 import { AccountsContextProvider } from '../accounts'
-import { ActiveAccountProvider } from '../activeAccount'
+import { ActiveAccountProvider } from '../activeAccounts'
 import { ApiContextProvider } from '../api'
 import { Config, ConfigProvider } from '../config'
 

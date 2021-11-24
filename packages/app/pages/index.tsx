@@ -4,7 +4,7 @@ import Head from 'next/head'
 import { useEffect } from 'react'
 import styled from 'styled-components'
 
-import { useAccounts, useActiveAccount } from 'use-substrate'
+import { Chains, useAccounts, useActiveAccounts } from 'use-substrate'
 
 import background from '../assets/background.svg'
 import {
@@ -22,7 +22,8 @@ import {
 import { extensionActivated, useAsync, useToggle } from '../utils'
 
 const Home: NextPage = () => {
-  const { activeAccount: account } = useActiveAccount()
+  const { activeAccounts } = useActiveAccounts()
+  const account = activeAccounts[Chains.Kusama]
   const [isNewAssetModalOpen, toggleNewAssetModalOpen] = useToggle()
   const [isConnectWalletModalOpen, toggleConnectWalletModalOpen, setConnectWalletModalOpen] = useToggle(!extensionActivated())
   const [isAccountSelectModalOpen, toggleSelectAccountModalOpen, setSelectAccountModalOpen] = useToggle()
