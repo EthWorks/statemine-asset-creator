@@ -1,6 +1,8 @@
 import { act, fireEvent, screen, within } from '@testing-library/react'
 import React from 'react'
 
+import { Chains } from 'use-substrate'
+
 import Home from '../pages'
 import { assertNoText, renderWithTheme, selectAccountFromDropdown, setLocalStorage } from './helpers'
 import { bobAccount, mockChains, mockUseAccounts, mockUseApi, mockUseAssets, mockUseBalances } from './mocks'
@@ -13,9 +15,9 @@ jest.mock('use-substrate', () => ({
   useAssets: () => mockUseAssets,
   useBalances: () => mockUseBalances,
   Chains: () => mockChains,
-  useActiveAccount: () => ({
-    activeAccount: undefined,
-    setActiveAccount: mockedSetter
+  useActiveAccounts: () => ({
+    activeAccounts: {},
+    setActiveAccounts: mockedSetter
   })
 }))
 
@@ -35,7 +37,7 @@ describe('Account select modal', () => {
     const connectButton = await within(connectModal).findByRole('button', { name: 'Connect' })
     fireEvent.click(connectButton)
 
-    expect(mockedSetter).toBeCalledWith(bobAccount.address)
+    expect(mockedSetter).toBeCalledWith(Chains.Kusama, bobAccount.address)
     assertNoText('Connect accounts')
   })
 })

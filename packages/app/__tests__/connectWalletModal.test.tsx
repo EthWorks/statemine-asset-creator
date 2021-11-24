@@ -15,7 +15,7 @@ import {
 import {
   mockChains,
   mockUseAccounts,
-  mockUseActiveAccount,
+  mockUseActiveAccounts,
   mockUseApi,
   mockUseAssets,
   mockUseBalances,
@@ -29,7 +29,7 @@ jest.mock('use-substrate', () => ({
   useBalances: () => mockUseBalances,
   useBestNumber: () => mockUseBestNumber,
   Chains: () => mockChains,
-  useActiveAccount: () => mockUseActiveAccount
+  useActiveAccounts: () => mockUseActiveAccounts
 }))
 
 describe('Connect wallet modal', () => {

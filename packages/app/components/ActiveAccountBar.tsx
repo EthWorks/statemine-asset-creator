@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import { Chains, useActiveAccount, useBalances, useBestNumber } from 'use-substrate'
+import { Chains, useActiveAccounts, useBalances, useBestNumber } from 'use-substrate'
 
 import FormatBalance from './FormatBalance'
 
@@ -9,9 +9,9 @@ interface Props {
 }
 
 export const ActiveAccountBar: FC<Props> = ({ onClick }) => {
-  const { activeAccount } = useActiveAccount()
-  const { freeBalance: kusamaFreeBalance } = useBalances(activeAccount?.toString(), Chains.Kusama) || {}
-  const { freeBalance: statemineFreeBalance } = useBalances(activeAccount?.toString(), Chains.Statemine) || {}
+  const { activeAccounts } = useActiveAccounts()
+  const { freeBalance: kusamaFreeBalance } = useBalances(activeAccounts[Chains.Kusama]?.toString(), Chains.Kusama) || {}
+  const { freeBalance: statemineFreeBalance } = useBalances(activeAccounts[Chains.Statemine]?.toString(), Chains.Statemine) || {}
   const kusamaBlockNumber = useBestNumber(Chains.Kusama)
   const statemineBlockNumber = useBestNumber(Chains.Statemine)
 
@@ -31,7 +31,7 @@ export const ActiveAccountBar: FC<Props> = ({ onClick }) => {
           </p>
         </div>
         <div>
-          {activeAccount?.toString()}
+          {activeAccounts[Chains.Kusama]?.toString()}
         </div>
       </div>
       <div>
@@ -43,7 +43,7 @@ export const ActiveAccountBar: FC<Props> = ({ onClick }) => {
           </p>
         </div>
         <div>
-          {activeAccount?.toString()}
+          {activeAccounts[Chains.Statemine]?.toString()}
         </div>
       </div>
     </div>

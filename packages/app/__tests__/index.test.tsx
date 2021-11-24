@@ -1,6 +1,8 @@
 import { act, screen, within } from '@testing-library/react'
 import React from 'react'
 
+import { Chains as mockChains } from 'use-substrate'
+
 import Home from '../pages/index'
 import { mockUseBestNumber } from './mocks/mockUseBestNumber'
 import { assertText, clickButton, renderWithTheme, setLocalStorage } from './helpers'
@@ -9,9 +11,8 @@ import {
   bobAccount,
   bobAccountId,
   charlieAccount,
-  mockChains,
   mockUseAccounts,
-  mockUseActiveAccount,
+  mockUseActiveAccounts,
   mockUseApi,
   mockUseAssets,
   mockUseAssetsConstants,
@@ -28,9 +29,9 @@ jest.mock('use-substrate', () => ({
   useBestNumber: () => mockUseBestNumber,
   useBalances: () => mockUseBalances,
   Chains: () => mockChains,
-  useActiveAccount: () => ({
-    ...mockUseActiveAccount,
-    activeAccount: mockActiveAccount,
+  useActiveAccounts: () => ({
+    ...mockUseActiveAccounts,
+    activeAccounts: { [mockChains.Kusama]: mockActiveAccount, [mockChains.Statemine]: mockActiveAccount },
   })
 }))
 
