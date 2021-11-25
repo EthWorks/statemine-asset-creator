@@ -6,19 +6,19 @@ import styled from 'styled-components'
 import SwiperCore, { Navigation } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
-import { UseAssets } from 'use-substrate'
+import { Chains, useActiveAccounts, useAssets } from 'use-substrate'
 
 import { ArrowLarge } from '../icons'
 import { AssetCard } from './AssetCard'
 
+
 SwiperCore.use([Navigation])
 
-interface CreatedAssetsProps {
-  assets: UseAssets
-}
+export const CreatedAssets: FC = () => {
+  const { activeAccounts } = useActiveAccounts()
+  const assets = useAssets(Chains.Statemine, { owner: activeAccounts[Chains.Statemine] })
 
-export const CreatedAssets: FC<CreatedAssetsProps> = ({ assets }:CreatedAssetsProps) => {
-  if(!assets) {
+  if (!assets || !activeAccounts[Chains.Statemine]) {
     return null
   }
 
