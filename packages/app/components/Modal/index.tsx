@@ -52,6 +52,7 @@ const ModalView = styled.div`
   height: 100vh;
   padding-top: 100px;
   backdrop-filter: blur(1.5px);
+  z-index: 99;
 `
 
 const ModalBg = styled.div`
