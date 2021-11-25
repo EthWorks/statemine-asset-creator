@@ -8,7 +8,7 @@ import KusamaLogo from '../../assets/img/kusama.png'
 import StatemineLogo from '../../assets/img/statemine.svg'
 import { useAccountSelect, useToggle } from '../../utils'
 import { AccountSelect } from '../AccountSelect'
-import { Arrow } from '../icons/Arrow'
+import { Arrow } from '../icons'
 import { ButtonPrimary, ButtonTertiary, Modal, Text, Title } from '../index'
 import { SectionTitle } from '../SectionTitle/SectionTitle'
 
@@ -58,7 +58,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
   }, [hasStatemineFreeBalance, isKusamaAccountSelectVisible, hasKusamaFreeBalance, setStatemineAccountInfo, setKusamaAccountInfo])
 
   const _onClick = async (): Promise<void> => {
-    const activeAccounts = isKusamaAccountSelectVisible 
+    const activeAccounts = isKusamaAccountSelectVisible
       ? {
         [Chains.Kusama]: kusamaAccount.address,
         [Chains.Statemine]: statemineAccount.address
