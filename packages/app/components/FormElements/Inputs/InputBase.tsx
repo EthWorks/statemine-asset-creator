@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { InputHint } from './InputHint'
+import { InputInfo } from './InputInfo'
 
 export interface CustomInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string,
@@ -17,7 +17,7 @@ export function InputBase({ id, label, hint, error, ...arg }: CustomInputProps):
         id={id}
         {...arg}
       />
-      <InputHint hint={hint} error={error} />
+      <InputInfo hint={hint} error={error} />
     </CustomInputWrapper>
   )
 }

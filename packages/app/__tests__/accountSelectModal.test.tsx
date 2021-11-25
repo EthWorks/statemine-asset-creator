@@ -6,7 +6,7 @@ import { Chains } from 'use-substrate'
 import Home from '../pages'
 import { BN_ZERO } from '../utils'
 import {
-  assertNoText,
+  assertNoText, assertText,
   findAndClickButton,
   findButtonNotDisabled,
   renderWithTheme,
@@ -97,6 +97,28 @@ describe('Account select modal', () => {
       await closeKusamaAccountDropdown()
 
       await assertNumberOfSelectAccountDropdowns(1)
+    })
+
+    it('shows info about insufficient funds', async () => {
+      renderWithTheme(<Home/>)
+
+      await assertText('This account has insufficient funds, consider adding Kusama account.')
+    })
+
+    it('shows info about kusama account', async () => {
+      renderWithTheme(<Home/>)
+      await findAndClickButton('Add Kusama account')
+
+      await assertNoText('This account has insufficient funds, consider adding Kusama account.')
+      await assertText('Funds will be transferred to this Statemine account from your Kusama account.')
+    })
+
+    it('shows info if selected kusama account has no funds', async () => {
+      renderWithTheme(<Home/>)
+      await findAndClickButton('Add Kusama account')
+
+      await assertText('Funds will be transferred to this Statemine account from your Kusama account.')
+      await assertText('This account has no funds')
     })
   })
 })

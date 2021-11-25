@@ -4,11 +4,12 @@ import styled from 'styled-components'
 import { Account } from 'use-substrate'
 
 import { CloseButton } from '../button/CloseButton'
+import { InputInfo, InputInfoProps } from '../FormElements/Inputs/InputInfo'
 import { Arrow } from '../icons/Arrow'
 import { Text } from '../typography'
 import { AccountTile } from './AccountTile'
 
-export interface Props {
+export interface Props extends InputInfoProps {
   accounts: Account[],
   currentAccount: Account,
   setCurrentAccount: (arg: Account) => void,
@@ -17,10 +18,10 @@ export interface Props {
   onClose?: () => void
 }
 
-export function AccountSelect ({ accounts, currentAccount, setCurrentAccount, label, withFreeBalance = false, onClose }: Props): JSX.Element {
+export function AccountSelect ({ accounts, currentAccount, setCurrentAccount, label, withFreeBalance = false, onClose, ...inputInfoProps }: Props): JSX.Element {
   return (
     <DropdownMenu.Root>
-      <div>
+      <AccountSelectWrapper>
         <Label>
           {label && <StyledText size='SM'>{label}</StyledText>}
           {onClose && <StyledCloseButton data-testid='close-account-select' onClick={onClose}/>}
@@ -29,7 +30,8 @@ export function AccountSelect ({ accounts, currentAccount, setCurrentAccount, la
           <AccountTile withFreeBalance={withFreeBalance} account={currentAccount} />
           <StyledArrow direction='down' width='14' height='9' />
         </StyledButton>
-      </div>
+        <InputInfo {...inputInfoProps}/>
+      </AccountSelectWrapper>
 
       <StyledDropdown>
         {accounts.map(account => (
@@ -113,5 +115,10 @@ const Label = styled.div`
 `
 
 const StyledCloseButton = styled(CloseButton)`
-    margin-left: auto;
+  margin-left: auto;
+`
+
+const AccountSelectWrapper = styled.div`
+  position: relative;
+  padding-bottom: 20px;
 `
