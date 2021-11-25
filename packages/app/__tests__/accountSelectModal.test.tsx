@@ -114,7 +114,7 @@ const closeKusamaAccountDropdown = async () => {
   fireEvent.click(closeAccountSelect)
 }
 
-function assertNumberOfSelectAccountDropdowns(number: number) {
+const assertNumberOfSelectAccountDropdowns = (number: number) => {
   const accountSelects = screen.getAllByTestId('open-account-select')
 
   expect(accountSelects).toHaveLength(number)

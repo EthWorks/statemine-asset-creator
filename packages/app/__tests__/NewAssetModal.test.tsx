@@ -17,7 +17,7 @@ import {
   renderWithTheme,
   typeInInput,
 } from './helpers'
-import { mockChains, mockUseActiveAccounts, mockUseApi, mockUseAssets, mockUseAssetsConstants } from './mocks'
+import { mockUseActiveAccounts, mockUseApi, mockUseAssets, mockUseAssetsConstants } from './mocks'
 
 function TestComponent(): JSX.Element {
   const [isOpen, toggleOpen] = useToggle()
@@ -58,12 +58,11 @@ const clearInput = (inputName: string) => {
 const mockTransaction = jest.fn()
 const mockUseTransaction = { tx: mockTransaction, paymentInfo: {} }
 
-jest.mock('use-substrate', () => ({
+jest.mock('use-substrate/dist/src/hooks', () => ({
   useApi: () => mockUseApi,
   useAssets: () => mockUseAssets,
   useAssetsConstants: () => mockUseAssetsConstants,
   useTransaction: () => mockUseTransaction,
-  Chains: () => mockChains,
   useActiveAccounts: () => mockUseActiveAccounts
 }))
 
