@@ -24,7 +24,7 @@ export const AssetsCardMenu = ({ isOpen }:AssetsCardMenuProps):JSX.Element => (
       <li>
         <MenuLink href="">
           <SettingsIcon width='20' height='20' />
-          Menage
+          Manage
         </MenuLink>
       </li>
     </CardMenu>

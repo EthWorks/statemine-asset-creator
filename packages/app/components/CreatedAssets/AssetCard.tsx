@@ -11,7 +11,7 @@ interface Props {
 import { useRef } from 'react'
 import styled from 'styled-components'
 
-import { useOutsideClick,useToggle } from '../../utils'
+import { useOutsideClick, useToggle } from '../../utils'
 import { ButtonSquare } from '../button/Button'
 import { Card } from '../Card'
 import FormatBalance from '../FormatBalance'
@@ -19,7 +19,7 @@ import { Text } from '../typography'
 import { AssetsCardMenu } from './AssetsCardMenu'
 
 export const AssetCard: FC<Props> = ({ asset }) => {
-  const { name, id, decimals, supply, admin, issuer, freezer } = asset
+  const { name, id, decimals, supply, admin, issuer, freezer, symbol } = asset
   const rolesByAccount = groupRoles({ admin, issuer, freezer })
   const [isOpen, toggleOpen, setIsOpen] = useToggle()
   const cardMenuContainerRef = useRef(null)
@@ -38,7 +38,7 @@ export const AssetCard: FC<Props> = ({ asset }) => {
       </CardHeader>
       <CardContent>
         <Circle>
-          <CardTitle size='SM'>KSM</CardTitle>
+          <CardTitle size='SM'>{symbol}</CardTitle>
         </Circle>
         <div>
           <CardInfo>
@@ -47,7 +47,7 @@ export const AssetCard: FC<Props> = ({ asset }) => {
           </CardInfo>
           <CardInfo>
             <Text size='XXS' bold>total supply:</Text>
-            <FormatBalance token='KSM' chainDecimals={decimals} value={supply} />
+            <FormatBalance token={symbol} chainDecimals={decimals} value={supply} />
           </CardInfo>
           <CardInfo>
             <Text size='XXS' bold>decimals:</Text>

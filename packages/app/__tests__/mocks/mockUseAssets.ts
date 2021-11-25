@@ -1,7 +1,7 @@
 import BN from 'bn.js'
 import { createType } from 'test-helpers'
 
-import { UseAssets } from 'use-substrate'
+import type { UseAssets } from 'use-substrate'
 
 import { aliceAccountId, bobAccountId, charlieAccountId } from './mockAccounts'
 
@@ -19,13 +19,13 @@ export const mockUseAssets: UseAssets = [{
   approvals: new BN('1'),
   deposit: new BN('1'),
   isFrozen: false,
-  isSufficient  : true,
+  isSufficient: true,
   minBalance: new BN('1'),
   sufficients: new BN('1')
 },
 {
   owner: bobAccountId,
-  id:   createType('AssetId', '11'),
+  id: createType('AssetId', '11'),
   name: 'Bob\'s Asset 2',
   decimals: 12,
   supply: new BN('876600000000000'),

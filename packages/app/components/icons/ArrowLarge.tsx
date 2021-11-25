@@ -21,8 +21,6 @@ export const ArrowLarge = ({ className, direction, height, width }: ArrowLargePr
   </ArrowWrapper>
 )
 
-// #E6007A
-
 const ArrowWrapper = styled.svg`
   preserveAspectRatio: none;
 `

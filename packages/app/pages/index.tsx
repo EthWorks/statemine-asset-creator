@@ -32,8 +32,9 @@ const Home: NextPage = () => {
   }, [account, setSelectAccountModalOpen])
 
   const { web3Enable } = useAccounts()
-  const { activeAccount } =useActiveAccount()
-  const assets = useAssets(Chains.Statemine, { owner: activeAccount })
+  const { activeAccount } = useActiveAccount()
+  // const assets = useAssets(Chains.Statemine, { owner: activeAccount })
+  const assets = useAssets(Chains.Statemine)
 
   const onExtensionActivated = (): void => {
     setConnectWalletModalOpen(false)

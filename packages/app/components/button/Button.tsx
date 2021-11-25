@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 
 export interface ButtonProps {
-  large?: boolean,
+  large?: boolean
 }
 
 export const BaseButtonStyle = styled.button<ButtonProps>`

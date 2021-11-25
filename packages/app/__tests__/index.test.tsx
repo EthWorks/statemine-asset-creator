@@ -95,7 +95,6 @@ describe('Home', () => {
 
         expect(firstAssetCard).toHaveTextContent('id:9')
         expect(secondAssetCard).toHaveTextContent('id:11')
-        
         expect(firstAssetCard).toHaveTextContent('total supply:1,000.0000KSM')
         expect(secondAssetCard).toHaveTextContent('total supply:876.6000KSM')
 
