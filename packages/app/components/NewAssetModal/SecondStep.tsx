@@ -2,7 +2,7 @@ import type { ModalStep } from './types'
 
 import styled from 'styled-components'
 
-import { Chains, useActiveAccount, useApi, useTransaction } from 'use-substrate'
+import { Chains, useActiveAccounts, useApi, useTransaction } from 'use-substrate'
 
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { Arrow } from '../icons/Arrow'
