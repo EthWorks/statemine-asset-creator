@@ -11,7 +11,6 @@ import { assertText, clickButton, renderWithTheme, setLocalStorage } from './hel
 import {
   bobAccount,
   bobAccountId,
-  charlieAccount,
   mockUseAccounts,
   mockUseActiveAccounts,
   mockUseApi,
@@ -98,8 +97,8 @@ describe('Home', () => {
 
         expect(firstAssetCard).toHaveTextContent('id:9')
         expect(secondAssetCard).toHaveTextContent('id:11')
-        expect(firstAssetCard).toHaveTextContent('total supply:1,000.0000KSM')
-        expect(secondAssetCard).toHaveTextContent('total supply:876.6000KSM')
+        expect(firstAssetCard).toHaveTextContent('total supply:1,000.0000TT')
+        expect(secondAssetCard).toHaveTextContent('total supply:876.6000token')
 
         expect(firstAssetCard).toHaveTextContent('decimals:18')
         expect(secondAssetCard).toHaveTextContent('decimals:12')

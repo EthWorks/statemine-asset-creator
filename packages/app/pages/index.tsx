@@ -4,7 +4,7 @@ import Head from 'next/head'
 import { useEffect } from 'react'
 import styled from 'styled-components'
 
-import { Chains, useAccounts, useActiveAccount, useAssets } from 'use-substrate'
+import { Chains, useAccounts, useActiveAccounts, useAssets } from 'use-substrate'
 
 import background from '../assets/background.svg'
 import {
@@ -23,7 +23,9 @@ import { extensionActivated, useAsync, useToggle } from '../utils'
 
 const Home: NextPage = () => {
   const { activeAccounts } = useActiveAccounts()
-  const account = activeAccounts[Chains.Kusama]
+  const { web3Enable } = useAccounts()
+  const account = activeAccounts[Chains.Statemine]
+  const assets = useAssets(Chains.Statemine, { owner: account })
   const [isNewAssetModalOpen, toggleNewAssetModalOpen] = useToggle()
   const [isConnectWalletModalOpen, toggleConnectWalletModalOpen, setConnectWalletModalOpen] = useToggle(!extensionActivated())
   const [isAccountSelectModalOpen, toggleSelectAccountModalOpen, setSelectAccountModalOpen] = useToggle()
@@ -31,10 +33,6 @@ const Home: NextPage = () => {
   useEffect(() => {
     setSelectAccountModalOpen(extensionActivated() && !account)
   }, [account, setSelectAccountModalOpen])
-
-  const { web3Enable } = useAccounts()
-  const { activeAccount } = useActiveAccount()
-  const assets = useAssets(Chains.Statemine, { owner: activeAccount })
 
   const onExtensionActivated = (): void => {
     setConnectWalletModalOpen(false)
