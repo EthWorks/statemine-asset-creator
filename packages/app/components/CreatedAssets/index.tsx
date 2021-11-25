@@ -1,12 +1,12 @@
 import 'swiper/css'
 import 'swiper/css/navigation'
 
+import type { UseAssets } from 'use-substrate'
+
 import { FC } from 'react'
 import styled from 'styled-components'
 import SwiperCore, { Navigation } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
-
-import { UseAssets } from 'use-substrate'
 
 import { ArrowLarge } from '../icons'
 import { AssetCard } from './AssetCard'
