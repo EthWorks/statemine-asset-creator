@@ -29,7 +29,15 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
   const hasFreeBalance = freeBalance?.gt(BN_ZERO)
 
   const _onClick = async (): Promise<void> => {
-    setActiveAccounts(Chains.Kusama, statemineAccount.address)
+    const activeAccounts = isKusamaAccountSelectVisible 
+      ? {
+        [Chains.Kusama]: kusamaAccount.address,
+        [Chains.Statemine]: statemineAccount.address
+      }
+      : {
+        [Chains.Statemine]: statemineAccount.address
+      }
+    setActiveAccounts(activeAccounts)
     closeModal()
   }
 

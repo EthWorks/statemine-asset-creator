@@ -6,8 +6,9 @@ import { ThemeProvider } from 'styled-components'
 
 import { AccountSelect } from '../components'
 import { theme } from '../styles/styleVariables'
+import mockChains from './mocks/mockChains'
 import { openDropdown, selectAccountFromDropdown } from './helpers'
-import { mockAccounts, mockChains, mockUseAccounts, mockUseBalances, mockUseSubstrate } from './mocks'
+import { mockAccounts, mockUseAccounts, mockUseBalances, mockUseSubstrate } from './mocks'
 
 jest.mock('use-substrate', () => ({
   useAccounts: () => mockUseAccounts,
@@ -61,7 +62,7 @@ describe('AccountSelect component', () => {
   it('sets selected account as current account', async () => {
     render(<AccountSelectTestComponent/>)
 
-    await selectAccountFromDropdown(1)
+    await selectAccountFromDropdown(0, 1)
 
     const openDropdownButton = await screen.findByRole('button')
     await within(openDropdownButton).findByText('BOB')

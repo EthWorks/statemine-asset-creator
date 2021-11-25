@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import type { AccountId } from '@polkadot/types/interfaces'
-import type { ActiveAccountProviderProps, ActiveAccounts } from './types'
+import type { ActiveAccountProviderProps, ActiveAccounts, ActiveAccountsInput } from './types'
 
 import React, { useEffect, useState } from 'react'
 
@@ -32,15 +32,21 @@ export const ActiveAccountProvider: FC<ActiveAccountProviderProps> = ({ children
     }
   }, [api])
 
-  const _setActiveAccounts = (chain: Chains, accountId: AccountId | string): void => {
+  const _setActiveAccounts = (newActiveAccounts: ActiveAccountsInput): void => {
     if (localStorageExists()) {
-      const accounts = { ...activeAccounts, [chain]: accountId }
+      const accounts = { ...activeAccounts, ...newActiveAccounts }
       localStorage.setItem('activeAccounts', JSON.stringify(accounts))
     }
     
+    const mappedNewActiveAccounts: ActiveAccounts = {}
+
+    ;(Object.entries(newActiveAccounts) as [Chains, string | AccountId][]).map(([chain, accountId] : [Chains, string | AccountId]) => {
+      mappedNewActiveAccounts[chain] = isString(accountId) ? api?.createType('AccountId', accountId) : accountId
+    })
+
     setActiveAccounts({
       ...activeAccounts,
-      [chain]: isString(accountId) ? api?.createType('AccountId', accountId) : accountId
+      ...mappedNewActiveAccounts
     })
   }
 

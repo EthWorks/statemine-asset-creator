@@ -20,13 +20,12 @@ import {
 } from './mocks'
 
 let mockActiveAccount = bobAccountId
-jest.mock('use-substrate', () => ({
+jest.mock('use-substrate/dist/src/hooks', () => ({
   useAccounts: () => mockUseAccounts,
   useApi: () => mockUseApi,
   useAssets: () => mockUseAssets,
   useAssetsConstants: () => mockUseAssetsConstants,
   useBalances: () => mockUseBalances,
-  Chains: () => mockChains,
   useActiveAccounts: () => ({
     ...mockUseActiveAccounts,
     activeAccounts: { [mockChains.Kusama]: mockActiveAccount, [mockChains.Statemine]: mockActiveAccount },

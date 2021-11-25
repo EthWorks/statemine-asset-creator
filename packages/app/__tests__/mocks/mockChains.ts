@@ -1,5 +1,3 @@
-export const mockChains = {
-  Kusama: 'kusama',
-  Statemine: 'statemine',
-  Local: 'local'
-}
+import { Chains } from 'use-substrate'
+
+export default Chains
