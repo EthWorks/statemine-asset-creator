@@ -6,14 +6,12 @@ import { ThemeProvider } from 'styled-components'
 
 import { AccountSelect } from '../components'
 import { theme } from '../styles/styleVariables'
-import mockChains from './mocks/mockChains'
 import { openDropdown, selectAccountFromDropdown } from './helpers'
 import { mockAccounts, mockUseAccounts, mockUseBalances, mockUseSubstrate } from './mocks'
 
-jest.mock('use-substrate', () => ({
+jest.mock('use-substrate/dist/src/hooks', () => ({
   useAccounts: () => mockUseAccounts,
   useBalances: () => mockUseBalances,
-  Chains: () => mockChains,
 }))
 
 function AccountSelectTestComponent({ withFreeBalance }: { withFreeBalance?: boolean }): JSX.Element {
