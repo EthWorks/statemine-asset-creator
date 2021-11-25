@@ -4,7 +4,7 @@ import Head from 'next/head'
 import { useEffect } from 'react'
 import styled from 'styled-components'
 
-import { Chains, useAccounts, useActiveAccounts } from 'use-substrate'
+import { Chains, useAccounts, useActiveAccounts, useAssets } from 'use-substrate'
 
 import background from '../assets/background.svg'
 import {
@@ -23,7 +23,9 @@ import { extensionActivated, useAsync, useToggle } from '../utils'
 
 const Home: NextPage = () => {
   const { activeAccounts } = useActiveAccounts()
-  const account = activeAccounts[Chains.Kusama]
+  const { web3Enable } = useAccounts()
+  const account = activeAccounts[Chains.Statemine]
+  const assets = useAssets(Chains.Statemine, { owner: account })
   const [isNewAssetModalOpen, toggleNewAssetModalOpen] = useToggle()
   const [isConnectWalletModalOpen, toggleConnectWalletModalOpen, setConnectWalletModalOpen] = useToggle(!extensionActivated())
   const [isAccountSelectModalOpen, toggleSelectAccountModalOpen, setSelectAccountModalOpen] = useToggle()
@@ -31,8 +33,6 @@ const Home: NextPage = () => {
   useEffect(() => {
     setSelectAccountModalOpen(extensionActivated() && !account)
   }, [account, setSelectAccountModalOpen])
-
-  const { web3Enable } = useAccounts()
 
   const onExtensionActivated = (): void => {
     setConnectWalletModalOpen(false)
@@ -56,28 +56,34 @@ const Home: NextPage = () => {
       <PageTemplate
         background={background}
         title="Dashboard"
+        templateHeader={assets?.length ? <ButtonPrimary onClick={toggleNewAssetModalOpen}>Create new asset</ButtonPrimary> : null}
         header={
           <div data-testid='page-header'>
-            {account 
+            {account
               ? <ActiveAccountBar onClick={toggleSelectAccountModalOpen}/>
               : <ButtonPrimary onClick={toggleConnectWalletModalOpen}>Connect</ButtonPrimary>
             }
           </div>
         }
       >
-        <PageBox size='large' title='Created assets'>
-          <StyledCard padding='m'>
-            <StyledCardTitle size="SM" color="white">You haven’t created any assets yet.</StyledCardTitle>
-            <Text size="SM">Here you can create fungible assets, which will be governed by you and accounts you
-              designate.</Text>
-            <div>
-              {account
-                ? <StyledButton onClick={toggleNewAssetModalOpen}>Create new asset</StyledButton>
-                : <StyledButton onClick={toggleConnectWalletModalOpen} large>Connect to create your asset</StyledButton>
-              }
-            </div>
-          </StyledCard>
-        </PageBox>
+        {assets?.length
+          ? <PageBox size='full' title={`Created assets [${assets.length}]`}>
+            <CreatedAssets assets={assets}/>
+          </PageBox>
+          : <PageBox size='large' title='Created assets'>
+            <StyledCard padding='m'>
+              <StyledCardTitle size="SM" color="white">You haven’t created any assets yet.</StyledCardTitle>
+              <Text size="SM">Here you can create fungible assets, which will be governed by you and accounts you
+                designate.</Text>
+              <div>
+                {account
+                  ? <StyledButton onClick={toggleNewAssetModalOpen}>Create new asset</StyledButton>
+                  : <StyledButton onClick={toggleConnectWalletModalOpen} large>Connect to create your asset</StyledButton>
+                }
+              </div>
+            </StyledCard>
+          </PageBox>
+        }
         <PageBox size='large' title='In your wallet'>
           <StyledCard padding='m'>
             <StyledCardTitle size="SM" color="white">You don’t have any assets in your wallet</StyledCardTitle>
@@ -92,7 +98,6 @@ const Home: NextPage = () => {
           onExtensionActivated={onExtensionActivated}
         />
         <AccountSelectModal isOpen={isAccountSelectModalOpen} closeModal={toggleSelectAccountModalOpen}/>
-        <CreatedAssets/>
       </PageTemplate>
     </>
   )
