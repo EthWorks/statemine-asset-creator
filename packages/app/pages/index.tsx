@@ -33,8 +33,7 @@ const Home: NextPage = () => {
 
   const { web3Enable } = useAccounts()
   const { activeAccount } = useActiveAccount()
-  // const assets = useAssets(Chains.Statemine, { owner: activeAccount })
-  const assets = useAssets(Chains.Statemine)
+  const assets = useAssets(Chains.Statemine, { owner: activeAccount })
 
   const onExtensionActivated = (): void => {
     setConnectWalletModalOpen(false)
@@ -58,9 +57,10 @@ const Home: NextPage = () => {
       <PageTemplate
         background={background}
         title="Dashboard"
+        templateHeader={assets?.length ? <ButtonPrimary onClick={toggleNewAssetModalOpen}>Create new asset</ButtonPrimary> : null}
         header={
           <div data-testid='page-header'>
-            {account 
+            {account
               ? <ActiveAccountBar onClick={toggleSelectAccountModalOpen}/>
               : <ButtonPrimary onClick={toggleConnectWalletModalOpen}>Connect</ButtonPrimary>
             }

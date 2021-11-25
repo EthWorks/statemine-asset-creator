@@ -1,7 +1,7 @@
+import type { UseAssets } from 'use-substrate'
+
 import BN from 'bn.js'
 import { createType } from 'test-helpers'
-
-import type { UseAssets } from 'use-substrate'
 
 import { aliceAccountId, bobAccountId, charlieAccountId } from './mockAccounts'
 

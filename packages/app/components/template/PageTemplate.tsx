@@ -8,10 +8,11 @@ export interface PageTemplateProps {
   background: string,
   children: ReactNode,
   header?: ReactNode,
-  title?: string
+  title?: string,
+  templateHeader: ReactNode
 }
 
-export const PageTemplate = ({ background, children, header, title }: PageTemplateProps): JSX.Element => (
+export const PageTemplate = ({ background, children, header, title, templateHeader }: PageTemplateProps): JSX.Element => (
   <>
     <PageWrapper>
       <PageBg>
@@ -20,6 +21,7 @@ export const PageTemplate = ({ background, children, header, title }: PageTempla
       {header && <MainHeader>{header}</MainHeader>}
       <PgeTitleWrapper>
         <Text size='2XL' color='white' bold>{title}</Text>
+        {templateHeader}
       </PgeTitleWrapper>
       {children}
     </PageWrapper>
