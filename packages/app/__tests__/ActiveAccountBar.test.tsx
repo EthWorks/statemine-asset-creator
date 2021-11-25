@@ -3,14 +3,13 @@ import userEvent from '@testing-library/user-event'
 
 import Home from '../pages'
 import { assertText, renderWithTheme, setLocalStorage } from './helpers'
-import { bobAccount, mockChains, mockUseAccounts, mockUseActiveAccounts, mockUseApi, mockUseBalances } from './mocks'
+import { bobAccount, mockUseAccounts, mockUseActiveAccounts, mockUseApi, mockUseBalances } from './mocks'
 
-jest.mock('use-substrate', () => ({
+jest.mock('use-substrate/dist/src/hooks', () => ({
   useApi: () => mockUseApi,
   useAccounts: () => mockUseAccounts,
   useAssets: () => [],
   useBalances: () => mockUseBalances,
-  Chains: () => mockChains,
   useActiveAccounts: () => mockUseActiveAccounts
 }))
 
