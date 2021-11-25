@@ -14,7 +14,7 @@ export interface Props {
   setCurrentAccount: (arg: Account) => void,
   withFreeBalance?: boolean,
   label?: string,
-  onClose?: () => void,  
+  onClose?: () => void
 }
 
 export function AccountSelect ({ accounts, currentAccount, setCurrentAccount, label, withFreeBalance = false, onClose }: Props): JSX.Element {
