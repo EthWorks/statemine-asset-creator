@@ -15,13 +15,14 @@ export const ActiveAccountBar: FC<Props> = ({ onClick }) => {
   const { freeBalance: statemineFreeBalance } = useBalances(activeAccounts[Chains.Statemine]?.toString(), Chains.Statemine) || {}
   const kusamaBlockNumber = useBestNumber(Chains.Kusama)
   const statemineBlockNumber = useBestNumber(Chains.Statemine)
+  const isKusamaAccountSet = !!activeAccounts[Chains.Kusama]
 
   return (
     <div 
       data-testid="active-account-bar"
       onClick={onClick}
     >
-      {kusamaFreeBalance && (
+      {isKusamaAccountSet && (
         <div>
           <div>
             <p>Kusama</p>

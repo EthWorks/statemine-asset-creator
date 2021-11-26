@@ -44,6 +44,7 @@ describe('Account select modal', () => {
     await findAndClickButton('Add Kusama account')
 
     assertNumberOfSelectAccountDropdowns(2)
+    await assertNoText('Add Kusama account')
   })
 
   it('can set statemine and kusama account', async () => {
