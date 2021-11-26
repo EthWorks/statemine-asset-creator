@@ -17,6 +17,10 @@ module.exports = {
     /* Handle image imports
         https://jestjs.io/docs/webpack#handling-static-assets */
     '^.+\\.(jpg|jpeg|png|gif|webp|svg)$': '<rootDir>/__mocks__/fileMock.js',
+
+    /*swiper imports*/
+    'swiper/react': 'swiper/react/swiper-react.js',
+    'swiper/css': 'identity-obj-proxy'
   },
   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/'],
   testEnvironment: 'jsdom',

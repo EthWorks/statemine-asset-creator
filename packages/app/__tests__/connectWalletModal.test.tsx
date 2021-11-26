@@ -3,6 +3,7 @@ import React from 'react'
 
 import Home from '../pages'
 import { POLKADOT_EXTENSION_LINK } from '../utils'
+import { mockUseBestNumber } from './mocks/mockUseBestNumber'
 import {
   assertLinkByText,
   assertLocalStorage,
@@ -14,7 +15,7 @@ import {
 import {
   mockChains,
   mockUseAccounts,
-  mockUseActiveAccount,
+  mockUseActiveAccounts,
   mockUseApi,
   mockUseAssets,
   mockUseBalances,
@@ -26,8 +27,9 @@ jest.mock('use-substrate', () => ({
   useApi: () => mockUseApi,
   useAssets: () => mockUseAssets,
   useBalances: () => mockUseBalances,
+  useBestNumber: () => mockUseBestNumber,
   Chains: () => mockChains,
-  useActiveAccount: () => mockUseActiveAccount
+  useActiveAccounts: () => mockUseActiveAccounts
 }))
 
 describe('Connect wallet modal', () => {

@@ -11,9 +11,9 @@ import { Chains, useAssets } from 'use-substrate'
 import Coin from '../../assets/coin.gif'
 import { ButtonPrimary } from '../button/Button'
 import { NumericInput, TextInput } from '../FormElements'
-import { Arrow } from '../icons/Arrow'
-import { ModalFooter } from '../Modal/ModalFooter'
+import { ArrowRight } from '../icons/ArrowRight'
 import { useNewAssetModal } from './context/useNewAssetModal'
+import { ModalFooter } from './ModalFooter'
 
 export function FirstStep({ onNext }: ModalStep): JSX.Element {
   const { assetName, setAssetName, assetNameError, setAssetNameError, assetId, assetIdError, setAssetIdError, assetSymbol,
@@ -109,8 +109,8 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
       />
       <ModalFooter>
         <ButtonPrimary type='submit' disabled={isDisabled}>
-          Next
-          <Arrow direction='right' width='14' height='9' />
+            Next
+          <ArrowRight />
         </ButtonPrimary>
       </ModalFooter>
     </form>
@@ -122,7 +122,7 @@ const FormHead = styled.div`
   grid-template-columns: 120px 1fr;
   grid-column-gap: 48px;
   align-items: center;
-  margin: 24px 0;
+  margin-bottom: 24px;
 `
 
 const CoinWrapper = styled.div`

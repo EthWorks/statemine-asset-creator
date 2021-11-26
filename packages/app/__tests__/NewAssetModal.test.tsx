@@ -17,7 +17,7 @@ import {
   renderWithTheme,
   typeInInput,
 } from './helpers'
-import { mockChains, mockUseActiveAccount, mockUseApi, mockUseAssets, mockUseAssetsConstants } from './mocks'
+import { mockChains, mockUseActiveAccounts, mockUseApi, mockUseAssets, mockUseAssetsConstants } from './mocks'
 
 function TestComponent(): JSX.Element {
   const [isOpen, toggleOpen] = useToggle()
@@ -30,65 +30,6 @@ function TestComponent(): JSX.Element {
   )
 }
 
-const renderModal = (): void => {
-  renderWithTheme(<TestComponent/>)
-}
-
-const fillFirstStep = (): void => {
-  fillInput('Asset name', 'kusama')
-  fillInput('Asset symbol', 'KSM')
-  fillInput('Asset decimals', '18')
-  fillInput('Asset ID', '7')
-  fillInput('Minimum balance', '300')
-}
-
-const assertFirstStepFilled = () => {
-  assertInput('Asset name', 'kusama')
-  assertInput('Asset symbol', 'KSM')
-  assertInput('Asset decimals', '18')
-  assertInput('Asset ID', '7')
-  assertInput('Minimum balance', '300')
-}
-
-function assertFirstStepEmpty() {
-  assertInput('Asset name', '')
-  assertInput('Asset symbol', '')
-  assertInput('Asset decimals', '')
-  assertInput('Asset ID', '')
-  assertInput('Minimum balance', '')
-}
-
-async function assertSummary() {
-  await assertText('kusama')
-  await assertText('KSM')
-  await assertText('18')
-  await assertText('7')
-  await assertText('300')
-}
-
-const createAsset = async (): Promise<void> => {
-  await openModal()
-
-  fillFirstStep()
-  clickButton('Next')
-
-  clickButton('Confirm')
-}
-
-const closeModal = async () => {
-  const closeButton = await screen.findByTestId('modal-close-button')
-
-  fireEvent.click(closeButton)
-}
-
-const openModal = async (): Promise<void> => {
-  await findAndClickButton('Create new asset')
-}
-
-const clearInput = (inputName: string) => {
-  fillInput(inputName, '')
-}
-
 const mockTransaction = jest.fn()
 const mockUseTransaction = { tx: mockTransaction, paymentInfo: {} }
 
@@ -98,7 +39,7 @@ jest.mock('use-substrate', () => ({
   useAssetsConstants: () => mockUseAssetsConstants,
   useTransaction: () => mockUseTransaction,
   Chains: () => mockChains,
-  useActiveAccount: () => mockUseActiveAccount
+  useActiveAccounts: () => mockUseActiveAccounts
 }))
 
 const mockedStringLimit = mockUseAssetsConstants.stringLimit.toNumber()
@@ -126,15 +67,15 @@ describe('New asset modal', () => {
       fillFirstStep()
       clickButton('Next')
     })
-    
+
     it('on confirm', async () => {
       clickButton('Confirm')
       await openModal()
-      
+
       await assertText('Create asset')
       assertFirstStepEmpty()
     })
-    
+
     it('on close', async () => {
       await closeModal()
       await openModal()
@@ -143,7 +84,7 @@ describe('New asset modal', () => {
       assertFirstStepEmpty()
     })
   })
- 
+
   it('allows to go back to first step', async () => {
     renderModal()
 
@@ -232,4 +173,108 @@ describe('New asset modal', () => {
       })
     })
   })
+
+  describe('step bar', () => {
+    it('sets proper styles', async () => {
+      renderModal()
+
+      clickButton('Create new asset')
+      await assertSteps(['active', 'unvisited', 'unvisited', 'unvisited'])
+
+      fillFirstStep()
+      clickButton('Next')
+
+      await assertSteps(['past', 'active', 'unvisited', 'unvisited'])
+    })
+  })
 })
+
+const renderModal = (): void => {
+  renderWithTheme(<TestComponent/>)
+}
+
+const fillFirstStep = (): void => {
+  fillInput('Asset name', 'kusama')
+  fillInput('Asset symbol', 'KSM')
+  fillInput('Asset decimals', '18')
+  fillInput('Asset ID', '7')
+  fillInput('Minimum balance', '300')
+}
+
+const clearInput = (inputName: string) => {
+  fillInput(inputName, '')
+}
+const assertFirstStepFilled = () => {
+  assertInput('Asset name', 'kusama')
+  assertInput('Asset symbol', 'KSM')
+  assertInput('Asset decimals', '18')
+  assertInput('Asset ID', '7')
+  assertInput('Minimum balance', '300')
+}
+
+function assertFirstStepEmpty() {
+  assertInput('Asset name', '')
+  assertInput('Asset symbol', '')
+  assertInput('Asset decimals', '')
+  assertInput('Asset ID', '')
+  assertInput('Minimum balance', '')
+}
+
+async function assertSummary() {
+  await assertText('kusama')
+  await assertText('KSM')
+  await assertText('18')
+  await assertText('7')
+  await assertText('300')
+}
+
+const createAsset = async (): Promise<void> => {
+  await openModal()
+
+  fillFirstStep()
+  clickButton('Next')
+
+  clickButton('Confirm')
+}
+
+const closeModal = async () => {
+  const closeButton = await screen.findByTestId('modal-close-button')
+
+  fireEvent.click(closeButton)
+}
+
+const openModal = async (): Promise<void> => {
+  await findAndClickButton('Create new asset')
+}
+
+async function assertSteps(expectedSteps: ('active' | 'past' | 'unvisited')[]) {
+  await Promise.all(expectedSteps.map(async (step, index) => {
+    if (step === 'active') {
+      await assertStepActive(index)
+    }
+    else if (step === 'past') {
+      await assertStepPast(index)
+    }
+    else {
+      await assertStepUnvisited(index)
+    }
+  }))
+}
+
+async function assertStepActive(stepIndex : number) {
+  const step = await screen.findByTestId('step-' + stepIndex)
+  expect(step).toHaveClass('active')
+  expect(step).not.toHaveClass('past')
+}
+
+async function assertStepUnvisited(stepIndex : number) {
+  const step = await screen.findByTestId('step-' + stepIndex)
+  expect(step).not.toHaveClass('active')
+  expect(step).not.toHaveClass('past')
+}
+
+async function assertStepPast(stepIndex: number) {
+  const step = await screen.findByTestId('step-' + stepIndex)
+  expect(step).toHaveClass('past')
+  expect(step).not.toHaveClass('active')
+}

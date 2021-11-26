@@ -2,18 +2,20 @@ import type { ModalStep } from './types'
 
 import styled from 'styled-components'
 
-import { Chains, useActiveAccount, useApi, useTransaction } from 'use-substrate'
+import { Chains, useActiveAccounts, useApi, useTransaction } from 'use-substrate'
 
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
-import { Arrow } from '../icons/Arrow'
-import { ModalFooter } from '../Modal/ModalFooter'
+import { ArrowLeft } from '../icons/ArrowLeft'
+import { ArrowRight } from '../icons/ArrowRight'
 import { Label, Text } from '../typography'
 import { useNewAssetModal } from './context/useNewAssetModal'
+import { ModalFooter } from './ModalFooter'
 
 export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element {
   const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
   const { api } = useApi(Chains.Statemine)
-  const { activeAccount } = useActiveAccount()
+  const { activeAccounts } = useActiveAccounts()
+  const activeAccount = activeAccounts[Chains.Kusama] //to be changed for Statemine when we have account select
 
   const txs = activeAccount ? [
     api?.tx.assets.create(assetId, activeAccount.toString(), minBalance),
@@ -46,12 +48,12 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element {
 
       <ModalFooter contentPosition='between'>
         <ButtonOutline onClick={onBack}>
-          <Arrow direction='left' width='14' height='9' />
+          <ArrowLeft />
           Back
         </ButtonOutline>
         <ButtonPrimary onClick={_onSubmit}>
           Confirm
-          <Arrow direction='right' width='14' height='9' />
+          <ArrowRight />
         </ButtonPrimary>
       </ModalFooter>
     </>
