@@ -11,7 +11,7 @@ const Default = {
     optional: {
       control: { type: 'boolean' },
     },
-    stepNumber: {
+    activeStep: {
       control: { type: 'select' },
       options: [0 , 1, 2, 3]
     }
@@ -24,4 +24,4 @@ const Template: Story<StepsBarProps> = (args ) =>
   <StepsBar {...args} />
 
 export const Base = Template.bind({})
-Base.args = { stepNumber: 1 }
+Base.args = { activeStep: 1 }
