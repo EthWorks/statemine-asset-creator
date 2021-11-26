@@ -55,7 +55,7 @@ const Home: NextPage = () => {
       <PageTemplate
         background={background}
         title="Dashboard"
-        templateHeader={assets?.length ? <ButtonPrimary onClick={toggleNewAssetModalOpen}>Create new asset</ButtonPrimary> : null}
+        templateHeader={account && assets?.length ? <ButtonPrimary onClick={toggleNewAssetModalOpen}>Create new asset</ButtonPrimary> : null}
         header={
           <div data-testid='page-header'>
             {account
@@ -65,7 +65,7 @@ const Home: NextPage = () => {
           </div>
         }
       >
-        {assets?.length
+        {account && assets?.length
           ? <PageBox size='full' title={`Created assets [${assets.length}]`}>
             <CreatedAssets assets={assets}/>
           </PageBox>
