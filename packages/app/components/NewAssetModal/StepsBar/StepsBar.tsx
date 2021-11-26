@@ -14,7 +14,7 @@ export const StepsBar = ({ optional, activeStep }: StepsBarProps ): JSX.Element 
     {NAVIGATION_STEPS.map((step, index) => (
       <Step
         key={index}
-        index={index}
+        stepIndex={index}
         stepName={step}
         activeStep={activeStep}
         optional={optional}

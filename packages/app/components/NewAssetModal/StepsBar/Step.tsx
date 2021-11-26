@@ -4,29 +4,25 @@ import { CheckIcon } from '../../icons/Check'
 import { Text } from '../../typography'
 
 interface StepProps {
-  index: number,
+  stepIndex: number,
   optional?: boolean,
   stepName: string,
   activeStep: number
 }
 
-export const Step = ({ index, optional, stepName, activeStep }: StepProps ): JSX.Element => {
-  const handleClassName = ():string => (
-    activeStep === index
-      ? 'current'
-      : activeStep > index
-        ? 'past'
-        : ''
-  )
+export const Step = ({ stepIndex, optional, stepName, activeStep }: StepProps ): JSX.Element => {
+  const isActive = activeStep === stepIndex
+  const isPast = activeStep > stepIndex
 
   return (
     <StepWrapper
-      className={handleClassName()}
+      data-testid={`step-${stepIndex}`}
+      className={`${isActive ? 'active' : ''}${isPast ? 'past' : ''}`}
     >
       <StepNumber>
-        {activeStep > index
+        {isPast
           ? <CheckIcon width='14' height='14'/>
-          : <Text size='XS'>{index + 1}</Text>
+          : <Text size='XS'>{stepIndex + 1}</Text>
         }
       </StepNumber>
       <Text size='SM'>
@@ -57,7 +53,7 @@ const StepWrapper = styled.div`
     }
   }
 
-  &.current {
+  &.active {
     & > div {
       border-color: ${({ theme }) => theme.colors.pinkLight};
       background-color: ${({ theme }) => theme.colors.pinkLight};
