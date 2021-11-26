@@ -30,31 +30,6 @@ function TestComponent(): JSX.Element {
   )
 }
 
-const renderModal = (): void => {
-  renderWithTheme(<TestComponent/>)
-}
-
-const fillFirstStep = (): void => {
-  fillInput('Asset name', 'kusama')
-  fillInput('Asset symbol', 'KSM')
-  fillInput('Asset decimals', '18')
-  fillInput('Asset ID', '7')
-  fillInput('Minimum balance', '300')
-}
-
-const fillAllForms = (): void => {
-  clickButton('Create new asset')
-
-  fillFirstStep()
-  clickButton('Next')
-
-  clickButton('Confirm')
-}
-
-const clearInput = (inputName: string) => {
-  fillInput(inputName, '')
-}
-
 const mockTransaction = jest.fn()
 const mockUseTransaction = { tx: mockTransaction, paymentInfo: {} }
 
@@ -180,4 +155,75 @@ describe('New asset modal', () => {
       })
     })
   })
+
+  describe('step bar', () => {
+    it('sets proper styles', async () => {
+      renderModal()
+
+      clickButton('Create new asset')
+      await assertSteps(['active', 'unvisited', 'unvisited', 'unvisited'])
+
+      fillFirstStep()
+      clickButton('Next')
+
+      await assertSteps(['past', 'active', 'unvisited', 'unvisited'])
+    })
+  })
 })
+
+const renderModal = (): void => {
+  renderWithTheme(<TestComponent/>)
+}
+
+const fillFirstStep = (): void => {
+  fillInput('Asset name', 'kusama')
+  fillInput('Asset symbol', 'KSM')
+  fillInput('Asset decimals', '18')
+  fillInput('Asset ID', '7')
+  fillInput('Minimum balance', '300')
+}
+
+const fillAllForms = (): void => {
+  clickButton('Create new asset')
+
+  fillFirstStep()
+  clickButton('Next')
+
+  clickButton('Confirm')
+}
+
+const clearInput = (inputName: string) => {
+  fillInput(inputName, '')
+}
+
+async function assertSteps(expectedSteps: ('active' | 'past' | 'unvisited')[]) {
+  await Promise.all(expectedSteps.map(async (step, index) => {
+    if (step === 'active') {
+      await assertStepActive(index)
+    }
+    else if (step === 'past') {
+      await assertStepPast(index)
+    }
+    else {
+      await assertStepUnvisited(index)
+    }
+  }))
+}
+
+async function assertStepActive(stepIndex : number) {
+  const step = await screen.findByTestId('step-' + stepIndex)
+  expect(step).toHaveClass('active')
+  expect(step).not.toHaveClass('past')
+}
+
+async function assertStepUnvisited(stepIndex : number) {
+  const step = await screen.findByTestId('step-' + stepIndex)
+  expect(step).not.toHaveClass('active')
+  expect(step).not.toHaveClass('past')
+}
+
+async function assertStepPast(stepIndex: number) {
+  const step = await screen.findByTestId('step-' + stepIndex)
+  expect(step).toHaveClass('past')
+  expect(step).not.toHaveClass('active')
+}

@@ -1,8 +1,15 @@
 import type { ModalStep } from './types'
 
+import styled from 'styled-components'
+
 import { Chains, useActiveAccounts, useApi, useTransaction } from 'use-substrate'
 
+import { ButtonOutline, ButtonPrimary } from '../button/Button'
+import { ArrowLeft } from '../icons/ArrowLeft'
+import { ArrowRight } from '../icons/ArrowRight'
+import { Label, Text } from '../typography'
 import { useNewAssetModal } from './context/useNewAssetModal'
+import { ModalFooter } from './ModalFooter'
 
 export function SecondStep({ onNext }: ModalStep): JSX.Element {
   const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
@@ -26,12 +33,38 @@ export function SecondStep({ onNext }: ModalStep): JSX.Element {
 
   return (
     <>
-      <p>{assetName}</p>
-      <p>{assetSymbol}</p>
-      <p>{assetDecimals}</p>
-      <p>{assetId}</p>
-      <p>{minBalance}</p>
-      <button onClick={_onSubmit}>Confirm</button>
+      <InfoContainer>
+        <Label>Asset name</Label>
+        <Text size='XS' color='white' bold>{assetName}</Text>
+        <Label>Asset symbol</Label>
+        <Text size='XS' color='white' bold>{assetSymbol}</Text>
+        <Label>Asset decimals</Label>
+        <Text size='XS' color='white' bold>{assetDecimals}</Text>
+        <Label>Asset id</Label>
+        <Text size='XS' color='white' bold>{assetId}</Text>
+        <Label>Asset minimal balance</Label>
+        <Text size='XS' color='white' bold>{minBalance}</Text>
+      </InfoContainer>
+
+      <ModalFooter contentPosition='between'>
+        <ButtonOutline>
+          <ArrowLeft />
+          Back
+        </ButtonOutline>
+        <ButtonPrimary onClick={_onSubmit}>
+          Confirm
+          <ArrowRight />
+        </ButtonPrimary>
+      </ModalFooter>
     </>
   )
 }
+
+const InfoContainer = styled.div`
+  display: grid;
+  grid-template-columns: 100px auto;
+  grid-column-gap: 40px;
+  grid-row-gap: 4px;
+  align-items: center;
+  margin-bottom: 16px;
+`

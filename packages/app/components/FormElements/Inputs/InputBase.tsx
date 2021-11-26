@@ -1,20 +1,22 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 import { InputHint } from './InputHint'
 
 export interface CustomInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string,
+  large?: boolean,
   hint?: string,
   error?: string
 }
 
-export function InputBase({ id, label, hint, error, ...arg }: CustomInputProps): JSX.Element {
+export function InputBase({ id, label, hint, error, large, ...arg }: CustomInputProps): JSX.Element {
   return (
     <CustomInputWrapper data-testid={label}>
       <InputLabel htmlFor={id}>{label}</InputLabel>
       <Input
         id={id}
+        large={large}
         {...arg}
       />
       <InputHint hint={hint} error={error} />
@@ -33,7 +35,7 @@ const CustomInputWrapper = styled.div`
   }
 `
 
-const Input = styled.input`
+const Input = styled.input<Pick<CustomInputProps, 'large'>>`
   padding: 8px;
   border: 1px solid ${({ theme }) => theme.colors.gray[600]};
   border-radius: ${({ theme }) => theme.borderRadius.s};
@@ -53,6 +55,21 @@ const Input = styled.input`
     border-color: ${({ theme }) => theme.colors.pinkLight};
     caret-color: ${({ theme }) => theme.colors.pinkLight};
   }
+  
+  ${({ large }) => large && css`
+    font-size: 24px;
+    line-height: 24px;
+    border: none;
+    border-radius: ${({ theme }) => theme.borderRadius.none};
+    padding-left: 0;
+
+    &:focus,
+    &:focus-visible {
+      outline: none;
+      border: none;
+      caret-color: ${({ theme }) => theme.colors.pinkLight};
+    }
+  `}
 `
 
 const InputLabel = styled.label`

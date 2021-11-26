@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 
 import { Modal } from '../Modal'
 import { NewAssetModalProvider } from './context/provider'
+import { StepsBar } from './StepsBar/StepsBar'
 import { FirstStep } from './FirstStep'
 import { SecondStep } from './SecondStep'
 
@@ -38,6 +39,7 @@ export function NewAssetModal({ isOpen, closeModal }: NewAssetModalProps): JSX.E
       title='Create asset'
     >
       <NewAssetModalProvider>
+        <StepsBar activeStep={activeStep - 1} />
         <div>
           {renderStep()}
         </div>
