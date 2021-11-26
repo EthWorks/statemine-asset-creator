@@ -56,6 +56,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
       setKusamaAccountInfo('This account has no funds')
     }
   }, [hasStatemineFreeBalance, isKusamaAccountSelectVisible, hasKusamaFreeBalance, setStatemineAccountInfo, setKusamaAccountInfo])
+
   const _onClick = async (): Promise<void> => {
     const activeAccounts = isKusamaAccountSelectVisible
       ? {
