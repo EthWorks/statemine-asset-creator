@@ -7,4 +7,3 @@ export const ArrowLeft = (): JSX.Element => (
     />
   </svg>
 )
-
