@@ -96,7 +96,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
         setCurrentAccount={setStatemineAccount}
         tip={statemineAccountInfo}
       />
-      {!isKusamaAccountSelectVisible &&(
+      {!isKusamaAccountSelectVisible && (
         <Centered>
           <ButtonTertiary onClick={toggleKusamaAccountSelectVisible}>Add Kusama account</ButtonTertiary>
         </Centered>
