@@ -250,35 +250,31 @@ const openModal = async (): Promise<void> => {
 
 const assertSteps = (expectedSteps: ('active' | 'past' | 'unvisited')[]) => {
   expectedSteps.map((step, index) => {
+    const stepHtmlElement = screen.getByTestId('step-' + index)
+
     if (step === 'active') {
-      assertStepActive(index)
+      assertStepActive(stepHtmlElement)
     }
     else if (step === 'past') {
-      assertStepPast(index)
+      assertStepPast(stepHtmlElement)
     }
     else {
-      assertStepUnvisited(index)
+      assertStepUnvisited(stepHtmlElement)
     }
   })
 }
 
-const assertStepActive = (stepIndex : number) => {
-  const step = screen.getByTestId('step-' + stepIndex)
-
+const assertStepActive = (step: HTMLElement) => {
   expect(step).toHaveClass('active')
   expect(step).not.toHaveClass('past')
 }
 
-const assertStepUnvisited = (stepIndex : number) => {
-  const step = screen.getByTestId('step-' + stepIndex)
-
+const assertStepUnvisited = (step: HTMLElement) => {
   expect(step).not.toHaveClass('active')
   expect(step).not.toHaveClass('past')
 }
 
-const assertStepPast = (stepIndex: number) => {
-  const step = screen.getByTestId('step-' + stepIndex)
-
+const assertStepPast = (step: HTMLElement) => {
   expect(step).toHaveClass('past')
   expect(step).not.toHaveClass('active')
 }
