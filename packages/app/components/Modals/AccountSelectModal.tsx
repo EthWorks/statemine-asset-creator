@@ -1,14 +1,12 @@
-import type { Account } from 'use-substrate'
-
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import styled from 'styled-components'
 
 import { Chains, useAccounts, useActiveAccounts } from 'use-substrate'
 
 import KusamaLogo from '../../assets/img/kusama.png'
 import StatemineLogo from '../../assets/img/statemine.svg'
-import { useToggle } from '../../utils'
+import { useAccountSelect, useToggle } from '../../utils'
 import { AccountSelect } from '../AccountSelect'
 import { Arrow } from '../icons'
 import { ButtonPrimary, ButtonTertiary, Modal, Text, Title } from '../index'
@@ -22,9 +20,42 @@ interface Props {
 export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
   const accounts = useAccounts()
   const { setActiveAccounts } = useActiveAccounts()
-  const [statemineAccount, setStatemineAccount] = useState<Account>(accounts.allAccounts[0])
-  const [kusamaAccount, setKusamaAccount] = useState<Account>(accounts.allAccounts[0])
   const [isKusamaAccountSelectVisible, toggleKusamaAccountSelectVisible] = useToggle()
+
+  const {
+    account: kusamaAccount,
+    setAccount: setKusamaAccount,
+    accountInfo: kusamaAccountInfo,
+    setAccountInfo: setKusamaAccountInfo,
+    hasFreeBalance: hasKusamaFreeBalance
+  } = useAccountSelect(accounts, Chains.Kusama)
+
+  const {
+    account: statemineAccount,
+    setAccount: setStatemineAccount,
+    accountInfo: statemineAccountInfo,
+    setAccountInfo: setStatemineAccountInfo,
+    hasFreeBalance: hasStatemineFreeBalance
+  } = useAccountSelect(accounts, Chains.Statemine)
+
+  useEffect(() => {
+    setStatemineAccountInfo(undefined)
+    setKusamaAccountInfo(undefined)
+
+    if(!hasStatemineFreeBalance && !isKusamaAccountSelectVisible) {
+      setStatemineAccountInfo('This account has insufficient funds, consider adding Kusama account.')
+
+      return
+    }
+
+    if(isKusamaAccountSelectVisible) {
+      setStatemineAccountInfo('Funds will be transferred to this Statemine account from your Kusama account.')
+    }
+
+    if(isKusamaAccountSelectVisible && !hasKusamaFreeBalance) {
+      setKusamaAccountInfo('This account has no funds')
+    }
+  }, [hasStatemineFreeBalance, isKusamaAccountSelectVisible, hasKusamaFreeBalance, setStatemineAccountInfo, setKusamaAccountInfo])
 
   const _onClick = async (): Promise<void> => {
     const activeAccounts = isKusamaAccountSelectVisible
@@ -39,11 +70,6 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
     setActiveAccounts(activeAccounts)
     closeModal()
   }
-
-  useEffect(() => {
-    setStatemineAccount(accounts.allAccounts[0])
-    setKusamaAccount(accounts.allAccounts[0])
-  }, [accounts.allAccounts])
 
   if (!accounts.allAccounts.length || !statemineAccount) return <>Loading..</>
 
@@ -68,6 +94,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
         accounts={accounts.allAccounts}
         currentAccount={statemineAccount}
         setCurrentAccount={setStatemineAccount}
+        tip={statemineAccountInfo}
       />
       {!isKusamaAccountSelectVisible && (
         <Centered>
@@ -88,6 +115,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
             currentAccount={kusamaAccount}
             setCurrentAccount={setKusamaAccount}
             onClose={toggleKusamaAccountSelectVisible}
+            tip={kusamaAccountInfo}
           />
         </>
       )}

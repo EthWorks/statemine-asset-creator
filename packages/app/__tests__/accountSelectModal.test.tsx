@@ -4,7 +4,15 @@ import React from 'react'
 import { Chains } from 'use-substrate'
 
 import Home from '../pages'
-import { assertNoText, findAndClickButton, renderWithTheme, selectAccountFromDropdown, setLocalStorage } from './helpers'
+import { BN_ZERO as MOCK_BN_ZERO } from '../utils'
+import {
+  assertNoText,
+  assertText,
+  findAndClickButton,
+  renderWithTheme,
+  selectAccountFromDropdown,
+  setLocalStorage
+} from './helpers'
 import { aliceAccount, bobAccount, mockUseAccounts, mockUseApi, mockUseAssets, mockUseBalances } from './mocks'
 
 const mockedSetter = jest.fn()
@@ -13,7 +21,7 @@ jest.mock('use-substrate/dist/src/hooks', () => ({
   useApi: () => mockUseApi,
   useAccounts: () => mockUseAccounts,
   useAssets: () => mockUseAssets,
-  useBalances: () => mockUseBalances,
+  useBalances: () => ({ ...mockUseBalances, freeBalance: MOCK_BN_ZERO }),
   useActiveAccounts: () => ({
     activeAccounts: {},
     setActiveAccounts: mockedSetter
@@ -71,12 +79,34 @@ describe('Account select modal', () => {
 
     await assertNumberOfSelectAccountDropdowns(1)
   })
+
+  it('shows info about insufficient funds', async () => {
+    renderWithTheme(<Home/>)
+
+    await assertText('This account has insufficient funds, consider adding Kusama account.')
+  })
+
+  it('shows info about kusama account', async () => {
+    renderWithTheme(<Home/>)
+    await findAndClickButton('Add Kusama account')
+
+    await assertNoText('This account has insufficient funds, consider adding Kusama account.')
+    await assertText('Funds will be transferred to this Statemine account from your Kusama account.')
+  })
+
+  it('shows info if selected kusama account has no funds', async () => {
+    renderWithTheme(<Home/>)
+    await findAndClickButton('Add Kusama account')
+
+    await assertText('Funds will be transferred to this Statemine account from your Kusama account.')
+    await assertText('This account has no funds')
+  })
 })
 
 const clickConnect = async () => {
   const connectModal = await screen.findByTestId('modal')
   const connectButton = await within(connectModal).findByRole('button', { name: 'Connect' })
-  
+
   fireEvent.click(connectButton)
 }
 
