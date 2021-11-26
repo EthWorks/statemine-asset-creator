@@ -1,5 +1,6 @@
 export interface ModalStep {
-  onNext: () => void
+  onNext: () => void,
+  onBack?: () => void
 }
 
 export interface NewAssetModalProps {
