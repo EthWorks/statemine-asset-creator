@@ -1,23 +1,22 @@
 import type { FC } from 'react'
 import type { Asset } from 'use-substrate'
 
+import { useMemo, useRef } from 'react'
+import styled from 'styled-components'
+
+import { drawColor, useOutsideClick, useToggle } from '../../utils'
+import { ButtonSquare } from '../button/Button'
+import { Card } from '../Card'
+import FormatBalance from '../FormatBalance'
+import { Text } from '../typography'
 import { Account } from './Account'
+import { AssetImage } from './AssetImage'
+import { AssetsCardMenu } from './AssetsCardMenu'
 import { groupRoles } from './groupRoles'
 
 interface Props {
   asset: Asset
 }
-
-import { useMemo, useRef } from 'react'
-import styled from 'styled-components'
-
-import { drawColor,useOutsideClick, useToggle } from '../../utils'
-import { ButtonSquare } from '../button/Button'
-import { Card } from '../Card'
-import FormatBalance from '../FormatBalance'
-import { Text } from '../typography'
-import { AssetsCardMenu } from './AssetsCardMenu'
-import { ColorRing } from './ColorRing'
 
 export const AssetCard: FC<Props> = ({ asset }) => {
   const { name, id, decimals, supply, admin, issuer, freezer, symbol } = asset
@@ -40,9 +39,9 @@ export const AssetCard: FC<Props> = ({ asset }) => {
         </CardMenuContainer>
       </CardHeader>
       <CardContent>
-        <ColorRing color={color}>
+        <AssetImage color={color}>
           <CardTitle size='SM'>{symbol}</CardTitle>
-        </ColorRing>
+        </AssetImage>
         <div>
           <CardInfo>
             <Text size='XXS' bold>id:</Text>

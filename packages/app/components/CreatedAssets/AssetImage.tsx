@@ -4,7 +4,7 @@ interface ColorRingProps {
   color: string
 }
 
-export const ColorRing = styled.div<ColorRingProps>`
+export const AssetImage = styled.div<ColorRingProps>`
   position: relative;
   display: flex;
   justify-content: center;
