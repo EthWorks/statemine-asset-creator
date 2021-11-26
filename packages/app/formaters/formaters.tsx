@@ -1,7 +1,7 @@
 import { BigNumber } from 'bignumber.js'
 import BN from 'bn.js'
 
-export const roundBalance = (value: BN | string, decimalPlaces: number): string => {
+export const formatValue = (value: BN | string, decimalPlaces = 0): string => {
   return new BigNumber(value.toString()).toFormat(decimalPlaces)
 }
 
