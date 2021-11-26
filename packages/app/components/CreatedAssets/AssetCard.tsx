@@ -11,8 +11,7 @@ interface Props {
 import { useMemo, useRef } from 'react'
 import styled from 'styled-components'
 
-import { useOutsideClick, useToggle } from '../../utils'
-import { handleRandomColor } from '../../utils/randomColor'
+import { drawColor,useOutsideClick, useToggle } from '../../utils'
 import { ButtonSquare } from '../button/Button'
 import { Card } from '../Card'
 import FormatBalance from '../FormatBalance'
@@ -27,7 +26,7 @@ export const AssetCard: FC<Props> = ({ asset }) => {
   const cardMenuContainerRef = useRef(null)
   useOutsideClick(cardMenuContainerRef, () => setIsOpen(false))
   
-  const color = useMemo(() => handleRandomColor(), [])
+  const color = useMemo(() => drawColor(), [])
   
   return (
     <StyledCard padding='s' data-testid={`asset-card-${id.toNumber()}`}>
