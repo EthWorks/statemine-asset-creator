@@ -1,5 +1,7 @@
 import { createType } from 'test-helpers'
 
+import { noop } from '../helpers'
+
 export const mockUseApi = {
   api: {
     createType,
@@ -8,10 +10,8 @@ export const mockUseApi = {
     },
     tx: {
       assets: {
-        create: () => {/**/
-        },
-        setMetadata: () => {/**/
-        },
+        create: noop,
+        setMetadata: noop,
       },
       utility: {}
     }

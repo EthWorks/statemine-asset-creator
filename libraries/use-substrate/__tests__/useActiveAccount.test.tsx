@@ -1,8 +1,7 @@
 import { act, renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
 
-import { ActiveAccountProvider, Chains, useActiveAccounts } from '../src'
-import { useActiveAccount } from '../src/hooks/useActiveAccount'
+import { ActiveAccountProvider, Chains, useActiveAccount, useActiveAccounts } from '../src'
 import { ALICE_ID, BOB_ID } from './consts/addresses'
 import { mockedKusamaApi } from './mocks/MockedApiProvider'
 
@@ -69,7 +68,7 @@ describe('use active account', () => {
     )
 
     return renderHook(() => {
-      const { activeAccount, setActiveAccount } = useActiveAccount(chain) 
+      const { activeAccount, setActiveAccount } = useActiveAccount(chain)
       const { activeAccounts } = useActiveAccounts()
 
       return { activeAccount, setActiveAccount, activeAccounts }

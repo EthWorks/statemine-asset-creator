@@ -12,10 +12,10 @@ describe('use active accounts', () => {
     })
 
     it('can set and get active account via hook', async () => {
-      const { result, rerender } = renderActiveAccounts()
+      const { result, rerender } = renderActiveAccount()
 
       const { setActiveAccounts } = result.current
-      act(() => setActiveAccounts(Chains.Kusama, BOB_ID))
+      act(() => setActiveAccounts({ [Chains.Kusama]: BOB_ID }))
 
       rerender()
       const { activeAccounts } = result.current
@@ -24,16 +24,13 @@ describe('use active accounts', () => {
     })
 
     it('can set and get multiple active accounts via hook', async () => {
-      const { result, rerender } = renderActiveAccounts()
+      const { result, rerender } = renderActiveAccount()
 
       const { setActiveAccounts } = result.current
-      act(() => setActiveAccounts(Chains.Kusama, BOB_ID))
+      act(() => setActiveAccounts({ [Chains.Kusama]: BOB_ID, [Chains.Statemine]: ALICE_ID }))
 
       rerender()
-      const { setActiveAccounts: setSecondActiveAccount } = result.current
-      act(() => setSecondActiveAccount(Chains.Statemine, ALICE_ID))
 
-      rerender()
       const { activeAccounts } = result.current
 
       expect(activeAccounts && activeAccounts[Chains.Kusama]).toEqual(BOB_ID)
@@ -41,10 +38,10 @@ describe('use active accounts', () => {
     })
 
     it('can override an active account', async () => {
-      const { result, rerender } = renderActiveAccounts()
+      const { result, rerender } = renderActiveAccount()
 
       const { setActiveAccounts } = result.current
-      act(() => setActiveAccounts(Chains.Kusama, BOB_ID))
+      act(() => setActiveAccounts({ [Chains.Kusama]: BOB_ID }))
 
       rerender()
 
@@ -52,7 +49,7 @@ describe('use active accounts', () => {
 
       expect(activeAccounts && activeAccounts[Chains.Kusama]).toEqual(BOB_ID)
 
-      act(() => setAfterRerender(Chains.Kusama, ALICE_ID))
+      act(() => setAfterRerender({ [Chains.Kusama]: ALICE_ID }))
 
       rerender()
 
@@ -61,10 +58,10 @@ describe('use active accounts', () => {
     })
 
     it('sets activeAccounts (as accountId) in localStorage', async () => {
-      const { result } = renderActiveAccounts()
+      const { result } = renderActiveAccount()
 
       const { setActiveAccounts } = result.current
-      act(() => setActiveAccounts(Chains.Kusama, BOB_ID))
+      act(() => setActiveAccounts({ [Chains.Kusama]: BOB_ID }))
 
       const activeAccounts = localStorage.getItem('activeAccounts')
 
@@ -72,10 +69,10 @@ describe('use active accounts', () => {
     })
 
     it('sets activeAccounts (as string) in localStorage', async () => {
-      const { result } = renderActiveAccounts()
+      const { result } = renderActiveAccount()
 
       const { setActiveAccounts } = result.current
-      act(() => setActiveAccounts(Chains.Kusama, BOB))
+      act(() => setActiveAccounts({ [Chains.Kusama]: BOB }))
 
       const activeAccounts = localStorage.getItem('activeAccounts')
 
@@ -84,7 +81,7 @@ describe('use active accounts', () => {
 
     describe('on load reads localStorage and sets state to', () => {
       it('undefined when activeAccounts are not set in localStorage', async () => {
-        const { result } = renderActiveAccounts()
+        const { result } = renderActiveAccount()
         const { activeAccounts } = result.current
 
         const kusamaActiveAccount = activeAccounts && activeAccounts[Chains.Kusama]
@@ -93,7 +90,7 @@ describe('use active accounts', () => {
 
       it('activeAccounts set in localStorage', async () => {
         act(() => localStorage.setItem('activeAccounts', JSON.stringify({ kusama: BOB })))
-        const { result } = renderActiveAccounts()
+        const { result } = renderActiveAccount()
         const { activeAccounts } = result.current
 
         const kusamaActiveAccount = activeAccounts && activeAccounts[Chains.Kusama]
@@ -104,36 +101,36 @@ describe('use active accounts', () => {
 
   describe('without localStorage ', () => {
     let store: Storage
-    
+
     beforeAll(() => {
       store = window.localStorage
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       delete window.localStorage
     })
-    
+
     it('can set and get activeAccounts', async () => {
-      const { result, rerender } = renderActiveAccounts()
+      const { result, rerender } = renderActiveAccount()
 
       const { setActiveAccounts, activeAccounts: initActiveAccounts } = result.current
       expect(initActiveAccounts).toEqual({})
 
-      act(() => setActiveAccounts(Chains.Kusama, BOB_ID))
+      act(() => setActiveAccounts({ [Chains.Kusama]: BOB_ID }))
 
       rerender()
       const { activeAccounts } = result.current
 
       expect(activeAccounts && activeAccounts[Chains.Kusama]).toEqual(BOB_ID)
     })
-    
+
     afterAll (() => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       window.localStorage = store
     })
   })
-  
-  const renderActiveAccounts = () => {
+
+  const renderActiveAccount = () => {
     const wrapper = ({ children }: { children: ReactNode }) => (
       <ActiveAccountProvider api={mockedKusamaApi.api}>
         {children}

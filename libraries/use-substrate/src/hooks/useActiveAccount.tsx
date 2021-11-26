@@ -11,7 +11,7 @@ interface ActiveAccount {
 export function useActiveAccount(chain: Chains): ActiveAccount {
   const { activeAccounts, setActiveAccounts } = useActiveAccounts()
   const activeAccount = activeAccounts[chain]
-  const setActiveAccount = (accountId: AccountId): void => setActiveAccounts(chain, accountId)
+  const setActiveAccount = (accountId: AccountId): void => setActiveAccounts({ [chain]: accountId })
 
   return { activeAccount, setActiveAccount }
 }
