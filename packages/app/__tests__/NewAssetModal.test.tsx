@@ -17,7 +17,7 @@ import {
   renderWithTheme,
   typeInInput,
 } from './helpers'
-import { mockUseActiveAccounts, mockUseApi, mockUseAssets, mockUseAssetsConstants } from './mocks'
+import { mockUseActiveAccount, mockUseApi, mockUseAssets, mockUseAssetsConstants } from './mocks'
 
 function TestComponent(): JSX.Element {
   const [isOpen, toggleOpen] = useToggle()
@@ -38,7 +38,7 @@ jest.mock('use-substrate/dist/src/hooks', () => ({
   useAssets: () => mockUseAssets,
   useAssetsConstants: () => mockUseAssetsConstants,
   useTransaction: () => mockUseTransaction,
-  useActiveAccounts: () => mockUseActiveAccounts
+  useActiveAccount: () => mockUseActiveAccount
 }))
 
 const mockedStringLimit = mockUseAssetsConstants.stringLimit.toNumber()

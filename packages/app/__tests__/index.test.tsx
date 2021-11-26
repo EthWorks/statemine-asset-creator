@@ -11,7 +11,7 @@ import { assertText, clickButton, renderWithTheme, setLocalStorage } from './hel
 import {
   bobAccount,
   bobAccountId,
-  mockUseAccounts,
+  mockUseAccounts, mockUseActiveAccount,
   mockUseActiveAccounts,
   mockUseApi,
   mockUseAssets,
@@ -35,6 +35,10 @@ jest.mock('use-substrate/dist/src/hooks', () => ({
   useActiveAccounts: () => ({
     ...mockUseActiveAccounts,
     activeAccounts: { [mockChains.Kusama]: mockActiveAccount, [mockChains.Statemine]: mockActiveAccount },
+  }),
+  useActiveAccount: () => ({
+    ...mockUseActiveAccount,
+    activeAccount: mockActiveAccount
   })
 }))
 

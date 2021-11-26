@@ -4,7 +4,14 @@ import userEvent from '@testing-library/user-event'
 import Home from '../pages'
 import { mockUseBestNumber } from './mocks/mockUseBestNumber'
 import { renderWithTheme, setLocalStorage } from './helpers'
-import { bobAccount, mockUseAccounts, mockUseActiveAccounts, mockUseApi, mockUseBalances } from './mocks'
+import {
+  bobAccount,
+  mockUseAccounts,
+  mockUseActiveAccount,
+  mockUseActiveAccounts,
+  mockUseApi,
+  mockUseBalances
+} from './mocks'
 
 jest.mock('use-substrate/dist/src/hooks', () => ({
   useApi: () => mockUseApi,
@@ -12,6 +19,7 @@ jest.mock('use-substrate/dist/src/hooks', () => ({
   useAssets: () => [],
   useBalances: () => mockUseBalances,
   useBestNumber: () => mockUseBestNumber,
+  useActiveAccount: () => mockUseActiveAccount,
   useActiveAccounts: () => mockUseActiveAccounts
 }))
 

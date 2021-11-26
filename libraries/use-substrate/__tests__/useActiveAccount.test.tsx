@@ -1,142 +1,77 @@
 import { act, renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
 
-import { ActiveAccountProvider, Chains, useActiveAccounts } from '../src'
-import { ALICE_ID, BOB, BOB_ID } from './consts/addresses'
+import { ActiveAccountProvider, Chains, useActiveAccount, useActiveAccounts } from '../src'
+import { ALICE_ID, BOB_ID } from './consts/addresses'
 import { mockedKusamaApi } from './mocks/MockedApiProvider'
 
-describe('useActiveAccount', () => {
-  describe('with localStorage', () => {
+describe('use active account', () => {
+  describe('can set an active account for a specific chain', () => {
     beforeEach(() => {
       localStorage.clear()
     })
 
-    it('can set and get active account via hook', async () => {
-      const { result, rerender } = renderActiveAccount()
+    it('and get by use active account', () => {
+      const { result, rerender } = renderActiveAccount(Chains.Kusama)
 
-      const { setActiveAccounts } = result.current
-      act(() => setActiveAccounts({ [Chains.Kusama]: BOB_ID }))
+      expect(result.current.activeAccount).toEqual(undefined)
 
-      rerender()
-      const { activeAccounts } = result.current
-
-      expect(activeAccounts && activeAccounts[Chains.Kusama]).toEqual(BOB_ID)
-    })
-
-    it('can set and get multiple active accounts via hook', async () => {
-      const { result, rerender } = renderActiveAccount()
-
-      const { setActiveAccounts } = result.current
-      act(() => setActiveAccounts({ [Chains.Kusama]: BOB_ID, [Chains.Statemine]: ALICE_ID }))
+      const { setActiveAccount } = result.current
+      act(() => setActiveAccount(BOB_ID))
 
       rerender()
 
-      const { activeAccounts } = result.current
+      const activeAccount = result.current.activeAccount
 
-      expect(activeAccounts && activeAccounts[Chains.Kusama]).toEqual(BOB_ID)
-      expect(activeAccounts && activeAccounts[Chains.Statemine]).toEqual(ALICE_ID)
+      expect(activeAccount).toEqual(BOB_ID)
     })
+    
+    it('and get by use active accounts', () => {
+      const { result, rerender } = renderActiveAccount(Chains.Kusama)
 
-    it('can override an active account', async () => {
-      const { result, rerender } = renderActiveAccount()
+      expect(result.current.activeAccounts[Chains.Kusama]).toEqual(undefined)
 
-      const { setActiveAccounts } = result.current
-      act(() => setActiveAccounts({ [Chains.Kusama]: BOB_ID }))
+      const { setActiveAccount } = result.current
+      act(() => setActiveAccount(BOB_ID))
 
       rerender()
 
-      const { activeAccounts, setActiveAccounts: setAfterRerender } = result.current
-
-      expect(activeAccounts && activeAccounts[Chains.Kusama]).toEqual(BOB_ID)
-
-      act(() => setAfterRerender({ [Chains.Kusama]: ALICE_ID }))
-
-      rerender()
-
-      const { activeAccounts: overriddenAccounts } = result.current
-      expect(overriddenAccounts && overriddenAccounts[Chains.Kusama]).toEqual(ALICE_ID)
-    })
-
-    it('sets activeAccounts (as accountId) in localStorage', async () => {
-      const { result } = renderActiveAccount()
-
-      const { setActiveAccounts } = result.current
-      act(() => setActiveAccounts({ [Chains.Kusama]: BOB_ID }))
-
-      const activeAccounts = localStorage.getItem('activeAccounts')
-
-      expect(JSON.parse(activeAccounts || '{}')[Chains.Kusama]).toEqual(BOB)
-    })
-
-    it('sets activeAccounts (as string) in localStorage', async () => {
-      const { result } = renderActiveAccount()
-
-      const { setActiveAccounts } = result.current
-      act(() => setActiveAccounts({ [Chains.Kusama]: BOB }))
-
-      const activeAccounts = localStorage.getItem('activeAccounts')
-
-      expect(JSON.parse(activeAccounts || '{}')[Chains.Kusama]).toEqual(BOB)
-    })
-
-    describe('on load reads localStorage and sets state to', () => {
-      it('undefined when activeAccounts are not set in localStorage', async () => {
-        const { result } = renderActiveAccount()
-        const { activeAccounts } = result.current
-
-        const kusamaActiveAccount = activeAccounts && activeAccounts[Chains.Kusama]
-        expect(kusamaActiveAccount).toBeUndefined()
-      })
-
-      it('activeAccounts set in localStorage', async () => {
-        act(() => localStorage.setItem('activeAccounts', JSON.stringify({ kusama: BOB })))
-        const { result } = renderActiveAccount()
-        const { activeAccounts } = result.current
-
-        const kusamaActiveAccount = activeAccounts && activeAccounts[Chains.Kusama]
-        expect(kusamaActiveAccount).toEqual(BOB_ID)
-      })
+      expect(result.current.activeAccounts[Chains.Kusama]).toEqual(BOB_ID)
     })
   })
 
-  describe('without localStorage ', () => {
-    let store: Storage
-    
-    beforeAll(() => {
-      store = window.localStorage
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      delete window.localStorage
-    })
-    
-    it('can set and get activeAccounts', async () => {
-      const { result, rerender } = renderActiveAccount()
+  it('can override an active account', () => {
+    const { result, rerender } = renderActiveAccount(Chains.Kusama)
 
-      const { setActiveAccounts, activeAccounts: initActiveAccounts } = result.current
-      expect(initActiveAccounts).toEqual({})
+    const { setActiveAccount } = result.current
+    act(() => setActiveAccount(BOB_ID))
 
-      act(() => setActiveAccounts({ [Chains.Kusama]: BOB_ID }))
+    rerender()
 
-      rerender()
-      const { activeAccounts } = result.current
+    const { activeAccount, setActiveAccount: setAfterRerender } = result.current
 
-      expect(activeAccounts && activeAccounts[Chains.Kusama]).toEqual(BOB_ID)
-    })
-    
-    afterAll (() => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      window.localStorage = store
-    })
+    expect(activeAccount).toEqual(BOB_ID)
+
+    act(() => setAfterRerender(ALICE_ID))
+
+    rerender()
+
+    const { activeAccount: overriddenAccount } = result.current
+    expect(overriddenAccount).toEqual(ALICE_ID)
   })
-  
-  const renderActiveAccount = () => {
+
+  const renderActiveAccount = (chain: Chains) => {
     const wrapper = ({ children }: { children: ReactNode }) => (
       <ActiveAccountProvider api={mockedKusamaApi.api}>
         {children}
       </ActiveAccountProvider>
     )
 
-    return renderHook(() => useActiveAccounts(), { wrapper })
+    return renderHook(() => {
+      const { activeAccount, setActiveAccount } = useActiveAccount(chain)
+      const { activeAccounts } = useActiveAccounts()
+
+      return { activeAccount, setActiveAccount, activeAccounts }
+    }, { wrapper })
   }
 })

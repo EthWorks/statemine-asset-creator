@@ -2,7 +2,7 @@ import type { ModalStep } from './types'
 
 import styled from 'styled-components'
 
-import { Chains, useActiveAccounts, useApi, useTransaction } from 'use-substrate'
+import { Chains, useActiveAccount, useApi, useTransaction } from 'use-substrate'
 
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { ArrowLeft, ArrowRight } from '../icons'
@@ -13,8 +13,7 @@ import { ModalFooter } from './ModalFooter'
 export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element {
   const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
   const { api } = useApi(Chains.Statemine)
-  const { activeAccounts } = useActiveAccounts()
-  const activeAccount = activeAccounts[Chains.Kusama] //to be changed for Statemine when we have account select
+  const { activeAccount } = useActiveAccount(Chains.Statemine)
 
   const txs = activeAccount ? [
     api?.tx.assets.create(assetId, activeAccount.toString(), minBalance),

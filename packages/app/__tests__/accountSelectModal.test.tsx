@@ -13,7 +13,15 @@ import {
   selectAccountFromDropdown,
   setLocalStorage
 } from './helpers'
-import { aliceAccount, bobAccount, mockUseAccounts, mockUseApi, mockUseAssets, mockUseBalances } from './mocks'
+import {
+  aliceAccount,
+  bobAccount,
+  mockUseAccounts,
+  mockUseActiveAccount,
+  mockUseApi,
+  mockUseAssets,
+  mockUseBalances
+} from './mocks'
 
 const mockedSetter = jest.fn()
 
@@ -25,7 +33,11 @@ jest.mock('use-substrate/dist/src/hooks', () => ({
   useActiveAccounts: () => ({
     activeAccounts: {},
     setActiveAccounts: mockedSetter
-  })
+  }),
+  useActiveAccount: () => ({
+    ...mockUseActiveAccount,
+    activeAccount: undefined
+  }),
 }))
 
 describe('Account select modal', () => {
