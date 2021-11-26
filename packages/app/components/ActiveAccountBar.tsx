@@ -21,34 +21,34 @@ export const ActiveAccountBar: FC<Props> = ({ onClick }) => {
       data-testid="active-account-bar"
       onClick={onClick}
     >
-      <div>
-        <div>
-          <p>Kusama</p>
-          <FormatBalance token={'KSM'} chainDecimals={12} value={kusamaFreeBalance}/>
-          <p>
-            Current block
-            <FormatBlockNumber value={kusamaBlockNumber}/>
-          </p>
-        </div>
-        <div>
-          {activeAccounts[Chains.Kusama]?.toString()}
-        </div>
-      </div>
       {kusamaFreeBalance && (
         <div>
           <div>
-            <p>Statemine</p>
-            <FormatBalance token={'KSM'} chainDecimals={12} value={statemineFreeBalance}/>
+            <p>Kusama</p>
+            <FormatBalance token={'KSM'} chainDecimals={12} value={kusamaFreeBalance}/>
             <p>
             Current block
-              <FormatBlockNumber value={statemineBlockNumber}/>
+              <FormatBlockNumber value={kusamaBlockNumber}/>
             </p>
           </div>
           <div>
-            {activeAccounts[Chains.Statemine]?.toString()}
+            {activeAccounts[Chains.Kusama]?.toString()}
           </div>
         </div>
       )}
+      <div>
+        <div>
+          <p>Statemine</p>
+          <FormatBalance token={'KSM'} chainDecimals={12} value={statemineFreeBalance}/>
+          <p>
+            Current block
+            <FormatBlockNumber value={statemineBlockNumber}/>
+          </p>
+        </div>
+        <div>
+          {activeAccounts[Chains.Statemine]?.toString()}
+        </div>
+      </div>
     </div>
   )
 }
