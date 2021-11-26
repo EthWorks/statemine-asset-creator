@@ -63,59 +63,57 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
   }, [assetNameError, assetSymbolError, onNext, stringLimit])
 
   return (
-    <>
-      <form onSubmit={_onNext}>
-        <FormHead>
-          <CoinWrapper>
-            <Image src={Coin} alt='' />
-          </CoinWrapper>
-          <TextInput
-            error={assetNameError}
-            value={assetName}
-            onChange={setAssetName}
-            label="Asset name"
-            id="asset-name"
-            large
-            autoFocus
-          />
-        </FormHead>
+    <form onSubmit={_onNext}>
+      <FormHead>
+        <CoinWrapper>
+          <Image src={Coin} alt='' />
+        </CoinWrapper>
         <TextInput
-          error={assetSymbolError}
-          value={assetSymbol}
-          onChange={setAssetSymbol}
-          label="Asset symbol"
-          id="asset-symbol"
+          error={assetNameError}
+          value={assetName}
+          onChange={setAssetName}
+          label="Asset name"
+          id="asset-name"
+          large
+          autoFocus
         />
-        <NumericInput
-          value={assetDecimals}
-          onChange={setAssetDecimals}
-          label="Asset decimals"
-          id="asset-decimals"
-          inputType='NATURAL'
-        />
-        <NumericInput
-          error={assetIdError}
-          value={assetId}
-          onChange={setAssetId}
-          label="Asset ID"
-          id="asset-ID"
-          inputType='NATURAL'
-        />
-        <NumericInput
-          value={minBalance}
-          onChange={setMinBalance}
-          label="Minimum balance"
-          id="min-balance"
-          inputType='POSITIVE'
-        />
-        <ModalFooter>
-          <ButtonPrimary type='submit' disabled={isDisabled}>
+      </FormHead>
+      <TextInput
+        error={assetSymbolError}
+        value={assetSymbol}
+        onChange={setAssetSymbol}
+        label="Asset symbol"
+        id="asset-symbol"
+      />
+      <NumericInput
+        value={assetDecimals}
+        onChange={setAssetDecimals}
+        label="Asset decimals"
+        id="asset-decimals"
+        inputType='NATURAL'
+      />
+      <NumericInput
+        error={assetIdError}
+        value={assetId}
+        onChange={setAssetId}
+        label="Asset ID"
+        id="asset-ID"
+        inputType='NATURAL'
+      />
+      <NumericInput
+        value={minBalance}
+        onChange={setMinBalance}
+        label="Minimum balance"
+        id="min-balance"
+        inputType='POSITIVE'
+      />
+      <ModalFooter>
+        <ButtonPrimary type='submit' disabled={isDisabled}>
             Next
-            <ArrowRight />
-          </ButtonPrimary>
-        </ModalFooter>
-      </form>
-    </>
+          <ArrowRight />
+        </ButtonPrimary>
+      </ModalFooter>
+    </form>
   )
 }
 

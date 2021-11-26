@@ -9,21 +9,21 @@ import { FirstStep } from './FirstStep'
 import { SecondStep } from './SecondStep'
 
 export function NewAssetModal({ isOpen, closeModal }: NewAssetModalProps): JSX.Element {
-  const [activeStep, setActiveStep] = useState<number>(0)
+  const [activeStep, setActiveStep] = useState<number>(1)
 
   const _moveToStep = (step: number): void => {
     setActiveStep(step)
   }
 
   const _onConfirm = (): void => {
-    _moveToStep(0)
+    _moveToStep(1)
     closeModal()
   }
 
   const renderStep: () => JSX.Element = () => {
     switch (activeStep){
-      case 0: {
-        return <FirstStep onNext={() => _moveToStep(1)}/>
+      case 1: {
+        return <FirstStep onNext={() => _moveToStep(2)}/>
       }
       default: {
         return <SecondStep onNext={_onConfirm}/>
@@ -39,7 +39,7 @@ export function NewAssetModal({ isOpen, closeModal }: NewAssetModalProps): JSX.E
       title='Create asset'
     >
       <NewAssetModalProvider>
-        <StepsBar activeStep={activeStep} />
+        <StepsBar activeStep={activeStep - 1} />
         <div>
           {renderStep()}
         </div>
