@@ -53,6 +53,12 @@ export function assertButtonNotDisabled(name: string) {
   expect(button).not.toBeDisabled()
 }
 
+export async function findButtonNotDisabled(name: string) {
+  const button = await screen.findByRole('button', { name })
+
+  expect(button).not.toBeDisabled()
+}
+
 export function assertInputValue(inputName: string, value: string) {
   const input = screen.getByLabelText(inputName)
 

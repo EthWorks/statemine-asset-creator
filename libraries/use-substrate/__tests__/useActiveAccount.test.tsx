@@ -15,7 +15,7 @@ describe('useActiveAccount', () => {
       const { result, rerender } = renderActiveAccount()
 
       const { setActiveAccounts } = result.current
-      act(() => setActiveAccounts(Chains.Kusama, BOB_ID))
+      act(() => setActiveAccounts({ [Chains.Kusama]: BOB_ID }))
 
       rerender()
       const { activeAccounts } = result.current
@@ -27,13 +27,10 @@ describe('useActiveAccount', () => {
       const { result, rerender } = renderActiveAccount()
 
       const { setActiveAccounts } = result.current
-      act(() => setActiveAccounts(Chains.Kusama, BOB_ID))
+      act(() => setActiveAccounts({ [Chains.Kusama]: BOB_ID, [Chains.Statemine]: ALICE_ID }))
 
       rerender()
-      const { setActiveAccounts: setSecondActiveAccount } = result.current
-      act(() => setSecondActiveAccount(Chains.Statemine, ALICE_ID))
 
-      rerender()
       const { activeAccounts } = result.current
 
       expect(activeAccounts && activeAccounts[Chains.Kusama]).toEqual(BOB_ID)
@@ -44,7 +41,7 @@ describe('useActiveAccount', () => {
       const { result, rerender } = renderActiveAccount()
 
       const { setActiveAccounts } = result.current
-      act(() => setActiveAccounts(Chains.Kusama, BOB_ID))
+      act(() => setActiveAccounts({ [Chains.Kusama]: BOB_ID }))
 
       rerender()
 
@@ -52,7 +49,7 @@ describe('useActiveAccount', () => {
 
       expect(activeAccounts && activeAccounts[Chains.Kusama]).toEqual(BOB_ID)
 
-      act(() => setAfterRerender(Chains.Kusama, ALICE_ID))
+      act(() => setAfterRerender({ [Chains.Kusama]: ALICE_ID }))
 
       rerender()
 
@@ -64,7 +61,7 @@ describe('useActiveAccount', () => {
       const { result } = renderActiveAccount()
 
       const { setActiveAccounts } = result.current
-      act(() => setActiveAccounts(Chains.Kusama, BOB_ID))
+      act(() => setActiveAccounts({ [Chains.Kusama]: BOB_ID }))
 
       const activeAccounts = localStorage.getItem('activeAccounts')
 
@@ -75,7 +72,7 @@ describe('useActiveAccount', () => {
       const { result } = renderActiveAccount()
 
       const { setActiveAccounts } = result.current
-      act(() => setActiveAccounts(Chains.Kusama, BOB))
+      act(() => setActiveAccounts({ [Chains.Kusama]: BOB }))
 
       const activeAccounts = localStorage.getItem('activeAccounts')
 
@@ -118,7 +115,7 @@ describe('useActiveAccount', () => {
       const { setActiveAccounts, activeAccounts: initActiveAccounts } = result.current
       expect(initActiveAccounts).toEqual({})
 
-      act(() => setActiveAccounts(Chains.Kusama, BOB_ID))
+      act(() => setActiveAccounts({ [Chains.Kusama]: BOB_ID }))
 
       rerender()
       const { activeAccounts } = result.current

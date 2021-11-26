@@ -6,10 +6,11 @@ import { Chains } from '../../consts'
 
 export interface UseActiveAccounts {
   activeAccounts: ActiveAccounts,
-  setActiveAccounts: (chain: Chains, accountId: AccountId | string) => void
+  setActiveAccounts: (activeAccounts: ActiveAccountsInput) => void
 }
 
 export type ActiveAccounts = Partial<Record<Chains, AccountId | undefined>>
+export type ActiveAccountsInput = Partial<Record<Chains, AccountId | string | undefined>>
 
 export interface ActiveAccountProviderProps {
   api: ApiRx | undefined,

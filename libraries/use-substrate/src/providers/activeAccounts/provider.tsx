@@ -1,46 +1,40 @@
 import type { FC } from 'react'
-import type { AccountId } from '@polkadot/types/interfaces'
-import type { ActiveAccountProviderProps, ActiveAccounts } from './types'
+import type { ActiveAccountProviderProps, ActiveAccounts, ActiveAccountsInput } from './types'
 
 import React, { useEffect, useState } from 'react'
 
-import { Chains } from '../../consts'
-import { isString, localStorageExists } from '../../util/checks'
+import { localStorageExists } from '../../util/checks'
 import { ActiveAccountsContext } from './context'
+import { convertAddressesToAccountIds } from './utils'
 
 export const ActiveAccountProvider: FC<ActiveAccountProviderProps> = ({ children, api }) => {
   const [activeAccounts, setActiveAccounts] = useState<ActiveAccounts>({})
 
   useEffect(() => {
     if (localStorageExists()) {
-      const initValue = localStorage.getItem('activeAccounts')
-      const parsed = initValue ? JSON.parse(initValue) : undefined
+      const accountsInLocalStorage = localStorage.getItem('activeAccounts')
+      const initialAccounts = accountsInLocalStorage ? JSON.parse(accountsInLocalStorage) : {}
       
-      if(!parsed || !api) {
-        setActiveAccounts({})
-
+      if(!api) {
         return
       }
-      
-      Object.entries(parsed).map(([chain, accountId]) => {
-        if (isString(accountId)) {
-          parsed[chain] = api.createType('AccountId', accountId)
-        }
-      })
 
-      setActiveAccounts(parsed)
+      const convertedAccounts = convertAddressesToAccountIds(initialAccounts, api)
+      setActiveAccounts(convertedAccounts)
     }
   }, [api])
 
-  const _setActiveAccounts = (chain: Chains, accountId: AccountId | string): void => {
+  const _setActiveAccounts = (newActiveAccounts: ActiveAccountsInput): void => {
     if (localStorageExists()) {
-      const accounts = { ...activeAccounts, [chain]: accountId }
+      const accounts = { ...activeAccounts, ...newActiveAccounts }
       localStorage.setItem('activeAccounts', JSON.stringify(accounts))
     }
     
+    const convertedAccounts = convertAddressesToAccountIds(newActiveAccounts, api)
+
     setActiveAccounts({
       ...activeAccounts,
-      [chain]: isString(accountId) ? api?.createType('AccountId', accountId) : accountId
+      ...convertedAccounts
     })
   }
 

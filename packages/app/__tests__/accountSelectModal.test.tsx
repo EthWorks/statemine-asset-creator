@@ -4,17 +4,16 @@ import React from 'react'
 import { Chains } from 'use-substrate'
 
 import Home from '../pages'
-import { assertNoText, renderWithTheme, selectAccountFromDropdown, setLocalStorage } from './helpers'
-import { bobAccount, mockChains, mockUseAccounts, mockUseApi, mockUseAssets, mockUseBalances } from './mocks'
+import { assertNoText, findAndClickButton, renderWithTheme, selectAccountFromDropdown, setLocalStorage } from './helpers'
+import { aliceAccount, bobAccount, mockUseAccounts, mockUseApi, mockUseAssets, mockUseBalances } from './mocks'
 
 const mockedSetter = jest.fn()
 
-jest.mock('use-substrate', () => ({
+jest.mock('use-substrate/dist/src/hooks', () => ({
   useApi: () => mockUseApi,
   useAccounts: () => mockUseAccounts,
   useAssets: () => mockUseAssets,
   useBalances: () => mockUseBalances,
-  Chains: () => mockChains,
   useActiveAccounts: () => ({
     activeAccounts: {},
     setActiveAccounts: mockedSetter
@@ -29,15 +28,66 @@ describe('Account select modal', () => {
     })
   })
 
-  it('saves selected account with useActiveAccount hook and closes modal', async () => {
+  it('saves selected accounts with useActiveAccount hook and closes modal', async () => {
     renderWithTheme(<Home />)
-    await selectAccountFromDropdown(1)
+    await selectAccountFromDropdown(0, 1)
+    await clickConnect()
 
-    const connectModal = await screen.findByTestId('modal')
-    const connectButton = await within(connectModal).findByRole('button', { name: 'Connect' })
-    fireEvent.click(connectButton)
-
-    expect(mockedSetter).toBeCalledWith(Chains.Kusama, bobAccount.address)
+    expect(mockedSetter).toBeCalledWith({
+      [Chains.Kusama]: undefined,
+      [Chains.Statemine]: bobAccount.address
+    })
     assertNoText('Connect accounts')
   })
+
+  it('button click displays account select for kusama account', async () => {
+    renderWithTheme(<Home/>)
+    await findAndClickButton('Add Kusama account')
+
+    assertNumberOfSelectAccountDropdowns(2)
+    await assertNoText('Add Kusama account')
+  })
+
+  it('can set statemine and kusama account', async () => {
+    renderWithTheme(<Home />)
+    await selectAccountFromDropdown(0, 1)
+    await findAndClickButton('Add Kusama account')
+    await selectAccountFromDropdown(1, 0)
+    await clickConnect()
+
+    expect(mockedSetter).toBeCalledWith({
+      [Chains.Kusama]: aliceAccount.address,
+      [Chains.Statemine]: bobAccount.address
+    })
+  })
+
+  it('hides kusama account select', async () => {
+    renderWithTheme(<Home/>)
+    await findAndClickButton('Add Kusama account')
+
+    await assertNumberOfSelectAccountDropdowns(2)
+
+    await closeKusamaAccountDropdown()
+
+    await assertNumberOfSelectAccountDropdowns(1)
+  })
 })
+
+const clickConnect = async () => {
+  const connectModal = await screen.findByTestId('modal')
+  const connectButton = await within(connectModal).findByRole('button', { name: 'Connect' })
+  
+  fireEvent.click(connectButton)
+}
+
+const closeKusamaAccountDropdown = async () => {
+  const closeAccountSelect = await screen.findByTestId('close-account-select')
+
+  fireEvent.click(closeAccountSelect)
+}
+
+const assertNumberOfSelectAccountDropdowns = (number: number) => {
+  const accountSelects = screen.getAllByTestId('open-account-select')
+
+  expect(accountSelects).toHaveLength(number)
+}

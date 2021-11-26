@@ -1,6 +1,6 @@
 import { Story } from '@storybook/react'
 
-import { ButtonOutline, ButtonPrimary, ButtonProps } from './Button'
+import { ButtonOutline, ButtonPrimary, ButtonProps, ButtonTertiary } from './Button'
 
 const TemplatePrimary: Story<ButtonProps> = (args) =>
   <ButtonPrimary {...args}>
@@ -12,12 +12,22 @@ const TemplateOutline: Story<ButtonProps> = (args) =>
     Outline button
   </ButtonOutline>
 
+const TemplateTertiary: Story<ButtonProps> = (args) =>
+  <ButtonTertiary {...args}>
+    Tertiary button
+  </ButtonTertiary>
+
 export const Primary = TemplatePrimary.bind({})
 Primary.args = {
-  large: false,
+  large: false
 }
 
 export const Outline = TemplateOutline.bind({})
 Outline.args = {
-  large: false,
+  large: false
+}
+
+export const Tertiary = TemplateTertiary.bind({})
+Tertiary.args = {
+  large: false
 }

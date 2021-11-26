@@ -13,7 +13,6 @@ import {
   renderWithTheme
 } from './helpers'
 import {
-  mockChains,
   mockUseAccounts,
   mockUseActiveAccounts,
   mockUseApi,
@@ -22,13 +21,12 @@ import {
   mockWeb3Enable
 } from './mocks'
 
-jest.mock('use-substrate', () => ({
+jest.mock('use-substrate/dist/src/hooks', () => ({
   useAccounts: () => mockUseAccounts,
   useApi: () => mockUseApi,
   useAssets: () => mockUseAssets,
   useBalances: () => mockUseBalances,
   useBestNumber: () => mockUseBestNumber,
-  Chains: () => mockChains,
   useActiveAccounts: () => mockUseActiveAccounts
 }))
 

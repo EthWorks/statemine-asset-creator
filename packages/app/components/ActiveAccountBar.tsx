@@ -15,40 +15,41 @@ export const ActiveAccountBar: FC<Props> = ({ onClick }) => {
   const { freeBalance: statemineFreeBalance } = useBalances(activeAccounts[Chains.Statemine]?.toString(), Chains.Statemine) || {}
   const kusamaBlockNumber = useBestNumber(Chains.Kusama)
   const statemineBlockNumber = useBestNumber(Chains.Statemine)
+  const isKusamaAccountSet = !!activeAccounts[Chains.Kusama]
 
   return (
     <div 
       data-testid="active-account-bar"
       onClick={onClick}
     >
-      <div>
-        <div>
-          <p>Kusama</p>
-          <FormatBalance token={'KSM'} chainDecimals={12} value={kusamaFreeBalance}/>
-          <p>
-            Current block
-            <FormatBlockNumber value={kusamaBlockNumber}/>
-          </p>
-        </div>
-        <div>
-          {activeAccounts[Chains.Kusama]?.toString()}
-        </div>
-      </div>
-      {kusamaFreeBalance && (
+      {isKusamaAccountSet && (
         <div>
           <div>
-            <p>Statemine</p>
-            <FormatBalance token={'KSM'} chainDecimals={12} value={statemineFreeBalance}/>
+            <p>Kusama</p>
+            <FormatBalance token={'KSM'} chainDecimals={12} value={kusamaFreeBalance}/>
             <p>
             Current block
-              <FormatBlockNumber value={statemineBlockNumber}/>
+              <FormatBlockNumber value={kusamaBlockNumber}/>
             </p>
           </div>
           <div>
-            {activeAccounts[Chains.Statemine]?.toString()}
+            {activeAccounts[Chains.Kusama]?.toString()}
           </div>
         </div>
       )}
+      <div>
+        <div>
+          <p>Statemine</p>
+          <FormatBalance token={'KSM'} chainDecimals={12} value={statemineFreeBalance}/>
+          <p>
+            Current block
+            <FormatBlockNumber value={statemineBlockNumber}/>
+          </p>
+        </div>
+        <div>
+          {activeAccounts[Chains.Statemine]?.toString()}
+        </div>
+      </div>
     </div>
   )
 }
