@@ -94,6 +94,7 @@ describe('New asset modal', () => {
     clickButton('Back')
 
     assertFirstStepFilled()
+    assertSteps(['active', 'unvisited', 'unvisited', 'unvisited'])
   })
 
   it('sends transaction on confirm', async () => {
@@ -178,13 +179,13 @@ describe('New asset modal', () => {
     it('sets proper styles', async () => {
       renderModal()
 
-      clickButton('Create new asset')
-      await assertSteps(['active', 'unvisited', 'unvisited', 'unvisited'])
+      await openModal()
+      assertSteps(['active', 'unvisited', 'unvisited', 'unvisited'])
 
       fillFirstStep()
       clickButton('Next')
 
-      await assertSteps(['past', 'active', 'unvisited', 'unvisited'])
+      assertSteps(['past', 'active', 'unvisited', 'unvisited'])
     })
   })
 })
@@ -247,34 +248,37 @@ const openModal = async (): Promise<void> => {
   await findAndClickButton('Create new asset')
 }
 
-async function assertSteps(expectedSteps: ('active' | 'past' | 'unvisited')[]) {
-  await Promise.all(expectedSteps.map(async (step, index) => {
+const assertSteps = (expectedSteps: ('active' | 'past' | 'unvisited')[]) => {
+  expectedSteps.map((step, index) => {
     if (step === 'active') {
-      await assertStepActive(index)
+      assertStepActive(index)
     }
     else if (step === 'past') {
-      await assertStepPast(index)
+      assertStepPast(index)
     }
     else {
-      await assertStepUnvisited(index)
+      assertStepUnvisited(index)
     }
-  }))
+  })
 }
 
-async function assertStepActive(stepIndex : number) {
-  const step = await screen.findByTestId('step-' + stepIndex)
+const assertStepActive = (stepIndex : number) => {
+  const step = screen.getByTestId('step-' + stepIndex)
+
   expect(step).toHaveClass('active')
   expect(step).not.toHaveClass('past')
 }
 
-async function assertStepUnvisited(stepIndex : number) {
-  const step = await screen.findByTestId('step-' + stepIndex)
+const assertStepUnvisited = (stepIndex : number) => {
+  const step = screen.getByTestId('step-' + stepIndex)
+
   expect(step).not.toHaveClass('active')
   expect(step).not.toHaveClass('past')
 }
 
-async function assertStepPast(stepIndex: number) {
-  const step = await screen.findByTestId('step-' + stepIndex)
+const assertStepPast = (stepIndex: number) => {
+  const step = screen.getByTestId('step-' + stepIndex)
+
   expect(step).toHaveClass('past')
   expect(step).not.toHaveClass('active')
 }
