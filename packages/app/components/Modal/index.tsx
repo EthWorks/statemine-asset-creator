@@ -31,7 +31,7 @@ export const Modal = ({ children, className, padding, size, title, titleCenterPo
 
   return (
     <ModalView data-testid='modal'>
-      <ModalBg onClick={_onClose}/>
+      <ModalBg data-testid='modal-close-button' onClick={_onClose}/>
       <HeaderOverModal>{headerOverModal}</HeaderOverModal>
       <ModalCard className={className} size={size} padding={padding}>
         <ModalHeader title={title} onClose={_onClose} titleCenterPosition={titleCenterPosition}/>
