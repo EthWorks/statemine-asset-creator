@@ -55,7 +55,7 @@ describe('Active account bar', () => {
     const kusamaActiveAccount = activeAccountBar.children[0] as HTMLElement
     const statemineActiveAccount = activeAccountBar.children[1] as HTMLElement
 
-    await within(kusamaActiveAccount).findByText('Current block #9506023')
-    await within(statemineActiveAccount).findByText('Current block #9506023')
+    expect(kusamaActiveAccount).toHaveTextContent('Current block#9,506,023')
+    expect(statemineActiveAccount).toHaveTextContent('Current block#9,506,023')
   })
 })

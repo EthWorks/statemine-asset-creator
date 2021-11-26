@@ -10,7 +10,7 @@ interface GrayShades {
 }
 
 export type ColorType = 'black' | 'green' | 'indigo' | 'pinkLight' | 'pinkDark' | 'red' | 'white'
-export type BorderRadiusType = 's' | 'm' | 'l' | 'circle'
+export type BorderRadiusType = 's' | 'm' | 'l' | 'circle' | 'none'
 
 export type Colors = Record<ColorType, string>
 export type BorderRadius = Record<BorderRadiusType, string>
@@ -44,6 +44,7 @@ export const theme: Theme = {
     s: '4px',
     m: '8px',
     l: '10px',
-    circle: '50%'
+    circle: '50%',
+    none: '0'
   }
 }

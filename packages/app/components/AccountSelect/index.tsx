@@ -1,11 +1,13 @@
+import type { InputInfoProps } from '../FormElements/Inputs/InputInfo'
+
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import styled from 'styled-components'
 
 import { Account } from 'use-substrate'
 
 import { CloseButton } from '../button/CloseButton'
-import { InputInfo, InputInfoProps } from '../FormElements/Inputs/InputInfo'
-import { Arrow } from '../icons/Arrow'
+import { InputInfo } from '../FormElements/Inputs/InputInfo'
+import { Arrow } from '../icons'
 import { Text } from '../typography'
 import { AccountTile } from './AccountTile'
 

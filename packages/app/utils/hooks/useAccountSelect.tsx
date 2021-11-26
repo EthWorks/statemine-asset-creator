@@ -1,6 +1,8 @@
+import type { Account,UseAccounts }from 'use-substrate'
+
 import { useEffect, useState } from 'react'
 
-import { Account, Chains, UseAccounts, useBalances } from 'use-substrate'
+import { Chains, useBalances } from 'use-substrate'
 
 import { BN_ZERO } from '../consts'
 

@@ -21,7 +21,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
   const accounts = useAccounts()
   const { setActiveAccounts } = useActiveAccounts()
   const [isKusamaAccountSelectVisible, toggleKusamaAccountSelectVisible] = useToggle()
-  
+
   const {
     account: kusamaAccount,
     setAccount: setKusamaAccount,
@@ -37,7 +37,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
     setAccountInfo: setStatemineAccountInfo,
     hasFreeBalance: hasStatemineFreeBalance
   } = useAccountSelect(accounts, Chains.Statemine)
-  
+
   useEffect(() => {
     setStatemineAccountInfo(undefined)
     setKusamaAccountInfo(undefined)
@@ -56,7 +56,6 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
       setKusamaAccountInfo('This account has no funds')
     }
   }, [hasStatemineFreeBalance, isKusamaAccountSelectVisible, hasKusamaFreeBalance, setStatemineAccountInfo, setKusamaAccountInfo])
-
   const _onClick = async (): Promise<void> => {
     const activeAccounts = isKusamaAccountSelectVisible
       ? {
@@ -64,6 +63,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
         [Chains.Statemine]: statemineAccount.address
       }
       : {
+        [Chains.Kusama]: undefined,
         [Chains.Statemine]: statemineAccount.address
       }
     setActiveAccounts(activeAccounts)
@@ -95,12 +95,12 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
         setCurrentAccount={setStatemineAccount}
         tip={statemineAccountInfo}
       />
-      {!hasStatemineFreeBalance && !isKusamaAccountSelectVisible &&(
+      {!isKusamaAccountSelectVisible && (
         <Centered>
           <ButtonTertiary onClick={toggleKusamaAccountSelectVisible}>Add Kusama account</ButtonTertiary>
         </Centered>
       )}
-      {isKusamaAccountSelectVisible && !hasStatemineFreeBalance && (
+      {isKusamaAccountSelectVisible && (
         <>
           <SectionTitleStyle>
             <ImageWrapper>
