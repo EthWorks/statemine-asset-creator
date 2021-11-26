@@ -4,29 +4,16 @@ import React from 'react'
 import { Chains } from 'use-substrate'
 
 import Home from '../pages'
-import { BN_ZERO } from '../utils'
-import {
-  assertNoText,
-  findAndClickButton,
-  findButtonNotDisabled,
-  renderWithTheme,
-  selectAccountFromDropdown,
-  setLocalStorage
-} from './helpers'
+import { assertNoText, findAndClickButton, renderWithTheme, selectAccountFromDropdown, setLocalStorage } from './helpers'
 import { aliceAccount, bobAccount, mockUseAccounts, mockUseApi, mockUseAssets, mockUseBalances } from './mocks'
 
 const mockedSetter = jest.fn()
-
-let mockFreeBalance = mockUseBalances.freeBalance
 
 jest.mock('use-substrate/dist/src/hooks', () => ({
   useApi: () => mockUseApi,
   useAccounts: () => mockUseAccounts,
   useAssets: () => mockUseAssets,
-  useBalances: () => ({
-    ...mockUseBalances,
-    freeBalance: mockFreeBalance
-  }),
+  useBalances: () => mockUseBalances,
   useActiveAccounts: () => ({
     activeAccounts: {},
     setActiveAccounts: mockedSetter
@@ -52,52 +39,35 @@ describe('Account select modal', () => {
     assertNoText('Connect accounts')
   })
 
-  describe('if statemine account has no funds', () => {
-    beforeAll(() => {
-      mockFreeBalance = BN_ZERO
+  it('button click displays account select for kusama account', async () => {
+    renderWithTheme(<Home/>)
+    await findAndClickButton('Add Kusama account')
+
+    assertNumberOfSelectAccountDropdowns(2)
+  })
+
+  it('can set statemine and kusama account', async () => {
+    renderWithTheme(<Home />)
+    await selectAccountFromDropdown(0, 1)
+    await findAndClickButton('Add Kusama account')
+    await selectAccountFromDropdown(1, 0)
+    await clickConnect()
+
+    expect(mockedSetter).toBeCalledWith({
+      [Chains.Kusama]: aliceAccount.address,
+      [Chains.Statemine]: bobAccount.address
     })
+  })
 
-    afterAll(() => {
-      mockFreeBalance = mockUseBalances.freeBalance
-    })
+  it('hides kusama account select', async () => {
+    renderWithTheme(<Home/>)
+    await findAndClickButton('Add Kusama account')
 
-    it('shows "Add Kusama account" button', async () => {
-      renderWithTheme(<Home/>)
+    await assertNumberOfSelectAccountDropdowns(2)
 
-      await findButtonNotDisabled('Add Kusama account')
-    })
+    await closeKusamaAccountDropdown()
 
-    it('button click displays account select for kusama account', async () => {
-      renderWithTheme(<Home/>)
-      await findAndClickButton('Add Kusama account')
-
-      assertNumberOfSelectAccountDropdowns(2)
-      await assertNoText('Add Kusama account')
-    })
-
-    it('can set statemine and kusama account', async () => {
-      renderWithTheme(<Home />)
-      await selectAccountFromDropdown(0, 1)
-      await findAndClickButton('Add Kusama account')
-      await selectAccountFromDropdown(1, 0)
-      await clickConnect()
-
-      expect(mockedSetter).toBeCalledWith({
-        [Chains.Kusama]: aliceAccount.address,
-        [Chains.Statemine]: bobAccount.address
-      })
-    })
-
-    it('hides kusama account select', async () => {
-      renderWithTheme(<Home/>)
-      await findAndClickButton('Add Kusama account')
-
-      await assertNumberOfSelectAccountDropdowns(2)
-
-      await closeKusamaAccountDropdown()
-
-      await assertNumberOfSelectAccountDropdowns(1)
-    })
+    await assertNumberOfSelectAccountDropdowns(1)
   })
 })
 

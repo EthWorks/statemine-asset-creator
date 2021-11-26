@@ -4,11 +4,11 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
-import { Chains, useAccounts, useActiveAccounts, useBalances } from 'use-substrate'
+import { Chains, useAccounts, useActiveAccounts } from 'use-substrate'
 
 import KusamaLogo from '../../assets/img/kusama.png'
 import StatemineLogo from '../../assets/img/statemine.svg'
-import { BN_ZERO, useToggle } from '../../utils'
+import { useToggle } from '../../utils'
 import { AccountSelect } from '../AccountSelect'
 import { Arrow } from '../icons'
 import { ButtonPrimary, ButtonTertiary, Modal, Text, Title } from '../index'
@@ -25,8 +25,6 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
   const [statemineAccount, setStatemineAccount] = useState<Account>(accounts.allAccounts[0])
   const [kusamaAccount, setKusamaAccount] = useState<Account>(accounts.allAccounts[0])
   const [isKusamaAccountSelectVisible, toggleKusamaAccountSelectVisible] = useToggle()
-  const { freeBalance } = useBalances(statemineAccount?.address, Chains.Statemine) || {}
-  const hasFreeBalance = freeBalance?.gt(BN_ZERO)
 
   const _onClick = async (): Promise<void> => {
     const activeAccounts = isKusamaAccountSelectVisible
@@ -70,11 +68,9 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
         currentAccount={statemineAccount}
         setCurrentAccount={setStatemineAccount}
       />
-      {!hasFreeBalance && !isKusamaAccountSelectVisible &&(
-        <Centered>
-          <ButtonTertiary onClick={toggleKusamaAccountSelectVisible}>Add Kusama account</ButtonTertiary>
-        </Centered>
-      )}
+      <Centered>
+        <ButtonTertiary onClick={toggleKusamaAccountSelectVisible}>Add Kusama account</ButtonTertiary>
+      </Centered>
       {isKusamaAccountSelectVisible && (
         <>
           <SectionTitleStyle>
