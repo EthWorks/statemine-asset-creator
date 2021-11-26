@@ -1,22 +1,22 @@
 import type { FC } from 'react'
 import type { Asset } from 'use-substrate'
 
+import { useMemo, useRef } from 'react'
+import styled from 'styled-components'
+
+import { drawColor, useOutsideClick, useToggle } from '../../utils'
+import { ButtonSquare } from '../button/Button'
+import { Card } from '../Card'
+import FormatBalance from '../FormatBalance'
+import { Text } from '../typography'
 import { Account } from './Account'
+import { AssetImage } from './AssetImage'
+import { AssetsCardMenu } from './AssetsCardMenu'
 import { groupRoles } from './groupRoles'
 
 interface Props {
   asset: Asset
 }
-
-import { useRef } from 'react'
-import styled from 'styled-components'
-
-import { useOutsideClick, useToggle } from '../../utils'
-import { ButtonSquare } from '../button/Button'
-import { Card } from '../Card'
-import FormatBalance from '../FormatBalance'
-import { Text } from '../typography'
-import { AssetsCardMenu } from './AssetsCardMenu'
 
 export const AssetCard: FC<Props> = ({ asset }) => {
   const { name, id, decimals, supply, admin, issuer, freezer, symbol } = asset
@@ -24,7 +24,9 @@ export const AssetCard: FC<Props> = ({ asset }) => {
   const [isOpen, toggleOpen, setIsOpen] = useToggle()
   const cardMenuContainerRef = useRef(null)
   useOutsideClick(cardMenuContainerRef, () => setIsOpen(false))
-
+  
+  const color = useMemo(() => drawColor(), [])
+  
   return (
     <StyledCard padding='s' data-testid={`asset-card-${id.toNumber()}`}>
       <CardHeader>
@@ -37,9 +39,9 @@ export const AssetCard: FC<Props> = ({ asset }) => {
         </CardMenuContainer>
       </CardHeader>
       <CardContent>
-        <Circle>
+        <AssetImage color={color}>
           <CardTitle size='SM'>{symbol}</CardTitle>
-        </Circle>
+        </AssetImage>
         <div>
           <CardInfo>
             <Text size='XXS' bold>id:</Text>
@@ -80,31 +82,6 @@ const CardTitle = styled(Text)`
 const CardContent = styled.div`
   display: flex;
   align-items: center;
-`
-
-const Circle = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 64px;
-  min-width: 64px;
-  height: 64px;
-  margin-right: 16px;
-  border-radius: ${({ theme }) => theme.borderRadius.circle};
-  border: 1px solid ${({ theme }) => theme.colors.pinkLight};
-  
-  &:before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 56px;
-    height: 56px;
-    border-radius: ${({ theme }) => theme.borderRadius.circle};
-    border: 1px solid ${({ theme }) => theme.colors.pinkLight};
-  }
 `
 
 const CardInfo = styled.div`
