@@ -34,6 +34,7 @@ describe('Account select modal', () => {
     await clickConnect()
 
     expect(mockedSetter).toBeCalledWith({
+      [Chains.Kusama]: undefined,
       [Chains.Statemine]: bobAccount.address
     })
     assertNoText('Connect accounts')
