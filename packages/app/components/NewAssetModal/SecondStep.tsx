@@ -5,13 +5,12 @@ import styled from 'styled-components'
 import { Chains, useActiveAccounts, useApi, useTransaction } from 'use-substrate'
 
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
-import { ArrowLeft } from '../icons/ArrowLeft'
-import { ArrowRight } from '../icons/ArrowRight'
+import { ArrowLeft, ArrowRight } from '../icons'
 import { Label, Text } from '../typography'
 import { useNewAssetModal } from './context/useNewAssetModal'
 import { ModalFooter } from './ModalFooter'
 
-export function SecondStep({ onNext }: ModalStep): JSX.Element {
+export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element {
   const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
   const { api } = useApi(Chains.Statemine)
   const { activeAccounts } = useActiveAccounts()
@@ -47,7 +46,7 @@ export function SecondStep({ onNext }: ModalStep): JSX.Element {
       </InfoContainer>
 
       <ModalFooter contentPosition='between'>
-        <ButtonOutline>
+        <ButtonOutline onClick={onBack}>
           <ArrowLeft />
           Back
         </ButtonOutline>

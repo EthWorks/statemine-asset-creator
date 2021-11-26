@@ -12,10 +12,10 @@ export async function assertText(text: string) {
   await screen.findByText(text)
 }
 
-export function assertTextInput(inputName:string, text: string) {
+export function assertInput(inputName:string, text: string) {
   const input = screen.getByLabelText(inputName)
 
-  expect(input).toHaveTextContent(text)
+  expect(input).toHaveValue(text)
 }
 
 export function assertNoText(text: string) {

@@ -11,7 +11,7 @@ import { Chains, useAssets } from 'use-substrate'
 import Coin from '../../assets/coin.gif'
 import { ButtonPrimary } from '../button/Button'
 import { NumericInput, TextInput } from '../FormElements'
-import { ArrowRight } from '../icons/ArrowRight'
+import { ArrowRight } from '../icons'
 import { useNewAssetModal } from './context/useNewAssetModal'
 import { ModalFooter } from './ModalFooter'
 
