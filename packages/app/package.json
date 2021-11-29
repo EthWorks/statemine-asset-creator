@@ -22,7 +22,8 @@
     "use-substrate": "~0.1.0",
     "styled-components": "^5.3.1",
     "@polkadot/types": "6.6.1",
-    "swiper": "~7.3.0"
+    "swiper": "~7.3.0",
+    "@radix-ui/react-popover": "~0.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",

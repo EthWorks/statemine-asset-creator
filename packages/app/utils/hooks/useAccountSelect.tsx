@@ -1,6 +1,6 @@
 import type { Account, UseAccounts } from 'use-substrate'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { Chains, useBalances } from 'use-substrate'
 

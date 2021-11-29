@@ -1,12 +1,12 @@
 import type { Account } from 'use-substrate'
 
-import { render, screen, within } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import React, { useState } from 'react'
 import { ThemeProvider } from 'styled-components'
 
 import { AccountSelect } from '../components'
 import { theme } from '../styles/styleVariables'
-import { assertText, openDropdown, selectAccountFromDropdown } from './helpers'
+import { assertText, selectAccountFromDropdown } from './helpers'
 import { mockAccounts, mockUseAccounts, mockUseBalances, mockUseSubstrate } from './mocks'
 
 jest.mock('use-substrate/dist/src/hooks', () => ({
@@ -42,9 +42,9 @@ describe('AccountSelect component', () => {
     render(<AccountSelectTestComponent/>)
 
     const openDropdownButton = await screen.findByRole('button')
-    openDropdown(openDropdownButton)
 
-    const dropdownMenu = await screen.findByRole('menu')
+    fireEvent.click(openDropdownButton)
+    const dropdownMenu = await screen.findByRole('list')
 
     await within(dropdownMenu).findByText('ALICE')
     await within(dropdownMenu).findByText('BOB')
@@ -82,7 +82,7 @@ describe('AccountSelect component', () => {
 
     it('select toggle displays account id input', async () => {
       const openDropdownButton = await screen.findByTestId('open-account-select')
-      openDropdown(openDropdownButton)
+      fireEvent.click(openDropdownButton)
 
       await screen.findByTestId('open-account-select-input')
     })

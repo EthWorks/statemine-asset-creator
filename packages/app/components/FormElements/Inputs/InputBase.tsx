@@ -10,9 +10,9 @@ export interface CustomInputProps extends React.InputHTMLAttributes<HTMLInputEle
   error?: string
 }
 
-export function InputBase({ id, label, hint, error, large, ...arg }: CustomInputProps): JSX.Element {
+export function InputBase({ id, label, hint, error, large, className, ...arg }: CustomInputProps): JSX.Element {
   return (
-    <CustomInputWrapper data-testid={label}>
+    <CustomInputWrapper data-testid={label} className={className}>
       {label && <InputLabel htmlFor={id}>{label}</InputLabel>}
       <Input
         id={id}
