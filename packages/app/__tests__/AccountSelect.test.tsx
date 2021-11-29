@@ -73,10 +73,18 @@ describe('AccountSelect component', () => {
   })
 
   describe('with paste account option', () => {
-    it('displays "Select account or paste account address" when no current account was set', async () => {
+    beforeEach(() => {
       render(<AccountSelectTestComponent withAccountInput/>)
-
+    })
+    it('displays "Select account or paste account address" when no current account was set', async () => {
       await assertText('Select account or paste account address')
+    })
+
+    it('select toggle displays account id input', async () => {
+      const openDropdownButton = await screen.findByTestId('open-account-select')
+      openDropdown(openDropdownButton)
+
+      await screen.findByTestId('open-account-select-input')
     })
   })
 })

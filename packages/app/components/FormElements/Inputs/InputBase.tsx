@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components'
 import { InputInfo } from './InputInfo'
 
 export interface CustomInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label: string,
+  label?: string,
   large?: boolean,
   hint?: string,
   error?: string
@@ -13,7 +13,7 @@ export interface CustomInputProps extends React.InputHTMLAttributes<HTMLInputEle
 export function InputBase({ id, label, hint, error, large, ...arg }: CustomInputProps): JSX.Element {
   return (
     <CustomInputWrapper data-testid={label}>
-      <InputLabel htmlFor={id}>{label}</InputLabel>
+      {label && <InputLabel htmlFor={id}>{label}</InputLabel>}
       <Input
         id={id}
         large={large}
