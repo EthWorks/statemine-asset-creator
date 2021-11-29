@@ -2,7 +2,7 @@ import { Story } from '@storybook/react'
 
 import { StyledCard } from '../../pages'
 import { Text } from '../typography'
-import { PageBox, PageBoxContent,PageBoxProps, PageBoxWrapper, StyledText } from './index'
+import { PageBox, PageBoxProps } from './index'
 
 const Default = {
   title: 'Components/PageBox',
@@ -26,15 +26,12 @@ const Default = {
 export default Default
 
 const Template: Story<PageBoxProps> = (args ) =>
-  <PageBoxWrapper {...args}>
-    <StyledText size="SM" color="white">{args.title}</StyledText>
-    <PageBoxContent size={args.size}>
-      <StyledCard padding='s'>
-        <Text size="SM" color="white">You haven’t created any assets yet.</Text>
-        <Text size="SM">Here you can create fungible assets, which will be governed by you and accounts you designate.</Text>
-      </StyledCard>
-    </PageBoxContent>
-  </PageBoxWrapper>
+  <PageBox {...args}>
+    <StyledCard padding='s'>
+      <Text size="SM" color="white">You haven’t created any assets yet.</Text>
+      <Text size="SM">Here you can create fungible assets, which will be governed by you and accounts you designate.</Text>
+    </StyledCard>
+  </PageBox>
 
 export const Base = Template.bind({})
 Base.args = { size: 'large' }

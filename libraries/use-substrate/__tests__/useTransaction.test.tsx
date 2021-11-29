@@ -31,7 +31,7 @@ describe('useTransaction hook', () => {
     return renderHook(() => {
       const { api } = useApi(Chains.Kusama)
 
-      return useTransaction(api?.tx.balances.transfer,  params, signer)
+      return useTransaction(api?.tx.balances.transfer, params, signer)
     }, { wrapper })
   }
 })

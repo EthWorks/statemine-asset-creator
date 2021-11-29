@@ -3,6 +3,7 @@ import React from 'react'
 
 import Home from '../pages'
 import { POLKADOT_EXTENSION_LINK } from '../utils'
+import { mockUseBestNumber } from './mocks/mockUseBestNumber'
 import {
   assertLinkByText,
   assertLocalStorage,
@@ -12,21 +13,22 @@ import {
   renderWithTheme
 } from './helpers'
 import {
-  mockChains,
   mockUseAccounts,
   mockUseActiveAccount,
+  mockUseActiveAccounts,
   mockUseApi,
   mockUseAssets,
   mockUseBalances,
   mockWeb3Enable
 } from './mocks'
 
-jest.mock('use-substrate', () => ({
+jest.mock('use-substrate/dist/src/hooks', () => ({
   useAccounts: () => mockUseAccounts,
   useApi: () => mockUseApi,
   useAssets: () => mockUseAssets,
   useBalances: () => mockUseBalances,
-  Chains: () => mockChains,
+  useBestNumber: () => mockUseBestNumber,
+  useActiveAccounts: () => mockUseActiveAccounts,
   useActiveAccount: () => mockUseActiveAccount
 }))
 

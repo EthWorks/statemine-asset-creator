@@ -7,15 +7,14 @@ import { ThemeProvider } from 'styled-components'
 import { AccountSelect } from '../components'
 import { theme } from '../styles/styleVariables'
 import { openDropdown, selectAccountFromDropdown } from './helpers'
-import { mockAccounts, mockChains, mockUseAccounts, mockUseBalances, mockUseSubstrate } from './mocks'
+import { mockAccounts, mockUseAccounts, mockUseBalances, mockUseSubstrate } from './mocks'
 
-jest.mock('use-substrate', () => ({
+jest.mock('use-substrate/dist/src/hooks', () => ({
   useAccounts: () => mockUseAccounts,
   useBalances: () => mockUseBalances,
-  Chains: () => mockChains,
 }))
 
-function AccountSelectTestComponent(): JSX.Element {
+function AccountSelectTestComponent({ withFreeBalance }: { withFreeBalance?: boolean }): JSX.Element {
   const accounts = mockUseSubstrate.useAccounts()
   const [account, setAccount] = useState<Account>(accounts.allAccounts[0])
 
@@ -29,6 +28,7 @@ function AccountSelectTestComponent(): JSX.Element {
         accounts={accounts.allAccounts}
         currentAccount={account}
         setCurrentAccount={setAccount}
+        withFreeBalance={withFreeBalance}
       />
     </ThemeProvider>
   )
@@ -42,7 +42,7 @@ describe('AccountSelect component', () => {
     await screen.findByText(mockAccounts[0].address)
 
     const transferableBalanceElement = (await screen.findByText('transferable balance')).parentElement
-    expect(transferableBalanceElement).toHaveTextContent('4000KSM')
+    expect(transferableBalanceElement).toHaveTextContent('4,000.0000KSM')
   })
 
   it('displays accounts in dropdown', async () => {
@@ -60,10 +60,20 @@ describe('AccountSelect component', () => {
   it('sets selected account as current account', async () => {
     render(<AccountSelectTestComponent/>)
 
-    await selectAccountFromDropdown(1)
+    await selectAccountFromDropdown(0, 1)
 
     const openDropdownButton = await screen.findByRole('button')
     await within(openDropdownButton).findByText('BOB')
     expect(await within(openDropdownButton).queryAllByAltText('ALICE')).toHaveLength(0)
+  })
+
+  it('shows free balance', async () => {
+    render(<AccountSelectTestComponent withFreeBalance/>)
+
+    await screen.findByText(mockAccounts[0].name)
+    await screen.findByText(mockAccounts[0].address)
+
+    const transferableBalanceElement = (await screen.findByText('full account balance')).parentElement
+    expect(transferableBalanceElement).toHaveTextContent('6,100.0000KSM')
   })
 })

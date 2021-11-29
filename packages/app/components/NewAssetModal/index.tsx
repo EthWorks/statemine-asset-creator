@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 
 import { Modal } from '../Modal'
 import { NewAssetModalProvider } from './context/provider'
+import { StepsBar } from './StepsBar/StepsBar'
 import { FirstStep } from './FirstStep'
 import { SecondStep } from './SecondStep'
 
@@ -14,7 +15,7 @@ export function NewAssetModal({ isOpen, closeModal }: NewAssetModalProps): JSX.E
     setActiveStep(step)
   }
 
-  const _onConfirm = (): void => {
+  const _onClose = (): void => {
     _moveToStep(1)
     closeModal()
   }
@@ -25,7 +26,7 @@ export function NewAssetModal({ isOpen, closeModal }: NewAssetModalProps): JSX.E
         return <FirstStep onNext={() => _moveToStep(2)}/>
       }
       default: {
-        return <SecondStep onNext={_onConfirm}/>
+        return <SecondStep onNext={_onClose} onBack={() => _moveToStep(1)}/>
       }
     }
   }
@@ -33,11 +34,12 @@ export function NewAssetModal({ isOpen, closeModal }: NewAssetModalProps): JSX.E
   return (
     <Modal
       isOpen={isOpen}
-      onClose={closeModal}
+      onClose={_onClose}
       padding='m'
       title='Create asset'
     >
       <NewAssetModalProvider>
+        <StepsBar activeStep={activeStep - 1} />
         <div>
           {renderStep()}
         </div>

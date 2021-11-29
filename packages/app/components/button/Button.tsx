@@ -47,3 +47,17 @@ export const ButtonOutline = styled(BaseButtonStyle)<ButtonProps>`
   background-color: ${({ theme }) => theme.colors.black};
   color: ${({ theme }) => theme.colors.pinkLight};
 `
+
+export const ButtonSquare = styled(BaseButtonStyle)`
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  background: transparent;
+  border: none;
+`
+
+export const ButtonTertiary = styled(BaseButtonStyle)<ButtonProps>`
+  border: none;
+  background: none;
+  color: ${({ theme }) => theme.colors.pinkLight};
+`
