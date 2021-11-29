@@ -8,7 +8,8 @@ module.exports = {
     },
     "extends": [
         "plugin:@typescript-eslint/recommended",
-        "eslint:recommended"
+        "eslint:recommended",
+        "standard"
     ],
     "globals": {
         "JSX": true
@@ -34,7 +35,6 @@ module.exports = {
         "prefer-const": ["error", {"destructuring": "all"}],
         "semi": ["error", "never"],
         "no-extra-semi": "off",
-        "no-multi-spaces": "error",
         "@typescript-eslint/no-extra-semi": "off",
         "padding-line-between-statements": [
             "error",
@@ -44,10 +44,17 @@ module.exports = {
             { "blankLine": "always", "prev": "*", "next": "function" },
         ],
         "object-curly-spacing": ["error", "always"],
+        "no-use-before-define": "off",
+        "space-before-function-paren": ["error", {
+            "anonymous": "always",
+            "named": "never",
+            "asyncArrow": "always"
+        }],
         "@typescript-eslint/no-explicit-any": "error",
         "@typescript-eslint/explicit-function-return-type": ["error", {
             "allowExpressions": true
         }],
+        "import/no-absolute-path": "off",
         "eol-last": ["error", "always"],
         "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 0 }],
         'simple-import-sort/imports': [2, {
@@ -68,7 +75,8 @@ module.exports = {
             "rules": {
                 "@typescript-eslint/no-non-null-assertion": "off",
                 "no-unused-expressions": "off",
-                "@typescript-eslint/explicit-function-return-type": "off"
+                "@typescript-eslint/explicit-function-return-type": "off",
+                "array-callback-return": "off"
             }
         }
     ]

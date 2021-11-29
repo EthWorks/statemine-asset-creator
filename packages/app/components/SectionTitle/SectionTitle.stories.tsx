@@ -10,10 +10,10 @@ const Default = {
     backgrounds: {
       default: 'trueGray',
       values: [
-        { name: 'trueGray', value: '#000000' },
-      ],
-    },
-  },
+        { name: 'trueGray', value: '#000000' }
+      ]
+    }
+  }
 }
 
 export default Default

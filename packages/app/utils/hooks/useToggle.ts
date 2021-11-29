@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { useIsMountedRef } from './useIsMountedRef'
 
-export function useToggle (defaultValue = false, onToggle?: (isActive: boolean) => void): [boolean, () => void, (value: boolean) => void] {
+export function useToggle(defaultValue = false, onToggle?: (isActive: boolean) => void): [boolean, () => void, (value: boolean) => void] {
   const mountedRef = useIsMountedRef()
   const [isActive, setActive] = useState(defaultValue)
 

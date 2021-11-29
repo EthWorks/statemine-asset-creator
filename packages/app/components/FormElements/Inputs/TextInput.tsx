@@ -8,8 +8,8 @@ interface TextInputProps extends Omit<CustomInputProps, 'onChange'> {
 
 export function TextInput({ onChange, ...args }: TextInputProps):JSX.Element {
   return (
-    <InputBase 
-      type='text' 
+    <InputBase
+      type='text'
       onChange={event => onChange(event.currentTarget.value)}
       {...args}
     />

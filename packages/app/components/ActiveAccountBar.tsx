@@ -2,7 +2,7 @@ import type { FC } from 'react'
 
 import { Chains, useActiveAccounts, useBalances, useBestNumber } from 'use-substrate'
 
-import FormatBalance from './FormatBalance'
+import { FormatBalance } from './FormatBalance'
 import { FormatBlockNumber } from './FormatBlockNumber'
 
 interface Props {
@@ -18,7 +18,7 @@ export const ActiveAccountBar: FC<Props> = ({ onClick }) => {
   const isKusamaAccountSet = !!activeAccounts[Chains.Kusama]
 
   return (
-    <div 
+    <div
       data-testid="active-account-bar"
       onClick={onClick}
     >

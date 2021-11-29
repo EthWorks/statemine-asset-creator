@@ -8,7 +8,7 @@ const Default = {
   argTypes: {
     color: {
       control: { type: 'select' },
-      options: ['black', 'green', 'indigo', 'pink', 'red', 'white'],
+      options: ['black', 'green', 'indigo', 'pink', 'red', 'white']
     }
   }
 }

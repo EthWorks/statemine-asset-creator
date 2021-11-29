@@ -15,7 +15,7 @@ import {
   fillInput,
   findAndClickButton,
   renderWithTheme,
-  typeInInput,
+  typeInInput
 } from './helpers'
 import { mockUseActiveAccount, mockUseApi, mockUseAssets, mockUseAssetsConstants } from './mocks'
 
@@ -253,11 +253,9 @@ const assertSteps = (expectedSteps: ('active' | 'past' | 'unvisited')[]) => {
 
     if (step === 'active') {
       assertStepActive(stepHtmlElement)
-    }
-    else if (step === 'past') {
+    } else if (step === 'past') {
       assertStepPast(stepHtmlElement)
-    }
-    else {
+    } else {
       assertStepUnvisited(stepHtmlElement)
     }
   })

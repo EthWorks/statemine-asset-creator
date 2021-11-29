@@ -25,7 +25,7 @@ describe('use active account', () => {
 
       expect(activeAccount).toEqual(BOB_ID)
     })
-    
+
     it('and get by use active accounts', () => {
       const { result, rerender } = renderActiveAccount(Chains.Kusama)
 

@@ -10,7 +10,7 @@ const Default = {
   argTypes: {
     size: {
       control: { type: 'select' },
-      options: ['s', 'm'],
+      options: ['s', 'm']
     }
   }
 }
@@ -21,4 +21,4 @@ const Template: Story<AvatarProps> = (args) =>
   <Avatar src={AvatarImg} {...args}/>
 
 export const Base = Template.bind({})
-Base.args = { size:'m' }
+Base.args = { size: 'm' }

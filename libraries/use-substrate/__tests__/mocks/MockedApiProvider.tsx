@@ -42,7 +42,7 @@ export const mockedKusamaApi: UseApi = {
           vestingLocked: createType('Balance', new BN(0)),
           vestingTotal: createType('Balance', new BN(0)),
           votingBalance: createType('Balance', new BN(0)),
-          vesting: [],
+          vesting: []
         }])
       },
       chain: {
@@ -64,7 +64,7 @@ export const mockedKusamaApi: UseApi = {
             [
               [createAssetStorageKey(15), createType('Option<AssetDetails>', { owner: createType('AccountId', BOB), isSufficient: undefined })],
               [createAssetStorageKey(24), createType('Option<AssetDetails>', { owner: createType('AccountId', ALICE), isSufficient: true })],
-              [createAssetStorageKey(1000), createType('Option<AssetDetails>', { owner: createType('AccountId', BOB), })]
+              [createAssetStorageKey(1000), createType('Option<AssetDetails>', { owner: createType('AccountId', BOB) })]
             ]
           ])
         }
@@ -81,18 +81,18 @@ export const mockedKusamaApi: UseApi = {
       }
     }
   } as unknown as ApiRx,
-  connectionState: 'connected',
+  connectionState: 'connected'
 }
 
 export function MockedApiProvider({ children, customApi }: { children: React.ReactNode, customApi?: UseApi }) {
   const mockedStatemineApi: UseApi = {
     api: undefined,
     isConnected: false,
-    connectionState: 'connecting',
+    connectionState: 'connecting'
   }
 
   return (
-    <ApiContext.Provider value={{ 'kusama': customApi ?? mockedKusamaApi, 'statemine': mockedStatemineApi }}>
+    <ApiContext.Provider value={{ kusama: customApi ?? mockedKusamaApi, statemine: mockedStatemineApi }}>
       {children}
     </ApiContext.Provider>
   )

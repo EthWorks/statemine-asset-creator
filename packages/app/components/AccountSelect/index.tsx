@@ -20,7 +20,7 @@ export interface Props extends InputInfoProps {
   onClose?: () => void
 }
 
-export function AccountSelect ({ accounts, currentAccount, setCurrentAccount, label, withFreeBalance = false, onClose, ...inputInfoProps }: Props): JSX.Element {
+export function AccountSelect({ accounts, currentAccount, setCurrentAccount, label, withFreeBalance = false, onClose, ...inputInfoProps }: Props): JSX.Element {
   return (
     <DropdownMenu.Root>
       <AccountSelectWrapper>

@@ -2,7 +2,7 @@
 
 type GlobalThis = typeof globalThis;
 
-function evaluateThis (fn: (code: string) => unknown): GlobalThis {
+function evaluateThis(fn: (code: string) => unknown): GlobalThis {
   return fn('return this') as GlobalThis
 }
 
@@ -29,22 +29,20 @@ export type GlobalWithPjs = This & {__polkadotjs: PolkadotJsGlobal}
 
 const _global = xglobal as GlobalWithPjs
 
-function getObjectToPatch (): PolkadotJsGlobal {
+function getObjectToPatch(): PolkadotJsGlobal {
   if (!_global.__polkadotjs) {
     _global.__polkadotjs = {}
   }
 
   return _global.__polkadotjs
 }
-export function patchDetectPackage (): void {
+export function patchDetectPackage(): void {
   if (getObjectToPatch().isProxy) {
-
     return
   }
   _global.__polkadotjs = new Proxy(getObjectToPatch(), {
-    get (target, key) {
-      if (key === 'isProxy')
-        return true
+    get(target, key) {
+      if (key === 'isProxy') { return true }
 
       return []
     }

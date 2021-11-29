@@ -44,7 +44,7 @@ describe('Active account bar', () => {
     expect(statemineActiveAccount).toHaveTextContent('Statemine6,000.0000KSM')
   })
 
-  it('opens select account modal',async () => {
+  it('opens select account modal', async () => {
     userEvent.click(activeAccountBar)
 
     const modal = await screen.findByTestId('modal')

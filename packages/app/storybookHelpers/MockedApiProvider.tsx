@@ -11,16 +11,16 @@ export function MockedApiProvider(props: { children: React.ReactNode }): JSX.Ele
         balances: {
           all: () => from([{
             availableBalance: '100',
-            freeBalance: '2',
+            freeBalance: '2'
           }])
         }
       }
     },
-    connectionState: 'connected',
+    connectionState: 'connected'
   } as unknown as APIConnected
 
   return (
-    <ApiContext.Provider value={{ 'kusama': mockedKusamaApi }}>
+    <ApiContext.Provider value={{ kusama: mockedKusamaApi }}>
       {props.children}
     </ApiContext.Provider>
   )

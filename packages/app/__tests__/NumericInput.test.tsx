@@ -17,7 +17,7 @@ function NumericInputTestComponent({ inputType = 'DEFAULT' }: Props): JSX.Elemen
   return (
     <>
       <div data-testid='input-state'>Value: {value}</div>
-      <NumericInput 
+      <NumericInput
         id='num-input'
         label='NumericInput'
         value={value}
@@ -35,7 +35,7 @@ describe('NumericInput component', () => {
     beforeEach(() => {
       renderWithTheme(<NumericInputTestComponent/>)
     })
-        
+
     ;['-', ''].forEach(sign => {
       const signDescription = sign === '-' ? 'negative' : 'positive'
       describe(`${signDescription}`, () => {
@@ -78,7 +78,7 @@ describe('NumericInput component', () => {
         })
       })
     })
-    
+
     it('random input test', async () => {
       fillInput(RANDOM_INPUT)
 
@@ -90,10 +90,10 @@ describe('NumericInput component', () => {
     beforeEach(() => {
       renderWithTheme(<NumericInputTestComponent inputType='INTEGER'/>)
     })
-    
+
     ;['-', ''].forEach(sign => {
       const signDescription = sign === '-' ? 'negative' : 'positive'
-      
+
       describe(`${signDescription}`, () => {
         it('ignores fraction dots', async () => {
           fillInput(`${sign}111.2.22..2`)
@@ -221,7 +221,7 @@ describe('NumericInput component', () => {
 
 async function expectValue(expectedValue: string): Promise<void> {
   const valueContainer = await screen.findByTestId('input-state')
-  
+
   await within(valueContainer).findByText(expectedValue)
 }
 

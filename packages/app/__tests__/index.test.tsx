@@ -34,7 +34,7 @@ jest.mock('use-substrate/dist/src/hooks', () => ({
   useBalances: () => mockUseBalances,
   useActiveAccounts: () => ({
     ...mockUseActiveAccounts,
-    activeAccounts: { [mockChains.Kusama]: mockActiveAccount, [mockChains.Statemine]: mockActiveAccount },
+    activeAccounts: { [mockChains.Kusama]: mockActiveAccount, [mockChains.Statemine]: mockActiveAccount }
   }),
   useActiveAccount: () => ({
     ...mockUseActiveAccount,

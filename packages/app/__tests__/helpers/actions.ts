@@ -24,7 +24,7 @@ export function openDropdown(openDropdownButton: HTMLElement) {
     openDropdownButton,
     new PointerEvent('pointerdown', {
       ctrlKey: false,
-      button: 0,
+      button: 0
     })
   )
 }

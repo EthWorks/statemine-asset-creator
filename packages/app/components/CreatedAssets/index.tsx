@@ -21,7 +21,7 @@ export const CreatedAssets: FC<Props> = ({ assets }) => {
   return (
     <div>
       <StyledSwiper
-        modules={[ Navigation ]}
+        modules={[Navigation]}
         data-testid='created-assets'
         spaceBetween={24}
         slidesPerView={3}

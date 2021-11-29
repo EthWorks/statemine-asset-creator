@@ -21,7 +21,7 @@ describe('useBalances hook', () => {
   })
 
   it('return undefined for null address', async () => {
-    const { result } = renderResult( undefined, Chains.Kusama)
+    const { result } = renderResult(undefined, Chains.Kusama)
     expect(result.current).toEqual(undefined)
   })
 

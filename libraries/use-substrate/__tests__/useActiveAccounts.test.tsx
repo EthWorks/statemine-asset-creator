@@ -123,7 +123,7 @@ describe('use active accounts', () => {
       expect(activeAccounts && activeAccounts[Chains.Kusama]).toEqual(BOB_ID)
     })
 
-    afterAll (() => {
+    afterAll(() => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       window.localStorage = store

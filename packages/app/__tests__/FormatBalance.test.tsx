@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react'
 import BN from 'bn.js'
 
-import FormatBalance from '../components/FormatBalance'
+import { FormatBalance } from '../components'
 import { renderWithTheme } from './helpers'
 
 describe('FormatBalance component', () => {
