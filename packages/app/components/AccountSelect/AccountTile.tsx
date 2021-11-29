@@ -7,7 +7,7 @@ import { Chains, useBalances } from 'use-substrate'
 
 import AvatarIcon from '../../assets/img/avatar2.png'
 import Avatar from '../Avatar/Avatar'
-import FormatBalance from '../FormatBalance'
+import { FormatBalance } from '../FormatBalance'
 import { Label, Text } from '../typography'
 
 interface Props {

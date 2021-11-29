@@ -3,7 +3,7 @@ import { createContext } from 'react'
 
 type stringSetter = (arg: string) => void;
 type stringOrUndefinedSetter = (arg: string | undefined) => void;
-const noop = (): void => {/**/}
+const noop = (): void => { /**/ }
 
 export interface NewAssetForm {
   assetName: string,

@@ -15,10 +15,12 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element {
   const { api } = useApi(Chains.Statemine)
   const { activeAccount } = useActiveAccount(Chains.Statemine)
 
-  const txs = activeAccount ? [
-    api?.tx.assets.create(assetId, activeAccount.toString(), minBalance),
-    api?.tx.assets.setMetadata(assetId, assetName, assetSymbol, assetDecimals)
-  ] : []
+  const txs = activeAccount
+    ? [
+      api?.tx.assets.create(assetId, activeAccount.toString(), minBalance),
+      api?.tx.assets.setMetadata(assetId, assetName, assetSymbol, assetDecimals)
+    ]
+    : []
 
   const { tx } = useTransaction(api?.tx.utility.batch, [txs], activeAccount?.toString()) || {}
 

@@ -14,8 +14,8 @@ export const ActiveAccountProvider: FC<ActiveAccountProviderProps> = ({ children
     if (localStorageExists()) {
       const accountsInLocalStorage = localStorage.getItem('activeAccounts')
       const initialAccounts = accountsInLocalStorage ? JSON.parse(accountsInLocalStorage) : {}
-      
-      if(!api) {
+
+      if (!api) {
         return
       }
 
@@ -29,7 +29,7 @@ export const ActiveAccountProvider: FC<ActiveAccountProviderProps> = ({ children
       const accounts = { ...activeAccounts, ...newActiveAccounts }
       localStorage.setItem('activeAccounts', JSON.stringify(accounts))
     }
-    
+
     const convertedAccounts = convertAddressesToAccountIds(newActiveAccounts, api)
 
     setActiveAccounts({

@@ -1,4 +1,4 @@
-import type { Option,StorageKey } from '@polkadot/types'
+import type { Option, StorageKey } from '@polkadot/types'
 import type { AccountId, AssetId } from '@polkadot/types/interfaces'
 import type { PalletAssetsAssetDetails } from '@polkadot/types/lookup'
 

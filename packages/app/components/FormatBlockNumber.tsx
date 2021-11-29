@@ -12,7 +12,7 @@ export const FormatBlockNumber: FC<Props> = ({ value }) => {
   const formattedBlockNumber = value
     ? '#' + formatValue(value)
     : '-'
-  
+
   return (
     <Text size='XXS' color='white' bold>
       {formattedBlockNumber}

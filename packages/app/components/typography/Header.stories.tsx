@@ -7,10 +7,10 @@ const Default = {
     backgrounds: {
       default: 'trueGray',
       values: [
-        { name: 'trueGray', value: '#262626' },
-      ],
-    },
-  },
+        { name: 'trueGray', value: '#262626' }
+      ]
+    }
+  }
 }
 
 export default Default

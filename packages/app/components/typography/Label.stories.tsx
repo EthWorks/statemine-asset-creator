@@ -5,7 +5,7 @@ import { Label } from './Label'
 
 const Default = {
   component: Label,
-  title: 'Components/Typography/Label',
+  title: 'Components/Typography/Label'
 }
 
 export default Default
