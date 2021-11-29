@@ -8,7 +8,7 @@ import dynamic from 'next/dynamic'
 import React from 'react'
 import { ThemeProvider } from 'styled-components'
 
-import { Chains } from 'use-substrate'
+import {Chains, KUSAMA_ARCHIVE_NODE_URL, STATEMINE_ARCHIVE_NODE_URL} from 'use-substrate'
 
 import { envConfig } from '../config/envConfig'
 import { APPLICATION_NAME } from '../globalConstants'
@@ -20,10 +20,18 @@ const AppProvider = dynamic<AppProviderProps>(
   { ssr: false }
 )
 
+// const config: Config = {
+//   chains: [
+//     { name: Chains.Kusama, url: envConfig.kusamaUrl },
+//     { name: Chains.Statemine, url: envConfig.statemineUrl },
+//   ],
+//   appName: APPLICATION_NAME
+// }
+
 const config: Config = {
   chains: [
-    { name: Chains.Kusama, url: envConfig.kusamaUrl },
-    { name: Chains.Statemine, url: envConfig.statemineUrl },
+    { name: Chains.Kusama, url: KUSAMA_ARCHIVE_NODE_URL },
+    { name: Chains.Statemine, url: STATEMINE_ARCHIVE_NODE_URL },
   ],
   appName: APPLICATION_NAME
 }
