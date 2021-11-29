@@ -13,8 +13,8 @@ import {
   renderWithTheme
 } from './helpers'
 import {
-  mockChains,
   mockUseAccounts,
+  mockUseActiveAccount,
   mockUseActiveAccounts,
   mockUseApi,
   mockUseAssets,
@@ -22,14 +22,14 @@ import {
   mockWeb3Enable
 } from './mocks'
 
-jest.mock('use-substrate', () => ({
+jest.mock('use-substrate/dist/src/hooks', () => ({
   useAccounts: () => mockUseAccounts,
   useApi: () => mockUseApi,
   useAssets: () => mockUseAssets,
   useBalances: () => mockUseBalances,
   useBestNumber: () => mockUseBestNumber,
-  Chains: () => mockChains,
-  useActiveAccounts: () => mockUseActiveAccounts
+  useActiveAccounts: () => mockUseActiveAccounts,
+  useActiveAccount: () => mockUseActiveAccount
 }))
 
 describe('Connect wallet modal', () => {

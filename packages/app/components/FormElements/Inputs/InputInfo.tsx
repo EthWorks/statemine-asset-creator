@@ -4,20 +4,22 @@ import styled from 'styled-components'
 import { AlertIcon } from '../../icons/Alert'
 import { Text } from '../../typography'
 
-interface InputHintProps {
+export interface InputInfoProps {
   error?: string,
-  hint?: string
+  hint?: string,
+  tip?: string
 }
 
-export const InputHint = ({ error, hint }: InputHintProps): JSX.Element => (
+export const InputInfo = ({ error, hint, tip }: InputInfoProps): JSX.Element => (
   <InputHintWrapper>
     {error && (
-      <HintError data-testid='input-error'>
+      <Error data-testid='input-error'>
         <AlertIcon width='12px' height='11px' />
         <Text size="XXS" color="red">{error}</Text>
-      </HintError>
+      </Error>
     )}
     {hint && <HintText size="XXS" color='white'>{hint}</HintText>}
+    {tip && <TipText size='XXS' color='indigo'>{tip}</TipText>}
   </InputHintWrapper>
 )
 
@@ -29,7 +31,7 @@ const InputHintWrapper = styled.div`
   align-items: center;
 `
 
-const HintError = styled.div`
+const Error = styled.div`
   display: flex;
   align-items: center;
   margin: 5px 10px 0 0;
@@ -43,4 +45,9 @@ const HintError = styled.div`
 const HintText = styled(Text)`
   margin-top: 5px;
   color: ${({ theme }) => theme.colors.gray[300]};
+`
+
+const TipText = styled(Text)`
+  margin-top: 5px;
+  color: ${({ theme }) => theme.colors.indigo};
 `

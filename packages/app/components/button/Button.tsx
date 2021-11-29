@@ -55,3 +55,9 @@ export const ButtonSquare = styled(BaseButtonStyle)`
   background: transparent;
   border: none;
 `
+
+export const ButtonTertiary = styled(BaseButtonStyle)<ButtonProps>`
+  border: none;
+  background: none;
+  color: ${({ theme }) => theme.colors.pinkLight};
+`

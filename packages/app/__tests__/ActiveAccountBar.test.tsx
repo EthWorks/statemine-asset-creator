@@ -4,15 +4,22 @@ import userEvent from '@testing-library/user-event'
 import Home from '../pages'
 import { mockUseBestNumber } from './mocks/mockUseBestNumber'
 import { renderWithTheme, setLocalStorage } from './helpers'
-import { bobAccount, mockChains, mockUseAccounts, mockUseActiveAccounts, mockUseApi, mockUseBalances } from './mocks'
+import {
+  bobAccount,
+  mockUseAccounts,
+  mockUseActiveAccount,
+  mockUseActiveAccounts,
+  mockUseApi,
+  mockUseBalances
+} from './mocks'
 
-jest.mock('use-substrate', () => ({
+jest.mock('use-substrate/dist/src/hooks', () => ({
   useApi: () => mockUseApi,
   useAccounts: () => mockUseAccounts,
   useAssets: () => [],
   useBalances: () => mockUseBalances,
   useBestNumber: () => mockUseBestNumber,
-  Chains: () => mockChains,
+  useActiveAccount: () => mockUseActiveAccount,
   useActiveAccounts: () => mockUseActiveAccounts
 }))
 
@@ -48,7 +55,7 @@ describe('Active account bar', () => {
     const kusamaActiveAccount = activeAccountBar.children[0] as HTMLElement
     const statemineActiveAccount = activeAccountBar.children[1] as HTMLElement
 
-    await within(kusamaActiveAccount).findByText('Current block #9506023')
-    await within(statemineActiveAccount).findByText('Current block #9506023')
+    expect(kusamaActiveAccount).toHaveTextContent('Current block#9,506,023')
+    expect(statemineActiveAccount).toHaveTextContent('Current block#9,506,023')
   })
 })

@@ -11,7 +11,7 @@ import { assertText, clickButton, renderWithTheme, setLocalStorage } from './hel
 import {
   bobAccount,
   bobAccountId,
-  mockUseAccounts,
+  mockUseAccounts, mockUseActiveAccount,
   mockUseActiveAccounts,
   mockUseApi,
   mockUseAssets,
@@ -25,17 +25,20 @@ import {
 
 let mockAssets: UseAssets = []
 let mockActiveAccount = bobAccountId
-jest.mock('use-substrate', () => ({
+jest.mock('use-substrate/dist/src/hooks', () => ({
   useAccounts: () => mockUseAccounts,
   useApi: () => mockUseApi,
   useAssets: () => mockAssets,
   useAssetsConstants: () => mockUseAssetsConstants,
   useBestNumber: () => mockUseBestNumber,
   useBalances: () => mockUseBalances,
-  Chains: () => mockChains,
   useActiveAccounts: () => ({
     ...mockUseActiveAccounts,
     activeAccounts: { [mockChains.Kusama]: mockActiveAccount, [mockChains.Statemine]: mockActiveAccount },
+  }),
+  useActiveAccount: () => ({
+    ...mockUseActiveAccount,
+    activeAccount: mockActiveAccount
   })
 }))
 

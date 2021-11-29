@@ -1,6 +1,6 @@
 import BN from 'bn.js'
 
-import { roundBalance } from '../../formaters/formaters'
+import { formatValue } from '../../formaters/formaters'
 
 const DECIMALS_DISPLAYED = 4
 
@@ -13,7 +13,7 @@ export function formatBalance(value: BN | undefined, chainDecimals: number): { i
   const integerPartLength = balanceWithPaddedZeroes.length - chainDecimals
   const balanceWithSeparator = balanceWithPaddedZeroes.substring(0, integerPartLength) + '.' + balanceWithPaddedZeroes.substring(integerPartLength, balanceWithPaddedZeroes.length)
 
-  const roundedBalance = roundBalance(balanceWithSeparator, DECIMALS_DISPLAYED)
+  const roundedBalance = formatValue(balanceWithSeparator, DECIMALS_DISPLAYED)
   const [integers, decimals] = roundedBalance.split('.')
 
   return { integers, decimals }

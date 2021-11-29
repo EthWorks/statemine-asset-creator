@@ -4,7 +4,7 @@ import Head from 'next/head'
 import { useEffect } from 'react'
 import styled from 'styled-components'
 
-import { Chains, useAccounts, useActiveAccounts, useAssets } from 'use-substrate'
+import { Chains, useAccounts, useActiveAccount, useAssets } from 'use-substrate'
 
 import background from '../assets/background.svg'
 import {
@@ -22,9 +22,8 @@ import {
 import { extensionActivated, useAsync, useToggle } from '../utils'
 
 const Home: NextPage = () => {
-  const { activeAccounts } = useActiveAccounts()
+  const { activeAccount: account } = useActiveAccount(Chains.Statemine)
   const { web3Enable } = useAccounts()
-  const account = activeAccounts[Chains.Statemine]
   const assets = useAssets(Chains.Statemine, { owner: account })
   const [isNewAssetModalOpen, toggleNewAssetModalOpen] = useToggle()
   const [isConnectWalletModalOpen, toggleConnectWalletModalOpen, setConnectWalletModalOpen] = useToggle(!extensionActivated())
@@ -56,7 +55,7 @@ const Home: NextPage = () => {
       <PageTemplate
         background={background}
         title="Dashboard"
-        templateHeader={assets?.length ? <ButtonPrimary onClick={toggleNewAssetModalOpen}>Create new asset</ButtonPrimary> : null}
+        templateHeader={account && assets?.length ? <ButtonPrimary onClick={toggleNewAssetModalOpen}>Create new asset</ButtonPrimary> : null}
         header={
           <div data-testid='page-header'>
             {account
@@ -66,7 +65,7 @@ const Home: NextPage = () => {
           </div>
         }
       >
-        {assets?.length
+        {account && assets?.length
           ? <PageBox size='full' title={`Created assets [${assets.length}]`}>
             <CreatedAssets assets={assets}/>
           </PageBox>

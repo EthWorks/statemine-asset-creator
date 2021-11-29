@@ -12,10 +12,10 @@ export async function assertText(text: string) {
   await screen.findByText(text)
 }
 
-export function assertTextInput(inputName:string, text: string) {
+export function assertInput(inputName:string, text: string) {
   const input = screen.getByLabelText(inputName)
 
-  expect(input).toHaveTextContent(text)
+  expect(input).toHaveValue(text)
 }
 
 export function assertNoText(text: string) {
@@ -49,6 +49,12 @@ export function assertButtonDisabled(name: string) {
 
 export function assertButtonNotDisabled(name: string) {
   const button = screen.getByRole('button', { name })
+
+  expect(button).not.toBeDisabled()
+}
+
+export async function findButtonNotDisabled(name: string) {
+  const button = await screen.findByRole('button', { name })
 
   expect(button).not.toBeDisabled()
 }
