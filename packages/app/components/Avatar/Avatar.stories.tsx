@@ -2,8 +2,6 @@ import { Story } from '@storybook/react'
 
 import Avatar, { AvatarProps } from './Avatar'
 
-import AvatarImg from '/assets/img/avatar2.png'
-
 const Default = {
   title: 'Components/Avatar',
   component: Avatar,
@@ -18,7 +16,7 @@ const Default = {
 export default Default
 
 const Template: Story<AvatarProps> = (args) =>
-  <Avatar src={AvatarImg} {...args}/>
+  <Avatar {...args}/>
 
 export const Base = Template.bind({})
 Base.args = { size:'m' }

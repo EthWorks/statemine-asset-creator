@@ -5,7 +5,6 @@ import styled from 'styled-components'
 
 import { Chains, useBalances } from 'use-substrate'
 
-import AvatarIcon from '../../assets/img/avatar2.png'
 import Avatar from '../Avatar/Avatar'
 import FormatBalance from '../FormatBalance'
 import { Label, Text } from '../typography'
@@ -25,7 +24,7 @@ export function AccountTile({ account, withFreeBalance }: Props): JSX.Element {
   return (
     <AccountTileWrapper>
       <AccountTileCell>
-        <Avatar src={AvatarIcon} size='m'/>
+        <Avatar address={account.address} size='m'/>
         <AccountTileName>
           <TextName size='SM' color='red'>{account.name}</TextName>
           <TextAddress size='SM'>{account.address}</TextAddress>

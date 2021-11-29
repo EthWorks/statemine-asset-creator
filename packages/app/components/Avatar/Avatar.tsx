@@ -1,16 +1,16 @@
-import Image from 'next/image'
-import styled from 'styled-components'
+import Identicon from '@polkadot/react-identicon'
 
 export interface AvatarProps {
+  address: string,
   size?: 's' | 'm',
 }
 
-const Avatar = styled(Image).attrs<AvatarProps>(props => ({
-  height: props.size === 's' ? '25px' : '40px',
-  width: props.size === 's' ? '25px' : '40px'
-}))<AvatarProps>`
-  border-radius: ${({ theme }) => theme.borderRadius.circle};
-  object-fit: cover;
-`
+const Avatar = ({ size, address }: AvatarProps): JSX.Element => (
+  <Identicon
+    size={size === 's' ? 25 : 40}
+    value={address}
+    theme='beachball'
+  />
+)
 
 export default Avatar
