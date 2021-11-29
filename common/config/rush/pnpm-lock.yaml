@@ -43,9 +43,10 @@ specifiers:
   bignumber.js: ^9.0.1
   bn.js: ~5.2.0
   eslint: ^7.32.0
-  eslint-config-next: 11.1.2
+  eslint-config-next: 12.0.4
   eslint-config-standard: ~16.0.3
   eslint-plugin-import: ~2.25.3
+  eslint-plugin-node: ~11.1.0
   eslint-plugin-promise: ~5.1.1
   eslint-plugin-react-hooks: ~4.2.0
   eslint-plugin-simple-import-sort: ~7.0.0
@@ -107,9 +108,10 @@ dependencies:
   bignumber.js: 9.0.1
   bn.js: 5.2.0
   eslint: 7.32.0
-  eslint-config-next: 11.1.2_f1f8405fe2323de6c036095b8b1e40f0
-  eslint-config-standard: 16.0.3_fa45d6d6cc64cbd50e8229d82301da05
+  eslint-config-next: 12.0.4_f1f8405fe2323de6c036095b8b1e40f0
+  eslint-config-standard: 16.0.3_c064783008e6437da98d184fd45815b6
   eslint-plugin-import: 2.25.3_eslint@7.32.0
+  eslint-plugin-node: 11.1.0_eslint@7.32.0
   eslint-plugin-promise: 5.1.1_eslint@7.32.0
   eslint-plugin-react-hooks: 4.2.0_eslint@7.32.0
   eslint-plugin-simple-import-sort: 7.0.0_eslint@7.32.0
@@ -2146,8 +2148,8 @@ packages:
     resolution: {integrity: sha512-QcdlpcwIH9dYcVlNAU+gXaqHA/omskbRlb+R3vN7LlB2EgLt+9WQwbokcHOsNyt4pI7kDM67W4tr9l7dWnlGdQ==}
     dev: false
 
-  /@next/eslint-plugin-next/11.1.2:
-    resolution: {integrity: sha512-cN+ojHRsufr9Yz0rtvjv8WI5En0RPZRJnt0y16Ha7DD+0n473evz8i1ETEJHmOLeR7iPJR0zxRrxeTN/bJMOjg==}
+  /@next/eslint-plugin-next/12.0.4:
+    resolution: {integrity: sha512-3N+LG+wQQB0JLfMj4YKkefWnjcsFVBmixRWdzbVBnt/cxbVZ0izf+BR1MzvrPX1oaP0OrYk8X/9Mn9Yftuajvg==}
     dependencies:
       glob: 7.1.7
     dev: false
@@ -7355,8 +7357,8 @@ packages:
       source-map: 0.6.1
     dev: false
 
-  /eslint-config-next/11.1.2_f1f8405fe2323de6c036095b8b1e40f0:
-    resolution: {integrity: sha512-dFutecxX2Z5/QVlLwdtKt+gIfmNMP8Qx6/qZh3LM/DFVdGJEAnUKrr4VwGmACB2kx/PQ5bx3R+QxnEg4fDPiTg==}
+  /eslint-config-next/12.0.4_f1f8405fe2323de6c036095b8b1e40f0:
+    resolution: {integrity: sha512-uBOHBjYaRF0MaS5feB7lFOncHhSrtFxZy/oud6pEW/wn/JUQtZWeH/J4JyODBfX+G7h9mttgHLZNmUjNJis6Kw==}
     peerDependencies:
       eslint: ^7.23.0
       next: '>=10.2.0'
@@ -7365,7 +7367,7 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@next/eslint-plugin-next': 11.1.2
+      '@next/eslint-plugin-next': 12.0.4
       '@rushstack/eslint-patch': 1.0.7
       '@typescript-eslint/parser': 4.33.0_eslint@7.32.0+typescript@4.4.4
       eslint: 7.32.0
@@ -7392,19 +7394,6 @@ packages:
       eslint: 7.32.0
       eslint-plugin-import: 2.25.3_eslint@7.32.0
       eslint-plugin-node: 11.1.0_eslint@7.32.0
-      eslint-plugin-promise: 5.1.1_eslint@7.32.0
-    dev: false
-
-  /eslint-config-standard/16.0.3_fa45d6d6cc64cbd50e8229d82301da05:
-    resolution: {integrity: sha512-x4fmJL5hGqNJKGHSjnLdgA6U6h1YW/G2dW9fA+cyVur4SK6lyue8+UgNKWlZtUDTXvgKDD/Oa3GQjmB5kjtVvg==}
-    peerDependencies:
-      eslint: ^7.12.1
-      eslint-plugin-import: ^2.22.1
-      eslint-plugin-node: ^11.1.0
-      eslint-plugin-promise: ^4.2.1 || ^5.0.0
-    dependencies:
-      eslint: 7.32.0
-      eslint-plugin-import: 2.25.3_eslint@7.32.0
       eslint-plugin-promise: 5.1.1_eslint@7.32.0
     dev: false
 
@@ -7481,7 +7470,7 @@ packages:
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7
     dependencies:
-      '@babel/runtime': 7.15.4
+      '@babel/runtime': 7.16.3
       aria-query: 4.2.2
       array-includes: 3.1.4
       ast-types-flow: 0.0.7
@@ -14691,7 +14680,7 @@ packages:
     dev: false
 
   file:projects/statemine-asset-creator.tgz:
-    resolution: {integrity: sha512-8QUSFe96JoIRpCqVPV/uh2cUpBW5lwU5KYPXWzsli+ZGROpbwRAEAcKg9JmzDinZ+5RX5TSr9i5Ync10oIBGMw==, tarball: file:projects/statemine-asset-creator.tgz}
+    resolution: {integrity: sha512-CO/fviwWnb8/Il0oFBJI56czpdoU0lRkIAx4QlyZT9ycTz8GWYibE0ymO3xHHmJvJ9c4beWyNIpmccGsiwZ7eg==, tarball: file:projects/statemine-asset-creator.tgz}
     name: '@rush-temp/statemine-asset-creator'
     version: 0.0.0
     dependencies:
@@ -14717,7 +14706,7 @@ packages:
       bignumber.js: 9.0.1
       bn.js: 5.2.0
       eslint: 7.32.0
-      eslint-config-next: 11.1.2_f1f8405fe2323de6c036095b8b1e40f0
+      eslint-config-next: 12.0.4_f1f8405fe2323de6c036095b8b1e40f0
       identity-obj-proxy: 3.0.0
       jest: 27.2.5
       jest-fail-on-console: 2.0.5
