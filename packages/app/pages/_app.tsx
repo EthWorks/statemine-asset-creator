@@ -8,7 +8,7 @@ import dynamic from 'next/dynamic'
 import React from 'react'
 import { ThemeProvider } from 'styled-components'
 
-import {Chains, KUSAMA_ARCHIVE_NODE_URL, STATEMINE_ARCHIVE_NODE_URL} from 'use-substrate'
+import { Chains, KUSAMA_ARCHIVE_NODE_URL, STATEMINE_ARCHIVE_NODE_URL } from 'use-substrate'
 
 import { envConfig } from '../config/envConfig'
 import { APPLICATION_NAME } from '../globalConstants'
