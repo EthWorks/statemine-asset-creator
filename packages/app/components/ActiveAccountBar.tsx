@@ -1,9 +1,12 @@
 import type { FC } from 'react'
 
+import Image from 'next/image'
 import styled from 'styled-components'
 
 import { Chains, useActiveAccounts, useBalances, useBestNumber } from 'use-substrate'
 
+import KusamaLogo from '../assets/img/kusama.png'
+import StatemineLogo from '../assets/img/statemine.svg'
 import { shortAddress } from '../formaters/formaters'
 import { ButtonSquare } from './button/Button'
 import { Edit } from './icons/Edit'
@@ -27,16 +30,21 @@ export const ActiveAccountBar: FC<Props> = ({ onClick }) => {
     <ActiveAccountWrapper data-testid="active-account-bar">
       {isKusamaAccountSet && (
         <ActiveAccount>
-          <div>
-            <ActiveAccountText size='XS'>
-              Kusama,
-              <FormatBalance token={'KSM'} chainDecimals={12} value={kusamaFreeBalance}/>
-            </ActiveAccountText>
-            <ActiveAccountText size='XXS'>
-              Current block
-              <FormatBlockNumber value={kusamaBlockNumber}/>
-            </ActiveAccountText>
-          </div>
+          <ActiveAccountContent>
+            <LogoWrapper>
+              <Image src={KusamaLogo} alt='Kusama' />
+            </LogoWrapper>
+            <div>
+              <ActiveAccountText size='XS'>
+                Kusama,
+                <FormatBalance token={'KSM'} chainDecimals={12} value={kusamaFreeBalance}/>
+              </ActiveAccountText>
+              <ActiveAccountText size='XXS'>
+                Current block
+                <FormatBlockNumber value={kusamaBlockNumber}/>
+              </ActiveAccountText>
+            </div>
+          </ActiveAccountContent>
           <AddressWrapper>
             <AddressText size='XS'>
               {shortAddress(activeAccounts[Chains.Kusama]?.toString(), 8)}
@@ -45,16 +53,21 @@ export const ActiveAccountBar: FC<Props> = ({ onClick }) => {
         </ActiveAccount>
       )}
       <ActiveAccount>
-        <div>
-          <ActiveAccountText size='XS'>
-            Statemine,
-            <FormatBalance token={'KSM'} chainDecimals={12} value={statemineFreeBalance}/>
-          </ActiveAccountText>
-          <ActiveAccountText size='XXS'>
-            Current block
-            <FormatBlockNumber value={statemineBlockNumber}/>
-          </ActiveAccountText>
-        </div>
+        <ActiveAccountContent>
+          <LogoWrapper>
+            <Image src={StatemineLogo} alt='Statemine' />
+          </LogoWrapper>
+          <div>
+            <ActiveAccountText size='XS'>
+              Statemine,
+              <FormatBalance token={'KSM'} chainDecimals={12} value={statemineFreeBalance}/>
+            </ActiveAccountText>
+            <ActiveAccountText size='XXS'>
+              Current block
+              <FormatBlockNumber value={statemineBlockNumber}/>
+            </ActiveAccountText>
+          </div>
+        </ActiveAccountContent>
         <AddressWrapper>
           <AddressText size='XS'>
             {shortAddress(activeAccounts[Chains.Statemine]?.toString(), 8)}
@@ -85,6 +98,11 @@ const ActiveAccount = styled.div`
   padding: 8px;
   border-radius: ${({ theme }) => theme.borderRadius.m};
   background-color: ${({ theme }) => theme.colors.gray[800]};
+`
+
+const ActiveAccountContent = styled.div`
+  display: flex;
+  align-items: center;
 `
 
 const AddressWrapper = styled.div`
@@ -126,5 +144,17 @@ const EditButton = styled(ButtonSquare)`
   
   &:hover {
     background: none;
+  }
+`
+
+const LogoWrapper = styled.div`
+  width: 25px;
+  height: 25px;
+  margin-right: 8px;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
 `
