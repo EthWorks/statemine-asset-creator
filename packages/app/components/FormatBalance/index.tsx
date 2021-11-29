@@ -11,7 +11,7 @@ interface BalanceValueProps {
   value: BN | undefined
 }
 
-const FormatBalance = ({ chainDecimals, token, value }: BalanceValueProps): React.ReactElement<BalanceValueProps> | null => {
+export const FormatBalance = ({ chainDecimals, token, value }: BalanceValueProps): React.ReactElement<BalanceValueProps> | null => {
   const { integers, decimals } = useMemo(() => formatBalance(value, chainDecimals), [chainDecimals, value]) || {}
 
   return (
@@ -21,8 +21,6 @@ const FormatBalance = ({ chainDecimals, token, value }: BalanceValueProps): Reac
     </ValueWrapper>
   )
 }
-
-export default FormatBalance
 
 const TextBalance = styled(Text)`
   margin-right: 4px;

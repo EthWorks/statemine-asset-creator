@@ -11,7 +11,7 @@ export const mockUseApi = {
     tx: {
       assets: {
         create: noop,
-        setMetadata: noop,
+        setMetadata: noop
       },
       utility: {}
     }

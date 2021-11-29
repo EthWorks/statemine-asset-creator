@@ -5,7 +5,7 @@ import { Link } from './Link'
 
 const Default = {
   component: Link,
-  title: 'Components/Typography/Link',
+  title: 'Components/Typography/Link'
 }
 
 export default Default

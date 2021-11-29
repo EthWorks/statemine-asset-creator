@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { CheckIcon } from '../../icons/Check'
+import { CheckIcon } from '../../icons'
 import { Text } from '../../typography'
 
 interface StepProps {
@@ -10,7 +10,7 @@ interface StepProps {
   activeStep: number
 }
 
-export const Step = ({ stepIndex, optional, stepName, activeStep }: StepProps ): JSX.Element => {
+export const Step = ({ stepIndex, optional, stepName, activeStep }: StepProps): JSX.Element => {
   const isActive = activeStep === stepIndex
   const isPast = activeStep > stepIndex
 

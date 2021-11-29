@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useLayoutEffect, useRef,useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 
-export function useAsync<T> (execute: () => Promise<T>, deps: any[]): [T | undefined, any, boolean] {
+export function useAsync<T>(execute: () => Promise<T>, deps: any[]): [T | undefined, any, boolean] {
   const [value, setValue] = useState<T | undefined>(undefined)
   const [error, setError] = useState<any>(undefined)
   const [inProgress, setInProgress] = useState<boolean>(false)
@@ -17,7 +17,7 @@ export function useAsync<T> (execute: () => Promise<T>, deps: any[]): [T | undef
 
     p.then(
       result => promise.current === p && setValue(result),
-      err => promise.current === p && setError(err),
+      err => promise.current === p && setError(err)
     ).finally(() => setInProgress(false))
 
     return () => {

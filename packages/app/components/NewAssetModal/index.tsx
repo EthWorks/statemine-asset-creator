@@ -21,7 +21,7 @@ export function NewAssetModal({ isOpen, closeModal }: NewAssetModalProps): JSX.E
   }
 
   const renderStep: () => JSX.Element = () => {
-    switch (activeStep){
+    switch (activeStep) {
       case 1: {
         return <FirstStep onNext={() => _moveToStep(2)}/>
       }

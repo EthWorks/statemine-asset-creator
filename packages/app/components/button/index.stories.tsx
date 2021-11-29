@@ -4,9 +4,9 @@ const Default = {
   title: 'Components/Button',
   component: BaseButtonStyle,
   argTypes: {
-    disabled: { 
+    disabled: {
       defaultValue: false,
-      control: { 
+      control: {
         type: 'boolean'
       }
     },

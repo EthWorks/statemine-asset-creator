@@ -1,6 +1,6 @@
 import { GlobalWithPjs, patchDetectPackage } from '../utils/patchDetectPackage'
 
-function getEntry (name: string) {
+function getEntry(name: string) {
   const _global = global as GlobalWithPjs
 
   if (!_global.__polkadotjs) {

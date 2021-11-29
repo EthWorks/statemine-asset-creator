@@ -23,7 +23,7 @@ const AppProvider = dynamic<AppProviderProps>(
 const config: Config = {
   chains: [
     { name: Chains.Kusama, url: envConfig.kusamaUrl },
-    { name: Chains.Statemine, url: envConfig.statemineUrl },
+    { name: Chains.Statemine, url: envConfig.statemineUrl }
   ],
   appName: APPLICATION_NAME
 }

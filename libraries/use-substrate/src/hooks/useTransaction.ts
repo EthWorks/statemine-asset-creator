@@ -37,7 +37,7 @@ export function useTransaction(transaction: Transaction | undefined, params: unk
 
   return {
     tx,
-    paymentInfo,
+    paymentInfo
   }
 }
 
@@ -49,7 +49,7 @@ const observeTransaction = (transaction: Observable<ISubmittableResult>, fee: BN
       events.forEach((event) => {
         const {
           event: { data, method, section },
-          phase,
+          phase
         } = event
 
         console.log('\t', JSON.stringify(phase), `: ${section}.${method}`, JSON.stringify(data))

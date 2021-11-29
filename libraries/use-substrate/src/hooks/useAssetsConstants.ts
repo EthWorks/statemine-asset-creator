@@ -5,7 +5,7 @@ import { Chains } from '../consts'
 import { useApi } from './useApi'
 
 interface UseAssetsConstants {
-  /**The maximum length of a name or symbol stored on-chain.*/
+  /** The maximum length of a name or symbol stored on-chain. */
   stringLimit: BN | undefined
 }
 

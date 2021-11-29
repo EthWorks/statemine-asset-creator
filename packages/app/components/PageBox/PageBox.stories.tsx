@@ -11,21 +11,21 @@ const Default = {
     backgrounds: {
       default: 'trueGray',
       values: [
-        { name: 'trueGray', value: 'rgba(0,0,0,0.5)' },
-      ],
-    },
+        { name: 'trueGray', value: 'rgba(0,0,0,0.5)' }
+      ]
+    }
   },
   argTypes: {
     size: {
       control: { type: 'select' },
-      options: ['large', 'full'],
+      options: ['large', 'full']
     }
   }
 }
 
 export default Default
 
-const Template: Story<PageBoxProps> = (args ) =>
+const Template: Story<PageBoxProps> = (args) =>
   <PageBox {...args}>
     <StyledCard padding='s'>
       <Text size="SM" color="white">You haven’t created any assets yet.</Text>

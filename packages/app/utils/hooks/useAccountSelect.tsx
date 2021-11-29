@@ -1,4 +1,4 @@
-import type { Account,UseAccounts }from 'use-substrate'
+import type { Account, UseAccounts } from 'use-substrate'
 
 import { useEffect, useState } from 'react'
 
