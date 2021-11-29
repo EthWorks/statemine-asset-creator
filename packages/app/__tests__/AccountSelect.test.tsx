@@ -1,12 +1,12 @@
 import type { Account } from 'use-substrate'
 
 import { render, screen, within } from '@testing-library/react'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { ThemeProvider } from 'styled-components'
 
 import { AccountSelect } from '../components'
 import { theme } from '../styles/styleVariables'
-import { openDropdown, selectAccountFromDropdown } from './helpers'
+import { assertText, openDropdown, selectAccountFromDropdown } from './helpers'
 import { mockAccounts, mockUseAccounts, mockUseBalances, mockUseSubstrate } from './mocks'
 
 jest.mock('use-substrate/dist/src/hooks', () => ({
@@ -14,13 +14,9 @@ jest.mock('use-substrate/dist/src/hooks', () => ({
   useBalances: () => mockUseBalances
 }))
 
-function AccountSelectTestComponent({ withFreeBalance }: { withFreeBalance?: boolean }): JSX.Element {
+function AccountSelectTestComponent({ withFreeBalance, withAccountInput }: { withFreeBalance?: boolean, withAccountInput?: boolean }): JSX.Element {
   const accounts = mockUseSubstrate.useAccounts()
-  const [account, setAccount] = useState<Account>(accounts.allAccounts[0])
-
-  useEffect(() => {
-    setAccount(accounts.allAccounts[0])
-  }, [accounts.allAccounts])
+  const [account, setAccount] = useState<Account>()
 
   return (
     <ThemeProvider theme={theme}>
@@ -29,20 +25,17 @@ function AccountSelectTestComponent({ withFreeBalance }: { withFreeBalance?: boo
         currentAccount={account}
         setCurrentAccount={setAccount}
         withFreeBalance={withFreeBalance}
+        withAccountInput={withAccountInput}
       />
     </ThemeProvider>
   )
 }
 
 describe('AccountSelect component', () => {
-  it('displays current account info on load', async () => {
+  it('displays "Select account" when no current account was set', async () => {
     render(<AccountSelectTestComponent/>)
 
-    await screen.findByText(mockAccounts[0].name)
-    await screen.findByText(mockAccounts[0].address)
-
-    const transferableBalanceElement = (await screen.findByText('transferable balance')).parentElement
-    expect(transferableBalanceElement).toHaveTextContent('4,000.0000KSM')
+    await assertText('Select account')
   })
 
   it('displays accounts in dropdown', async () => {
@@ -70,10 +63,20 @@ describe('AccountSelect component', () => {
   it('shows free balance', async () => {
     render(<AccountSelectTestComponent withFreeBalance/>)
 
+    await selectAccountFromDropdown(0, 0)
+
     await screen.findByText(mockAccounts[0].name)
     await screen.findByText(mockAccounts[0].address)
 
     const transferableBalanceElement = (await screen.findByText('full account balance')).parentElement
     expect(transferableBalanceElement).toHaveTextContent('6,100.0000KSM')
+  })
+
+  describe('with paste account option', () => {
+    it('displays "Select account or paste account address" when no current account was set', async () => {
+      render(<AccountSelectTestComponent withAccountInput/>)
+
+      await assertText('Select account or paste account address')
+    })
   })
 })

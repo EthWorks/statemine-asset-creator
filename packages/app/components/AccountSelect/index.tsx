@@ -1,26 +1,25 @@
-import type { InputInfoProps } from '../FormElements/Inputs/InputInfo'
-
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import styled from 'styled-components'
 
 import { Account } from 'use-substrate'
 
 import { CloseButton } from '../button/CloseButton'
-import { InputInfo } from '../FormElements/Inputs/InputInfo'
+import { InputInfo, InputInfoProps } from '../FormElements/Inputs/InputInfo'
 import { Arrow } from '../icons'
 import { Text } from '../typography'
 import { AccountTile } from './AccountTile'
 
 export interface Props extends InputInfoProps {
   accounts: Account[],
-  currentAccount: Account,
+  currentAccount: Account | undefined,
   setCurrentAccount: (arg: Account) => void,
   withFreeBalance?: boolean,
   label?: string,
-  onClose?: () => void
+  onClose?: () => void,
+  withAccountInput?: boolean,
 }
 
-export function AccountSelect({ accounts, currentAccount, setCurrentAccount, label, withFreeBalance = false, onClose, ...inputInfoProps }: Props): JSX.Element {
+export function AccountSelect({ accounts, currentAccount, setCurrentAccount, label, withFreeBalance = false, onClose, withAccountInput, ...inputInfoProps }: Props): JSX.Element {
   return (
     <DropdownMenu.Root>
       <AccountSelectWrapper>
@@ -29,7 +28,10 @@ export function AccountSelect({ accounts, currentAccount, setCurrentAccount, lab
           {onClose && <StyledCloseButton data-testid='close-account-select' onClick={onClose}/>}
         </Label>
         <StyledButton data-testid='open-account-select'>
-          <AccountTile withFreeBalance={withFreeBalance} account={currentAccount} />
+          {currentAccount
+            ? <AccountTile withFreeBalance={withFreeBalance} account={currentAccount} />
+            : <Text size='SM'>{`Select account${withAccountInput ? ' or paste account address' : ''}`}</Text>
+          }
           <StyledArrow direction='down' width='14' height='9' />
         </StyledButton>
         <InputInfo {...inputInfoProps}/>
