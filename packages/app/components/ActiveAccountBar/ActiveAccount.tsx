@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { FC, ReactNode } from 'react'
+import { FC } from 'react'
 import styled from 'styled-components'
 
 import { Chains, useActiveAccount, useBalances, useBestNumber } from 'use-substrate'
