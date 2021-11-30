@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { Chains } from 'use-substrate'
 
-import kusamaLogo from '../../assets/img/kusama.png'
+import kusamaLogo from '../../assets/img/kusama.svg'
 import statemineLogo from '../../assets/img/statemine.svg'
 import { ButtonSquare } from '../button/Button'
 import { Edit } from '../icons'
