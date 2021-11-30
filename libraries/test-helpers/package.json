@@ -13,11 +13,11 @@
     "./dist/src"
   ],
   "dependencies": {
-    "@polkadot/api": "6.6.1",
-    "@polkadot/types": "6.6.1"
+    "@polkadot/api": "6.10.2",
+    "@polkadot/types": "6.10.2"
   },
   "devDependencies": {
-    "typescript": "^4.4.3",
+    "typescript": "^4.5.2",
     "eslint": "^7.32.0",
     "eslint-config-statemine": "~0.1.0",
     "@rushstack/eslint-patch": "~1.0.7"

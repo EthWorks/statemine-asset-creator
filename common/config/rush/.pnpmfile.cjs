@@ -28,11 +28,10 @@ module.exports = {
  */
 function readPackage(packageJson, context) {
 
-  // // The karma types have a missing dependency on typings from the log4js package.
-  // if (packageJson.name === '@types/karma') {
-  //  context.log('Fixed up dependencies for @types/karma');
-  //  packageJson.dependencies['log4js'] = '0.6.38';
-  // }
+  if (packageJson.name === 'espree' || packageJson.name === '@storybook/addon-docs') {
+    packageJson.dependencies['acorn'] = '^8.5.0'
+    context.log(`Updated acorn dependency for ${packageJson.name}`)
+  }
 
   return packageJson;
 }
