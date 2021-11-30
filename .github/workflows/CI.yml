@@ -17,3 +17,6 @@ jobs:
       - run: node common/scripts/install-run-rush.js build
       - run: node common/scripts/install-run-rush.js lint
       - run: node common/scripts/install-run-rush.js test
+      - name: Build storybook
+        working-directory: ./packages/app
+        run: node ../../common/scripts/install-run-rushx.js build-storybook
