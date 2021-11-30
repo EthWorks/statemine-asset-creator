@@ -1,7 +1,7 @@
 import { Story } from '@storybook/react'
 import React from 'react'
 
-import { mockAccounts } from '../../__tests__/mocks'
+import { mockAccounts } from '../../__tests__/mocks/mockAccounts'
 import { MockedApiProvider } from '../../storybookHelpers/MockedApiProvider'
 import { AccountSelect, Props } from './index'
 

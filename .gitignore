@@ -106,3 +106,5 @@ common/autoinstallers/*/.npmrc
 /tools/local-statemint-launch/bin/polkadot-collator
 /tools/local-statemint-launch/westend-local.json
 /tools/local-statemint-launch/westend-local-raw.json
+
+/packages/app/storybook-static/
