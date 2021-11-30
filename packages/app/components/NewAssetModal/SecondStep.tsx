@@ -5,7 +5,6 @@ import { useCallback } from 'react'
 
 import { useAccounts } from 'use-substrate'
 
-import { bobAccount } from '../../__tests__/mocks'
 import { AccountSelect } from '../AccountSelect'
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { ArrowLeft, ArrowRight } from '../icons'
@@ -23,12 +22,14 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
 
   return (
     <form onSubmit={_onNext}>
-      <AccountSelect
-        label='Admin account'
-        accounts={accounts.allAccounts}
-        currentAccount={admin || bobAccount}
-        setCurrentAccount={setAdmin}
-      />
+      {admin && (
+        <AccountSelect
+          label='Admin account'
+          accounts={accounts.allAccounts}
+          currentAccount={admin}
+          setCurrentAccount={setAdmin}
+        />
+      )}
       <ModalFooter contentPosition='between'>
         <ButtonOutline type='button' onClick={onBack}>
           <ArrowLeft />
