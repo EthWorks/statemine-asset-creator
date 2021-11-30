@@ -24,7 +24,6 @@
      * instead of the latest version.
      */
     // "some-library": "1.2.3"
-    "acorn": "8.5.0"
   },
 
   /**
