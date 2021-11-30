@@ -1,70 +1,44 @@
+import type { FormEvent } from 'react'
 import type { ModalStep } from './types'
 
-import styled from 'styled-components'
+import { useCallback } from 'react'
 
-import { Chains, useActiveAccount, useApi, useTransaction } from 'use-substrate'
+import { useAccounts } from 'use-substrate'
 
+import { bobAccount } from '../../__tests__/mocks'
+import { AccountSelect } from '../AccountSelect'
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { ArrowLeft, ArrowRight } from '../icons'
-import { Label, Text } from '../typography'
 import { useNewAssetModal } from './context/useNewAssetModal'
 import { ModalFooter } from './ModalFooter'
 
-export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element {
-  const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
-  const { api } = useApi(Chains.Statemine)
-  const { activeAccount } = useActiveAccount(Chains.Statemine)
-
-  const txs = activeAccount
-    ? [
-      api?.tx.assets.create(assetId, activeAccount.toString(), minBalance),
-      api?.tx.assets.setMetadata(assetId, assetName, assetSymbol, assetDecimals)
-    ]
-    : []
-
-  const { tx } = useTransaction(api?.tx.utility.batch, [txs], activeAccount?.toString()) || {}
-
-  if (!api || !activeAccount || !tx) return <>Loading..</>
-
-  const _onSubmit = async (): Promise<void> => {
-    await tx()
+export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
+  const _onNext = useCallback((e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     onNext()
-  }
+  }, [onNext])
+
+  const { admin, setAdmin } = useNewAssetModal()
+  const accounts = useAccounts()
 
   return (
-    <>
-      <InfoContainer>
-        <Label>Asset name</Label>
-        <Text size='XS' color='white' bold>{assetName}</Text>
-        <Label>Asset symbol</Label>
-        <Text size='XS' color='white' bold>{assetSymbol}</Text>
-        <Label>Asset decimals</Label>
-        <Text size='XS' color='white' bold>{assetDecimals}</Text>
-        <Label>Asset id</Label>
-        <Text size='XS' color='white' bold>{assetId}</Text>
-        <Label>Asset minimal balance</Label>
-        <Text size='XS' color='white' bold>{minBalance}</Text>
-      </InfoContainer>
-
+    <form onSubmit={_onNext}>
+      <AccountSelect
+        label='Admin account'
+        accounts={accounts.allAccounts}
+        currentAccount={admin || bobAccount}
+        setCurrentAccount={setAdmin}
+      />
       <ModalFooter contentPosition='between'>
-        <ButtonOutline onClick={onBack}>
+        <ButtonOutline type='button' onClick={onBack}>
           <ArrowLeft />
-          Back
+              Back
         </ButtonOutline>
-        <ButtonPrimary onClick={_onSubmit}>
-          Confirm
+        <ButtonPrimary type='submit'>
+              Next
           <ArrowRight />
         </ButtonPrimary>
       </ModalFooter>
-    </>
+    </form>
   )
 }
-
-const InfoContainer = styled.div`
-  display: grid;
-  grid-template-columns: 100px auto;
-  grid-column-gap: 40px;
-  grid-row-gap: 4px;
-  align-items: center;
-  margin-bottom: 16px;
-`

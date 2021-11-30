@@ -15,9 +15,18 @@ import {
   fillInput,
   findAndClickButton,
   renderWithTheme,
+  selectAccountFromDropdown,
   typeInInput
 } from './helpers'
-import { mockUseActiveAccount, mockUseApi, mockUseAssets, mockUseAssetsConstants } from './mocks'
+import {
+  aliceAccount, charlieAccount,
+  mockUseAccounts,
+  mockUseActiveAccount,
+  mockUseApi,
+  mockUseAssets,
+  mockUseAssetsConstants,
+  mockUseBalances
+} from './mocks'
 
 function TestComponent(): JSX.Element {
   const [isOpen, toggleOpen] = useToggle()
@@ -32,11 +41,18 @@ function TestComponent(): JSX.Element {
 
 const mockTransaction = jest.fn()
 const mockUseTransaction = { tx: mockTransaction, paymentInfo: {} }
+const assetId = '7'
+const minBalance = '300'
+const assetName = 'kusama'
+const assetSymbol = 'KSM'
+const assetDecimals = '18'
 
 jest.mock('use-substrate/dist/src/hooks', () => ({
+  useAccounts: () => mockUseAccounts,
   useApi: () => mockUseApi,
   useAssets: () => mockUseAssets,
   useAssetsConstants: () => mockUseAssetsConstants,
+  useBalances: () => mockUseBalances,
   useTransaction: () => mockUseTransaction,
   useActiveAccount: () => mockUseActiveAccount
 }))
@@ -46,6 +62,8 @@ const mockedStringLimit = mockUseAssetsConstants.stringLimit.toNumber()
 describe('New asset modal', () => {
   beforeEach(() => {
     mockTransaction.mockClear()
+    mockUseApi.api.tx.assets.create.mockClear()
+    mockUseApi.api.tx.assets.setMetadata.mockClear()
   })
 
   it('saves data in context', async () => {
@@ -53,6 +71,8 @@ describe('New asset modal', () => {
 
     await openModal()
     fillFirstStep()
+    clickButton('Next')
+    await fillSecondStep()
     clickButton('Next')
 
     await waitFor(() => expect(screen.getByText('Confirm')).toBeTruthy())
@@ -64,6 +84,8 @@ describe('New asset modal', () => {
       renderModal()
       await openModal()
       fillFirstStep()
+      clickButton('Next')
+      await fillSecondStep()
       clickButton('Next')
     })
 
@@ -89,8 +111,11 @@ describe('New asset modal', () => {
 
     await openModal()
     fillFirstStep()
-    clickButton('Next')
-    clickButton('Back')
+    await findAndClickButton('Next')
+    await screen.findByText('Admin account')
+    assertSteps(['past', 'active', 'unvisited', 'unvisited'])
+
+    await findAndClickButton('Back')
 
     assertFirstStepFilled()
     assertSteps(['active', 'unvisited', 'unvisited', 'unvisited'])
@@ -100,13 +125,14 @@ describe('New asset modal', () => {
     renderModal()
     await act(async () => await createAsset())
 
-    await waitFor(() => expect(mockTransaction).toBeCalled())
+    expect(mockUseApi.api.tx.assets.create).toBeCalledWith(assetId, charlieAccount.address, minBalance)
+    expect(mockUseApi.api.tx.assets.setMetadata).toBeCalledWith(assetId, assetName, assetSymbol, assetDecimals)
   })
 
   describe('validates inputs', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       renderModal()
-      clickButton('Create new asset')
+      await openModal()
       fillFirstStep()
       assertButtonNotDisabled('Next')
     })
@@ -174,6 +200,20 @@ describe('New asset modal', () => {
     })
   })
 
+  describe('admin', () => {
+    it('allows to select admin account', async () => {
+      renderModal()
+      await openModal()
+      await fillFirstStep()
+      clickButton('Next')
+      await selectAccountFromDropdown(0, 0)
+      clickButton('Next')
+      await findAndClickButton('Confirm')
+
+      expect(mockUseApi.api.tx.assets.create).toBeCalledWith(assetId, aliceAccount.address, minBalance)
+    })
+  })
+
   describe('step bar', () => {
     it('sets proper styles', async () => {
       renderModal()
@@ -194,22 +234,26 @@ const renderModal = (): void => {
 }
 
 const fillFirstStep = (): void => {
-  fillInput('Asset name', 'kusama')
-  fillInput('Asset symbol', 'KSM')
-  fillInput('Asset decimals', '18')
-  fillInput('Asset ID', '7')
-  fillInput('Minimum balance', '300')
+  fillInput('Asset name', assetName)
+  fillInput('Asset symbol', assetSymbol)
+  fillInput('Asset decimals', assetDecimals)
+  fillInput('Asset ID', assetId)
+  fillInput('Minimum balance', minBalance)
+}
+
+const fillSecondStep = async (): Promise<void> => {
+  await selectAccountFromDropdown(0, 2)
 }
 
 const clearInput = (inputName: string) => {
   fillInput(inputName, '')
 }
 const assertFirstStepFilled = () => {
-  assertInput('Asset name', 'kusama')
-  assertInput('Asset symbol', 'KSM')
-  assertInput('Asset decimals', '18')
-  assertInput('Asset ID', '7')
-  assertInput('Minimum balance', '300')
+  assertInput('Asset name', assetName)
+  assertInput('Asset symbol', assetSymbol)
+  assertInput('Asset decimals', assetDecimals)
+  assertInput('Asset ID', assetId)
+  assertInput('Minimum balance', minBalance)
 }
 
 function assertFirstStepEmpty() {
@@ -221,17 +265,19 @@ function assertFirstStepEmpty() {
 }
 
 async function assertSummary() {
-  await assertText('kusama')
-  await assertText('KSM')
-  await assertText('18')
-  await assertText('7')
-  await assertText('300')
+  await assertText(assetName)
+  await assertText(assetSymbol)
+  await assertText(assetDecimals)
+  await assertText(assetId)
+  await assertText(minBalance)
 }
 
 const createAsset = async (): Promise<void> => {
   await openModal()
 
   fillFirstStep()
+  clickButton('Next')
+  await fillSecondStep()
   clickButton('Next')
 
   clickButton('Confirm')

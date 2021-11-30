@@ -8,7 +8,7 @@ export const aliceAccountId = createType('AccountId', aliceAccount.address)
 export const bobAccountId = createType('AccountId', bobAccount.address)
 export const charlieAccountId = createType('AccountId', charlieAccount.address)
 
-export const mockAccounts = [aliceAccount, bobAccount]
+export const mockAccounts = [aliceAccount, bobAccount, charlieAccount]
 
 export const shortenedBobAddress = '5FHneW...M694ty'
 export const shortenedAliceAddress = '5Grwva...GKutQY'

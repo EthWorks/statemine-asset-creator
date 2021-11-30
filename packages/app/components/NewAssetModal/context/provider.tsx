@@ -1,10 +1,18 @@
-import React, { useState } from 'react'
 
-import { Chains, useAssetsConstants } from 'use-substrate'
+import type { Account } from 'use-substrate'
+
+import React, { useMemo, useState } from 'react'
+
+import { Chains, useAccounts, useActiveAccount, useAssetsConstants } from 'use-substrate'
 
 import { NewAssetModalContext } from './context'
 
 export const NewAssetModalProvider: React.FC = ({ children }) => {
+  const { activeAccount } = useActiveAccount(Chains.Statemine)
+  const accounts = useAccounts()
+  const initialAdminAccount = useMemo(() => accounts.allAccounts.find((account) => account.address === activeAccount?.toString()),
+    [accounts.allAccounts, activeAccount])
+  const [admin, setAdmin] = useState<Account | undefined>(initialAdminAccount)
   const [assetName, setAssetName] = useState<string>('')
   const [assetNameError, setAssetNameError] = useState<string>()
   const [assetId, setAssetId] = useState<string>('')
@@ -16,6 +24,8 @@ export const NewAssetModalProvider: React.FC = ({ children }) => {
   const { stringLimit } = useAssetsConstants(Chains.Statemine)
 
   return <NewAssetModalContext.Provider value={{
+    admin,
+    setAdmin,
     assetName,
     setAssetName,
     assetNameError,
