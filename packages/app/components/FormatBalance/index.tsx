@@ -6,7 +6,7 @@ import { Text } from '../typography'
 import { formatBalance } from './utils'
 
 interface BalanceValueProps {
-  className: string,
+  className?: string,
   chainDecimals: number,
   token: string,
   value: BN | undefined
