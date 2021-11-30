@@ -57,5 +57,7 @@
     "@testing-library/dom": "7.21.4",
     "webpack": "4.46.0",
     "babel-loader": "^8.2.2"
+    "@storybook/manager-webpack5": "~6.4.1",
+    "@storybook/builder-webpack5": "~6.4.1"
   }
 }
