@@ -7,7 +7,7 @@ import { ThemeProvider } from 'styled-components'
 import { AccountSelect } from '../components'
 import { theme } from '../styles/styleVariables'
 import { assertText, selectAccountFromDropdown } from './helpers'
-import { mockAccounts, mockUseAccounts, mockUseBalances, mockUseSubstrate } from './mocks'
+import { charlieAccount, mockAccounts, mockUseAccounts, mockUseBalances, mockUseSubstrate } from './mocks'
 
 jest.mock('use-substrate/dist/src/hooks', () => ({
   useAccounts: () => mockUseAccounts,
@@ -76,6 +76,7 @@ describe('AccountSelect component', () => {
     beforeEach(() => {
       render(<AccountSelectTestComponent withAccountInput/>)
     })
+
     it('displays "Select account or paste account address" when no current account was set', async () => {
       await assertText('Select account or paste account address')
     })
@@ -86,6 +87,22 @@ describe('AccountSelect component', () => {
 
       const input = await screen.findByTestId('open-account-select-input')
       expect(input).toHaveAttribute('placeholder', 'Select account or paste account address')
+    })
+
+    it('closes list on enter and sets account id', async () => {
+      const openDropdownButton = await screen.findByTestId('open-account-select')
+      fireEvent.click(openDropdownButton)
+
+      const input = await screen.findByTestId('open-account-select-input')
+      const dropdownMenu = await screen.findByRole('list')
+
+      fireEvent.change(input, { target: { value: charlieAccount.address } })
+      fireEvent.keyDown(input, { key: 'Enter', code: 13 })
+
+      const openDropdownButton2 = await screen.findByTestId('open-account-select')
+
+      await within(openDropdownButton2).findByText(charlieAccount.address)
+      expect(dropdownMenu).not.toBeInTheDocument()
     })
   })
 })

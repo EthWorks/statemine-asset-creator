@@ -1,5 +1,5 @@
 import * as Popover from '@radix-ui/react-popover'
-import { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import { Account } from 'use-substrate'
@@ -23,9 +23,15 @@ export interface Props extends InputInfoProps {
 }
 
 export function AccountSelect({ accounts, currentAccount, setCurrentAccount, label, withFreeBalance = false, onClose, withAccountInput, ...inputInfoProps }: Props): JSX.Element {
-  const [accountId, setAccountId] = useState<string>()
+  const [accountId, setAccountId] = useState<string>('')
   const [isOpen, toggleOpen, setOpen] = useToggle()
   const anchorRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (accountId.length) {
+      setCurrentAccount({ address: accountId, name: undefined })
+    }
+  }, [accountId, setCurrentAccount])
 
   const _onInteractOutside = (e: Event): void => {
     if (anchorRef.current && anchorRef.current.contains(e.target as Node)) {
@@ -36,6 +42,12 @@ export function AccountSelect({ accounts, currentAccount, setCurrentAccount, lab
   const _onItemClick = (account: Account): void => {
     setCurrentAccount(account)
     setOpen(false)
+  }
+
+  const _handleEnterDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+    if (e.key === 'Enter' && isOpen) {
+      toggleOpen()
+    }
   }
 
   return (
@@ -53,6 +65,7 @@ export function AccountSelect({ accounts, currentAccount, setCurrentAccount, lab
                 placeholder='Select account or paste account address'
                 onChange={setAccountId}
                 value={accountId}
+                onKeyDown={(e) => _handleEnterDown(e)}
               />
             )
             : (
