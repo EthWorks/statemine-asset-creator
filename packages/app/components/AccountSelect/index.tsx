@@ -45,7 +45,7 @@ export function AccountSelect({ accounts, currentAccount, setCurrentAccount, lab
           {label && <StyledText size='SM'>{label}</StyledText>}
           {onClose && <StyledCloseButton data-testid='close-account-select' onClick={onClose}/>}
         </Label>
-        <Popover.Anchor ref={anchorRef}>
+        <StyledAnchor ref={anchorRef}>
           {isOpen && withAccountInput
             ? (
               <StyledTextInput data-testid='open-account-select-input' onChange={setAccountId} value={accountId}/>
@@ -60,7 +60,7 @@ export function AccountSelect({ accounts, currentAccount, setCurrentAccount, lab
               </StyledButton>
             )
           }
-        </Popover.Anchor>
+        </StyledAnchor>
         <InputInfo {...inputInfoProps}/>
       </AccountSelectWrapper>
 
@@ -193,4 +193,8 @@ const StyledTextInput = styled(TextInput)`
       border: none;
     }
   }
+`
+
+const StyledAnchor = styled(Popover.Anchor)`
+  max-width: 636px;
 `

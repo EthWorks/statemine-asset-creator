@@ -24,10 +24,20 @@ Base.args = {
   setCurrentAccount: () => { /**/ }
 }
 
-export const Secondary = Template.bind({})
-Secondary.args = {
+export const withFreeBalance = Template.bind({})
+withFreeBalance.args = {
   accounts: mockAccounts,
   currentAccount: mockAccounts[0],
   withFreeBalance: true,
+  withAccountInput: false,
+  setCurrentAccount: () => { /**/ }
+}
+
+export const withAccountInput = Template.bind({})
+withAccountInput.args = {
+  accounts: mockAccounts,
+  currentAccount: mockAccounts[0],
+  withFreeBalance: false,
+  withAccountInput: true,
   setCurrentAccount: () => { /**/ }
 }
