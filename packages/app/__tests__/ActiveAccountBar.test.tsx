@@ -5,7 +5,7 @@ import Home from '../pages'
 import { mockUseBestNumber } from './mocks/mockUseBestNumber'
 import { renderWithTheme, setLocalStorage } from './helpers'
 import {
-  bobAccount,
+  bobAddressForActiveAccountBar,
   mockUseAccounts,
   mockUseActiveAccount,
   mockUseActiveAccounts,
@@ -39,13 +39,15 @@ describe('Active account bar', () => {
     const kusamaActiveAccount = activeAccountBar.children[0] as HTMLElement
     const statemineActiveAccount = activeAccountBar.children[1] as HTMLElement
 
-    await within(kusamaActiveAccount).findByText(bobAccount.address)
-    expect(kusamaActiveAccount).toHaveTextContent('Kusama6,000.0000KSM')
-    expect(statemineActiveAccount).toHaveTextContent('Statemine6,000.0000KSM')
+    await within(kusamaActiveAccount).findByText(bobAddressForActiveAccountBar)
+    expect(kusamaActiveAccount).toHaveTextContent('kusama,6,000.0000KSM')
+    expect(statemineActiveAccount).toHaveTextContent('statemine,6,000.0000KSM')
   })
 
   it('opens select account modal', async () => {
     userEvent.click(activeAccountBar)
+    const openSelectAccountModalButton = await within(activeAccountBar).findByRole('button')
+    userEvent.click(openSelectAccountModalButton)
 
     const modal = await screen.findByTestId('modal')
     await within(modal).findByText('Connect accounts')

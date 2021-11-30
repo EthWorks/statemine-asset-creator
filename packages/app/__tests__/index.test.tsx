@@ -10,6 +10,7 @@ import { mockUseBestNumber } from './mocks/mockUseBestNumber'
 import { assertText, clickButton, renderWithTheme, setLocalStorage } from './helpers'
 import {
   bobAccountId,
+  bobAddressForActiveAccountBar,
   mockUseAccounts,
   mockUseActiveAccount,
   mockUseActiveAccounts,
@@ -55,7 +56,7 @@ describe('Home', () => {
     renderWithTheme(<Home/>)
 
     const activeAccountContainer = await screen.findByTestId('active-account-bar')
-    expect(activeAccountContainer).toHaveTextContent(shortenedBobAddress)
+    expect(activeAccountContainer).toHaveTextContent(bobAddressForActiveAccountBar)
     expect(activeAccountContainer).toHaveTextContent('kusama,6,000.0000KSM')
   })
 
