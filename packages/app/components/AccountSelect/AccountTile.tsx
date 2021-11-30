@@ -1,4 +1,4 @@
-import BaseIdentityIcon from '@polkadot/react-identicon'
+import dynamic from 'next/dynamic'
 import type { Account } from 'use-substrate'
 
 import { useMemo } from 'react'
@@ -16,6 +16,11 @@ interface Props {
 
 const TOKEN = 'KSM'
 const DECIMALS = 12
+
+const BaseIdentityIcon = dynamic(
+  () => import('@polkadot/react-identicon'),
+  { ssr: false }
+)
 
 export function AccountTile({ account, withFreeBalance }: Props): JSX.Element {
   const balance = useBalances(account.address, Chains.Kusama)
