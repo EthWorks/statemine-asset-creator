@@ -1,6 +1,6 @@
-import dynamic from 'next/dynamic'
 import type { Account } from 'use-substrate'
 
+import dynamic from 'next/dynamic'
 import { useMemo } from 'react'
 import styled from 'styled-components'
 

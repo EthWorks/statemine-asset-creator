@@ -3,10 +3,10 @@
 
   "rushVersion": "5.56.0",
 
-  "pnpmVersion": "6.21.0",
+  "pnpmVersion": "6.23.2",
 
   "pnpmOptions": {
-    strictPeerDependencies: false
+    strictPeerDependencies: true
   },
 
   "nodeSupportedVersionRange": ">=14.17.0",
