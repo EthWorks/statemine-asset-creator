@@ -7,7 +7,15 @@ import { AccountSelect, Props } from './index'
 
 const Default = {
   title: 'Components/AccountSelect',
-  component: AccountSelect
+  component: AccountSelect,
+  parameters: {
+    backgrounds: {
+      default: 'trueGray',
+      values: [
+        { name: 'trueGray', value: 'rgba(0,0,0,0.5)' }
+      ]
+    }
+  }
 }
 
 export default Default
@@ -20,12 +28,19 @@ const Template: Story<Props> = (args) =>
 export const Base = Template.bind({})
 Base.args = {
   accounts: mockAccounts,
+  currentAccount: undefined,
+  setCurrentAccount: () => { /**/ }
+}
+
+export const BaseWithCurrentAccount = Template.bind({})
+BaseWithCurrentAccount.args = {
+  accounts: mockAccounts,
   currentAccount: mockAccounts[0],
   setCurrentAccount: () => { /**/ }
 }
 
-export const withFreeBalance = Template.bind({})
-withFreeBalance.args = {
+export const withFreeBalanceAndCurrentAccount = Template.bind({})
+withFreeBalanceAndCurrentAccount.args = {
   accounts: mockAccounts,
   currentAccount: mockAccounts[0],
   withFreeBalance: true,
@@ -35,6 +50,15 @@ withFreeBalance.args = {
 
 export const withAccountInput = Template.bind({})
 withAccountInput.args = {
+  accounts: mockAccounts,
+  currentAccount: undefined,
+  withFreeBalance: false,
+  withAccountInput: true,
+  setCurrentAccount: () => { /**/ }
+}
+
+export const withAccountInputAndCurrentAccount = Template.bind({})
+withAccountInputAndCurrentAccount.args = {
   accounts: mockAccounts,
   currentAccount: mockAccounts[0],
   withFreeBalance: false,

@@ -11,9 +11,11 @@ export function MockedApiProvider(props: { children: React.ReactNode }): JSX.Ele
       derive: {
         balances: {
           all: () => from([{
-            availableBalance: new BN('100'),
-            freeBalance: new BN('2'),
-            reservedBalance: new BN('2')
+            availableBalance: new BN(4000000000000000),
+            freeBalance: new BN(6000000000000000),
+            lockedBalance: 300,
+            reservedBalance: new BN(100000000000000),
+            accountNonce: 1
           }])
         }
       }

@@ -48,7 +48,12 @@ export function AccountSelect({ accounts, currentAccount, setCurrentAccount, lab
         <StyledAnchor ref={anchorRef}>
           {isOpen && withAccountInput
             ? (
-              <StyledTextInput data-testid='open-account-select-input' onChange={setAccountId} value={accountId}/>
+              <StyledTextInput
+                data-testid='open-account-select-input'
+                placeholder='Select account or paste account address'
+                onChange={setAccountId}
+                value={accountId}
+              />
             )
             : (
               <StyledButton data-testid='open-account-select' onClick={toggleOpen}>
@@ -97,6 +102,7 @@ const StyledButton = styled(Popover.Trigger)`
   border-radius: ${({ theme }) => theme.borderRadius.s};
   background-color: ${({ theme }) => theme.colors.gray[800]};
   color: ${({ theme }) => theme.colors.gray[400]};
+  cursor: pointer;
   
   &[data-state=open] {
     ${StyledArrow} {
@@ -184,13 +190,22 @@ const StyledTextInput = styled(TextInput)`
   
   input {
     width: 100%;
-    padding: 24px 16px 16px;
+    padding: 24px 16px 14px;
     border: none;
 
     &:focus,
     &:focus-visible {
       outline: none;
       border: none;
+    }
+
+    ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+      color: ${({ theme }) => theme.colors.white};
+      opacity: 1; /* Firefox */
+    }
+
+    ::-ms-input-placeholder { /* Microsoft Edge */
+      color: ${({ theme }) => theme.colors.white};
     }
   }
 `

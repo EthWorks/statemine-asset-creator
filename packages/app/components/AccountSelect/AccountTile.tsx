@@ -51,7 +51,6 @@ const AccountTileWrapper = styled.div`
   position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-gap: 50px;
   padding: 18px 48px 18px 16px;
 `
 

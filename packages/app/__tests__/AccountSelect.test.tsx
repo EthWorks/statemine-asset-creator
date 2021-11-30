@@ -80,11 +80,12 @@ describe('AccountSelect component', () => {
       await assertText('Select account or paste account address')
     })
 
-    it('select toggle displays account id input', async () => {
+    it('select toggle displays account id input with placeholder', async () => {
       const openDropdownButton = await screen.findByTestId('open-account-select')
       fireEvent.click(openDropdownButton)
 
-      await screen.findByTestId('open-account-select-input')
+      const input = await screen.findByTestId('open-account-select-input')
+      expect(input).toHaveAttribute('placeholder', 'Select account or paste account address')
     })
   })
 })
