@@ -1,7 +1,7 @@
+import type { Account } from 'use-substrate'
+
 import BN from 'bn.js'
 import { createContext } from 'react'
-
-import { Account } from 'use-substrate'
 
 type stringSetter = (arg: string) => void;
 type stringOrUndefinedSetter = (arg: string | undefined) => void;
