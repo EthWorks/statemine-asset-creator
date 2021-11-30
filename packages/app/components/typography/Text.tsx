@@ -30,8 +30,8 @@ export const Text = styled.p<TextProps>`
   ${({ italic }) => italic && TextItalicStyle};
   ${({ underline }) => underline && TextUnderlineStyle};
   color: ${({ theme, color }) => color ? theme.colors[color] : theme.colors.gray[400]};
-  font-size: ${({ size }) => size ? sizes[size].fontSize : sizes['Base'].fontSize};
-  line-height: ${({ size }) => size ? sizes[size].lineHeight : sizes['Base'].lineHeight};
+  font-size: ${({ size }) => size ? sizes[size].fontSize : sizes.Base.fontSize};
+  line-height: ${({ size }) => size ? sizes[size].lineHeight : sizes.Base.lineHeight};
 `
 
 interface TextProperties {
@@ -40,11 +40,11 @@ interface TextProperties {
 }
 
 const sizes: Record<TextSize, TextProperties> = {
-  XXS:  {
+  XXS: {
     fontSize: '10px',
     lineHeight: '16px'
   },
-  XS:  {
+  XS: {
     fontSize: '12px',
     lineHeight: '16px'
   },
@@ -52,19 +52,19 @@ const sizes: Record<TextSize, TextProperties> = {
     fontSize: '14px',
     lineHeight: '20px'
   },
-  Base:{
+  Base: {
     fontSize: '16px',
     lineHeight: '24px'
   },
-  Lg : {
+  Lg: {
     fontSize: '18px',
     lineHeight: '28px'
   },
-  XL :{
+  XL: {
     fontSize: '20px',
     lineHeight: '32px'
   },
-  '2XL' : {
+  '2XL': {
     fontSize: '24px',
     lineHeight: '32px'
   },

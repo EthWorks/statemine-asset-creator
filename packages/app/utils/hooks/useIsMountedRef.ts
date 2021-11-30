@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 
 export type MountedRef = React.MutableRefObject<boolean>;
 
-export function useIsMountedRef (): MountedRef {
+export function useIsMountedRef(): MountedRef {
   const isMounted = useRef(false)
 
   useEffect((): () => void => {

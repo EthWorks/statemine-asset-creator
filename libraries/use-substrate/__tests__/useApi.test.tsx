@@ -24,6 +24,6 @@ describe('useApi', () => {
       </MockedApiProvider>
     )
 
-    return renderHook((chain ) => useApi(chain), { wrapper, initialProps: chain })
+    return renderHook((chain) => useApi(chain), { wrapper, initialProps: chain })
   }
 })

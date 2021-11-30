@@ -42,15 +42,16 @@ export const Modal = ({ children, className, padding, size, title, titleCenterPo
 }
 
 const ModalView = styled.div`
-  position: fixed;
+  overflow-y: auto;
+  position: absolute;
   top: 0;
   left: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100vw;
-  height: 100vh;
-  padding-top: 100px;
+  width: 100%;
+  min-height: 100%;
+  padding: 100px 0 50px;
   backdrop-filter: blur(1.5px);
   z-index: 99;
 `
@@ -59,8 +60,8 @@ const ModalBg = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background-color: ${({ theme }) => theme.colors.gray[800]};
   opacity: .6;
 `

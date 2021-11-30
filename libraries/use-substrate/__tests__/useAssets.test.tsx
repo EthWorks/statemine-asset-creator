@@ -83,7 +83,7 @@ const customApi: UseApi = {
       assets: {
         ...mockedKusamaApi.api!.query.assets,
         metadata: {
-          multi:  () => from<ObservableInput<PalletAssetsAssetMetadata[]>>([
+          multi: () => from<ObservableInput<PalletAssetsAssetMetadata[]>>([
             [
               createType('AssetMetadata', { decimals: 8, symbol: 'TT', name: 'TestToken' }),
               createType('AssetMetadata', { decimals: 10, symbol: 'TTx', name: 'TestTokenExtra' }),
@@ -93,5 +93,5 @@ const customApi: UseApi = {
         }
       }
     }
-  } as unknown as ApiRx,
+  } as unknown as ApiRx
 }

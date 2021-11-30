@@ -15,12 +15,12 @@ describe('Initialize api for chains', () => {
     const config: Config = { chains: [{ name: Chains.Kusama, url: KUSAMA_ARCHIVE_NODE_URL }], appName }
     const networkState = initializeApi(config.chains)
     expect(networkState).toEqual({
-      'kusama': DEFAULT_API_STATE
+      kusama: DEFAULT_API_STATE
     })
   })
 
   it('multiple networks', () => {
-    const config: Config = { 
+    const config: Config = {
       chains: [
         { name: Chains.Kusama, url: KUSAMA_ARCHIVE_NODE_URL },
         { name: Chains.Statemine, url: STATEMINE_ARCHIVE_NODE_URL }
@@ -30,8 +30,8 @@ describe('Initialize api for chains', () => {
 
     const networkState = initializeApi(config.chains)
     expect(networkState).toEqual({
-      'kusama': DEFAULT_API_STATE,
-      'statemine': DEFAULT_API_STATE
+      kusama: DEFAULT_API_STATE,
+      statemine: DEFAULT_API_STATE
     })
   })
 })

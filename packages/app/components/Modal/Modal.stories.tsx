@@ -14,11 +14,11 @@ const Default = {
   argTypes: {
     padding: {
       control: { type: 'select' },
-      options: ['s', 'm', 'l'],
+      options: ['s', 'm', 'l']
     },
     size: {
       control: { type: 'select' },
-      options: ['m', 'l'],
+      options: ['m', 'l']
     },
     headerOverModal: {
       options: Object.keys(headers),
@@ -28,9 +28,9 @@ const Default = {
         labels: {
           defaultModalHeader: 'default header',
           empty: ''
-        },
-      },
-    },
+        }
+      }
+    }
   }
 }
 
@@ -43,7 +43,7 @@ const Template: Story<ModalProps> = (args) =>
 
 export const Base = Template.bind({})
 Base.args = {
-  padding:'s',
+  padding: 's',
   size: 'm',
   title: 'Index title',
   titleCenterPosition: false,

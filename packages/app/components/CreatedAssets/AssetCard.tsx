@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import { drawColor, useOutsideClick, useToggle } from '../../utils'
 import { ButtonSquare } from '../button/Button'
 import { Card } from '../Card'
-import FormatBalance from '../FormatBalance'
+import { FormatBalance } from '../FormatBalance'
 import { Text } from '../typography'
 import { Account } from './Account'
 import { AssetImage } from './AssetImage'
@@ -24,9 +24,9 @@ export const AssetCard: FC<Props> = ({ asset }) => {
   const [isOpen, toggleOpen, setIsOpen] = useToggle()
   const cardMenuContainerRef = useRef(null)
   useOutsideClick(cardMenuContainerRef, () => setIsOpen(false))
-  
+
   const color = useMemo(() => drawColor(), [])
-  
+
   return (
     <StyledCard padding='s' data-testid={`asset-card-${id.toNumber()}`}>
       <CardHeader>

@@ -37,7 +37,7 @@ export const mockUseAssets: UseAssets = [{
   approvals: new BN('1'),
   deposit: new BN('1'),
   isFrozen: false,
-  isSufficient  : true,
+  isSufficient: true,
   minBalance: new BN('1'),
   sufficients: new BN('1')
 }]

@@ -33,9 +33,11 @@ export function useAssets(chain: Chains, options?: UseAssetsOptions): UseAssets 
 }
 
 function convertAssets(assets: FetchedAssets): AssetInfoWithId[] {
-  return assets.map( asset => {
-    const { owner, issuer, freezer, admin, isSufficient, isFrozen, supply, deposit,
-      minBalance, accounts, sufficients, approvals } = asset[1].unwrap()
+  return assets.map(asset => {
+    const {
+      owner, issuer, freezer, admin, isSufficient, isFrozen, supply, deposit,
+      minBalance, accounts, sufficients, approvals
+    } = asset[1].unwrap()
 
     return {
       id: extractAssetId(asset[0]),
@@ -50,12 +52,12 @@ function convertAssets(assets: FetchedAssets): AssetInfoWithId[] {
       minBalance: minBalance.toBn(),
       accounts: accounts.toBn(),
       sufficients: sufficients.toBn(),
-      approvals: approvals.toBn(),
+      approvals: approvals.toBn()
     }
   })
 }
 
-function extractAssetId (key: StorageKey<[AssetId]>): AssetId {
+function extractAssetId(key: StorageKey<[AssetId]>): AssetId {
   return key.args[0]
 }
 
@@ -67,7 +69,7 @@ function getAssetsIds(ownersAssets: AssetInfoWithId[] | undefined): AssetId[] | 
   return ownersAssets?.map(asset => asset.id)
 }
 
-function convertAssetMetadata (fetchedMeta: PalletAssetsAssetMetadata): AssetMeta {
+function convertAssetMetadata(fetchedMeta: PalletAssetsAssetMetadata): AssetMeta {
   return {
     deposit: fetchedMeta.deposit.toBn(),
     isFrozen: fetchedMeta.isFrozen.toHuman(),

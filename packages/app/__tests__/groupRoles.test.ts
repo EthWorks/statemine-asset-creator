@@ -6,7 +6,7 @@ describe('groupRoles', () => {
     const admins = {
       admin: bobAccountId,
       issuer: bobAccountId,
-      freezer: aliceAccountId,
+      freezer: aliceAccountId
     }
 
     const result = groupRoles(admins)
@@ -18,12 +18,12 @@ describe('groupRoles', () => {
     const admins = {
       admin: bobAccountId,
       issuer: charlieAccountId,
-      freezer: aliceAccountId,
+      freezer: aliceAccountId
     }
 
     const result = groupRoles(admins)
-    expect(result[0]).toEqual([ bobAccountId, ['admin']])
+    expect(result[0]).toEqual([bobAccountId, ['admin']])
     expect(result[1]).toEqual([charlieAccountId, ['issuer']])
-    expect(result[2]).toEqual([ aliceAccountId, ['freezer']])
+    expect(result[2]).toEqual([aliceAccountId, ['freezer']])
   })
 })

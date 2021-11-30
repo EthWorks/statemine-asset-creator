@@ -1,4 +1,4 @@
-import type { APIConnecting,UseApi } from './types'
+import type { APIConnecting, UseApi } from './types'
 
 import { createContext } from 'react'
 
@@ -11,6 +11,6 @@ const apiInitialState: APIConnecting = {
 }
 
 export const ApiContext = createContext<Partial<Record<Chains, UseApi>>>({
-  'kusama': apiInitialState,
-  'statemine': apiInitialState
+  kusama: apiInitialState,
+  statemine: apiInitialState
 })

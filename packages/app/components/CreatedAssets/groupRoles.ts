@@ -4,7 +4,7 @@ import type { Role } from './types'
 export function groupRoles(admins: Record<Role, AccountId>): [AccountId, Role[]][] {
   const groupedRoles: [AccountId, Role[]][] = []
 
-  ;(Object.entries(admins) as [Role, AccountId][]).forEach(([role,account]) => {
+  ;(Object.entries(admins) as [Role, AccountId][]).forEach(([role, account]) => {
     const accountIndex = findAccountsIndex(groupedRoles, account)
 
     if (rolesNotFound(accountIndex)) {

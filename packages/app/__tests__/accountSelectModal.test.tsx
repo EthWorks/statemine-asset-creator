@@ -37,7 +37,7 @@ jest.mock('use-substrate/dist/src/hooks', () => ({
   useActiveAccount: () => ({
     ...mockUseActiveAccount,
     activeAccount: undefined
-  }),
+  })
 }))
 
 describe('Account select modal', () => {

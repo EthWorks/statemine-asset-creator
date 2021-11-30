@@ -12,7 +12,7 @@ export interface AccountsContextProviderProps {
   children: ReactNode
 }
 
-const emptyAccounts: UseAccounts = { hasAccounts: false, allAccounts: [], web3Enable: async () => {/**/}, extensionStatus: 'Loading' }
+const emptyAccounts: UseAccounts = { hasAccounts: false, allAccounts: [], web3Enable: async () => { /**/ }, extensionStatus: 'Loading' }
 
 export const AccountsContextProvider = ({ appName, children }: AccountsContextProviderProps): JSX.Element => {
   const [extensionStatus, setExtensionStatus] = useState<ExtensionStatus>('Loading')

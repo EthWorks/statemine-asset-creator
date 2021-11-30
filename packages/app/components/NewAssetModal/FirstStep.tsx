@@ -16,9 +16,11 @@ import { useNewAssetModal } from './context/useNewAssetModal'
 import { ModalFooter } from './ModalFooter'
 
 export function FirstStep({ onNext }: ModalStep): JSX.Element {
-  const { assetName, setAssetName, assetNameError, setAssetNameError, assetId, assetIdError, setAssetIdError, assetSymbol,
+  const {
+    assetName, setAssetName, assetNameError, setAssetNameError, assetId, assetIdError, setAssetIdError, assetSymbol,
     assetSymbolError, setAssetSymbolError, setAssetId, setAssetSymbol, setAssetDecimals, minBalance, setMinBalance,
-    assetDecimals, stringLimit } = useNewAssetModal()
+    assetDecimals, stringLimit
+  } = useNewAssetModal()
   const existingAssets = useAssets(Chains.Statemine)
 
   const clearErrors = useCallback(() => {
@@ -34,7 +36,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
   const isAssetIdUnique = useCallback(() => !existingAssets?.find(({ id }: Asset) => id.toString() === assetId), [existingAssets, assetId])
 
   useEffect(() => {
-    if(!stringLimit) {
+    if (!stringLimit) {
       return
     }
 
@@ -42,22 +44,22 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
 
     const STRING_LIMIT_EXCEEDED_ERROR = `Maximum length of ${stringLimit} characters exceeded`
 
-    if(assetName.length > stringLimit.toNumber()) {
+    if (assetName.length > stringLimit.toNumber()) {
       setAssetNameError(STRING_LIMIT_EXCEEDED_ERROR)
     }
 
-    if(assetSymbol.length > stringLimit.toNumber()) {
+    if (assetSymbol.length > stringLimit.toNumber()) {
       setAssetSymbolError(STRING_LIMIT_EXCEEDED_ERROR)
     }
 
-    if(assetId && !isAssetIdUnique()) {
+    if (assetId && !isAssetIdUnique()) {
       setAssetIdError('Value cannot match an already-existing asset id.')
     }
   }, [assetId, assetName, assetSymbol, clearErrors, setAssetNameError, setAssetSymbolError, setAssetIdError, stringLimit, isAssetIdUnique])
 
   const _onNext = useCallback((e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if(stringLimit && !assetNameError && !assetSymbolError) {
+    if (stringLimit && !assetNameError && !assetSymbolError) {
       onNext()
     }
   }, [assetNameError, assetSymbolError, onNext, stringLimit])

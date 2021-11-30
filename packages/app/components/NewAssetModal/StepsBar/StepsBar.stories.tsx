@@ -9,18 +9,18 @@ const Default = {
   component: StepsBar,
   argTypes: {
     optional: {
-      control: { type: 'boolean' },
+      control: { type: 'boolean' }
     },
     activeStep: {
       control: { type: 'select' },
-      options: [0 , 1, 2, 3]
+      options: [0, 1, 2, 3]
     }
   }
 }
 
 export default Default
 
-const Template: Story<StepsBarProps> = (args ) =>
+const Template: Story<StepsBarProps> = (args) =>
   <StepsBar {...args} />
 
 export const Base = Template.bind({})

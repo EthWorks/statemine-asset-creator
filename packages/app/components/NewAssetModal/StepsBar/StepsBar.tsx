@@ -9,7 +9,7 @@ export interface StepsBarProps {
   activeStep: number
 }
 
-export const StepsBar = ({ optional, activeStep }: StepsBarProps ): JSX.Element => (
+export const StepsBar = ({ optional, activeStep }: StepsBarProps): JSX.Element => (
   <StyledStepBar>
     {NAVIGATION_STEPS.map((step, index) => (
       <Step

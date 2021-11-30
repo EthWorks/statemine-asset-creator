@@ -4,5 +4,5 @@ import { createContext } from 'react'
 
 export const ActiveAccountsContext = createContext<UseActiveAccounts>({
   activeAccounts: {},
-  setActiveAccounts: () => {/**/}
+  setActiveAccounts: () => { /**/ }
 })

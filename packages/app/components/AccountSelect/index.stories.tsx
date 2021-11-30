@@ -1,13 +1,13 @@
 import { Story } from '@storybook/react'
 import React from 'react'
 
-import { mockAccounts } from '../../__tests__/mocks/mockAccounts'
+import { mockAccounts } from '../../__tests__/mocks'
 import { MockedApiProvider } from '../../storybookHelpers/MockedApiProvider'
 import { AccountSelect, Props } from './index'
 
 const Default = {
   title: 'Components/AccountSelect',
-  component: AccountSelect,
+  component: AccountSelect
 }
 
 export default Default
@@ -21,7 +21,7 @@ export const Base = Template.bind({})
 Base.args = {
   accounts: mockAccounts,
   currentAccount: mockAccounts[0],
-  setCurrentAccount: () => {/**/}
+  setCurrentAccount: () => { /**/ }
 }
 
 export const Secondary = Template.bind({})
@@ -29,5 +29,5 @@ Secondary.args = {
   accounts: mockAccounts,
   currentAccount: mockAccounts[0],
   withFreeBalance: true,
-  setCurrentAccount: () => {/**/}
+  setCurrentAccount: () => { /**/ }
 }

@@ -39,7 +39,7 @@ const Home: NextPage = () => {
   }
 
   async function enableWeb3(): Promise<boolean | void> {
-    if(extensionActivated()) {
+    if (extensionActivated()) {
       await web3Enable()
     }
   }
@@ -91,8 +91,8 @@ const Home: NextPage = () => {
         </PageBox>
 
         <NewAssetModal isOpen={isNewAssetModalOpen} closeModal={toggleNewAssetModalOpen}/>
-        <ConnectWalletModal 
-          isOpen={isConnectWalletModalOpen} 
+        <ConnectWalletModal
+          isOpen={isConnectWalletModalOpen}
           closeModal={toggleConnectWalletModalOpen}
           onExtensionActivated={onExtensionActivated}
         />

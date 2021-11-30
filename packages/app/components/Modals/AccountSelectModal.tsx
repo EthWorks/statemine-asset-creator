@@ -42,17 +42,17 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
     setStatemineAccountInfo(undefined)
     setKusamaAccountInfo(undefined)
 
-    if(!hasStatemineFreeBalance && !isKusamaAccountSelectVisible) {
+    if (!hasStatemineFreeBalance && !isKusamaAccountSelectVisible) {
       setStatemineAccountInfo('This account has insufficient funds, consider adding Kusama account.')
 
       return
     }
 
-    if(isKusamaAccountSelectVisible) {
+    if (isKusamaAccountSelectVisible) {
       setStatemineAccountInfo('Funds will be transferred to this Statemine account from your Kusama account.')
     }
 
-    if(isKusamaAccountSelectVisible && !hasKusamaFreeBalance) {
+    if (isKusamaAccountSelectVisible && !hasKusamaFreeBalance) {
       setKusamaAccountInfo('This account has no funds')
     }
   }, [hasStatemineFreeBalance, isKusamaAccountSelectVisible, hasKusamaFreeBalance, setStatemineAccountInfo, setKusamaAccountInfo])

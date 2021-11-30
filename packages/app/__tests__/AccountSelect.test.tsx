@@ -11,7 +11,7 @@ import { mockAccounts, mockUseAccounts, mockUseBalances, mockUseSubstrate } from
 
 jest.mock('use-substrate/dist/src/hooks', () => ({
   useAccounts: () => mockUseAccounts,
-  useBalances: () => mockUseBalances,
+  useBalances: () => mockUseBalances
 }))
 
 function AccountSelectTestComponent({ withFreeBalance }: { withFreeBalance?: boolean }): JSX.Element {

@@ -6,7 +6,7 @@ import styled from 'styled-components'
 
 import { Chains, useBalances } from 'use-substrate'
 
-import FormatBalance from '../FormatBalance'
+import { FormatBalance } from '../FormatBalance'
 import { Label, Text } from '../typography'
 
 interface Props {
