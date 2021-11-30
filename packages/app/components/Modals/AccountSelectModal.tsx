@@ -9,7 +9,7 @@ import StatemineLogo from '../../assets/img/statemine.svg'
 import { useAccountSelect, useToggle } from '../../utils'
 import { AccountSelect } from '../AccountSelect'
 import { Arrow } from '../icons'
-import { ButtonPrimary, ButtonTertiary, Modal, Text, Title } from '../index'
+import { ButtonPrimary, ButtonTertiary, Loader, Modal, Text, Title } from '../index'
 import { SectionTitle } from '../SectionTitle/SectionTitle'
 
 interface Props {
@@ -71,7 +71,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
     closeModal()
   }
 
-  if (!accounts.allAccounts.length || !statemineAccount) return <>Loading..</>
+  if (!accounts.allAccounts.length || !statemineAccount) return <Loader />
 
   return (
     <Modal

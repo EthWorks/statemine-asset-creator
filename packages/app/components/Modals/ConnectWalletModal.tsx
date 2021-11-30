@@ -6,7 +6,7 @@ import { useAccounts } from 'use-substrate'
 import Logo from '../../assets/img/polkadot.svg'
 import { POLKADOT_EXTENSION_LINK } from '../../utils'
 import { ArrowLarge } from '../icons/ArrowLarge'
-import { Link, Modal, Text } from '../index'
+import { Link, Loader, Modal, Text } from '../index'
 
 interface Props {
   closeModal: () => void
@@ -39,7 +39,7 @@ export function ConnectWalletModal({ isOpen, closeModal, onExtensionActivated }:
       onClose={closeModal}
     >
       {extensionStatus === 'Loading'
-        ? <Text color='white'>Loading...</Text>
+        ? <Loader />
         : (
           <>
             <ConnectButton onClick={_onClick}>
