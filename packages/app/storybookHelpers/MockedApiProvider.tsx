@@ -1,3 +1,4 @@
+import BN from 'bn.js'
 import React from 'react'
 import { from } from 'rxjs'
 
@@ -10,8 +11,9 @@ export function MockedApiProvider(props: { children: React.ReactNode }): JSX.Ele
       derive: {
         balances: {
           all: () => from([{
-            availableBalance: '100',
-            freeBalance: '2'
+            availableBalance: new BN('100'),
+            freeBalance: new BN('2'),
+            reservedBalance: new BN('2')
           }])
         }
       }

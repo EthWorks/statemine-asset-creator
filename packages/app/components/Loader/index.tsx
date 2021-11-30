@@ -1,16 +1,16 @@
 import Image from 'next/image'
 import styled from 'styled-components'
 
-import loaderIcon from '../assets/loader.svg'
+import loaderIcon from '../../assets/loader.svg'
 
-interface LoaderProps {
+export interface LoaderProps {
   fullPage?: boolean
 }
 
 export const Loader = ({ fullPage }: LoaderProps): JSX.Element => (
   <LoaderWrapper fullPage={fullPage}>
     <LoaderBg />
-    <Image src={loaderIcon} alt='' />
+    <Image src={loaderIcon} alt='' width='200' height='200' />
   </LoaderWrapper>
 )
 
