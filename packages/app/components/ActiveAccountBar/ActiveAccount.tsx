@@ -28,14 +28,14 @@ export const ActiveAccount: FC<ActiveAccountProps> = ({ chain, logo }) => {
           {logo && <Image src={logo} alt={chain}/>}
         </LogoWrapper>
         <div>
-          <ActiveAccountText size='XS'>
-            {chain},
-            <FormatBalance token={'KSM'} chainDecimals={12} value={chainFreeBalance}/>
-          </ActiveAccountText>
-          <ActiveAccountText size='XXS'>
-            Current block
+          <InfoWrapper>
+            <ActiveAccountText size='XS'>{chain},</ActiveAccountText>
+            <StyledFormatBalance token={'KSM'} chainDecimals={12} value={chainFreeBalance}/>
+          </InfoWrapper>
+          <InfoWrapper>
+            <ActiveAccountText size='XXS'>Current block</ActiveAccountText>
             <FormatBlockNumber value={chainBlockNumber}/>
-          </ActiveAccountText>
+          </InfoWrapper>
         </div>
       </ActiveAccountContent>
       <AddressWrapper>
@@ -89,10 +89,7 @@ const ActiveAccountText = styled(Text)`
   align-items: center;
   white-space: nowrap;
   text-transform: capitalize;
-  
-  p {
-    margin-left: 4px;
-  }
+  margin-right: 4px;
 `
 
 const LogoWrapper = styled.div`
@@ -104,5 +101,15 @@ const LogoWrapper = styled.div`
     width: 100%;
     height: 100%;
     object-fit: contain;
+  }
+`
+
+const InfoWrapper = styled.div`
+  display: flex;
+`
+
+const StyledFormatBalance = styled(FormatBalance)`
+  p {
+    font-size: 12px;
   }
 `
