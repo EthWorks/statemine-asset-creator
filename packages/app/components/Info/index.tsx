@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { InfoIcon } from '../icons/InfoIcon'
 import { Text } from '../typography'
 
-interface InfoProps {
+export interface InfoProps {
   text: string,
   type: 'info' | 'warning'
 }
