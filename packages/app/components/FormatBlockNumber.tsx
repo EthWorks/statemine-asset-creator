@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import type{ BlockNumber } from '@polkadot/types/interfaces'
+import type { BlockNumber } from '@polkadot/types/interfaces'
 
 import { formatValue } from '../formaters/formaters'
 import { Text } from './typography'

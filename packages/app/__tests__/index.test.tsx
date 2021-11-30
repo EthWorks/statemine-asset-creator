@@ -9,9 +9,9 @@ import Home from '../pages/index'
 import { mockUseBestNumber } from './mocks/mockUseBestNumber'
 import { assertText, clickButton, renderWithTheme, setLocalStorage } from './helpers'
 import {
-  bobAccount,
   bobAccountId,
-  mockUseAccounts, mockUseActiveAccount,
+  mockUseAccounts,
+  mockUseActiveAccount,
   mockUseActiveAccounts,
   mockUseApi,
   mockUseAssets,
@@ -55,8 +55,8 @@ describe('Home', () => {
     renderWithTheme(<Home/>)
 
     const activeAccountContainer = await screen.findByTestId('active-account-bar')
-    expect(activeAccountContainer).toHaveTextContent(bobAccount.address)
-    expect(activeAccountContainer).toHaveTextContent('Kusama6,000.0000KSM')
+    expect(activeAccountContainer).toHaveTextContent(shortenedBobAddress)
+    expect(activeAccountContainer).toHaveTextContent('kusama,6,000.0000KSM')
   })
 
   it('opens create asset modal', async () => {
