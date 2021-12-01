@@ -6,10 +6,10 @@ import { Account } from 'use-substrate'
 
 import { useToggle } from '../../utils'
 import { CloseButton } from '../button/CloseButton'
-import { TextInput } from '../FormElements'
 import { InputInfo, InputInfoProps } from '../FormElements/Inputs/InputInfo'
 import { Arrow } from '../icons'
 import { Text } from '../typography'
+import { AccountInput } from './AccountInput'
 import { AccountTile } from './AccountTile'
 
 export interface Props extends InputInfoProps {
@@ -44,12 +44,6 @@ export function AccountSelect({ accounts, currentAccount, setCurrentAccount, lab
     setOpen(false)
   }
 
-  const _handleEnterDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
-    if (e.key === 'Enter' && isOpen) {
-      toggleOpen()
-    }
-  }
-
   return (
     <Popover.Root onOpenChange={setOpen} open={isOpen}>
       <AccountSelectWrapper>
@@ -60,12 +54,11 @@ export function AccountSelect({ accounts, currentAccount, setCurrentAccount, lab
         <StyledAnchor ref={anchorRef}>
           {isOpen && withAccountInput
             ? (
-              <StyledTextInput
-                data-testid='open-account-select-input'
-                placeholder='Select account or paste account address'
+              <AccountInput
                 onChange={setAccountId}
                 value={accountId}
-                onKeyDown={(e) => _handleEnterDown(e)}
+                isOpen={isOpen}
+                toggleOpen={toggleOpen}
               />
             )
             : (
@@ -184,43 +177,6 @@ const AccountSelectWrapper = styled.div`
 const StyledButtonText = styled(Text)`
   padding: 24px 16px 28px;
   text-align: left;
-`
-
-const StyledTextInput = styled(TextInput)`
-  position: relative;
-  max-width: 636px;
-  margin: 0;
-  border: 2px solid transparent;
-  border-radius: ${({ theme }) => theme.borderRadius.s};
-  background-color: ${({ theme }) => theme.colors.gray[800]};
-  color: ${({ theme }) => theme.colors.gray[400]};
-
-  &:focus-within {
-    outline: 1px solid ${({ theme }) => theme.colors.pinkLight};
-    border-color: ${({ theme }) => theme.colors.pinkLight};
-    caret-color: ${({ theme }) => theme.colors.pinkLight};
-  }
-  
-  input {
-    width: 100%;
-    padding: 24px 16px 14px;
-    border: none;
-
-    &:focus,
-    &:focus-visible {
-      outline: none;
-      border: none;
-    }
-
-    ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-      color: ${({ theme }) => theme.colors.white};
-      opacity: 1; /* Firefox */
-    }
-
-    ::-ms-input-placeholder { /* Microsoft Edge */
-      color: ${({ theme }) => theme.colors.white};
-    }
-  }
 `
 
 const StyledAnchor = styled(Popover.Anchor)`
