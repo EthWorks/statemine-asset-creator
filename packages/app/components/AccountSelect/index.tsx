@@ -42,9 +42,18 @@ export function AccountSelect({ accounts, currentAccount, setCurrentAccount, lab
     }
   }, [inputAddress, setCurrentAccount])
 
+  const _toggleOpen = (): void => {
+    if (isOpen && !isAddressValid(inputAddress)) {
+      setInputAddress('')
+    }
+    toggleOpen()
+  }
+
   const _onInteractOutside = (e: Event): void => {
     if (anchorRef.current && anchorRef.current.contains(e.target as Node)) {
       e.preventDefault()
+    } else if (!isAddressValid(inputAddress)) {
+      setInputAddress('')
     }
   }
 
@@ -68,12 +77,12 @@ export function AccountSelect({ accounts, currentAccount, setCurrentAccount, lab
                 onChange={setInputAddress}
                 value={inputAddress}
                 isOpen={isOpen}
-                toggleOpen={toggleOpen}
+                toggleOpen={_toggleOpen}
                 error={inputError}
               />
             )
             : (
-              <StyledButton data-testid='open-account-select' onClick={toggleOpen}>
+              <StyledButton data-testid='open-account-select' onClick={_toggleOpen}>
                 {currentAccount && !isOpen
                   ? <AccountTile withFreeBalance={withFreeBalance} account={currentAccount}/>
                   : <StyledButtonText color='white' size='SM'>{`Select account${withAccountInput ? ' or paste account address' : ''}`}</StyledButtonText>
