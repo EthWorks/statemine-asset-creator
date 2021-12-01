@@ -81,7 +81,7 @@ describe('AccountSelect component', () => {
       await assertText('Select account or paste account address')
     })
 
-    it('select toggle displays account id input with placeholder', async () => {
+    it('select toggle displays an input with placeholder', async () => {
       const openDropdownButton = await screen.findByTestId('open-account-select')
       fireEvent.click(openDropdownButton)
 
@@ -89,20 +89,31 @@ describe('AccountSelect component', () => {
       expect(input).toHaveAttribute('placeholder', 'Select account or paste account address')
     })
 
-    it('closes list on enter and sets account id', async () => {
+    it('closes list on enter', async () => {
+      const openDropdownButton = await screen.findByTestId('open-account-select')
+      fireEvent.click(openDropdownButton)
+
+      const dropdownMenu = await screen.findByRole('list')
+      const input = await screen.findByTestId('open-account-select-input')
+
+      fireEvent.keyDown(input, { key: 'Enter', code: 13 })
+
+      expect(dropdownMenu).not.toBeInTheDocument()
+      expect(input).not.toBeInTheDocument()
+    })
+
+    it('sets account id', async () => {
       const openDropdownButton = await screen.findByTestId('open-account-select')
       fireEvent.click(openDropdownButton)
 
       const input = await screen.findByTestId('open-account-select-input')
-      const dropdownMenu = await screen.findByRole('list')
 
       fireEvent.change(input, { target: { value: charlieAccount.address } })
       fireEvent.keyDown(input, { key: 'Enter', code: 13 })
 
-      const openDropdownButton2 = await screen.findByTestId('open-account-select')
+      const updateOpenDropdownButton = await screen.findByTestId('open-account-select')
 
-      await within(openDropdownButton2).findByText(charlieAccount.address)
-      expect(dropdownMenu).not.toBeInTheDocument()
+      await within(updateOpenDropdownButton).findByText(charlieAccount.address)
     })
   })
 })
