@@ -41,9 +41,8 @@ describe('AccountSelect component', () => {
   it('displays accounts in dropdown', async () => {
     render(<AccountSelectTestComponent/>)
 
-    const openDropdownButton = await screen.findByRole('button')
+    await openDropdown()
 
-    fireEvent.click(openDropdownButton)
     const dropdownMenu = await screen.findByRole('list')
 
     await within(dropdownMenu).findByText('ALICE')
@@ -96,16 +95,14 @@ describe('AccountSelect component', () => {
     })
 
     it('select toggle displays an input with placeholder', async () => {
-      const openDropdownButton = await screen.findByTestId('open-account-select')
-      fireEvent.click(openDropdownButton)
+      await openDropdown()
 
       const input = await screen.findByTestId('open-account-select-input')
       expect(input).toHaveAttribute('placeholder', 'Select account or paste account address')
     })
 
     it('closes list on enter', async () => {
-      const openDropdownButton = await screen.findByTestId('open-account-select')
-      fireEvent.click(openDropdownButton)
+      await openDropdown()
 
       const dropdownMenu = await screen.findByRole('list')
       const input = await screen.findByTestId('open-account-select-input')
@@ -117,17 +114,23 @@ describe('AccountSelect component', () => {
     })
 
     it('sets account id', async () => {
-      const openDropdownButton = await screen.findByTestId('open-account-select')
-      fireEvent.click(openDropdownButton)
+      await openDropdown()
 
       const input = await screen.findByTestId('open-account-select-input')
 
       fireEvent.change(input, { target: { value: charlieAccount.address } })
       fireEvent.keyDown(input, { key: 'Enter', code: 13 })
 
-      const updateOpenDropdownButton = await screen.findByTestId('open-account-select')
+      const updatedOpenDropdownButton = await screen.findByTestId('open-account-select')
 
-      await within(updateOpenDropdownButton).findByText(charlieAccount.address)
+      await within(updatedOpenDropdownButton).findByText(charlieAccount.address)
     })
   })
 })
+
+async function openDropdown() {
+  const openDropdownButton = await screen.findByTestId('open-account-select')
+  fireEvent.click(openDropdownButton)
+
+  return openDropdownButton
+}
