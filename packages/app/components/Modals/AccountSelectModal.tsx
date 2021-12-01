@@ -4,12 +4,12 @@ import styled from 'styled-components'
 
 import { Chains, useAccounts, useActiveAccounts } from 'use-substrate'
 
-import KusamaLogo from '../../assets/img/kusama.png'
+import KusamaLogo from '../../assets/img/kusama.svg'
 import StatemineLogo from '../../assets/img/statemine.svg'
 import { useAccountSelect, useToggle } from '../../utils'
 import { AccountSelect } from '../AccountSelect'
 import { Arrow } from '../icons'
-import { ButtonPrimary, ButtonTertiary, Modal, Text, Title } from '../index'
+import { ButtonPrimary, ButtonTertiary, Loader, Modal, Text, Title } from '../index'
 import { SectionTitle } from '../SectionTitle/SectionTitle'
 
 interface Props {
@@ -71,7 +71,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
     closeModal()
   }
 
-  if (!accounts.allAccounts.length) return <>Loading..</>
+  if (!accounts.allAccounts.length) return <Loader />
 
   return (
     <Modal
