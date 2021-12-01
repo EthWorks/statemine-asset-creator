@@ -36,24 +36,15 @@ const Template: Story<Props> = (args) => {
 export const Base = Template.bind({})
 Base.args = {
   accounts: mockAccounts,
+  currentAccount: undefined
+}
+
+export const withFreeBalance = Template.bind({})
+withFreeBalance.args = {
+  accounts: mockAccounts,
   currentAccount: undefined,
-  setCurrentAccount: () => { /**/ }
-}
-
-export const BaseWithCurrentAccount = Template.bind({})
-BaseWithCurrentAccount.args = {
-  accounts: mockAccounts,
-  currentAccount: mockAccounts[0],
-  setCurrentAccount: () => { /**/ }
-}
-
-export const withFreeBalanceAndCurrentAccount = Template.bind({})
-withFreeBalanceAndCurrentAccount.args = {
-  accounts: mockAccounts,
-  currentAccount: mockAccounts[0],
   withFreeBalance: true,
-  withAccountInput: false,
-  setCurrentAccount: () => { /**/ }
+  withAccountInput: false
 }
 
 export const withAccountInput = Template.bind({})
@@ -61,15 +52,5 @@ withAccountInput.args = {
   accounts: mockAccounts,
   currentAccount: undefined,
   withFreeBalance: false,
-  withAccountInput: true,
-  setCurrentAccount: () => { /**/ }
-}
-
-export const withAccountInputAndCurrentAccount = Template.bind({})
-withAccountInputAndCurrentAccount.args = {
-  accounts: mockAccounts,
-  currentAccount: mockAccounts[0],
-  withFreeBalance: false,
-  withAccountInput: true,
-  setCurrentAccount: () => { /**/ }
+  withAccountInput: true
 }
