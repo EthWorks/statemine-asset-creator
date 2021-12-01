@@ -125,6 +125,16 @@ describe('AccountSelect component', () => {
 
       await within(updatedOpenDropdownButton).findByText(charlieAccount.address)
     })
+
+    it('shows error message when account id is invalid', async () => {
+      await openDropdown()
+
+      const input = await screen.findByTestId('open-account-select-input')
+
+      fireEvent.change(input, { target: { value: 'invalid' } })
+
+      await screen.findByText('Invalid account address')
+    })
   })
 })
 

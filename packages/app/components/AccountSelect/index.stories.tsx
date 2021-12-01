@@ -1,9 +1,12 @@
-import { Story } from '@storybook/react'
+import type { Story } from '@storybook/react'
+import type { Account } from 'use-substrate'
+import type { Props } from './index'
+
 import React from 'react'
 
 import { mockAccounts } from '../../__tests__/mocks/mockAccounts'
 import { MockedApiProvider } from '../../storybookHelpers/MockedApiProvider'
-import { AccountSelect, Props } from './index'
+import { AccountSelect } from './index'
 
 const Default = {
   title: 'Components/AccountSelect',
@@ -20,10 +23,15 @@ const Default = {
 
 export default Default
 
-const Template: Story<Props> = (args) =>
-  <MockedApiProvider>
-    <AccountSelect {...args}/>
-  </MockedApiProvider>
+const Template: Story<Props> = (args) => {
+  const [currentAccount, setCurrentAccount] = React.useState<Account | undefined>(args.currentAccount)
+
+  return (
+    <MockedApiProvider>
+      <AccountSelect {...args} currentAccount={currentAccount} setCurrentAccount={setCurrentAccount}/>
+    </MockedApiProvider>
+  )
+}
 
 export const Base = Template.bind({})
 Base.args = {

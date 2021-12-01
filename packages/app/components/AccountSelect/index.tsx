@@ -5,6 +5,8 @@ import * as Popover from '@radix-ui/react-popover'
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
+import { isAddressValid } from 'use-substrate'
+
 import { useToggle } from '../../utils'
 import { CloseButton } from '../button/CloseButton'
 import { InputInfo } from '../FormElements'
@@ -24,15 +26,21 @@ export interface Props extends InputInfoProps {
 }
 
 export function AccountSelect({ accounts, currentAccount, setCurrentAccount, label, withFreeBalance = false, onClose, withAccountInput, ...inputInfoProps }: Props): JSX.Element {
-  const [accountId, setAccountId] = useState<string>('')
   const [isOpen, toggleOpen, setOpen] = useToggle()
+  const [inputAddress, setInputAddress] = useState<string>('')
+  const [inputError, setInputError] = useState<string>()
   const anchorRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (accountId.length) {
-      setCurrentAccount({ address: accountId, name: undefined })
+    setInputError(undefined)
+    if (inputAddress.length) {
+      if (isAddressValid(inputAddress)) {
+        setCurrentAccount({ address: inputAddress, name: undefined })
+      } else {
+        setInputError('Invalid account address')
+      }
     }
-  }, [accountId, setCurrentAccount])
+  }, [inputAddress, setCurrentAccount])
 
   const _onInteractOutside = (e: Event): void => {
     if (anchorRef.current && anchorRef.current.contains(e.target as Node)) {
@@ -41,6 +49,7 @@ export function AccountSelect({ accounts, currentAccount, setCurrentAccount, lab
   }
 
   const _onItemClick = (account: Account): void => {
+    setInputAddress('')
     setCurrentAccount(account)
     setOpen(false)
   }
@@ -56,10 +65,11 @@ export function AccountSelect({ accounts, currentAccount, setCurrentAccount, lab
           {isOpen && withAccountInput
             ? (
               <AccountInput
-                onChange={setAccountId}
-                value={accountId}
+                onChange={setInputAddress}
+                value={inputAddress}
                 isOpen={isOpen}
                 toggleOpen={toggleOpen}
+                error={inputError}
               />
             )
             : (
