@@ -14,7 +14,7 @@ import { AssetImage } from './AssetImage'
 import { AssetsCardMenu } from './AssetsCardMenu'
 import { groupRoles } from './groupRoles'
 
-interface Props {
+export interface Props {
   asset: Asset
 }
 
