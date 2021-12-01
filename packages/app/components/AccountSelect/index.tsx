@@ -1,12 +1,13 @@
+import type { Account } from 'use-substrate'
+import type { InputInfoProps } from '../FormElements'
+
 import * as Popover from '@radix-ui/react-popover'
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
-import { Account } from 'use-substrate'
-
 import { useToggle } from '../../utils'
 import { CloseButton } from '../button/CloseButton'
-import { InputInfo, InputInfoProps } from '../FormElements'
+import { InputInfo } from '../FormElements'
 import { Arrow } from '../icons'
 import { Text } from '../typography'
 import { AccountInput } from './AccountInput'
