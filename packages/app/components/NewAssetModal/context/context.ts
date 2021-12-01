@@ -11,6 +11,8 @@ const noop = (): void => { /**/ }
 export interface NewAssetForm {
   admin: Account | undefined,
   setAdmin: AccountOrUndefinedSetter,
+  issuer: Account | undefined,
+  setIssuer: AccountOrUndefinedSetter,
   assetName: string,
   setAssetName: stringSetter,
   assetNameError?: string,
@@ -33,6 +35,8 @@ export interface NewAssetForm {
 export const NewAssetModalContext = createContext<NewAssetForm>({
   admin: undefined,
   setAdmin: noop,
+  issuer: undefined,
+  setIssuer: noop,
   assetName: '',
   setAssetName: noop,
   assetNameError: undefined,

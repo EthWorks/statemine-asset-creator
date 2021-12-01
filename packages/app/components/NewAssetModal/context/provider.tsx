@@ -13,6 +13,7 @@ export const NewAssetModalProvider: React.FC = ({ children }) => {
   const initialAdminAccount = useMemo(() => accounts.allAccounts.find((account) => account.address === activeAccount?.toString()),
     [accounts.allAccounts, activeAccount])
   const [admin, setAdmin] = useState<Account | undefined>(initialAdminAccount)
+  const [issuer, setIssuer] = useState<Account | undefined>(initialAdminAccount)
   const [assetName, setAssetName] = useState<string>('')
   const [assetNameError, setAssetNameError] = useState<string>()
   const [assetId, setAssetId] = useState<string>('')
@@ -26,6 +27,8 @@ export const NewAssetModalProvider: React.FC = ({ children }) => {
   return <NewAssetModalContext.Provider value={{
     admin,
     setAdmin,
+    issuer,
+    setIssuer,
     assetName,
     setAssetName,
     assetNameError,

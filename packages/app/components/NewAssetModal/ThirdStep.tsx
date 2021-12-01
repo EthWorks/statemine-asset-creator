@@ -11,15 +11,21 @@ import { useNewAssetModal } from './context/useNewAssetModal'
 import { ModalFooter } from './ModalFooter'
 
 export function ThirdStep({ onNext, onBack }: ModalStep): JSX.Element {
-  const { admin, assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
+  const { admin, issuer, assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
   const { api } = useApi(Chains.Statemine)
   const { activeAccount } = useActiveAccount(Chains.Statemine)
 
-  const txs = admin
-    ? [
-      api?.tx.assets.create(assetId, admin.address, minBalance),
-      api?.tx.assets.setMetadata(assetId, assetName, assetSymbol, assetDecimals)
-    ]
+  const txs = admin && issuer
+    ? admin.address === issuer.address
+      ? [
+        api?.tx.assets.create(assetId, admin.address, minBalance),
+        api?.tx.assets.setMetadata(assetId, assetName, assetSymbol, assetDecimals)
+      ]
+      : [
+        api?.tx.assets.create(assetId, admin.address, minBalance),
+        api?.tx.assets.setMetadata(assetId, assetName, assetSymbol, assetDecimals),
+        api?.tx.assets.setTeam(assetId, issuer.address, admin.address, admin.address)
+      ]
     : []
 
   const { tx } = useTransaction(api?.tx.utility.batch, [txs], activeAccount?.toString()) || {}

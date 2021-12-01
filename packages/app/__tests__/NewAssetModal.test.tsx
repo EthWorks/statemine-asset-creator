@@ -19,7 +19,9 @@ import {
   typeInInput
 } from './helpers'
 import {
-  aliceAccount, charlieAccount,
+  aliceAccount,
+  bobAccount,
+  charlieAccount,
   mockUseAccounts,
   mockUseActiveAccount,
   mockUseApi,
@@ -200,17 +202,28 @@ describe('New asset modal', () => {
     })
   })
 
-  describe('admin', () => {
-    it('allows to select admin account', async () => {
+  describe('allows to select account for', () => {
+    beforeEach(async () => {
       renderModal()
       await openModal()
       await fillFirstStep()
       clickButton('Next')
+    })
+
+    it('admin', async () => {
       await selectAccountFromDropdown(0, 0)
       clickButton('Next')
-      await findAndClickButton('Confirm')
+      await act(() => findAndClickButton('Confirm'))
 
       expect(mockUseApi.api.tx.assets.create).toBeCalledWith(assetId, aliceAccount.address, minBalance)
+    })
+
+    it('issuer', async () => {
+      await selectAccountFromDropdown(1, 0)
+      clickButton('Next')
+      await act(() => findAndClickButton('Confirm'))
+
+      expect(mockUseApi.api.tx.assets.setTeam).toBeCalledWith(assetId, aliceAccount.address, bobAccount.address, bobAccount.address)
     })
   })
 

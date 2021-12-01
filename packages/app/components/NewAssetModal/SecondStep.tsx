@@ -17,7 +17,7 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
     onNext()
   }, [onNext])
 
-  const { admin, setAdmin } = useNewAssetModal()
+  const { admin, setAdmin, issuer, setIssuer } = useNewAssetModal()
   const accounts = useAccounts()
 
   return (
@@ -30,6 +30,15 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
           setCurrentAccount={setAdmin}
         />
       )}
+      {
+        issuer && (
+          <AccountSelect
+            label='Issuer account'
+            accounts={accounts.allAccounts}
+            currentAccount={issuer}
+            setCurrentAccount={setIssuer}
+          />
+        )}
       <ModalFooter contentPosition='between'>
         <ButtonOutline type='button' onClick={onBack}>
           <ArrowLeft />
