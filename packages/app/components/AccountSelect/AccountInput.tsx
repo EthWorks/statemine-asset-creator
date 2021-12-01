@@ -55,7 +55,7 @@ const StyledTextInput = styled(TextInput)`
   
   input {
     width: 100%;
-    padding: 26px 16px 14px;
+    padding: 28px 18px 12px;
     border: none;
 
     &:focus,

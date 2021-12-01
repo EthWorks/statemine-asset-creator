@@ -60,6 +60,20 @@ describe('AccountSelect component', () => {
     expect(await within(openDropdownButton).queryAllByAltText('ALICE')).toHaveLength(0)
   })
 
+  it('shows "Select account" on button when dropdown is open', async () => {
+    render(<AccountSelectTestComponent/>)
+
+    const openDropdownButton = await screen.findByRole('button')
+    await within(openDropdownButton).findByText('Select account')
+
+    await selectAccountFromDropdown(0, 1)
+    await within(openDropdownButton).findByText('BOB')
+    expect(within(openDropdownButton).queryAllByText('Select account')).toHaveLength(0)
+
+    fireEvent.click(openDropdownButton)
+    await within(openDropdownButton).findByText('Select account')
+  })
+
   it('shows free balance', async () => {
     render(<AccountSelectTestComponent withFreeBalance/>)
 

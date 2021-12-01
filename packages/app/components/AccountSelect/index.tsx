@@ -63,7 +63,7 @@ export function AccountSelect({ accounts, currentAccount, setCurrentAccount, lab
             )
             : (
               <StyledButton data-testid='open-account-select' onClick={toggleOpen}>
-                {currentAccount
+                {currentAccount && !isOpen
                   ? <AccountTile withFreeBalance={withFreeBalance} account={currentAccount}/>
                   : <StyledButtonText color='white' size='SM'>{`Select account${withAccountInput ? ' or paste account address' : ''}`}</StyledButtonText>
                 }
@@ -175,7 +175,7 @@ const AccountSelectWrapper = styled.div`
 `
 
 const StyledButtonText = styled(Text)`
-  padding: 24px 16px 28px;
+  padding: 28px 18px 28px;
   text-align: left;
 `
 
