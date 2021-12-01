@@ -6,7 +6,7 @@ import { Account } from 'use-substrate'
 
 import { useToggle } from '../../utils'
 import { CloseButton } from '../button/CloseButton'
-import { InputInfo, InputInfoProps } from '../FormElements/Inputs/InputInfo'
+import { InputInfo, InputInfoProps } from '../FormElements'
 import { Arrow } from '../icons'
 import { Text } from '../typography'
 import { AccountInput } from './AccountInput'
