@@ -95,7 +95,6 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
         currentAccount={statemineAccount}
         setCurrentAccount={setStatemineAccount}
         tip={statemineAccountInfo}
-        withAccountInput
       />
       {!isKusamaAccountSelectVisible && (
         <Centered>
