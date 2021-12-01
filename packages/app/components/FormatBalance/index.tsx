@@ -6,16 +6,17 @@ import { Text } from '../typography'
 import { formatBalance } from './utils'
 
 interface BalanceValueProps {
+  className?: string,
   chainDecimals: number,
   token: string,
   value: BN | undefined
 }
 
-export const FormatBalance = ({ chainDecimals, token, value }: BalanceValueProps): React.ReactElement<BalanceValueProps> | null => {
+export const FormatBalance = ({ className, chainDecimals, token, value }: BalanceValueProps): React.ReactElement<BalanceValueProps> | null => {
   const { integers, decimals } = useMemo(() => formatBalance(value, chainDecimals), [chainDecimals, value]) || {}
 
   return (
-    <ValueWrapper data-testid='balance-value'>
+    <ValueWrapper className={className} data-testid='balance-value'>
       <TextBalance size='SM' color='white'>{integers}.<span>{decimals}</span></TextBalance>
       <Text size='SM'>{token}</Text>
     </ValueWrapper>
