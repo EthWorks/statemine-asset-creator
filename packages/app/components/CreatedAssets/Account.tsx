@@ -4,6 +4,7 @@ import type { Role } from './types'
 import styled from 'styled-components'
 
 import { shortAddress } from '../../formaters/formaters'
+import { Avatar } from '../Avatar'
 import { Text } from '../typography'
 
 interface Props {
@@ -14,21 +15,30 @@ interface Props {
 export const Account: FC<Props> = ({ account, role }) => {
   return (
     <AccountWrapper data-testid={`role-${role.join('-')}`}>
-      <StyledText size='XXS' color='white'>{role.join(', ')}</StyledText>
-      <NameWrapper>
-        <TextName size='XXS'>
-          Account name
-        </TextName>
-        <Text size='XXS'>
-          {shortAddress(account)}
-        </Text>
-      </NameWrapper>
+      <Avatar address={account} size='s'/>
+      <AccountNameBox>
+        <StyledText size='XXS' color='white'>{role.join(', ')}</StyledText>
+        <NameWrapper>
+          <TextName size='XXS'>
+            Account name
+          </TextName>
+          <Text size='XXS'>
+            {shortAddress(account)}
+          </Text>
+        </NameWrapper>
+      </AccountNameBox>
     </AccountWrapper>
   )
 }
 
 const AccountWrapper = styled.div`
+  display: flex;
+  align-items: center;
   margin-top: 16px;
+`
+
+const AccountNameBox = styled.div`
+  margin-left: 8px;
 `
 
 const StyledText = styled(Text)`
