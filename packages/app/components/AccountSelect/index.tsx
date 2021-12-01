@@ -27,24 +27,24 @@ export interface Props extends InputInfoProps {
 
 export function AccountSelect({ accounts, currentAccount, setCurrentAccount, label, withFreeBalance = false, onClose, withAccountInput, ...inputInfoProps }: Props): JSX.Element {
   const [isOpen, toggleOpen, setOpen] = useToggle()
-  const [inputAddress, setInputAddress] = useState<string>('')
-  const [inputError, setInputError] = useState<string>()
+  const [inputAddressValue, setInputAddressValue] = useState<string>('')
+  const [inputAddressError, setInputAddressError] = useState<string>()
   const anchorRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    setInputError(undefined)
-    if (inputAddress.length) {
-      if (isAddressValid(inputAddress)) {
-        setCurrentAccount({ address: inputAddress, name: undefined })
+    setInputAddressError(undefined)
+    if (inputAddressValue.length) {
+      if (isAddressValid(inputAddressValue)) {
+        setCurrentAccount({ address: inputAddressValue, name: undefined })
       } else {
-        setInputError('Invalid account address')
+        setInputAddressError('Invalid account address')
       }
     }
-  }, [inputAddress, setCurrentAccount])
+  }, [inputAddressValue, setCurrentAccount])
 
   const _toggleOpen = (): void => {
-    if (isOpen && !isAddressValid(inputAddress)) {
-      setInputAddress('')
+    if (isOpen && !isAddressValid(inputAddressValue)) {
+      setInputAddressValue('')
     }
     toggleOpen()
   }
@@ -52,13 +52,13 @@ export function AccountSelect({ accounts, currentAccount, setCurrentAccount, lab
   const _onInteractOutside = (e: Event): void => {
     if (anchorRef.current && anchorRef.current.contains(e.target as Node)) {
       e.preventDefault()
-    } else if (!isAddressValid(inputAddress)) {
-      setInputAddress('')
+    } else if (!isAddressValid(inputAddressValue)) {
+      setInputAddressValue('')
     }
   }
 
   const _onItemClick = (account: Account): void => {
-    setInputAddress('')
+    setInputAddressValue('')
     setCurrentAccount(account)
     setOpen(false)
   }
@@ -74,11 +74,11 @@ export function AccountSelect({ accounts, currentAccount, setCurrentAccount, lab
           {isOpen && withAccountInput
             ? (
               <AccountInput
-                onChange={setInputAddress}
-                value={inputAddress}
+                onChange={setInputAddressValue}
+                value={inputAddressValue}
                 isOpen={isOpen}
                 toggleOpen={_toggleOpen}
-                error={inputError}
+                error={inputAddressError}
               />
             )
             : (
