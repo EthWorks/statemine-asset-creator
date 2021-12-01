@@ -14,17 +14,19 @@
     "./dist/src"
   ],
   "dependencies": {
-    "@polkadot/api": "6.10.2",
-    "@polkadot/api-derive": "6.10.2",
+    "@polkadot/api": "6.10.3",
+    "@polkadot/api-derive": "6.10.3",
     "@polkadot/extension-dapp": "~0.41.2",
-    "@polkadot/ui-keyring": "~0.86.3",
+    "@polkadot/ui-keyring": "~0.87.3",
     "react": "17.0.2",
     "react-dom": "~17.0.2",
     "rxjs": "7.4.0",
     "bn.js": "~5.2.0",
     "@polkadot/extension-inject": "~0.41.2",
-    "@polkadot/types": "6.10.2",
-    "@polkadot/types-support": "~6.10.2"
+    "@polkadot/types": "6.10.3",
+    "@polkadot/types-support": "~6.10.2",
+    "@polkadot/keyring": "~8.0.5",
+    "@polkadot/util": "~8.0.5"
   },
   "devDependencies": {
     "test-helpers": "~0.1.0",
