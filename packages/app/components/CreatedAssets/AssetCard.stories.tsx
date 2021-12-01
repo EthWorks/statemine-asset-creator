@@ -1,7 +1,7 @@
 import { Story } from '@storybook/react'
 
 import { mockUseAssets } from '../../__tests__/mocks/mockUseAssets'
-import { AssetCard, Props } from './AssetCard'
+import { AssetCard, AssetCardProps } from './AssetCard'
 
 const Default = {
   title: 'Components/AssetCard',
@@ -13,7 +13,7 @@ const Default = {
 
 export default Default
 
-const Template: Story<Props> = (args) =>
+const Template: Story<AssetCardProps> = (args) =>
   <AssetCard {...args} />
 
 export const Base = Template.bind({})
