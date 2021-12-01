@@ -6,6 +6,7 @@ import { Chains, useActiveAccount, useApi, useTransaction } from 'use-substrate'
 
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { ArrowLeft, ArrowRight } from '../icons'
+import { Loader } from '../Loader'
 import { Label, Text } from '../typography'
 import { useNewAssetModal } from './context/useNewAssetModal'
 import { ModalFooter } from './ModalFooter'
@@ -24,7 +25,7 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element {
 
   const { tx } = useTransaction(api?.tx.utility.batch, [txs], activeAccount?.toString()) || {}
 
-  if (!api || !activeAccount || !tx) return <>Loading..</>
+  if (!api || !activeAccount || !tx) return <Loader />
 
   const _onSubmit = async (): Promise<void> => {
     await tx()
