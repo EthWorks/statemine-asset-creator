@@ -8,12 +8,13 @@ import { Chains, useAccounts, useActiveAccount, useAssetsConstants } from 'use-s
 import { NewAssetModalContext } from './context'
 
 export const NewAssetModalProvider: React.FC = ({ children }) => {
-  const { activeAccount } = useActiveAccount(Chains.Statemine)
+  const { activeAccount: activeAccountId } = useActiveAccount(Chains.Statemine)
   const accounts = useAccounts()
-  const initialAdminAccount = useMemo(() => accounts.allAccounts.find((account) => account.address === activeAccount?.toString()),
-    [accounts.allAccounts, activeAccount])
-  const [admin, setAdmin] = useState<Account | undefined>(initialAdminAccount)
-  const [issuer, setIssuer] = useState<Account | undefined>(initialAdminAccount)
+  const activeAccount = useMemo(() => accounts.allAccounts.find((account) => account.address === activeAccountId?.toString()),
+    [accounts.allAccounts, activeAccountId])
+  const [admin, setAdmin] = useState<Account | undefined>(activeAccount)
+  const [issuer, setIssuer] = useState<Account | undefined>(activeAccount)
+  const [freezer, setFreezer] = useState<Account | undefined>(activeAccount)
   const [assetName, setAssetName] = useState<string>('')
   const [assetNameError, setAssetNameError] = useState<string>()
   const [assetId, setAssetId] = useState<string>('')
@@ -29,6 +30,8 @@ export const NewAssetModalProvider: React.FC = ({ children }) => {
     setAdmin,
     issuer,
     setIssuer,
+    freezer,
+    setFreezer,
     assetName,
     setAssetName,
     assetNameError,

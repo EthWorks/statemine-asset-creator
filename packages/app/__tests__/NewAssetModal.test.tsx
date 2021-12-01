@@ -21,7 +21,6 @@ import {
 import {
   aliceAccount,
   bobAccount,
-  charlieAccount,
   mockUseAccounts,
   mockUseActiveAccount,
   mockUseApi,
@@ -48,6 +47,11 @@ const minBalance = '300'
 const assetName = 'kusama'
 const assetSymbol = 'KSM'
 const assetDecimals = '18'
+const aliceAccountIndex = 0
+const bobAccountIndex = 1
+const adminDropdownIndex = 0
+const isserDropdownIndex = 1
+const freezerDropdownIndex = 2
 
 jest.mock('use-substrate/dist/src/hooks', () => ({
   useAccounts: () => mockUseAccounts,
@@ -66,6 +70,7 @@ describe('New asset modal', () => {
     mockTransaction.mockClear()
     mockUseApi.api.tx.assets.create.mockClear()
     mockUseApi.api.tx.assets.setMetadata.mockClear()
+    mockUseApi.api.tx.assets.setTeam.mockClear()
   })
 
   it('saves data in context', async () => {
@@ -127,8 +132,9 @@ describe('New asset modal', () => {
     renderModal()
     await act(async () => await createAsset())
 
-    expect(mockUseApi.api.tx.assets.create).toBeCalledWith(assetId, charlieAccount.address, minBalance)
+    expect(mockUseApi.api.tx.assets.create).toBeCalledWith(assetId, bobAccount.address, minBalance)
     expect(mockUseApi.api.tx.assets.setMetadata).toBeCalledWith(assetId, assetName, assetSymbol, assetDecimals)
+    expect(mockUseApi.api.tx.assets.setTeam).not.toBeCalled()
   })
 
   describe('validates inputs', () => {
@@ -211,19 +217,28 @@ describe('New asset modal', () => {
     })
 
     it('admin', async () => {
-      await selectAccountFromDropdown(0, 0)
+      await selectAccountFromDropdown(adminDropdownIndex, aliceAccountIndex)
       clickButton('Next')
       await act(() => findAndClickButton('Confirm'))
 
       expect(mockUseApi.api.tx.assets.create).toBeCalledWith(assetId, aliceAccount.address, minBalance)
+      expect(mockUseApi.api.tx.assets.setTeam).toBeCalledWith(assetId, bobAccount.address, aliceAccount.address, bobAccount.address)
     })
 
     it('issuer', async () => {
-      await selectAccountFromDropdown(1, 0)
+      await selectAccountFromDropdown(isserDropdownIndex, aliceAccountIndex)
       clickButton('Next')
       await act(() => findAndClickButton('Confirm'))
 
       expect(mockUseApi.api.tx.assets.setTeam).toBeCalledWith(assetId, aliceAccount.address, bobAccount.address, bobAccount.address)
+    })
+
+    it('freezer', async () => {
+      await selectAccountFromDropdown(freezerDropdownIndex, aliceAccountIndex)
+      clickButton('Next')
+      await act(() => findAndClickButton('Confirm'))
+
+      expect(mockUseApi.api.tx.assets.setTeam).toBeCalledWith(assetId, bobAccount.address, bobAccount.address, aliceAccount.address)
     })
   })
 
@@ -255,7 +270,9 @@ const fillFirstStep = (): void => {
 }
 
 const fillSecondStep = async (): Promise<void> => {
-  await selectAccountFromDropdown(0, 2)
+  await selectAccountFromDropdown(adminDropdownIndex, bobAccountIndex)
+  await selectAccountFromDropdown(isserDropdownIndex, bobAccountIndex)
+  await selectAccountFromDropdown(freezerDropdownIndex, bobAccountIndex)
 }
 
 const clearInput = (inputName: string) => {
