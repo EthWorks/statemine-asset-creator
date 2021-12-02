@@ -149,6 +149,7 @@ const StyledButton = styled(Popover.Trigger)`
   }
   
   &:disabled {
+    background-color: ${({ theme }) => theme.colors.gray[900]};
     cursor: not-allowed;
 
     &:active,
