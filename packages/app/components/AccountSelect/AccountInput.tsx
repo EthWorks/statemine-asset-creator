@@ -1,17 +1,20 @@
-import React, { FC } from 'react'
+import type { FC } from 'react'
+
+import React from 'react'
 import styled from 'styled-components'
 
-import { TextInput } from '../FormElements'
+import { InputHintWrapper, TextInput } from '../FormElements'
 import { Arrow } from '../icons'
 
 interface Props {
   onChange: (value: (((prevState: string) => string) | string)) => void,
   value: string,
   isOpen: boolean,
-  toggleOpen: () => void
+  toggleOpen: () => void,
+  error?: string
 }
 
-export const AccountInput: FC<Props> = ({ onChange, value, toggleOpen, isOpen }) => {
+export const AccountInput: FC<Props> = ({ onChange, value, toggleOpen, isOpen, error }) => {
   const _handleEnterDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     if (e.key === 'Enter' && isOpen) {
       toggleOpen()
@@ -27,6 +30,7 @@ export const AccountInput: FC<Props> = ({ onChange, value, toggleOpen, isOpen })
         onChange={onChange}
         value={value}
         onKeyDown={_handleEnterDown}
+        error={error}
       />
       <StyledArrow onClick={toggleOpen} direction="down" width="14" height="9"/>
     </AccountInputWrapper>
@@ -72,6 +76,11 @@ const StyledTextInput = styled(TextInput)`
     ::-ms-input-placeholder { /* Microsoft Edge */
       color: ${({ theme }) => theme.colors.white};
     }
+  }
+  
+  ${InputHintWrapper} {
+    left: 10px;
+    bottom: 3px;
   }
 `
 

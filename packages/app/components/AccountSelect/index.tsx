@@ -5,6 +5,8 @@ import * as Popover from '@radix-ui/react-popover'
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
+import { isAddressValid } from 'use-substrate'
+
 import { useToggle } from '../../utils'
 import { CloseButton } from '../button/CloseButton'
 import { InputInfo } from '../FormElements'
@@ -24,23 +26,39 @@ export interface Props extends InputInfoProps {
 }
 
 export function AccountSelect({ accounts, currentAccount, setCurrentAccount, label, withFreeBalance = false, onClose, withAccountInput, ...inputInfoProps }: Props): JSX.Element {
-  const [accountId, setAccountId] = useState<string>('')
   const [isOpen, toggleOpen, setOpen] = useToggle()
+  const [inputAddressValue, setInputAddressValue] = useState<string>('')
+  const [inputAddressError, setInputAddressError] = useState<string>()
   const anchorRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (accountId.length) {
-      setCurrentAccount({ address: accountId, name: undefined })
+    setInputAddressError(undefined)
+    if (inputAddressValue.length) {
+      if (isAddressValid(inputAddressValue)) {
+        setCurrentAccount({ address: inputAddressValue, name: undefined })
+      } else {
+        setInputAddressError('Invalid account address')
+      }
     }
-  }, [accountId, setCurrentAccount])
+  }, [inputAddressValue, setCurrentAccount])
+
+  const _toggleOpen = (): void => {
+    if (isOpen && !isAddressValid(inputAddressValue)) {
+      setInputAddressValue('')
+    }
+    toggleOpen()
+  }
 
   const _onInteractOutside = (e: Event): void => {
     if (anchorRef.current && anchorRef.current.contains(e.target as Node)) {
       e.preventDefault()
+    } else if (!isAddressValid(inputAddressValue)) {
+      setInputAddressValue('')
     }
   }
 
   const _onItemClick = (account: Account): void => {
+    setInputAddressValue('')
     setCurrentAccount(account)
     setOpen(false)
   }
@@ -56,14 +74,15 @@ export function AccountSelect({ accounts, currentAccount, setCurrentAccount, lab
           {isOpen && withAccountInput
             ? (
               <AccountInput
-                onChange={setAccountId}
-                value={accountId}
+                onChange={setInputAddressValue}
+                value={inputAddressValue}
                 isOpen={isOpen}
-                toggleOpen={toggleOpen}
+                toggleOpen={_toggleOpen}
+                error={inputAddressError}
               />
             )
             : (
-              <StyledButton data-testid='open-account-select' onClick={toggleOpen}>
+              <StyledButton data-testid='open-account-select' onClick={_toggleOpen}>
                 {currentAccount && !isOpen
                   ? <AccountTile withFreeBalance={withFreeBalance} account={currentAccount}/>
                   : <StyledButtonText color='white' size='SM'>{`Select account${withAccountInput ? ' or paste account address' : ''}`}</StyledButtonText>

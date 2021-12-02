@@ -23,7 +23,7 @@ export const InputInfo = ({ error, hint, tip }: InputInfoProps): JSX.Element => 
   </InputHintWrapper>
 )
 
-const InputHintWrapper = styled.div`
+export const InputHintWrapper = styled.div`
   position: absolute;
   bottom: 0;
   left: 0;
