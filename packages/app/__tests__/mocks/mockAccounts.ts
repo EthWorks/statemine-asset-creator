@@ -13,3 +13,5 @@ export const mockAccounts = [aliceAccount, bobAccount]
 export const shortenedBobAddress = '5FHneW...M694ty'
 export const shortenedAliceAddress = '5Grwva...GKutQY'
 export const shortenedCharlieAddress = '5DAAnr...3PTXFy'
+
+export const bobAddressForActiveAccountBar = '5FHn...94ty'
