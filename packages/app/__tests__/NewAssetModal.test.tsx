@@ -42,16 +42,16 @@ function TestComponent(): JSX.Element {
 
 const mockTransaction = jest.fn()
 const mockUseTransaction = { tx: mockTransaction, paymentInfo: {} }
-const assetId = '7'
-const minBalance = '300'
-const assetName = 'kusama'
-const assetSymbol = 'KSM'
-const assetDecimals = '18'
-const aliceAccountIndex = 0
-const bobAccountIndex = 1
-const adminDropdownIndex = 0
-const issuerDropdownIndex = 1
-const freezerDropdownIndex = 2
+const ASSET_ID = '7'
+const MIN_BALANCE = '300'
+const ASSET_NAME = 'kusama'
+const ASSET_SYMBOL = 'KSM'
+const ASSET_DECIMALS = '18'
+const ALICE_ACCOUNT_INDEX = 0
+const BOB_ACCOUNT_INDEX = 1
+const ADMIN_DROPDOWN_INDEX = 0
+const ISSUER_DROPDOWN_INDEX = 1
+const FREEZER_DROPDOWN_INDEX = 2
 
 jest.mock('use-substrate/dist/src/hooks', () => ({
   useAccounts: () => mockUseAccounts,
@@ -132,8 +132,8 @@ describe('New asset modal', () => {
     renderModal()
     await createAsset()
 
-    expect(mockUseApi.api.tx.assets.create).toBeCalledWith(assetId, bobAccount.address, minBalance)
-    expect(mockUseApi.api.tx.assets.setMetadata).toBeCalledWith(assetId, assetName, assetSymbol, assetDecimals)
+    expect(mockUseApi.api.tx.assets.create).toBeCalledWith(ASSET_ID, bobAccount.address, MIN_BALANCE)
+    expect(mockUseApi.api.tx.assets.setMetadata).toBeCalledWith(ASSET_ID, ASSET_NAME, ASSET_SYMBOL, ASSET_DECIMALS)
     expect(mockUseApi.api.tx.assets.setTeam).not.toBeCalled()
   })
 
@@ -217,28 +217,28 @@ describe('New asset modal', () => {
     })
 
     it('admin', async () => {
-      await selectAccountFromDropdown(adminDropdownIndex, aliceAccountIndex)
+      await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
       clickButton('Next')
       await act(() => findAndClickButton('Confirm'))
 
-      expect(mockUseApi.api.tx.assets.create).toBeCalledWith(assetId, aliceAccount.address, minBalance)
-      expect(mockUseApi.api.tx.assets.setTeam).toBeCalledWith(assetId, bobAccount.address, aliceAccount.address, bobAccount.address)
+      expect(mockUseApi.api.tx.assets.create).toBeCalledWith(ASSET_ID, aliceAccount.address, MIN_BALANCE)
+      expect(mockUseApi.api.tx.assets.setTeam).toBeCalledWith(ASSET_ID, bobAccount.address, aliceAccount.address, bobAccount.address)
     })
 
     it('issuer', async () => {
-      await selectAccountFromDropdown(issuerDropdownIndex, aliceAccountIndex)
+      await selectAccountFromDropdown(ISSUER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
       clickButton('Next')
       await act(() => findAndClickButton('Confirm'))
 
-      expect(mockUseApi.api.tx.assets.setTeam).toBeCalledWith(assetId, aliceAccount.address, bobAccount.address, bobAccount.address)
+      expect(mockUseApi.api.tx.assets.setTeam).toBeCalledWith(ASSET_ID, aliceAccount.address, bobAccount.address, bobAccount.address)
     })
 
     it('freezer', async () => {
-      await selectAccountFromDropdown(freezerDropdownIndex, aliceAccountIndex)
+      await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
       clickButton('Next')
       await act(() => findAndClickButton('Confirm'))
 
-      expect(mockUseApi.api.tx.assets.setTeam).toBeCalledWith(assetId, bobAccount.address, bobAccount.address, aliceAccount.address)
+      expect(mockUseApi.api.tx.assets.setTeam).toBeCalledWith(ASSET_ID, bobAccount.address, bobAccount.address, aliceAccount.address)
     })
   })
 
@@ -262,28 +262,28 @@ const renderModal = (): void => {
 }
 
 const fillFirstStep = (): void => {
-  fillInput('Asset name', assetName)
-  fillInput('Asset symbol', assetSymbol)
-  fillInput('Asset decimals', assetDecimals)
-  fillInput('Asset ID', assetId)
-  fillInput('Minimum balance', minBalance)
+  fillInput('Asset name', ASSET_NAME)
+  fillInput('Asset symbol', ASSET_SYMBOL)
+  fillInput('Asset decimals', ASSET_DECIMALS)
+  fillInput('Asset ID', ASSET_ID)
+  fillInput('Minimum balance', MIN_BALANCE)
 }
 
 const fillSecondStep = async (): Promise<void> => {
-  await selectAccountFromDropdown(adminDropdownIndex, bobAccountIndex)
-  await selectAccountFromDropdown(issuerDropdownIndex, bobAccountIndex)
-  await selectAccountFromDropdown(freezerDropdownIndex, bobAccountIndex)
+  await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
+  await selectAccountFromDropdown(ISSUER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
+  await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
 }
 
 const clearInput = (inputName: string) => {
   fillInput(inputName, '')
 }
 const assertFirstStepFilled = () => {
-  assertInput('Asset name', assetName)
-  assertInput('Asset symbol', assetSymbol)
-  assertInput('Asset decimals', assetDecimals)
-  assertInput('Asset ID', assetId)
-  assertInput('Minimum balance', minBalance)
+  assertInput('Asset name', ASSET_NAME)
+  assertInput('Asset symbol', ASSET_SYMBOL)
+  assertInput('Asset decimals', ASSET_DECIMALS)
+  assertInput('Asset ID', ASSET_ID)
+  assertInput('Minimum balance', MIN_BALANCE)
 }
 
 function assertFirstStepEmpty() {
@@ -295,11 +295,11 @@ function assertFirstStepEmpty() {
 }
 
 async function assertSummary() {
-  await assertText(assetName)
-  await assertText(assetSymbol)
-  await assertText(assetDecimals)
-  await assertText(assetId)
-  await assertText(minBalance)
+  await assertText(ASSET_NAME)
+  await assertText(ASSET_SYMBOL)
+  await assertText(ASSET_DECIMALS)
+  await assertText(ASSET_ID)
+  await assertText(MIN_BALANCE)
 }
 
 const createAsset = async (): Promise<void> => {
