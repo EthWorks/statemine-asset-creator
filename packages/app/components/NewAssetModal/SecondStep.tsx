@@ -27,18 +27,21 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
         accounts={accounts.allAccounts}
         currentAccount={admin}
         setCurrentAccount={setAdmin}
+        withAccountInput
       />
       <AccountSelect
         label='Issuer account'
         accounts={accounts.allAccounts}
         currentAccount={issuer}
         setCurrentAccount={setIssuer}
+        withAccountInput
       />
       <AccountSelect
         label='Freezer account'
         accounts={accounts.allAccounts}
         currentAccount={freezer}
         setCurrentAccount={setFreezer}
+        withAccountInput
       />
       <ModalFooter contentPosition='between'>
         <ButtonOutline type='button' onClick={onBack}>
