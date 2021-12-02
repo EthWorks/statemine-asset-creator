@@ -37,9 +37,10 @@ export function fillInput(label: string, value: unknown): void {
 
 export async function selectAccountFromDropdown(dropdownIndex: number, accountIndex: number) {
   const openDropdownButton = (await screen.findAllByTestId('open-account-select'))[dropdownIndex]
-  openDropdown(openDropdownButton)
-  const dropdownMenu = await screen.findByRole('menu')
-  const menuItems = await within(dropdownMenu).findAllByRole('menuitem')
+  fireEvent.click(openDropdownButton)
+
+  const dropdownMenu = await screen.findByRole('list')
+  const menuItems = await within(dropdownMenu).findAllByRole('listitem')
 
   fireEvent.click(menuItems[accountIndex])
 }

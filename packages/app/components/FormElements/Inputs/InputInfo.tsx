@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { AlertIcon } from '../../icons/Alert'
+import { AlertIcon } from '../../icons'
 import { Text } from '../../typography'
 
 export interface InputInfoProps {
