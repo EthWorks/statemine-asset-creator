@@ -50,7 +50,7 @@ const assetDecimals = '18'
 const aliceAccountIndex = 0
 const bobAccountIndex = 1
 const adminDropdownIndex = 0
-const isserDropdownIndex = 1
+const issuerDropdownIndex = 1
 const freezerDropdownIndex = 2
 
 jest.mock('use-substrate/dist/src/hooks', () => ({
@@ -130,7 +130,7 @@ describe('New asset modal', () => {
 
   it('sends transaction on confirm', async () => {
     renderModal()
-    await act(async () => await createAsset())
+    await createAsset()
 
     expect(mockUseApi.api.tx.assets.create).toBeCalledWith(assetId, bobAccount.address, minBalance)
     expect(mockUseApi.api.tx.assets.setMetadata).toBeCalledWith(assetId, assetName, assetSymbol, assetDecimals)
@@ -226,7 +226,7 @@ describe('New asset modal', () => {
     })
 
     it('issuer', async () => {
-      await selectAccountFromDropdown(isserDropdownIndex, aliceAccountIndex)
+      await selectAccountFromDropdown(issuerDropdownIndex, aliceAccountIndex)
       clickButton('Next')
       await act(() => findAndClickButton('Confirm'))
 
@@ -271,7 +271,7 @@ const fillFirstStep = (): void => {
 
 const fillSecondStep = async (): Promise<void> => {
   await selectAccountFromDropdown(adminDropdownIndex, bobAccountIndex)
-  await selectAccountFromDropdown(isserDropdownIndex, bobAccountIndex)
+  await selectAccountFromDropdown(issuerDropdownIndex, bobAccountIndex)
   await selectAccountFromDropdown(freezerDropdownIndex, bobAccountIndex)
 }
 
@@ -308,9 +308,9 @@ const createAsset = async (): Promise<void> => {
   fillFirstStep()
   clickButton('Next')
   await fillSecondStep()
-  clickButton('Next')
 
-  clickButton('Confirm')
+  await clickButton('Next')
+  await act(async () => await findAndClickButton('Confirm'))
 }
 
 const closeModal = async () => {

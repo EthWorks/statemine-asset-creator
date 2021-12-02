@@ -22,30 +22,24 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
 
   return (
     <form onSubmit={_onNext}>
-      {admin && (
-        <AccountSelect
-          label='Admin account'
-          accounts={accounts.allAccounts}
-          currentAccount={admin}
-          setCurrentAccount={setAdmin}
-        />
-      )}
-      {issuer && (
-        <AccountSelect
-          label='Issuer account'
-          accounts={accounts.allAccounts}
-          currentAccount={issuer}
-          setCurrentAccount={setIssuer}
-        />
-      )}
-      {freezer && (
-        <AccountSelect
-          label='Freezer account'
-          accounts={accounts.allAccounts}
-          currentAccount={freezer}
-          setCurrentAccount={setFreezer}
-        />
-      )}
+      <AccountSelect
+        label='Admin account'
+        accounts={accounts.allAccounts}
+        currentAccount={admin}
+        setCurrentAccount={setAdmin}
+      />
+      <AccountSelect
+        label='Issuer account'
+        accounts={accounts.allAccounts}
+        currentAccount={issuer}
+        setCurrentAccount={setIssuer}
+      />
+      <AccountSelect
+        label='Freezer account'
+        accounts={accounts.allAccounts}
+        currentAccount={freezer}
+        setCurrentAccount={setFreezer}
+      />
       <ModalFooter contentPosition='between'>
         <ButtonOutline type='button' onClick={onBack}>
           <ArrowLeft />

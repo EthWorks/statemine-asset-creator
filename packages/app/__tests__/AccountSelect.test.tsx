@@ -141,6 +141,4 @@ describe('AccountSelect component', () => {
 async function openDropdown() {
   const openDropdownButton = await screen.findByTestId('open-account-select')
   fireEvent.click(openDropdownButton)
-
-  return openDropdownButton
 }

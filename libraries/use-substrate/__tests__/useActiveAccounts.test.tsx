@@ -8,6 +8,9 @@ import { mockedKusamaApi } from './mocks/MockedApiProvider'
 jest.mock('../src/hooks/useAccounts')
 
 describe('use active accounts', () => {
+  beforeEach(() => {
+    jest.resetModules()
+  })
   describe('with localStorage', () => {
     beforeEach(() => {
       localStorage.clear()
