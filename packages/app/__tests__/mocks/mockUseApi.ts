@@ -15,7 +15,7 @@ export const mockUseApi = {
         setTeam: jest.fn()
       },
       utility: {
-        batch: noop
+        batchAll: noop
       }
     }
   }

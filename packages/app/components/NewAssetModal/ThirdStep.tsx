@@ -29,7 +29,7 @@ export function ThirdStep({ onNext, onBack }: ModalStep): JSX.Element {
       ]
     : [], [admin, issuer, freezer, api, assetDecimals, assetId, assetName, assetSymbol, minBalance])
 
-  const { tx } = useTransaction(api?.tx.utility.batch, [txs], activeAccount?.toString()) || {}
+  const { tx } = useTransaction(api?.tx.utility.batchAll, [txs], activeAccount?.toString()) || {}
   if (!api || !activeAccount || !tx) return <>Loading..</>
 
   const _onSubmit = async (): Promise<void> => {
