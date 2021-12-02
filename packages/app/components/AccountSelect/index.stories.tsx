@@ -44,7 +44,8 @@ withFreeBalance.args = {
   accounts: mockAccounts,
   currentAccount: undefined,
   withFreeBalance: true,
-  withAccountInput: false
+  withAccountInput: false,
+  disabled: false
 }
 
 export const withAccountInput = Template.bind({})
@@ -52,5 +53,15 @@ withAccountInput.args = {
   accounts: mockAccounts,
   currentAccount: undefined,
   withFreeBalance: false,
-  withAccountInput: true
+  withAccountInput: true,
+  disabled: false
+}
+
+export const disabled = Template.bind({})
+disabled.args = {
+  accounts: mockAccounts,
+  currentAccount: mockAccounts[0],
+  withFreeBalance: true,
+  withAccountInput: false,
+  disabled: true
 }

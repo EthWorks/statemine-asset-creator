@@ -14,7 +14,13 @@ jest.mock('use-substrate/dist/src/hooks', () => ({
   useBalances: () => mockUseBalances
 }))
 
-function AccountSelectTestComponent({ withFreeBalance, withAccountInput }: { withFreeBalance?: boolean, withAccountInput?: boolean }): JSX.Element {
+interface TestComponentProps {
+  withFreeBalance?: boolean;
+  withAccountInput?: boolean;
+  disabled?: boolean
+}
+
+function AccountSelectTestComponent({ withFreeBalance, withAccountInput, disabled }: TestComponentProps): JSX.Element {
   const accounts = mockUseSubstrate.useAccounts()
   const [account, setAccount] = useState<Account>()
 
@@ -26,6 +32,7 @@ function AccountSelectTestComponent({ withFreeBalance, withAccountInput }: { wit
         setCurrentAccount={setAccount}
         withFreeBalance={withFreeBalance}
         withAccountInput={withAccountInput}
+        disabled={disabled}
       />
     </ThemeProvider>
   )
@@ -135,6 +142,15 @@ describe('AccountSelect component', () => {
 
       await screen.findByText('Invalid account address')
     })
+  })
+
+  it('when disabled, ignores on click events', async () => {
+    render(<AccountSelectTestComponent disabled/>)
+
+    await openDropdown()
+
+    const dropdownMenu = await screen.queryAllByRole('list')
+    expect(dropdownMenu).toHaveLength(0)
   })
 })
 
