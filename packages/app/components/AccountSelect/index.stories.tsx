@@ -1,33 +1,56 @@
-import { Story } from '@storybook/react'
+import type { Story } from '@storybook/react'
+import type { Account } from 'use-substrate'
+import type { Props } from './index'
+
 import React from 'react'
 
 import { mockAccounts } from '../../__tests__/mocks/mockAccounts'
 import { MockedApiProvider } from '../../storybookHelpers/MockedApiProvider'
-import { AccountSelect, Props } from './index'
+import { AccountSelect } from './index'
 
 const Default = {
   title: 'Components/AccountSelect',
-  component: AccountSelect
+  component: AccountSelect,
+  parameters: {
+    backgrounds: {
+      default: 'trueGray',
+      values: [
+        { name: 'trueGray', value: 'rgba(0,0,0,0.5)' }
+      ]
+    }
+  }
 }
 
 export default Default
 
-const Template: Story<Props> = (args) =>
-  <MockedApiProvider>
-    <AccountSelect {...args}/>
-  </MockedApiProvider>
+const Template: Story<Props> = (args) => {
+  const [currentAccount, setCurrentAccount] = React.useState<Account | undefined>(args.currentAccount)
+
+  return (
+    <MockedApiProvider>
+      <AccountSelect {...args} currentAccount={currentAccount} setCurrentAccount={setCurrentAccount}/>
+    </MockedApiProvider>
+  )
+}
 
 export const Base = Template.bind({})
 Base.args = {
   accounts: mockAccounts,
-  currentAccount: mockAccounts[0],
-  setCurrentAccount: () => { /**/ }
+  currentAccount: undefined
 }
 
-export const Secondary = Template.bind({})
-Secondary.args = {
+export const withFreeBalance = Template.bind({})
+withFreeBalance.args = {
   accounts: mockAccounts,
-  currentAccount: mockAccounts[0],
+  currentAccount: undefined,
   withFreeBalance: true,
-  setCurrentAccount: () => { /**/ }
+  withAccountInput: false
+}
+
+export const withAccountInput = Template.bind({})
+withAccountInput.args = {
+  accounts: mockAccounts,
+  currentAccount: undefined,
+  withFreeBalance: false,
+  withAccountInput: true
 }

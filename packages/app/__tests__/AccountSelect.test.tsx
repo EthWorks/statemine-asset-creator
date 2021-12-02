@@ -1,26 +1,22 @@
 import type { Account } from 'use-substrate'
 
-import { render, screen, within } from '@testing-library/react'
-import React, { useEffect, useState } from 'react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
+import React, { useState } from 'react'
 import { ThemeProvider } from 'styled-components'
 
 import { AccountSelect } from '../components'
 import { theme } from '../styles/styleVariables'
-import { openDropdown, selectAccountFromDropdown } from './helpers'
-import { mockAccounts, mockUseAccounts, mockUseBalances, mockUseSubstrate } from './mocks'
+import { assertText, selectAccountFromDropdown } from './helpers'
+import { charlieAccount, mockAccounts, mockUseAccounts, mockUseBalances, mockUseSubstrate } from './mocks'
 
 jest.mock('use-substrate/dist/src/hooks', () => ({
   useAccounts: () => mockUseAccounts,
   useBalances: () => mockUseBalances
 }))
 
-function AccountSelectTestComponent({ withFreeBalance }: { withFreeBalance?: boolean }): JSX.Element {
+function AccountSelectTestComponent({ withFreeBalance, withAccountInput }: { withFreeBalance?: boolean, withAccountInput?: boolean }): JSX.Element {
   const accounts = mockUseSubstrate.useAccounts()
-  const [account, setAccount] = useState<Account>(accounts.allAccounts[0])
-
-  useEffect(() => {
-    setAccount(accounts.allAccounts[0])
-  }, [accounts.allAccounts])
+  const [account, setAccount] = useState<Account>()
 
   return (
     <ThemeProvider theme={theme}>
@@ -29,29 +25,25 @@ function AccountSelectTestComponent({ withFreeBalance }: { withFreeBalance?: boo
         currentAccount={account}
         setCurrentAccount={setAccount}
         withFreeBalance={withFreeBalance}
+        withAccountInput={withAccountInput}
       />
     </ThemeProvider>
   )
 }
 
 describe('AccountSelect component', () => {
-  it('displays current account info on load', async () => {
+  it('displays "Select account" when no current account was set', async () => {
     render(<AccountSelectTestComponent/>)
 
-    await screen.findByText(mockAccounts[0].name)
-    await screen.findByText(mockAccounts[0].address)
-
-    const transferableBalanceElement = (await screen.findByText('transferable balance')).parentElement
-    expect(transferableBalanceElement).toHaveTextContent('4,000.0000KSM')
+    await assertText('Select account')
   })
 
   it('displays accounts in dropdown', async () => {
     render(<AccountSelectTestComponent/>)
 
-    const openDropdownButton = await screen.findByRole('button')
-    openDropdown(openDropdownButton)
+    await openDropdown()
 
-    const dropdownMenu = await screen.findByRole('menu')
+    const dropdownMenu = await screen.findByRole('list')
 
     await within(dropdownMenu).findByText('ALICE')
     await within(dropdownMenu).findByText('BOB')
@@ -67,8 +59,24 @@ describe('AccountSelect component', () => {
     expect(await within(openDropdownButton).queryAllByAltText('ALICE')).toHaveLength(0)
   })
 
+  it('shows "Select account" on button when dropdown is open', async () => {
+    render(<AccountSelectTestComponent/>)
+
+    const openDropdownButton = await screen.findByRole('button')
+    await within(openDropdownButton).findByText('Select account')
+
+    await selectAccountFromDropdown(0, 1)
+    await within(openDropdownButton).findByText('BOB')
+    expect(within(openDropdownButton).queryAllByText('Select account')).toHaveLength(0)
+
+    fireEvent.click(openDropdownButton)
+    await within(openDropdownButton).findByText('Select account')
+  })
+
   it('shows free balance', async () => {
     render(<AccountSelectTestComponent withFreeBalance/>)
+
+    await selectAccountFromDropdown(0, 0)
 
     await screen.findByText(mockAccounts[0].name)
     await screen.findByText(mockAccounts[0].address)
@@ -76,4 +84,63 @@ describe('AccountSelect component', () => {
     const transferableBalanceElement = (await screen.findByText('full account balance')).parentElement
     expect(transferableBalanceElement).toHaveTextContent('6,100.0000KSM')
   })
+
+  describe('with paste account option', () => {
+    beforeEach(() => {
+      render(<AccountSelectTestComponent withAccountInput/>)
+    })
+
+    it('displays "Select account or paste account address" when no current account was set', async () => {
+      await assertText('Select account or paste account address')
+    })
+
+    it('select toggle displays an input with placeholder', async () => {
+      await openDropdown()
+
+      const input = await screen.findByTestId('open-account-select-input')
+      expect(input).toHaveAttribute('placeholder', 'Select account or paste account address')
+    })
+
+    it('closes list on enter', async () => {
+      await openDropdown()
+
+      const dropdownMenu = await screen.findByRole('list')
+      const input = await screen.findByTestId('open-account-select-input')
+
+      fireEvent.keyDown(input, { key: 'Enter', code: 13 })
+
+      expect(dropdownMenu).not.toBeInTheDocument()
+      expect(input).not.toBeInTheDocument()
+    })
+
+    it('sets account id', async () => {
+      await openDropdown()
+
+      const input = await screen.findByTestId('open-account-select-input')
+
+      fireEvent.change(input, { target: { value: charlieAccount.address } })
+      fireEvent.keyDown(input, { key: 'Enter', code: 13 })
+
+      const updatedOpenDropdownButton = await screen.findByTestId('open-account-select')
+
+      await within(updatedOpenDropdownButton).findByText(charlieAccount.address)
+    })
+
+    it('shows error message when account id is invalid', async () => {
+      await openDropdown()
+
+      const input = await screen.findByTestId('open-account-select-input')
+
+      fireEvent.change(input, { target: { value: 'invalid' } })
+
+      await screen.findByText('Invalid account address')
+    })
+  })
 })
+
+async function openDropdown() {
+  const openDropdownButton = await screen.findByTestId('open-account-select')
+  fireEvent.click(openDropdownButton)
+
+  return openDropdownButton
+}

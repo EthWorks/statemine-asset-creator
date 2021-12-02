@@ -13,8 +13,8 @@
     "./dist/src"
   ],
   "dependencies": {
-    "@polkadot/api": "6.10.2",
-    "@polkadot/types": "6.10.2"
+    "@polkadot/api": "6.10.3",
+    "@polkadot/types": "6.10.3"
   },
   "devDependencies": {
     "typescript": "^4.5.2",
