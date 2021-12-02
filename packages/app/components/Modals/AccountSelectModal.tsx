@@ -58,20 +58,14 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
   }, [hasStatemineFreeBalance, isKusamaAccountSelectVisible, hasKusamaFreeBalance, setStatemineAccountInfo, setKusamaAccountInfo])
 
   const _onClick = async (): Promise<void> => {
-    const activeAccounts = isKusamaAccountSelectVisible
-      ? {
-        [Chains.Kusama]: kusamaAccount?.address,
-        [Chains.Statemine]: statemineAccount?.address
-      }
-      : {
-        [Chains.Kusama]: undefined,
-        [Chains.Statemine]: statemineAccount?.address
-      }
-    setActiveAccounts(activeAccounts)
+    setActiveAccounts({
+      [Chains.Kusama]: kusamaAccount?.address,
+      [Chains.Statemine]: statemineAccount?.address
+    })
     closeModal()
   }
 
-  if (!accounts.allAccounts.length) return <Loader />
+  if (accounts.extensionStatus === 'Loading') return <Loader />
 
   return (
     <Modal

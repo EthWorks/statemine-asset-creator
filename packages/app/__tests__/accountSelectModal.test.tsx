@@ -1,9 +1,11 @@
 import { act, fireEvent, screen, within } from '@testing-library/react'
 import React from 'react'
+import { ThemeProvider } from 'styled-components'
 
 import { Chains } from 'use-substrate'
 
 import Home from '../pages'
+import { theme } from '../styles/styleVariables'
 import { BN_ZERO as MOCK_BN_ZERO } from '../utils'
 import {
   assertNoText,
@@ -24,10 +26,11 @@ import {
 } from './mocks'
 
 const mockedSetter = jest.fn()
+let mockedUseAccounts = mockUseAccounts
 
 jest.mock('use-substrate/dist/src/hooks', () => ({
   useApi: () => mockUseApi,
-  useAccounts: () => mockUseAccounts,
+  useAccounts: () => mockedUseAccounts,
   useAssets: () => mockUseAssets,
   useBalances: () => ({ ...mockUseBalances, freeBalance: MOCK_BN_ZERO }),
   useActiveAccounts: () => ({
@@ -112,6 +115,18 @@ describe('Account select modal', () => {
 
     await assertText('Funds will be transferred to this Statemine account from your Kusama account.')
     await assertText('This account has no funds')
+  })
+
+  it('shows Select account when account was removed from extension', async () => {
+    const { rerender } = renderWithTheme(<Home/>)
+    await selectAccountFromDropdown(0, 1)
+    mockedUseAccounts.allAccounts = [aliceAccount]
+    rerender(<ThemeProvider theme={theme}><Home/></ThemeProvider>)
+    await assertText('Select account')
+  })
+
+  afterEach(() => {
+    mockedUseAccounts = mockUseAccounts
   })
 })
 
