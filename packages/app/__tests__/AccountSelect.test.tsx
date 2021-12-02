@@ -144,10 +144,11 @@ describe('AccountSelect component', () => {
     })
   })
 
-  it('when disabled, ignores on click events', async () => {
+  it('can not be opened if disabled', async () => {
     render(<AccountSelectTestComponent disabled/>)
 
-    await openDropdown()
+    const openDropdownButton = await openDropdown()
+    expect(openDropdownButton).toHaveAttribute('disabled')
 
     const dropdownMenu = await screen.queryAllByRole('list')
     expect(dropdownMenu).toHaveLength(0)
