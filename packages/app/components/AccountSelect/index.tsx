@@ -23,9 +23,10 @@ export interface Props extends InputInfoProps {
   label?: string,
   onClose?: () => void,
   withAccountInput?: boolean,
+  disabled?: boolean,
 }
 
-export function AccountSelect({ accounts, currentAccount, setCurrentAccount, label, withFreeBalance = false, onClose, withAccountInput, ...inputInfoProps }: Props): JSX.Element {
+export function AccountSelect({ accounts, currentAccount, setCurrentAccount, label, withFreeBalance = false, onClose, withAccountInput, disabled, ...inputInfoProps }: Props): JSX.Element {
   const [isOpen, toggleOpen, setOpen] = useToggle()
   const [inputAddressValue, setInputAddressValue] = useState<string>('')
   const [inputAddressError, setInputAddressError] = useState<string>()
@@ -82,12 +83,16 @@ export function AccountSelect({ accounts, currentAccount, setCurrentAccount, lab
               />
             )
             : (
-              <StyledButton data-testid='open-account-select' onClick={_toggleOpen}>
+              <StyledButton
+                disabled={disabled}
+                data-testid='open-account-select'
+                onClick={_toggleOpen}
+              >
                 {currentAccount && !isOpen
                   ? <AccountTile withFreeBalance={withFreeBalance} account={currentAccount}/>
                   : <StyledButtonText color='white' size='SM'>{`Select account${withAccountInput ? ' or paste account address' : ''}`}</StyledButtonText>
                 }
-                <StyledArrow direction='down' width='14' height='9' />
+                {!disabled && <StyledArrow direction='down' width='14' height='9' />}
               </StyledButton>
             )
           }
@@ -141,6 +146,18 @@ const StyledButton = styled(Popover.Trigger)`
   &:hover {
     border-color: ${({ theme }) => theme.colors.gray[50]};
     outline: 2px solid ${({ theme }) => theme.colors.gray[50]};
+  }
+  
+  &:disabled {
+    background-color: ${({ theme }) => theme.colors.gray[900]};
+    cursor: not-allowed;
+
+    &:active,
+    &:focus-visible,
+    &:hover {
+      border-color: transparent;
+      outline: none;
+    }
   }
 `
 
