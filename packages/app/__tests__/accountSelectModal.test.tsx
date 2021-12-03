@@ -31,7 +31,7 @@ import {
 } from './mocks'
 
 const mockedSetter = jest.fn()
-let mockedUseAccounts = mockUseAccounts
+const mockedUseAccounts = mockUseAccounts
 let mockActiveAccounts = {}
 let mockActiveAccount: AccountId | undefined
 
@@ -126,16 +126,6 @@ describe('Account select modal', () => {
   })
 
   describe('uses active account', () => {
-    it('shows prompt to select account when account was removed from extension', async () => {
-      const { rerender } = renderWithTheme(<Home/>)
-      await selectAccountFromDropdown(0, 1)
-      await clickConnect()
-
-      mockedUseAccounts.allAccounts = [aliceAccount]
-      rerender(<ThemeProvider theme={theme}><Home/></ThemeProvider>)
-      await assertText('Select account')
-    })
-
     it('shows current active account', async () => {
       mockedUseAccounts.allAccounts = [charlieAccount]
       mockActiveAccounts = { kusama: charlieAccount }
@@ -147,10 +137,20 @@ describe('Account select modal', () => {
       const accountSelectButton = await screen.findByTestId('open-account-select')
       await within(accountSelectButton).findByText('CHARLIE')
     })
+
+    it('shows prompt to select account when account was removed from extension', async () => {
+      const { rerender } = renderWithTheme(<Home/>)
+      await selectAccountFromDropdown(0, 1)
+      await clickConnect()
+
+      mockedUseAccounts.allAccounts = [aliceAccount]
+      rerender(<ThemeProvider theme={theme}><Home/></ThemeProvider>)
+      await assertText('Select account')
+    })
   })
 
   afterEach(() => {
-    mockedUseAccounts = mockUseAccounts
+    mockedUseAccounts.allAccounts = [aliceAccount, bobAccount]
     mockActiveAccounts = {}
     mockActiveAccount = undefined
   })
@@ -178,5 +178,6 @@ const assertNumberOfSelectAccountDropdowns = (number: number) => {
 const openAccountSelectModal = async () => {
   const activeAccountBar = await screen.findByTestId('active-account-bar')
   const editButton = await within(activeAccountBar).findByRole('button')
+
   fireEvent.click(editButton)
 }
