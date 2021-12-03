@@ -40,7 +40,7 @@ export const ActiveAccount: FC<ActiveAccountProps> = ({ chain, logo }) => {
       </ActiveAccountContent>
       <AddressWrapper>
         <AddressText size='XS'>
-          {activeAccount ? shortAddress(activeAccount.toString(), 8) : ''}
+          {activeAccount.address ? shortAddress(activeAccount.address.toString(), 8) : ''}
         </AddressText>
       </AddressWrapper>
     </ActiveAccountWrapper>

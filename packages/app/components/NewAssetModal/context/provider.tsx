@@ -8,9 +8,10 @@ import { matchAccountIdWithAccountFromExtension } from '../../../utils/matchAcco
 import { NewAssetModalContext } from './context'
 
 export const NewAssetModalProvider: React.FC = ({ children }) => {
-  const { activeAccount: activeAccountId } = useActiveAccount(Chains.Statemine)
+  const { activeAccount: statemineActiveAccount } = useActiveAccount(Chains.Statemine)
+  const { address } = statemineActiveAccount || {}
   const accounts = useAccounts()
-  const activeAccount = useMemo(() => matchAccountIdWithAccountFromExtension(activeAccountId, accounts.allAccounts), [activeAccountId, accounts.allAccounts])
+  const activeAccount = useMemo(() => matchAccountIdWithAccountFromExtension(address, accounts.allAccounts), [address, accounts.allAccounts])
   const [admin, setAdmin] = useState<Account | undefined>(activeAccount)
   const [issuer, setIssuer] = useState<Account | undefined>(activeAccount)
   const [freezer, setFreezer] = useState<Account | undefined>(activeAccount)

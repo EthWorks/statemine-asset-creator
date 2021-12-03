@@ -34,7 +34,7 @@ import {
 const mockedSetter = jest.fn()
 const mockedUseAccounts = mockUseAccounts
 let mockActiveAccounts = {}
-let mockActiveAccount: AccountId | undefined
+let mockActiveAccount: { address: AccountId } | undefined
 
 jest.mock('use-substrate/dist/src/hooks', () => ({
   useApi: () => mockUseApi,
@@ -68,7 +68,7 @@ describe('Account select modal', () => {
 
     expect(mockedSetter).toBeCalledWith({
       [Chains.Kusama]: undefined,
-      [Chains.Statemine]: bobAccount.address
+      [Chains.Statemine]: { address: bobAccount.address }
     })
     assertNoText('Connect accounts')
   })
@@ -89,8 +89,8 @@ describe('Account select modal', () => {
     await clickConnect()
 
     expect(mockedSetter).toBeCalledWith({
-      [Chains.Kusama]: aliceAccount.address,
-      [Chains.Statemine]: bobAccount.address
+      [Chains.Kusama]: { address: aliceAccount.address },
+      [Chains.Statemine]: { address: bobAccount.address }
     })
   })
 
@@ -129,8 +129,8 @@ describe('Account select modal', () => {
 
   it('clears kusama account when select is hidden', async () => {
     mockedUseAccounts.allAccounts = [aliceAccount, bobAccount]
-    mockActiveAccount = bobAccountId
-    mockActiveAccounts = { kusama: aliceAccount, statemine: bobAccount }
+    mockActiveAccount = { address: bobAccountId }
+    mockActiveAccounts = { kusama: { address: aliceAccount }, statemine: { address: bobAccount } }
 
     renderWithTheme(<Home/>)
 
@@ -144,15 +144,15 @@ describe('Account select modal', () => {
 
     expect(mockedSetter).toBeCalledWith({
       [Chains.Kusama]: undefined,
-      [Chains.Statemine]: bobAccount.address
+      [Chains.Statemine]: { address: bobAccount.address }
     })
   })
 
   describe('uses active account', () => {
     it('shows current active account', async () => {
       mockedUseAccounts.allAccounts = [charlieAccount]
-      mockActiveAccounts = { statemine: charlieAccount }
-      mockActiveAccount = charlieAccountId
+      mockActiveAccounts = { statemine: { address: charlieAccount } }
+      mockActiveAccount = { address: charlieAccountId }
 
       renderWithTheme(<Home/>)
 

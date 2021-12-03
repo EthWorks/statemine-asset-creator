@@ -2,12 +2,12 @@ import { act, renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
 
 import { ActiveAccountProvider, Chains, useActiveAccount, useActiveAccounts } from '../src'
-import { ALICE_ID, BOB_ID } from './consts/addresses'
 import { mockedKusamaApi } from './mocks/MockedApiProvider'
+import { ALICE_ID_WITHOUT_NAME, BOB_ID_WITHOUT_NAME } from './consts'
 
 describe('use active account', () => {
   describe('can set an active account for a specific chain', () => {
-    beforeEach(() => {
+    afterEach(() => {
       localStorage.clear()
     })
 
@@ -17,13 +17,13 @@ describe('use active account', () => {
       expect(result.current.activeAccount).toEqual(undefined)
 
       const { setActiveAccount } = result.current
-      act(() => setActiveAccount(BOB_ID))
+      act(() => setActiveAccount(BOB_ID_WITHOUT_NAME))
 
       rerender()
 
       const activeAccount = result.current.activeAccount
 
-      expect(activeAccount).toEqual(BOB_ID)
+      expect(activeAccount).toEqual(BOB_ID_WITHOUT_NAME)
     })
 
     it('and get by use active accounts', () => {
@@ -32,11 +32,11 @@ describe('use active account', () => {
       expect(result.current.activeAccounts[Chains.Kusama]).toEqual(undefined)
 
       const { setActiveAccount } = result.current
-      act(() => setActiveAccount(BOB_ID))
+      act(() => setActiveAccount(BOB_ID_WITHOUT_NAME))
 
       rerender()
 
-      expect(result.current.activeAccounts[Chains.Kusama]).toEqual(BOB_ID)
+      expect(result.current.activeAccounts[Chains.Kusama]).toEqual(BOB_ID_WITHOUT_NAME)
     })
   })
 
@@ -44,20 +44,20 @@ describe('use active account', () => {
     const { result, rerender } = renderActiveAccount(Chains.Kusama)
 
     const { setActiveAccount } = result.current
-    act(() => setActiveAccount(BOB_ID))
+    act(() => setActiveAccount(BOB_ID_WITHOUT_NAME))
 
     rerender()
 
     const { activeAccount, setActiveAccount: setAfterRerender } = result.current
 
-    expect(activeAccount).toEqual(BOB_ID)
+    expect(activeAccount).toEqual(BOB_ID_WITHOUT_NAME)
 
-    act(() => setAfterRerender(ALICE_ID))
+    act(() => setAfterRerender(ALICE_ID_WITHOUT_NAME))
 
     rerender()
 
     const { activeAccount: overriddenAccount } = result.current
-    expect(overriddenAccount).toEqual(ALICE_ID)
+    expect(overriddenAccount).toEqual(ALICE_ID_WITHOUT_NAME)
   })
 
   const renderActiveAccount = (chain: Chains) => {

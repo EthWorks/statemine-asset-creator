@@ -22,16 +22,17 @@ import {
 import { extensionActivated, useAsync, useToggle } from '../utils'
 
 const Home: NextPage = () => {
-  const { activeAccount: account } = useActiveAccount(Chains.Statemine)
+  const { activeAccount } = useActiveAccount(Chains.Statemine)
+  const { address } = activeAccount || {}
   const { web3Enable } = useAccounts()
-  const assets = useAssets(Chains.Statemine, { owner: account })
+  const assets = useAssets(Chains.Statemine, { owner: address })
   const [isNewAssetModalOpen, toggleNewAssetModalOpen] = useToggle()
   const [isConnectWalletModalOpen, toggleConnectWalletModalOpen, setConnectWalletModalOpen] = useToggle(!extensionActivated())
   const [isAccountSelectModalOpen, toggleSelectAccountModalOpen, setSelectAccountModalOpen] = useToggle()
 
   useEffect(() => {
-    setSelectAccountModalOpen(extensionActivated() && !account)
-  }, [account, setSelectAccountModalOpen])
+    setSelectAccountModalOpen(extensionActivated() && !address)
+  }, [address, setSelectAccountModalOpen])
 
   const onExtensionActivated = (): void => {
     setConnectWalletModalOpen(false)
@@ -55,17 +56,17 @@ const Home: NextPage = () => {
       <PageTemplate
         background={background}
         title="Dashboard"
-        templateHeader={account && assets?.length ? <ButtonPrimary onClick={toggleNewAssetModalOpen}>Create new asset</ButtonPrimary> : null}
+        templateHeader={address && assets?.length ? <ButtonPrimary onClick={toggleNewAssetModalOpen}>Create new asset</ButtonPrimary> : null}
         header={
           <div data-testid='page-header'>
-            {account
+            {address
               ? <ActiveAccountBar onClick={toggleSelectAccountModalOpen}/>
               : <ButtonPrimary onClick={toggleConnectWalletModalOpen}>Connect</ButtonPrimary>
             }
           </div>
         }
       >
-        {account && assets?.length
+        {address && assets?.length
           ? <PageBox size='full' title={`Created assets [${assets.length}]`}>
             <CreatedAssets assets={assets}/>
           </PageBox>
@@ -75,7 +76,7 @@ const Home: NextPage = () => {
               <Text size="SM">Here you can create fungible assets, which will be governed by you and accounts you
                 designate.</Text>
               <div>
-                {account
+                {address
                   ? <StyledButton onClick={toggleNewAssetModalOpen}>Create new asset</StyledButton>
                   : <StyledButton onClick={toggleConnectWalletModalOpen} large>Connect to create your asset</StyledButton>
                 }
