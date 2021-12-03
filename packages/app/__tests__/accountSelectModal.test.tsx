@@ -137,8 +137,7 @@ describe('Account select modal', () => {
     await openAccountSelectModal()
     await findAndClickButton('Add Kusama account')
 
-    await selectAccountFromDropdown(1, 0)
-
+    await assertAccountInDropdown('BOB', 1)
     await closeKusamaAccountDropdown()
 
     await clickConnect()
@@ -152,14 +151,13 @@ describe('Account select modal', () => {
   describe('uses active account', () => {
     it('shows current active account', async () => {
       mockedUseAccounts.allAccounts = [charlieAccount]
-      mockActiveAccounts = { kusama: charlieAccount }
+      mockActiveAccounts = { statemine: charlieAccount }
       mockActiveAccount = charlieAccountId
 
       renderWithTheme(<Home/>)
 
       await openAccountSelectModal()
-      const accountSelectButton = await screen.findByTestId('open-account-select')
-      await within(accountSelectButton).findByText('CHARLIE')
+      await assertAccountInDropdown('CHARLIE', 0)
     })
 
     it('shows prompt to select account when account was removed from extension', async () => {
@@ -197,6 +195,11 @@ const assertNumberOfSelectAccountDropdowns = (number: number) => {
   const accountSelects = screen.getAllByTestId('open-account-select')
 
   expect(accountSelects).toHaveLength(number)
+}
+
+const assertAccountInDropdown = async (accountName: string, dropdownIndex: number) => {
+  const accountSelectButton = (await screen.findAllByTestId('open-account-select'))[dropdownIndex]
+  await within(accountSelectButton).findByText(accountName)
 }
 
 const openAccountSelectModal = async () => {
