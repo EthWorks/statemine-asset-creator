@@ -5,14 +5,19 @@ import { ActiveAccountProvider, Chains, useActiveAccounts } from '../src'
 import { ALICE_ID, BOB, BOB_ID } from './consts/addresses'
 import { mockedKusamaApi } from './mocks/MockedApiProvider'
 
+jest.mock('../src/hooks/useAccounts')
+
 describe('use active accounts', () => {
+  beforeEach(() => {
+    jest.resetModules()
+  })
   describe('with localStorage', () => {
     beforeEach(() => {
       localStorage.clear()
     })
 
     it('can set and get active account via hook', async () => {
-      const { result, rerender } = renderActiveAccount()
+      const { result, rerender } = renderActiveAccounts()
 
       const { setActiveAccounts } = result.current
       act(() => setActiveAccounts({ [Chains.Kusama]: BOB_ID }))
@@ -24,7 +29,7 @@ describe('use active accounts', () => {
     })
 
     it('can set and get multiple active accounts via hook', async () => {
-      const { result, rerender } = renderActiveAccount()
+      const { result, rerender } = renderActiveAccounts()
 
       const { setActiveAccounts } = result.current
       act(() => setActiveAccounts({ [Chains.Kusama]: BOB_ID, [Chains.Statemine]: ALICE_ID }))
@@ -38,7 +43,7 @@ describe('use active accounts', () => {
     })
 
     it('can override an active account', async () => {
-      const { result, rerender } = renderActiveAccount()
+      const { result, rerender } = renderActiveAccounts()
 
       const { setActiveAccounts } = result.current
       act(() => setActiveAccounts({ [Chains.Kusama]: BOB_ID }))
@@ -58,7 +63,7 @@ describe('use active accounts', () => {
     })
 
     it('sets activeAccounts (as accountId) in localStorage', async () => {
-      const { result } = renderActiveAccount()
+      const { result } = renderActiveAccounts()
 
       const { setActiveAccounts } = result.current
       act(() => setActiveAccounts({ [Chains.Kusama]: BOB_ID }))
@@ -69,7 +74,7 @@ describe('use active accounts', () => {
     })
 
     it('sets activeAccounts (as string) in localStorage', async () => {
-      const { result } = renderActiveAccount()
+      const { result } = renderActiveAccounts()
 
       const { setActiveAccounts } = result.current
       act(() => setActiveAccounts({ [Chains.Kusama]: BOB }))
@@ -81,7 +86,7 @@ describe('use active accounts', () => {
 
     describe('on load reads localStorage and sets state to', () => {
       it('undefined when activeAccounts are not set in localStorage', async () => {
-        const { result } = renderActiveAccount()
+        const { result } = renderActiveAccounts()
         const { activeAccounts } = result.current
 
         const kusamaActiveAccount = activeAccounts && activeAccounts[Chains.Kusama]
@@ -89,8 +94,11 @@ describe('use active accounts', () => {
       })
 
       it('activeAccounts set in localStorage', async () => {
-        act(() => localStorage.setItem('activeAccounts', JSON.stringify({ kusama: BOB })))
-        const { result } = renderActiveAccount()
+        act(() => {
+          localStorage.setItem('activeAccounts', JSON.stringify({ kusama: BOB }))
+        })
+
+        const { result } = renderActiveAccounts()
         const { activeAccounts } = result.current
 
         const kusamaActiveAccount = activeAccounts && activeAccounts[Chains.Kusama]
@@ -110,7 +118,7 @@ describe('use active accounts', () => {
     })
 
     it('can set and get activeAccounts', async () => {
-      const { result, rerender } = renderActiveAccount()
+      const { result, rerender } = renderActiveAccounts()
 
       const { setActiveAccounts, activeAccounts: initActiveAccounts } = result.current
       expect(initActiveAccounts).toEqual({})
@@ -130,7 +138,7 @@ describe('use active accounts', () => {
     })
   })
 
-  const renderActiveAccount = () => {
+  const renderActiveAccounts = () => {
     const wrapper = ({ children }: { children: ReactNode }) => (
       <ActiveAccountProvider api={mockedKusamaApi.api}>
         {children}

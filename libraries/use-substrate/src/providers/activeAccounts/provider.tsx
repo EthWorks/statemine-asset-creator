@@ -3,38 +3,41 @@ import type { ActiveAccountProviderProps, ActiveAccounts, ActiveAccountsInput } 
 
 import React, { useEffect, useState } from 'react'
 
+import { useAccounts } from '../../hooks'
 import { localStorageExists } from '../../util/checks'
 import { ActiveAccountsContext } from './context'
-import { convertAddressesToAccountIds } from './utils'
+import { convertAddressesToAccountIds, filterAccountsPresentInExtension } from './utils'
 
 export const ActiveAccountProvider: FC<ActiveAccountProviderProps> = ({ children, api }) => {
+  const extensionAccounts = useAccounts()
   const [activeAccounts, setActiveAccounts] = useState<ActiveAccounts>({})
 
   useEffect(() => {
     if (localStorageExists()) {
-      const accountsInLocalStorage = localStorage.getItem('activeAccounts')
-      const initialAccounts = accountsInLocalStorage ? JSON.parse(accountsInLocalStorage) : {}
+      const localStorageAccounts = localStorage.getItem('activeAccounts')
+      const parsedAccounts = localStorageAccounts ? JSON.parse(localStorageAccounts) : {}
 
       if (!api) {
         return
       }
 
-      const convertedAccounts = convertAddressesToAccountIds(initialAccounts, api)
-      setActiveAccounts(convertedAccounts)
+      const accountsPresentInExtension = filterAccountsPresentInExtension(parsedAccounts, extensionAccounts.allAccounts)
+      const accountsWithAccountIds = convertAddressesToAccountIds(accountsPresentInExtension, api)
+      setActiveAccounts(accountsWithAccountIds)
     }
-  }, [api])
+  }, [api, extensionAccounts.allAccounts.length])
 
   const _setActiveAccounts = (newActiveAccounts: ActiveAccountsInput): void => {
     if (localStorageExists()) {
-      const accounts = { ...activeAccounts, ...newActiveAccounts }
-      localStorage.setItem('activeAccounts', JSON.stringify(accounts))
+      const updatedActiveAccounts = { ...activeAccounts, ...newActiveAccounts }
+      localStorage.setItem('activeAccounts', JSON.stringify(updatedActiveAccounts))
     }
 
-    const convertedAccounts = convertAddressesToAccountIds(newActiveAccounts, api)
+    const accountsWithAccountIds = convertAddressesToAccountIds(newActiveAccounts, api)
 
     setActiveAccounts({
       ...activeAccounts,
-      ...convertedAccounts
+      ...accountsWithAccountIds
     })
   }
 

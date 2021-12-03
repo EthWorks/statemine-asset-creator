@@ -1,11 +1,20 @@
+import type { Account } from 'use-substrate'
+
 import BN from 'bn.js'
 import { createContext } from 'react'
 
 type stringSetter = (arg: string) => void;
 type stringOrUndefinedSetter = (arg: string | undefined) => void;
+type AccountOrUndefinedSetter = (account: Account | undefined) => void
 const noop = (): void => { /**/ }
 
 export interface NewAssetForm {
+  admin: Account | undefined,
+  setAdmin: AccountOrUndefinedSetter,
+  issuer: Account | undefined,
+  setIssuer: AccountOrUndefinedSetter,
+  freezer: Account | undefined,
+  setFreezer: AccountOrUndefinedSetter,
   assetName: string,
   setAssetName: stringSetter,
   assetNameError?: string,
@@ -26,6 +35,12 @@ export interface NewAssetForm {
 }
 
 export const NewAssetModalContext = createContext<NewAssetForm>({
+  admin: undefined,
+  setAdmin: noop,
+  issuer: undefined,
+  setIssuer: noop,
+  freezer: undefined,
+  setFreezer: noop,
   assetName: '',
   setAssetName: noop,
   assetNameError: undefined,

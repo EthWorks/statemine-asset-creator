@@ -7,6 +7,7 @@ import { NewAssetModalProvider } from './context/provider'
 import { StepsBar } from './StepsBar/StepsBar'
 import { FirstStep } from './FirstStep'
 import { SecondStep } from './SecondStep'
+import { ThirdStep } from './ThirdStep'
 
 export function NewAssetModal({ isOpen, closeModal }: NewAssetModalProps): JSX.Element {
   const [activeStep, setActiveStep] = useState<number>(1)
@@ -25,8 +26,11 @@ export function NewAssetModal({ isOpen, closeModal }: NewAssetModalProps): JSX.E
       case 1: {
         return <FirstStep onNext={() => _moveToStep(2)}/>
       }
+      case 2: {
+        return <SecondStep onNext={() => _moveToStep(3)} onBack={() => _moveToStep(1)}/>
+      }
       default: {
-        return <SecondStep onNext={_onClose} onBack={() => _moveToStep(1)}/>
+        return <ThirdStep onNext={_onClose} onBack={() => _moveToStep(2)}/>
       }
     }
   }

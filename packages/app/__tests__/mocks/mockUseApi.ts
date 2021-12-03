@@ -10,10 +10,13 @@ export const mockUseApi = {
     },
     tx: {
       assets: {
-        create: noop,
-        setMetadata: noop
+        create: jest.fn(),
+        setMetadata: jest.fn(),
+        setTeam: jest.fn()
       },
-      utility: {}
+      utility: {
+        batchAll: noop
+      }
     }
   }
 }

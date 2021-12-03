@@ -1,8 +1,6 @@
+import type { ApiRx } from '@polkadot/api'
 import type { AccountId } from '@polkadot/types/interfaces'
-
-import { ApiRx } from '@polkadot/api'
-
-import { Chains } from '../../consts'
+import type { Chains } from '../../consts'
 
 export interface UseActiveAccounts {
   activeAccounts: ActiveAccounts,
