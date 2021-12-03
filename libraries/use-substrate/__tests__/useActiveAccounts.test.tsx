@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react'
 
 import { ActiveAccountProvider, Chains, useActiveAccounts } from '../src'
 import { mockedKusamaApi } from './mocks/MockedApiProvider'
-import { ALICE_ID_WITHOUT_NAME, BOB_ID_WITHOUT_NAME, BOB_WITHOUT_NAME } from './consts'
+import { ALICE_ID_WITHOUT_NAME, BOB_ID_WITH_NAME, BOB_ID_WITHOUT_NAME, BOB_WITHOUT_NAME } from './consts'
 
 jest.mock('../src/hooks/useAccounts')
 
@@ -104,6 +104,18 @@ describe('use active accounts', () => {
         const kusamaActiveAccount = activeAccounts && activeAccounts[Chains.Kusama]
         expect(kusamaActiveAccount).toEqual(BOB_ID_WITHOUT_NAME)
       })
+    })
+
+    it('with name can set and get active account via hook', async () => {
+      const { result, rerender } = renderActiveAccounts()
+
+      const { setActiveAccounts } = result.current
+      act(() => setActiveAccounts({ [Chains.Kusama]: BOB_ID_WITH_NAME }))
+
+      rerender()
+      const { activeAccounts } = result.current
+
+      expect(activeAccounts && activeAccounts[Chains.Kusama]).toEqual(BOB_ID_WITH_NAME)
     })
   })
 

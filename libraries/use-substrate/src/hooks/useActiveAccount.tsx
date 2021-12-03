@@ -3,15 +3,17 @@ import type { AccountId } from '@polkadot/types/interfaces'
 import { Chains } from '../consts'
 import { useActiveAccounts } from './useActiveAccounts'
 
-interface ActiveAccount {
-  activeAccount: { address: AccountId } | undefined,
-  setActiveAccount: (account: { address: AccountId }) => void
+export type ActiveAccount = { address: AccountId, name?: string };
+
+interface UseActiveAccount {
+  activeAccount: ActiveAccount | undefined,
+  setActiveAccount: (account: ActiveAccount) => void
 }
 
-export function useActiveAccount(chain: Chains): ActiveAccount {
+export function useActiveAccount(chain: Chains): UseActiveAccount {
   const { activeAccounts, setActiveAccounts } = useActiveAccounts()
   const activeAccount = activeAccounts[chain]
-  const setActiveAccount = (account: {address: AccountId }): void => setActiveAccounts({ [chain]: account })
+  const setActiveAccount = (account: ActiveAccount): void => setActiveAccounts({ [chain]: account })
 
   return { activeAccount, setActiveAccount }
 }

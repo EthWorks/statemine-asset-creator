@@ -7,8 +7,8 @@ export interface UseActiveAccounts {
   setActiveAccounts: (activeAccounts: ActiveAccountsInput) => void
 }
 
-export type ActiveAccounts = Partial<Record<Chains, {address: AccountId}>>
-export type ActiveAccountsInput = Partial<Record<Chains, {address: AccountId | string}>>
+export type ActiveAccounts = Partial<Record<Chains, {address: AccountId, name?: string}>>
+export type ActiveAccountsInput = Partial<Record<Chains, {address: AccountId | string, name?: string}>>
 
 export interface ActiveAccountProviderProps {
   api: ApiRx | undefined,

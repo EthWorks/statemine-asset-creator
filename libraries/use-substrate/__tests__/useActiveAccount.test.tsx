@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react'
 
 import { ActiveAccountProvider, Chains, useActiveAccount, useActiveAccounts } from '../src'
 import { mockedKusamaApi } from './mocks/MockedApiProvider'
-import { ALICE_ID_WITHOUT_NAME, BOB_ID_WITHOUT_NAME } from './consts'
+import { ALICE_ID_WITHOUT_NAME, BOB_ID_WITH_NAME, BOB_ID_WITHOUT_NAME } from './consts'
 
 describe('use active account', () => {
   describe('can set an active account for a specific chain', () => {
@@ -24,6 +24,21 @@ describe('use active account', () => {
       const activeAccount = result.current.activeAccount
 
       expect(activeAccount).toEqual(BOB_ID_WITHOUT_NAME)
+    })
+
+    it('get and set active account with name', () => {
+      const { result, rerender } = renderActiveAccount(Chains.Kusama)
+
+      expect(result.current.activeAccount).toEqual(undefined)
+
+      const { setActiveAccount } = result.current
+      act(() => setActiveAccount(BOB_ID_WITH_NAME))
+
+      rerender()
+
+      const activeAccount = result.current.activeAccount
+
+      expect(activeAccount).toEqual(BOB_ID_WITH_NAME)
     })
 
     it('and get by use active accounts', () => {

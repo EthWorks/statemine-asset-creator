@@ -10,8 +10,8 @@ export function convertAddressesToAccountIds(initialAccounts: ActiveAccountsInpu
   // eslint-disable-next-line array-callback-return
   Object.entries(initialAccounts).map(([chain, account]) => {
     if (account && api) {
-      const { address } = account
-      activeAccounts[chain as Chains] = isString(address) ? { address: api.createType('AccountId', address) } : { address }
+      const { address, name } = account
+      activeAccounts[chain as Chains] = { address: (isString(address) ? api.createType('AccountId', address) : address), name }
     } else if (!account && api) {
       activeAccounts[chain as Chains] = undefined
     }
@@ -25,9 +25,9 @@ export function filterAccountsPresentInExtension(localStorageAccounts: ActiveAcc
   // eslint-disable-next-line array-callback-return
   Object.entries(localStorageAccounts).map(([chain, account]) => {
     if (account) {
-      const { address } = account
+      const { address, name } = account
       const matchedExtensionAccount = extensionAccounts.find(extensionAccount => extensionAccount.address === address.toString())
-      accountsPresentInExtension[chain as Chains] = matchedExtensionAccount ? { address } : undefined
+      accountsPresentInExtension[chain as Chains] = matchedExtensionAccount ? { address, name } : undefined
     }
   })
 
