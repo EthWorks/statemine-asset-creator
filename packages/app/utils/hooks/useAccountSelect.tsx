@@ -8,7 +8,7 @@ import { BN_ZERO } from '../consts'
 
 interface UseAccountSelect {
   account: Account | undefined;
-  setAccount: (account: Account) => void;
+  setAccount: (account: Account | undefined) => void;
   accountInfo?: string;
   setAccountInfo: (accountInfo: string | undefined) => void;
   hasFreeBalance?: boolean;

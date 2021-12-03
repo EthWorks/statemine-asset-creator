@@ -65,6 +65,11 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
     closeModal()
   }
 
+  function _onKusamaSelectHide(): void {
+    setKusamaAccount(undefined)
+    toggleKusamaAccountSelectVisible()
+  }
+
   if (accounts.extensionStatus === 'Loading') return <Loader />
 
   return (
@@ -108,7 +113,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
             accounts={accounts.allAccounts}
             currentAccount={kusamaAccount}
             setCurrentAccount={setKusamaAccount}
-            onClose={toggleKusamaAccountSelectVisible}
+            onClose={_onKusamaSelectHide}
             tip={kusamaAccountInfo}
           />
         </>
@@ -117,7 +122,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
         Connect
         <Arrow direction='right' width='14' height='9' />
       </StyledButtonPrimary>
-      { accounts.error === 'EXTENSION' && <div>No extension available</div>}
+      {accounts.error === 'EXTENSION' && <div>No extension available</div>}
     </Modal>
   )
 }

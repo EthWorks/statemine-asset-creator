@@ -1,5 +1,4 @@
-import type { AccountId } from '@polkadot/types/interfaces'
-
+import { AccountId } from '@polkadot/types/interfaces'
 import { act, fireEvent, screen, within } from '@testing-library/react'
 import React from 'react'
 import { ThemeProvider } from 'styled-components'
@@ -21,6 +20,7 @@ import {
 import {
   aliceAccount,
   bobAccount,
+  bobAccountId,
   charlieAccount,
   charlieAccountId,
   mockUseAccounts,
@@ -56,6 +56,7 @@ describe('Account select modal', () => {
     act(() => {
       localStorage.clear()
       setLocalStorage('extensionActivated', 'true')
+      jest.resetAllMocks()
     })
   })
 
@@ -125,6 +126,28 @@ describe('Account select modal', () => {
     await assertText('This account has no funds')
   })
 
+  it('clears kusama account when select is hidden', async () => {
+    mockedUseAccounts.allAccounts = [aliceAccount, bobAccount]
+    mockActiveAccount = bobAccountId
+    mockActiveAccounts = { kusama: aliceAccount, statemine: bobAccount }
+
+    renderWithTheme(<Home/>)
+
+    await openAccountSelectModal()
+    await findAndClickButton('Add Kusama account')
+
+    await selectAccountFromDropdown(1, 0)
+
+    await closeKusamaAccountDropdown()
+
+    await clickConnect()
+
+    expect(mockedSetter).toBeCalledWith({
+      [Chains.Kusama]: undefined,
+      [Chains.Statemine]: bobAccount.address
+    })
+  })
+
   describe('uses active account', () => {
     it('shows current active account', async () => {
       mockedUseAccounts.allAccounts = [charlieAccount]
@@ -151,8 +174,8 @@ describe('Account select modal', () => {
 
   afterEach(() => {
     mockedUseAccounts.allAccounts = [aliceAccount, bobAccount]
-    mockActiveAccounts = {}
     mockActiveAccount = undefined
+    mockActiveAccounts = {}
   })
 })
 
