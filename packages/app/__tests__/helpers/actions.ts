@@ -36,7 +36,7 @@ export function fillInput(label: string, value: unknown): void {
 }
 
 export async function selectAccountFromDropdown(dropdownIndex: number, accountIndex: number) {
-  const openDropdownButton = (await screen.findAllByTestId('open-account-select'))[dropdownIndex]
+  const openDropdownButton = await getAccountSelect(dropdownIndex)
   fireEvent.click(openDropdownButton)
 
   const dropdownMenu = await screen.findByRole('list')
@@ -48,4 +48,8 @@ export async function selectAccountFromDropdown(dropdownIndex: number, accountIn
 export function typeInInput(inputName: string, value: string) {
   const decimalsInput = screen.getByLabelText(inputName)
   userEvent.type(decimalsInput, value)
+}
+
+export async function getAccountSelect(dropdownIndex: number) {
+  return (await screen.findAllByTestId('open-account-select'))[dropdownIndex]
 }

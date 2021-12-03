@@ -13,6 +13,7 @@ import { mockUseBestNumber } from './mocks/mockUseBestNumber'
 import {
   assertNoText,
   assertText,
+  assertTextInAccountSelect,
   findAndClickButton,
   renderWithTheme,
   selectAccountFromDropdown,
@@ -20,6 +21,7 @@ import {
 } from './helpers'
 import {
   aliceAccount,
+  aliceAccountId,
   bobAccount,
   bobAccountId,
   charlieAccount,
@@ -34,7 +36,17 @@ import {
 const mockedSetter = jest.fn()
 const mockedUseAccounts = mockUseAccounts
 let mockActiveAccounts = {}
-let mockActiveAccount: { address: AccountId } | undefined
+let mockKusamaActiveAccount: AccountId | undefined
+let mockStatemineActiveAccount: AccountId | undefined
+
+const mockActiveAccount = (chain: Chains) => {
+  switch (chain) {
+    case Chains.Kusama:
+      return mockKusamaActiveAccount
+    default:
+      return mockStatemineActiveAccount
+  }
+}
 
 jest.mock('use-substrate/dist/src/hooks', () => ({
   useApi: () => mockUseApi,
@@ -46,9 +58,9 @@ jest.mock('use-substrate/dist/src/hooks', () => ({
     activeAccounts: mockActiveAccounts,
     setActiveAccounts: mockedSetter
   }),
-  useActiveAccount: () => ({
+  useActiveAccount: (chain: Chains) => ({
     ...mockUseActiveAccount,
-    activeAccount: mockActiveAccount
+    activeAccount: mockActiveAccount(chain)
   })
 }))
 
@@ -68,7 +80,7 @@ describe('Account select modal', () => {
 
     expect(mockedSetter).toBeCalledWith({
       [Chains.Kusama]: undefined,
-      [Chains.Statemine]: { address: bobAccount.address }
+      [Chains.Statemine]: bobAccount.address
     })
     assertNoText('Connect accounts')
   })
@@ -89,8 +101,8 @@ describe('Account select modal', () => {
     await clickConnect()
 
     expect(mockedSetter).toBeCalledWith({
-      [Chains.Kusama]: { address: aliceAccount.address },
-      [Chains.Statemine]: { address: bobAccount.address }
+      [Chains.Kusama]: aliceAccount.address,
+      [Chains.Statemine]: bobAccount.address
     })
   })
 
@@ -129,35 +141,34 @@ describe('Account select modal', () => {
 
   it('clears kusama account when select is hidden', async () => {
     mockedUseAccounts.allAccounts = [aliceAccount, bobAccount]
-    mockActiveAccount = { address: bobAccountId }
-    mockActiveAccounts = { kusama: { address: aliceAccount }, statemine: { address: bobAccount } }
+    mockStatemineActiveAccount = aliceAccountId
+    mockKusamaActiveAccount = bobAccountId
+    mockActiveAccounts = { kusama: aliceAccount, statemine: bobAccount }
 
     renderWithTheme(<Home/>)
 
     await openAccountSelectModal()
-    await findAndClickButton('Add Kusama account')
 
-    await assertAccountInDropdown('BOB', 1)
+    await assertTextInAccountSelect('BOB', 1)
     await closeKusamaAccountDropdown()
 
     await clickConnect()
 
     expect(mockedSetter).toBeCalledWith({
       [Chains.Kusama]: undefined,
-      [Chains.Statemine]: { address: bobAccount.address }
+      [Chains.Statemine]: aliceAccount.address
     })
   })
 
   describe('uses active account', () => {
     it('shows current active account', async () => {
       mockedUseAccounts.allAccounts = [charlieAccount]
-      mockActiveAccounts = { statemine: { address: charlieAccount } }
-      mockActiveAccount = { address: charlieAccountId }
+      mockStatemineActiveAccount = charlieAccountId
 
       renderWithTheme(<Home/>)
 
       await openAccountSelectModal()
-      await assertAccountInDropdown('CHARLIE', 0)
+      await assertTextInAccountSelect('CHARLIE', 0)
     })
 
     it('shows prompt to select account when account was removed from extension', async () => {
@@ -167,13 +178,35 @@ describe('Account select modal', () => {
 
       mockedUseAccounts.allAccounts = [aliceAccount]
       rerender(<ThemeProvider theme={theme}><Home/></ThemeProvider>)
-      await assertText('Select account')
+      await assertTextInAccountSelect('Select account', 0)
+    })
+
+    it('shows account select for kusama if there is active account', async () => {
+      mockedUseAccounts.allAccounts = [aliceAccount, charlieAccount]
+      mockStatemineActiveAccount = aliceAccountId
+      mockKusamaActiveAccount = charlieAccountId
+
+      renderWithTheme(<Home/>)
+      await openAccountSelectModal()
+
+      await assertTextInAccountSelect('CHARLIE', 1)
+    })
+
+    it('does not show select for kusama when active account is not set', async () => {
+      mockedUseAccounts.allAccounts = [aliceAccount, charlieAccount]
+      mockStatemineActiveAccount = aliceAccountId
+
+      renderWithTheme(<Home/>)
+      await openAccountSelectModal()
+
+      await assertNumberOfSelectAccountDropdowns(1)
     })
   })
 
   afterEach(() => {
     mockedUseAccounts.allAccounts = [aliceAccount, bobAccount]
-    mockActiveAccount = undefined
+    mockStatemineActiveAccount = undefined
+    mockKusamaActiveAccount = undefined
     mockActiveAccounts = {}
   })
 })
@@ -195,11 +228,6 @@ const assertNumberOfSelectAccountDropdowns = (number: number) => {
   const accountSelects = screen.getAllByTestId('open-account-select')
 
   expect(accountSelects).toHaveLength(number)
-}
-
-const assertAccountInDropdown = async (accountName: string, dropdownIndex: number) => {
-  const accountSelectButton = (await screen.findAllByTestId('open-account-select'))[dropdownIndex]
-  await within(accountSelectButton).findByText(accountName)
 }
 
 const openAccountSelectModal = async () => {

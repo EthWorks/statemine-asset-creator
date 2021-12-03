@@ -11,9 +11,11 @@ import {
   assertInputValue,
   assertNoInputError,
   assertText,
+  assertTextInAccountSelect,
   clickButton,
   fillInput,
   findAndClickButton,
+  getAccountSelect,
   renderWithTheme,
   selectAccountFromDropdown,
   typeInInput
@@ -49,9 +51,10 @@ const ASSET_SYMBOL = 'KSM'
 const ASSET_DECIMALS = '18'
 const ALICE_ACCOUNT_INDEX = 0
 const BOB_ACCOUNT_INDEX = 1
-const ADMIN_DROPDOWN_INDEX = 0
-const ISSUER_DROPDOWN_INDEX = 1
-const FREEZER_DROPDOWN_INDEX = 2
+const OWNER_DROPDOWN_INDEX = 0
+const ADMIN_DROPDOWN_INDEX = 1
+const ISSUER_DROPDOWN_INDEX = 2
+const FREEZER_DROPDOWN_INDEX = 3
 
 jest.mock('use-substrate/dist/src/hooks', () => ({
   useAccounts: () => mockUseAccounts,
@@ -240,6 +243,17 @@ describe('New asset modal', () => {
 
       expect(mockUseApi.api.tx.assets.setTeam).toBeCalledWith(ASSET_ID, bobAccount.address, bobAccount.address, aliceAccount.address)
     })
+  })
+
+  it('shows owner account', async () => {
+    renderModal()
+    await openModal()
+    await fillFirstStep()
+    clickButton('Next')
+
+    const ownerAccountSelect = await getAccountSelect(OWNER_DROPDOWN_INDEX)
+    expect(ownerAccountSelect).toHaveAttribute('disabled')
+    await assertTextInAccountSelect('BOB', OWNER_DROPDOWN_INDEX)
   })
 
   describe('step bar', () => {

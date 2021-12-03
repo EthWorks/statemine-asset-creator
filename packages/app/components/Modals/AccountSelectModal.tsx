@@ -20,7 +20,7 @@ interface Props {
 export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
   const accounts = useAccounts()
   const { setActiveAccounts } = useActiveAccounts()
-  const [isKusamaAccountSelectVisible, toggleKusamaAccountSelectVisible] = useToggle()
+  const [isKusamaAccountSelectVisible, toggleKusamaAccountSelectVisible, setKusamaAccountSelectVisible] = useToggle()
 
   const {
     account: kusamaAccount,
@@ -65,9 +65,9 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
     closeModal()
   }
 
-  function _onKusamaSelectHide(): void {
+  const _onKusamaSelectHide = (): void => {
     setKusamaAccount(undefined)
-    toggleKusamaAccountSelectVisible()
+    setKusamaAccountSelectVisible(false)
   }
 
   if (accounts.extensionStatus === 'Loading') return <Loader />
@@ -100,7 +100,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
           <ButtonTertiary onClick={toggleKusamaAccountSelectVisible}>Add Kusama account</ButtonTertiary>
         </Centered>
       )}
-      {isKusamaAccountSelectVisible && (
+      {(isKusamaAccountSelectVisible || kusamaAccount !== undefined) && (
         <>
           <SectionTitleStyle>
             <ImageWrapper>
