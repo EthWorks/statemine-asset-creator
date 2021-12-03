@@ -1,4 +1,5 @@
-import { AccountId } from '@polkadot/types/interfaces'
+import type { AccountId } from '@polkadot/types/interfaces'
+
 import { act, fireEvent, screen, within } from '@testing-library/react'
 import React from 'react'
 import { ThemeProvider } from 'styled-components'
