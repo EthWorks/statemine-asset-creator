@@ -64,3 +64,8 @@ export function assertInputValue(inputName: string, value: string) {
 
   expect(input).toHaveValue(value)
 }
+
+export const assertTextInAccountSelect = async (accountName: string, dropdownIndex: number) => {
+  const accountSelectButton = (await screen.findAllByTestId('open-account-select'))[dropdownIndex]
+  await within(accountSelectButton).findByText(accountName)
+}

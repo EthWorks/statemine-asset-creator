@@ -13,6 +13,7 @@ import { mockUseBestNumber } from './mocks/mockUseBestNumber'
 import {
   assertNoText,
   assertText,
+  assertTextInAccountSelect,
   findAndClickButton,
   renderWithTheme,
   selectAccountFromDropdown,
@@ -137,7 +138,7 @@ describe('Account select modal', () => {
     await openAccountSelectModal()
     await findAndClickButton('Add Kusama account')
 
-    await assertAccountInDropdown('BOB', 1)
+    await assertTextInAccountSelect('BOB', 1)
     await closeKusamaAccountDropdown()
 
     await clickConnect()
@@ -157,7 +158,7 @@ describe('Account select modal', () => {
       renderWithTheme(<Home/>)
 
       await openAccountSelectModal()
-      await assertAccountInDropdown('CHARLIE', 0)
+      await assertTextInAccountSelect('CHARLIE', 0)
     })
 
     it('shows prompt to select account when account was removed from extension', async () => {
@@ -167,7 +168,7 @@ describe('Account select modal', () => {
 
       mockedUseAccounts.allAccounts = [aliceAccount]
       rerender(<ThemeProvider theme={theme}><Home/></ThemeProvider>)
-      await assertText('Select account')
+      await assertTextInAccountSelect('Select account', 0)
     })
   })
 
@@ -195,11 +196,6 @@ const assertNumberOfSelectAccountDropdowns = (number: number) => {
   const accountSelects = screen.getAllByTestId('open-account-select')
 
   expect(accountSelects).toHaveLength(number)
-}
-
-const assertAccountInDropdown = async (accountName: string, dropdownIndex: number) => {
-  const accountSelectButton = (await screen.findAllByTestId('open-account-select'))[dropdownIndex]
-  await within(accountSelectButton).findByText(accountName)
 }
 
 const openAccountSelectModal = async () => {
