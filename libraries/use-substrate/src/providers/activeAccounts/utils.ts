@@ -8,8 +8,13 @@ import { isString } from '../../util/checks'
 export function convertAddressesToAccountIds(initialAccounts: ActiveAccountsInput, api?: ApiRx): ActiveAccounts {
   const activeAccounts: ActiveAccounts = {}
   // eslint-disable-next-line array-callback-return
-  Object.entries(initialAccounts).map(([chain, { address }]) => {
-    activeAccounts[chain as Chains] = isString(address) ? { address: api?.createType('AccountId', address) } : { address: address }
+  Object.entries(initialAccounts).map(([chain, account]) => {
+    if (account && api) {
+      const { address } = account
+      activeAccounts[chain as Chains] = isString(address) ? { address: api.createType('AccountId', address) } : { address }
+    } else if (!account && api) {
+      activeAccounts[chain as Chains] = undefined
+    }
   })
 
   return activeAccounts
@@ -18,9 +23,12 @@ export function convertAddressesToAccountIds(initialAccounts: ActiveAccountsInpu
 export function filterAccountsPresentInExtension(localStorageAccounts: ActiveAccountsInput, extensionAccounts: Account[]): ActiveAccountsInput {
   const accountsPresentInExtension: ActiveAccountsInput = {}
   // eslint-disable-next-line array-callback-return
-  Object.entries(localStorageAccounts).map(([chain, { address }]) => {
-    const matchedExtensionAccount = extensionAccounts.find(extensionAccount => extensionAccount.address === address?.toString())
-    accountsPresentInExtension[chain as Chains] = matchedExtensionAccount ? { address } : undefined
+  Object.entries(localStorageAccounts).map(([chain, account]) => {
+    if (account) {
+      const { address } = account
+      const matchedExtensionAccount = extensionAccounts.find(extensionAccount => extensionAccount.address === address.toString())
+      accountsPresentInExtension[chain as Chains] = matchedExtensionAccount ? { address } : undefined
+    }
   })
 
   return accountsPresentInExtension

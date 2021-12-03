@@ -1,5 +1,6 @@
 import type { UseAssets } from 'use-substrate'
 
+import { AccountId } from '@polkadot/types/interfaces'
 import { act, screen, within } from '@testing-library/react'
 import React from 'react'
 
@@ -25,7 +26,7 @@ import {
 } from './mocks'
 
 let mockAssets: UseAssets = []
-let mockActiveAccount = bobAccountId
+let mockActiveAccount: {address: AccountId} | undefined = { address: bobAccountId }
 jest.mock('use-substrate/dist/src/hooks', () => ({
   useAccounts: () => mockUseAccounts,
   useApi: () => mockUseApi,
@@ -139,6 +140,7 @@ describe('Home', () => {
       const header = await screen.findByTestId('page-header')
 
       await within(header).findByRole('button', { name: 'Connect' })
+      mockActiveAccount = { address: bobAccountId }
     })
 
     it('displays Active Account Bar when account selected', async () => {
@@ -146,10 +148,6 @@ describe('Home', () => {
       const header = await screen.findByTestId('page-header')
 
       await within(header).findByTestId('active-account-bar')
-    })
-
-    afterEach(() => {
-      mockActiveAccount = bobAccountId
     })
   })
 })

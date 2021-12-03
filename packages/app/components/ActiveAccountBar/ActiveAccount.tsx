@@ -16,7 +16,7 @@ interface ActiveAccountProps {
 
 export const ActiveAccount: FC<ActiveAccountProps> = ({ chain, logo }) => {
   const { activeAccount } = useActiveAccount(chain)
-  const { freeBalance: chainFreeBalance } = useBalances(activeAccount?.toString(), chain) || {}
+  const { freeBalance: chainFreeBalance } = useBalances(activeAccount?.address.toString(), chain) || {}
   const chainBlockNumber = useBestNumber(chain)
 
   if (!activeAccount) return null

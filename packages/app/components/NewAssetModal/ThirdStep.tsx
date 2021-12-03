@@ -15,6 +15,7 @@ export function ThirdStep({ onNext, onBack }: ModalStep): JSX.Element {
   const { admin, issuer, freezer, assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
   const { api } = useApi(Chains.Statemine)
   const { activeAccount } = useActiveAccount(Chains.Statemine)
+  const { address: ownerAddress } = activeAccount || {}
 
   const txs = useMemo(() => admin && issuer && freezer
     ? admin.address === issuer.address && admin.address === freezer.address
@@ -29,8 +30,8 @@ export function ThirdStep({ onNext, onBack }: ModalStep): JSX.Element {
       ]
     : [], [admin, issuer, freezer, api, assetDecimals, assetId, assetName, assetSymbol, minBalance])
 
-  const { tx } = useTransaction(api?.tx.utility.batchAll, [txs], activeAccount?.toString()) || {}
-  if (!api || !activeAccount || !tx) return <>Loading..</>
+  const { tx } = useTransaction(api?.tx.utility.batchAll, [txs], ownerAddress?.toString()) || {}
+  if (!api || !ownerAddress || !tx) return <>Loading..</>
 
   const _onSubmit = async (): Promise<void> => {
     await tx()

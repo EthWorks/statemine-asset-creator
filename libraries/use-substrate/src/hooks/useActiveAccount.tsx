@@ -4,8 +4,8 @@ import { Chains } from '../consts'
 import { useActiveAccounts } from './useActiveAccounts'
 
 interface ActiveAccount {
-  activeAccount: {address: AccountId | undefined } | undefined,
-  setActiveAccount: (account: {address: AccountId }) => void
+  activeAccount: { address: AccountId } | undefined,
+  setActiveAccount: (account: { address: AccountId }) => void
 }
 
 export function useActiveAccount(chain: Chains): ActiveAccount {

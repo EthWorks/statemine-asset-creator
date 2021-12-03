@@ -20,8 +20,9 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
 
   const { admin, setAdmin, issuer, setIssuer, freezer, setFreezer } = useNewAssetModal()
   const { activeAccount: activeAccountId } = useActiveAccount(Chains.Statemine)
+  const { address } = activeAccountId || {}
   const accounts = useAccounts()
-  const activeAccount = matchAccountIdWithAccountFromExtension(activeAccountId, accounts.allAccounts)
+  const activeAccount = matchAccountIdWithAccountFromExtension(address, accounts.allAccounts)
 
   return (
     <form onSubmit={_onNext}>
