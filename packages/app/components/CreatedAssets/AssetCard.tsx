@@ -14,11 +14,11 @@ import { AssetImage } from './AssetImage'
 import { AssetsCardMenu } from './AssetsCardMenu'
 import { groupRoles } from './groupRoles'
 
-interface Props {
+export interface AssetCardProps {
   asset: Asset
 }
 
-export const AssetCard: FC<Props> = ({ asset }) => {
+export const AssetCard: FC<AssetCardProps> = ({ asset }) => {
   const { name, id, decimals, supply, admin, issuer, freezer, symbol } = asset
   const rolesByAccount = groupRoles({ admin, issuer, freezer })
   const [isOpen, toggleOpen, setIsOpen] = useToggle()
