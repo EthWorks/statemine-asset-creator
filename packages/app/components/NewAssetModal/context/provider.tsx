@@ -1,19 +1,19 @@
 import type { Account } from 'use-substrate'
 
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 
-import { Chains, useAccounts, useActiveAccount, useAssetsConstants } from 'use-substrate'
+import { Chains, useActiveAccount, useAssetsConstants } from 'use-substrate'
 
-import { matchAccountIdWithAccountFromExtension } from '../../../utils/matchAccountIdWithAccountFromExtension'
+import { convertActiveAccountToAccount } from '../../../utils'
 import { NewAssetModalContext } from './context'
 
 export const NewAssetModalProvider: React.FC = ({ children }) => {
-  const { activeAccount: activeAccountId } = useActiveAccount(Chains.Statemine)
-  const accounts = useAccounts()
-  const activeAccount = useMemo(() => matchAccountIdWithAccountFromExtension(activeAccountId, accounts.allAccounts), [activeAccountId, accounts.allAccounts])
-  const [admin, setAdmin] = useState<Account | undefined>(activeAccount)
-  const [issuer, setIssuer] = useState<Account | undefined>(activeAccount)
-  const [freezer, setFreezer] = useState<Account | undefined>(activeAccount)
+  const { activeAccount } = useActiveAccount(Chains.Statemine)
+  const account = convertActiveAccountToAccount(activeAccount)
+
+  const [admin, setAdmin] = useState<Account | undefined>(account)
+  const [issuer, setIssuer] = useState<Account | undefined>(account)
+  const [freezer, setFreezer] = useState<Account | undefined>(account)
   const [assetName, setAssetName] = useState<string>('')
   const [assetNameError, setAssetNameError] = useState<string>()
   const [assetId, setAssetId] = useState<string>('')

@@ -1,4 +1,4 @@
-import type { AccountId } from '@polkadot/types/interfaces'
+import type { ActiveAccount } from 'use-substrate'
 
 import { act, fireEvent, screen, within } from '@testing-library/react'
 import React from 'react'
@@ -21,11 +21,11 @@ import {
 } from './helpers'
 import {
   aliceAccount,
-  aliceAccountId,
+  aliceActiveAccount,
   bobAccount,
-  bobAccountId,
+  bobActiveAccount,
   charlieAccount,
-  charlieAccountId,
+  charlieActiveAccount,
   mockUseAccounts,
   mockUseActiveAccount,
   mockUseApi,
@@ -36,8 +36,8 @@ import {
 const mockedSetter = jest.fn()
 const mockedUseAccounts = mockUseAccounts
 let mockActiveAccounts = {}
-let mockKusamaActiveAccount: AccountId | undefined
-let mockStatemineActiveAccount: AccountId | undefined
+let mockKusamaActiveAccount: ActiveAccount | undefined
+let mockStatemineActiveAccount: ActiveAccount | undefined
 
 const mockActiveAccount = (chain: Chains) => {
   switch (chain) {
@@ -80,7 +80,7 @@ describe('Account select modal', () => {
 
     expect(mockedSetter).toBeCalledWith({
       [Chains.Kusama]: undefined,
-      [Chains.Statemine]: bobAccount.address
+      [Chains.Statemine]: bobAccount
     })
     assertNoText('Connect accounts')
   })
@@ -101,8 +101,8 @@ describe('Account select modal', () => {
     await clickConnect()
 
     expect(mockedSetter).toBeCalledWith({
-      [Chains.Kusama]: aliceAccount.address,
-      [Chains.Statemine]: bobAccount.address
+      [Chains.Kusama]: aliceAccount,
+      [Chains.Statemine]: bobAccount
     })
   })
 
@@ -141,8 +141,8 @@ describe('Account select modal', () => {
 
   it('clears kusama account when select is hidden', async () => {
     mockedUseAccounts.allAccounts = [aliceAccount, bobAccount]
-    mockStatemineActiveAccount = aliceAccountId
-    mockKusamaActiveAccount = bobAccountId
+    mockStatemineActiveAccount = aliceActiveAccount
+    mockKusamaActiveAccount = bobActiveAccount
     mockActiveAccounts = { kusama: aliceAccount, statemine: bobAccount }
 
     renderWithTheme(<Home/>)
@@ -156,14 +156,14 @@ describe('Account select modal', () => {
 
     expect(mockedSetter).toBeCalledWith({
       [Chains.Kusama]: undefined,
-      [Chains.Statemine]: aliceAccount.address
+      [Chains.Statemine]: aliceAccount
     })
   })
 
   describe('uses active account', () => {
     it('shows current active account', async () => {
       mockedUseAccounts.allAccounts = [charlieAccount]
-      mockStatemineActiveAccount = charlieAccountId
+      mockStatemineActiveAccount = charlieActiveAccount
 
       renderWithTheme(<Home/>)
 
@@ -183,8 +183,8 @@ describe('Account select modal', () => {
 
     it('shows account select for kusama if there is active account', async () => {
       mockedUseAccounts.allAccounts = [aliceAccount, charlieAccount]
-      mockStatemineActiveAccount = aliceAccountId
-      mockKusamaActiveAccount = charlieAccountId
+      mockStatemineActiveAccount = aliceActiveAccount
+      mockKusamaActiveAccount = charlieActiveAccount
 
       renderWithTheme(<Home/>)
       await openAccountSelectModal()
@@ -194,7 +194,7 @@ describe('Account select modal', () => {
 
     it('does not show select for kusama when active account is not set', async () => {
       mockedUseAccounts.allAccounts = [aliceAccount, charlieAccount]
-      mockStatemineActiveAccount = aliceAccountId
+      mockStatemineActiveAccount = aliceActiveAccount
 
       renderWithTheme(<Home/>)
       await openAccountSelectModal()

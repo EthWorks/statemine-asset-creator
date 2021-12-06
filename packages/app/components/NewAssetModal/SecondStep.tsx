@@ -5,7 +5,7 @@ import { useCallback } from 'react'
 
 import { Chains, useAccounts, useActiveAccount } from 'use-substrate'
 
-import { matchAccountIdWithAccountFromExtension } from '../../utils/matchAccountIdWithAccountFromExtension'
+import { convertActiveAccountToAccount } from '../../utils'
 import { AccountSelect } from '../AccountSelect'
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { ArrowLeft, ArrowRight } from '../icons'
@@ -19,16 +19,17 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
   }, [onNext])
 
   const { admin, setAdmin, issuer, setIssuer, freezer, setFreezer } = useNewAssetModal()
-  const { activeAccount: activeAccountId } = useActiveAccount(Chains.Statemine)
+  const { activeAccount } = useActiveAccount(Chains.Statemine)
+  const account = convertActiveAccountToAccount(activeAccount)
+
   const accounts = useAccounts()
-  const activeAccount = matchAccountIdWithAccountFromExtension(activeAccountId, accounts.allAccounts)
 
   return (
     <form onSubmit={_onNext}>
       <AccountSelect
         label='Owner account'
         accounts={accounts.allAccounts}
-        currentAccount={activeAccount}
+        currentAccount={account}
         setCurrentAccount={() => { /**/ }}
         disabled
       />

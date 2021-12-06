@@ -7,6 +7,7 @@ import { Chains, useActiveAccount, useApi, useTransaction } from 'use-substrate'
 
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { ArrowLeft, ArrowRight } from '../icons'
+import { Loader } from '../Loader'
 import { Label, Text } from '../typography'
 import { useNewAssetModal } from './context/useNewAssetModal'
 import { ModalFooter } from './ModalFooter'
@@ -15,6 +16,7 @@ export function ThirdStep({ onNext, onBack }: ModalStep): JSX.Element {
   const { admin, issuer, freezer, assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
   const { api } = useApi(Chains.Statemine)
   const { activeAccount } = useActiveAccount(Chains.Statemine)
+  const { address: ownerAddress } = activeAccount || {}
 
   const txs = useMemo(() => admin && issuer && freezer
     ? admin.address === issuer.address && admin.address === freezer.address
@@ -29,8 +31,9 @@ export function ThirdStep({ onNext, onBack }: ModalStep): JSX.Element {
       ]
     : [], [admin, issuer, freezer, api, assetDecimals, assetId, assetName, assetSymbol, minBalance])
 
-  const { tx } = useTransaction(api?.tx.utility.batchAll, [txs], activeAccount?.toString()) || {}
-  if (!api || !activeAccount || !tx) return <>Loading..</>
+  const { tx } = useTransaction(api?.tx.utility.batchAll, [txs], ownerAddress?.toString()) || {}
+
+  if (!api || !ownerAddress || !tx) return <Loader/>
 
   const _onSubmit = async (): Promise<void> => {
     await tx()
