@@ -11,7 +11,7 @@ import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { ArrowLeft, ArrowRight } from '../icons'
 import { Info } from '../Info'
 import { useNewAssetModal } from './context/useNewAssetModal'
-import { listAdmins, useInsufficientAdminBalances } from './helpers'
+import { printItems, useInsufficientAdminBalances } from './helpers'
 import { ModalFooter } from './ModalFooter'
 
 export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
@@ -26,7 +26,7 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
 
   const accounts = useAccounts()
   const insufficientFundsAdmins = useInsufficientAdminBalances(admin, issuer, freezer)
-  const listedAdmins = listAdmins(insufficientFundsAdmins)
+  const listedAdmins = printItems(insufficientFundsAdmins)
 
   return (
     <form onSubmit={_onNext}>
