@@ -5,7 +5,7 @@ import { useCallback } from 'react'
 
 import { Chains, useAccounts, useActiveAccount } from 'use-substrate'
 
-import { convertActiveAccountToAccount } from '../../utils/convertActiveAccountToAccount'
+import { convertActiveAccountToAccount } from '../../utils'
 import { AccountSelect } from '../AccountSelect'
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { ArrowLeft, ArrowRight } from '../icons'
