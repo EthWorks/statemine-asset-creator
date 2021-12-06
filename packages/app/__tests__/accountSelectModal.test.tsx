@@ -1,4 +1,4 @@
-import type { AccountId } from '@polkadot/types/interfaces'
+import type { ActiveAccount } from 'use-substrate'
 
 import { act, fireEvent, screen, within } from '@testing-library/react'
 import React from 'react'
@@ -36,8 +36,8 @@ import {
 const mockedSetter = jest.fn()
 const mockedUseAccounts = mockUseAccounts
 let mockActiveAccounts = {}
-let mockKusamaActiveAccount: {address: AccountId | undefined} | undefined
-let mockStatemineActiveAccount: {address: AccountId | undefined} | undefined
+let mockKusamaActiveAccount: ActiveAccount | undefined
+let mockStatemineActiveAccount: ActiveAccount | undefined
 
 const mockActiveAccount = (chain: Chains) => {
   switch (chain) {
