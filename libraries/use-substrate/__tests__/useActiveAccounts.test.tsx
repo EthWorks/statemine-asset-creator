@@ -106,7 +106,7 @@ describe('use active accounts', () => {
       })
     })
 
-    it('with name can set and get active account via hook', async () => {
+    it('can set and get active account with name via hook', async () => {
       const { result, rerender } = renderActiveAccounts()
 
       const { setActiveAccounts } = result.current
