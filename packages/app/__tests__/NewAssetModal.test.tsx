@@ -288,30 +288,52 @@ describe('New asset modal', () => {
   })
 
   describe('shows insufficient funds info', () => {
-    it('for one account', async () => {
+    beforeEach(async () => {
       renderModal()
       await openModal()
       await fillFirstStep()
       clickButton('Next')
 
-      await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
-      await selectAccountFromDropdown(ISSUER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
-      await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
+      await assertText('Owner account')
+    })
 
-      await assertText('Insufficient funds on the Admin accounts to create assets.')
+    it('for one account', async () => {
+      await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+      await assertTextInAccountSelect('ALICE', ADMIN_DROPDOWN_INDEX)
+      await selectAccountFromDropdown(ISSUER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
+      await assertTextInAccountSelect('BOB', ISSUER_DROPDOWN_INDEX)
+      await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
+      await assertTextInAccountSelect('BOB', FREEZER_DROPDOWN_INDEX)
+
+      const infobox = await screen.findByTestId('infobox')
+
+      expect(infobox).toHaveTextContent('Insufficient funds on the Admin account to create assets.')
     })
 
     it('for two accounts', async () => {
-      renderModal()
-      await openModal()
-      await fillFirstStep()
-      clickButton('Next')
-
       await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
-      await selectAccountFromDropdown(ISSUER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
-      await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+      await assertTextInAccountSelect('ALICE', ADMIN_DROPDOWN_INDEX)
+      await selectAccountFromDropdown(ISSUER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+      await assertTextInAccountSelect('ALICE', ISSUER_DROPDOWN_INDEX)
+      await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
+      await assertTextInAccountSelect('BOB', FREEZER_DROPDOWN_INDEX)
 
-      await assertText('Insufficient funds on the Admin and Freezer accounts to create assets.')
+      const infobox = await screen.findByTestId('infobox')
+
+      expect(infobox).toHaveTextContent('Insufficient funds on the Admin and Issuer accounts to create assets.')
+    })
+
+    it('for three accounts', async () => {
+      await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+      await assertTextInAccountSelect('ALICE', ADMIN_DROPDOWN_INDEX)
+      await selectAccountFromDropdown(ISSUER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+      await assertTextInAccountSelect('ALICE', ISSUER_DROPDOWN_INDEX)
+      await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+      await assertTextInAccountSelect('ALICE', FREEZER_DROPDOWN_INDEX)
+
+      const infobox = await screen.findByTestId('infobox')
+
+      expect(infobox).toHaveTextContent('Insufficient funds on the Admin, Issuer and Freezer accounts to create assets.')
     })
   })
 })

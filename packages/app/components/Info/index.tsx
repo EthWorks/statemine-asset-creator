@@ -6,11 +6,11 @@ import { InfoIcon } from '../icons/InfoIcon'
 import { Text } from '../typography'
 
 export interface InfoProps {
-  type: 'info' | 'warning'
+  type: 'info' | 'warning',
 }
 
 export const Info: FC<InfoProps> = ({ children, type }) => (
-  <InfoWrapper type={type}>
+  <InfoWrapper type={type} data-testid='infobox'>
     <div>
       <InfoIcon />
       <Text size='SM'>{type}</Text>
