@@ -59,9 +59,10 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
         withAccountInput
       />
       {insufficientFundsAdmins.length > 0 && (
-        <Info type='info'>
-          Insufficient funds on the {listedAdmins} account{insufficientFundsAdmins.length > 1 ? 's' : ''} to create assets.
-        </Info>
+        <Info
+          type='info'
+          text={`Insufficient funds on the ${listedAdmins} account${insufficientFundsAdmins.length > 1 ? 's' : ''} to create assets.`}
+        />
       )}
       <ModalFooter contentPosition='between'>
         <ButtonOutline type='button' onClick={onBack}>

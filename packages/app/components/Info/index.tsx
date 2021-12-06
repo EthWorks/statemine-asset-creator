@@ -7,15 +7,16 @@ import { Text } from '../typography'
 
 export interface InfoProps {
   type: 'info' | 'warning',
+  text: string
 }
 
-export const Info: FC<InfoProps> = ({ children, type }) => (
+export const Info: FC<InfoProps> = ({ text, type }) => (
   <InfoWrapper type={type} data-testid='infobox'>
     <div>
       <InfoIcon />
       <Text size='SM'>{type}</Text>
     </div>
-    <Text size='SM' color='white'>{children}</Text>
+    <Text size='SM' color='white'>{text}</Text>
   </InfoWrapper>
 )
 
