@@ -59,8 +59,8 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
 
   const _onClick = async (): Promise<void> => {
     setActiveAccounts({
-      [Chains.Kusama]: kusamaAccount ? { address: kusamaAccount.address } : undefined,
-      [Chains.Statemine]: statemineAccount ? { address: statemineAccount.address } : undefined
+      [Chains.Kusama]: kusamaAccount || undefined,
+      [Chains.Statemine]: statemineAccount || undefined
     })
     closeModal()
   }
