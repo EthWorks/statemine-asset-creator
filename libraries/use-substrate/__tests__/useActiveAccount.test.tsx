@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react'
 
 import { ActiveAccountProvider, Chains, useActiveAccount, useActiveAccounts } from '../src'
 import { mockedKusamaApi } from './mocks/MockedApiProvider'
-import { ALICE_ID_WITHOUT_NAME, BOB_ID_WITH_NAME, BOB_ID_WITHOUT_NAME } from './consts'
+import { ALICE_ACTIVE_ACCOUNT_WITHOUT_NAME, BOB_ACTIVE_ACCOUNT, BOB_ACTIVE_ACCOUNT_WITHOUT_NAME } from './consts'
 
 describe('use active account', () => {
   describe('can set an active account for a specific chain', () => {
@@ -17,13 +17,13 @@ describe('use active account', () => {
       expect(result.current.activeAccount).toEqual(undefined)
 
       const { setActiveAccount } = result.current
-      act(() => setActiveAccount(BOB_ID_WITHOUT_NAME))
+      act(() => setActiveAccount(BOB_ACTIVE_ACCOUNT_WITHOUT_NAME))
 
       rerender()
 
       const activeAccount = result.current.activeAccount
 
-      expect(activeAccount).toEqual(BOB_ID_WITHOUT_NAME)
+      expect(activeAccount).toEqual(BOB_ACTIVE_ACCOUNT_WITHOUT_NAME)
     })
 
     it('get and set active account with name', () => {
@@ -32,13 +32,13 @@ describe('use active account', () => {
       expect(result.current.activeAccount).toEqual(undefined)
 
       const { setActiveAccount } = result.current
-      act(() => setActiveAccount(BOB_ID_WITH_NAME))
+      act(() => setActiveAccount(BOB_ACTIVE_ACCOUNT))
 
       rerender()
 
       const activeAccount = result.current.activeAccount
 
-      expect(activeAccount).toEqual(BOB_ID_WITH_NAME)
+      expect(activeAccount).toEqual(BOB_ACTIVE_ACCOUNT)
     })
 
     it('and get by use active accounts', () => {
@@ -47,11 +47,11 @@ describe('use active account', () => {
       expect(result.current.activeAccounts[Chains.Kusama]).toEqual(undefined)
 
       const { setActiveAccount } = result.current
-      act(() => setActiveAccount(BOB_ID_WITHOUT_NAME))
+      act(() => setActiveAccount(BOB_ACTIVE_ACCOUNT_WITHOUT_NAME))
 
       rerender()
 
-      expect(result.current.activeAccounts[Chains.Kusama]).toEqual(BOB_ID_WITHOUT_NAME)
+      expect(result.current.activeAccounts[Chains.Kusama]).toEqual(BOB_ACTIVE_ACCOUNT_WITHOUT_NAME)
     })
   })
 
@@ -59,20 +59,20 @@ describe('use active account', () => {
     const { result, rerender } = renderActiveAccount(Chains.Kusama)
 
     const { setActiveAccount } = result.current
-    act(() => setActiveAccount(BOB_ID_WITHOUT_NAME))
+    act(() => setActiveAccount(BOB_ACTIVE_ACCOUNT_WITHOUT_NAME))
 
     rerender()
 
     const { activeAccount, setActiveAccount: setAfterRerender } = result.current
 
-    expect(activeAccount).toEqual(BOB_ID_WITHOUT_NAME)
+    expect(activeAccount).toEqual(BOB_ACTIVE_ACCOUNT_WITHOUT_NAME)
 
-    act(() => setAfterRerender(ALICE_ID_WITHOUT_NAME))
+    act(() => setAfterRerender(ALICE_ACTIVE_ACCOUNT_WITHOUT_NAME))
 
     rerender()
 
     const { activeAccount: overriddenAccount } = result.current
-    expect(overriddenAccount).toEqual(ALICE_ID_WITHOUT_NAME)
+    expect(overriddenAccount).toEqual(ALICE_ACTIVE_ACCOUNT_WITHOUT_NAME)
   })
 
   const renderActiveAccount = (chain: Chains) => {

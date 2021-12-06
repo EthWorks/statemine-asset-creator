@@ -7,12 +7,14 @@ import { isString } from '../../util/checks'
 
 export function convertAddressesToAccountIds(initialAccounts: ActiveAccountsInput, api?: ApiRx): ActiveAccounts {
   const activeAccounts: ActiveAccounts = {}
+  if (!api) return activeAccounts
+
   // eslint-disable-next-line array-callback-return
   Object.entries(initialAccounts).map(([chain, account]) => {
-    if (account && api) {
+    if (account) {
       const { address, name } = account
       activeAccounts[chain as Chains] = { address: (isString(address) ? api.createType('AccountId', address) : address), name }
-    } else if (!account && api) {
+    } else {
       activeAccounts[chain as Chains] = undefined
     }
   })
