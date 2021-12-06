@@ -15,3 +15,7 @@ export const shortenedAliceAddress = '5Grwva...GKutQY'
 export const shortenedCharlieAddress = '5DAAnr...3PTXFy'
 
 export const bobAddressForActiveAccountBar = '5FHn...94ty'
+
+export const aliceActiveAccount = { address: aliceAccountId, name: aliceAccount.name }
+export const bobActiveAccount = { address: bobAccountId, name: bobAccount.name }
+export const charlieActiveAccount = { address: charlieAccountId, name: charlieAccount.name }

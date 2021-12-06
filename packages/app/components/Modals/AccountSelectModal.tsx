@@ -59,8 +59,8 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
 
   const _onClick = async (): Promise<void> => {
     setActiveAccounts({
-      [Chains.Kusama]: kusamaAccount?.address,
-      [Chains.Statemine]: statemineAccount?.address
+      [Chains.Kusama]: kusamaAccount,
+      [Chains.Statemine]: statemineAccount
     })
     closeModal()
   }
@@ -100,7 +100,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
           <ButtonTertiary onClick={toggleKusamaAccountSelectVisible}>Add Kusama account</ButtonTertiary>
         </Centered>
       )}
-      {(isKusamaAccountSelectVisible || kusamaAccount !== undefined) && (
+      {(isKusamaAccountSelectVisible || !!kusamaAccount) && (
         <>
           <SectionTitleStyle>
             <ImageWrapper>

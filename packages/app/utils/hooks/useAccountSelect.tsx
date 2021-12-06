@@ -22,7 +22,7 @@ export function useAccountSelect(accounts: UseAccounts, chain: Chains): UseAccou
   const hasFreeBalance = freeBalance?.gt(BN_ZERO)
 
   useEffect(() => {
-    const activeAccount = accounts.allAccounts.find((account) => account.address === activeAccountId?.toString())
+    const activeAccount = accounts.allAccounts.find((account) => account.address === activeAccountId?.address.toString())
 
     setAccount(activeAccount)
   }, [accounts.allAccounts, activeAccountId])
