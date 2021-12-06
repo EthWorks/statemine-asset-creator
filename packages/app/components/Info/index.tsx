@@ -1,20 +1,21 @@
+import type { FC } from 'react'
+
 import styled from 'styled-components'
 
 import { InfoIcon } from '../icons/InfoIcon'
 import { Text } from '../typography'
 
 export interface InfoProps {
-  text: string,
   type: 'info' | 'warning'
 }
 
-export const Info = ({ text, type }: InfoProps): JSX.Element => (
+export const Info: FC<InfoProps> = ({ children, type }) => (
   <InfoWrapper type={type}>
     <div>
       <InfoIcon />
       <Text size='SM'>{type}</Text>
     </div>
-    <Text size='SM' color='white'>{text}</Text>
+    <Text size='SM' color='white'>{children}</Text>
   </InfoWrapper>
 )
 

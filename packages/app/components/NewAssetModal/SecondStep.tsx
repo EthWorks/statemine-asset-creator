@@ -1,16 +1,21 @@
 import type { FormEvent } from 'react'
 import type { ModalStep } from './types'
 
+import BN from 'bn.js'
 import { useCallback } from 'react'
 
-import { Chains, useAccounts, useActiveAccount } from 'use-substrate'
+import { Chains, useAccounts, useActiveAccount, useBalances } from 'use-substrate'
 
 import { convertActiveAccountToAccount } from '../../utils'
 import { AccountSelect } from '../AccountSelect'
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { ArrowLeft, ArrowRight } from '../icons'
+import { Info } from '../Info'
 import { useNewAssetModal } from './context/useNewAssetModal'
 import { ModalFooter } from './ModalFooter'
+
+// to be changed based on chains decimals
+const EXPECTED_BALANCE = new BN('1000000000')
 
 export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
   const _onNext = useCallback((e: FormEvent<HTMLFormElement>) => {
@@ -22,7 +27,15 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
   const { activeAccount } = useActiveAccount(Chains.Statemine)
   const account = convertActiveAccountToAccount(activeAccount)
 
+  const { availableBalance: adminsAvailableBalance } = useBalances(admin?.address, Chains.Statemine) || {}
+  const { availableBalance: issuersAvailableBalance } = useBalances(issuer?.address, Chains.Statemine) || {}
+  const { availableBalance: freezersAvailableBalance } = useBalances(freezer?.address, Chains.Statemine) || {}
+
   const accounts = useAccounts()
+
+  const zeroFundsAccounts = [adminsAvailableBalance, issuersAvailableBalance, freezersAvailableBalance].map(balance => {
+    return balance?.lt(EXPECTED_BALANCE) ? balance : null
+  })
 
   return (
     <form onSubmit={_onNext}>
@@ -54,6 +67,7 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
         setCurrentAccount={setFreezer}
         withAccountInput
       />
+      <Info type='info'>Insufficient funds on the {zeroFundsAccounts.join(' and')} accounts to create assets.</Info>
       <ModalFooter contentPosition='between'>
         <ButtonOutline type='button' onClick={onBack}>
           <ArrowLeft />
