@@ -4,6 +4,7 @@ import type { Asset } from 'use-substrate'
 import { useMemo, useRef } from 'react'
 import styled from 'styled-components'
 
+import { cutString } from '../../formaters/formaters'
 import { drawColor, useOutsideClick, useToggle } from '../../utils'
 import { ButtonSquare } from '../button/Button'
 import { Card } from '../Card'
@@ -40,7 +41,12 @@ export const AssetCard: FC<AssetCardProps> = ({ asset }) => {
       </CardHeader>
       <CardContent>
         <AssetImage color={color}>
-          <CardTitle size='SM'>{symbol}</CardTitle>
+          <CardTitle size='SM'>{cutString(symbol, 4)}</CardTitle>
+          {symbol.length > 4 &&
+            <SymbolWrapper>
+              <Text size='SM'>{symbol}</Text>
+            </SymbolWrapper>
+          }
         </AssetImage>
         <div>
           <CardInfo>
@@ -76,6 +82,7 @@ const CardHeader = styled.header`
 `
 
 const CardTitle = styled(Text)`
+  text-transform: uppercase;
   color: ${({ theme }) => theme.colors.gray[50]}
 `
 
@@ -134,4 +141,31 @@ const Dot = styled.span`
 
 const CardMenuContainer = styled.div`
   position: relative;
+`
+
+const SymbolWrapper = styled.div`
+  overflow: hidden;
+  position: absolute;
+  top: 70%;
+  left: 40%;
+  display: none;
+  padding: 12px;
+  border-radius: ${({ theme }) => theme.borderRadius.m};
+  
+  p {
+    position: relative;
+    z-index: 1;
+  }
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: ${({ theme }) => theme.colors.gray[700]};
+    opacity: 0.9;
+    backdrop-filter: blur(1.5px);
+  }
 `
