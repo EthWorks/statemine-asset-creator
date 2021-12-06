@@ -1,7 +1,7 @@
 import { noop } from '../helpers'
-import { bobAccountId } from './mockAccounts'
+import { bobActiveAccount } from './mockAccounts'
 
 export const mockUseActiveAccount = {
-  activeAccount: { address: bobAccountId, name: 'BOB' },
+  activeAccount: bobActiveAccount,
   setActiveAccount: noop
 }
