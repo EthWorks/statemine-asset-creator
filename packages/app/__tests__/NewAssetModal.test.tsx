@@ -345,6 +345,10 @@ describe('New asset modal', () => {
       fillFirstStep()
       clickButton('Next')
 
+      await assertTextInAccountSelect(bobAccount.name, ADMIN_DROPDOWN_INDEX)
+      await assertTextInAccountSelect(bobAccount.name, ISSUER_DROPDOWN_INDEX)
+      await assertTextInAccountSelect(bobAccount.name, FREEZER_DROPDOWN_INDEX)
+
       await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
       await clickByText('Use everywhere')
 
