@@ -2,6 +2,7 @@ import type { FormEvent } from 'react'
 import type { ModalStep } from './types'
 
 import { useCallback } from 'react'
+import styled from 'styled-components'
 
 import { Chains, useAccounts, useActiveAccount } from 'use-substrate'
 
@@ -10,6 +11,7 @@ import { AccountSelect } from '../AccountSelect'
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { ArrowLeft, ArrowRight } from '../icons'
 import { Info } from '../Info'
+import { Link } from '../typography'
 import { useNewAssetModal } from './context/useNewAssetModal'
 import { printItems, useInsufficientAdminBalances } from './helpers'
 import { ModalFooter } from './ModalFooter'
@@ -28,6 +30,13 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
   const insufficientFundsAdmins = useInsufficientAdminBalances(admin, issuer, freezer)
   const listedAdmins = printItems(insufficientFundsAdmins)
 
+  const _setAdminForAllAccounts = (): void => {
+    setIssuer(admin)
+    setFreezer(admin)
+  }
+
+  const useAdminEverywhereButton = <StyledLink onClick={_setAdminForAllAccounts}>Use everywhere</StyledLink>
+
   return (
     <form onSubmit={_onNext}>
       <AccountSelect
@@ -43,6 +52,7 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
         currentAccount={admin}
         setCurrentAccount={setAdmin}
         withAccountInput
+        button={useAdminEverywhereButton}
       />
       <AccountSelect
         label='Issuer account'
@@ -77,3 +87,9 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
     </form>
   )
 }
+
+const StyledLink = styled(Link)`
+  margin-left: auto;
+  font-size: 12px;
+  line-height: 16px;
+`

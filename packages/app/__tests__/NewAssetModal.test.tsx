@@ -13,6 +13,7 @@ import {
   assertText,
   assertTextInAccountSelect,
   clickButton,
+  clickByText,
   fillInput,
   findAndClickButton,
   getAccountSelect,
@@ -334,6 +335,25 @@ describe('New asset modal', () => {
       const infobox = await screen.findByTestId('infobox')
 
       expect(infobox).toHaveTextContent('Insufficient funds on the Admin, Issuer and Freezer accounts to create assets.')
+    })
+  })
+
+  describe('Use everywhere', () => {
+    it('sets admin account for issuer and freezer account', async () => {
+      renderModal()
+      await openModal()
+      fillFirstStep()
+      clickButton('Next')
+
+      await assertTextInAccountSelect(bobAccount.name, ADMIN_DROPDOWN_INDEX)
+      await assertTextInAccountSelect(bobAccount.name, ISSUER_DROPDOWN_INDEX)
+      await assertTextInAccountSelect(bobAccount.name, FREEZER_DROPDOWN_INDEX)
+
+      await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+      await clickByText('Use everywhere')
+
+      await assertTextInAccountSelect(aliceAccount.name, ISSUER_DROPDOWN_INDEX)
+      await assertTextInAccountSelect(aliceAccount.name, FREEZER_DROPDOWN_INDEX)
     })
   })
 })

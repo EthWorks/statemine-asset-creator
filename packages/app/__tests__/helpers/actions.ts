@@ -47,9 +47,16 @@ export async function selectAccountFromDropdown(dropdownIndex: number, accountIn
 
 export function typeInInput(inputName: string, value: string) {
   const decimalsInput = screen.getByLabelText(inputName)
+
   userEvent.type(decimalsInput, value)
 }
 
 export async function getAccountSelect(dropdownIndex: number) {
   return (await screen.findAllByTestId('open-account-select'))[dropdownIndex]
+}
+
+export async function clickByText(text: string) {
+  const useEverywhereLink = await screen.findByText(text)
+
+  fireEvent.click(useEverywhereLink)
 }
