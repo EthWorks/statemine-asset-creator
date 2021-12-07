@@ -8,7 +8,6 @@ import styled from 'styled-components'
 import { isAddressValid } from 'use-substrate'
 
 import { useToggle } from '../../utils'
-import { CloseButton } from '../button/CloseButton'
 import { InputInfo } from '../FormElements'
 import { Arrow } from '../icons'
 import { Text } from '../typography'
@@ -21,12 +20,12 @@ export interface Props extends InputInfoProps {
   setCurrentAccount: (arg: Account) => void,
   withFreeBalance?: boolean,
   label?: string,
-  onClose?: () => void,
   withAccountInput?: boolean,
   disabled?: boolean,
+  button?: React.ReactNode,
 }
 
-export function AccountSelect({ accounts, currentAccount, setCurrentAccount, label, withFreeBalance = false, onClose, withAccountInput, disabled, ...inputInfoProps }: Props): JSX.Element {
+export function AccountSelect({ accounts, currentAccount, setCurrentAccount, label, withFreeBalance = false, withAccountInput, disabled, button, ...inputInfoProps }: Props): JSX.Element {
   const [isOpen, toggleOpen, setOpen] = useToggle()
   const [inputAddressValue, setInputAddressValue] = useState<string>('')
   const [inputAddressError, setInputAddressError] = useState<string>()
@@ -69,7 +68,7 @@ export function AccountSelect({ accounts, currentAccount, setCurrentAccount, lab
       <AccountSelectWrapper>
         <Label>
           {label && <StyledText size='SM'>{label}</StyledText>}
-          {onClose && <StyledCloseButton data-testid='close-account-select' onClick={onClose}/>}
+          {button}
         </Label>
         <StyledAnchor ref={anchorRef}>
           {isOpen && withAccountInput
@@ -200,10 +199,6 @@ const StyledText = styled(Text)`
 const Label = styled.div`
   display: flex;
   align-items: center;
-`
-
-const StyledCloseButton = styled(CloseButton)`
-  margin-left: auto;
 `
 
 const AccountSelectWrapper = styled.div`

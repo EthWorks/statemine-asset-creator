@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
 import { Chains, useAccounts, useActiveAccounts } from 'use-substrate'
@@ -9,7 +9,7 @@ import StatemineLogo from '../../assets/img/statemine.svg'
 import { useAccountSelect, useToggle } from '../../utils'
 import { AccountSelect } from '../AccountSelect'
 import { Arrow } from '../icons'
-import { ButtonPrimary, ButtonTertiary, Loader, Modal, Text, Title } from '../index'
+import { ButtonPrimary, ButtonTertiary, CloseButton, Loader, Modal, Text, Title } from '../index'
 import { SectionTitle } from '../SectionTitle/SectionTitle'
 
 interface Props {
@@ -113,8 +113,8 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
             accounts={accounts.allAccounts}
             currentAccount={kusamaAccount}
             setCurrentAccount={setKusamaAccount}
-            onClose={_onKusamaSelectHide}
             tip={kusamaAccountInfo}
+            button={<StyledCloseButton data-testid='close-account-select' onClick={_onKusamaSelectHide}/>}
           />
         </>
       )}
@@ -139,6 +139,10 @@ const SectionTitleStyle = styled(SectionTitle)`
 
 const StyledButtonPrimary = styled(ButtonPrimary)`
   margin: 24px 0 0 auto;
+`
+
+const StyledCloseButton = styled(CloseButton)`
+  margin-left: auto;
 `
 
 const ImageWrapper = styled.div`
