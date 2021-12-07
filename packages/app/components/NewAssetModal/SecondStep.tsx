@@ -9,7 +9,9 @@ import { convertActiveAccountToAccount } from '../../utils'
 import { AccountSelect } from '../AccountSelect'
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { ArrowLeft, ArrowRight } from '../icons'
+import { Info } from '../Info'
 import { useNewAssetModal } from './context/useNewAssetModal'
+import { printItems, useInsufficientAdminBalances } from './helpers'
 import { ModalFooter } from './ModalFooter'
 
 export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
@@ -23,6 +25,8 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
   const account = convertActiveAccountToAccount(activeAccount)
 
   const accounts = useAccounts()
+  const insufficientFundsAdmins = useInsufficientAdminBalances(admin, issuer, freezer)
+  const listedAdmins = printItems(insufficientFundsAdmins)
 
   return (
     <form onSubmit={_onNext}>
@@ -54,6 +58,12 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
         setCurrentAccount={setFreezer}
         withAccountInput
       />
+      {insufficientFundsAdmins.length > 0 && (
+        <Info
+          type='info'
+          text={`Insufficient funds on the ${listedAdmins} account${insufficientFundsAdmins.length > 1 ? 's' : ''} to create assets.`}
+        />
+      )}
       <ModalFooter contentPosition='between'>
         <ButtonOutline type='button' onClick={onBack}>
           <ArrowLeft />

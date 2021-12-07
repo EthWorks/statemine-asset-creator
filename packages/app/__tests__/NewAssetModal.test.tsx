@@ -2,7 +2,7 @@ import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 
 import { NewAssetModal } from '../components'
-import { useToggle } from '../utils'
+import { BN_ZERO as MOCK_BN_ZERO, useToggle } from '../utils'
 import {
   assertButtonDisabled,
   assertButtonNotDisabled,
@@ -56,12 +56,29 @@ const ADMIN_DROPDOWN_INDEX = 1
 const ISSUER_DROPDOWN_INDEX = 2
 const FREEZER_DROPDOWN_INDEX = 3
 
+const mockEmptyBalance = {
+  availableBalance: MOCK_BN_ZERO,
+  freeBalance: MOCK_BN_ZERO,
+  lockedBalance: MOCK_BN_ZERO,
+  reservedBalance: MOCK_BN_ZERO,
+  accountNonce: 1
+}
+
+const mockedUseBalances = (address: string) => {
+  switch (address) {
+    case aliceAccount.address:
+      return mockEmptyBalance
+    default:
+      return mockUseBalances
+  }
+}
+
 jest.mock('use-substrate/dist/src/hooks', () => ({
   useAccounts: () => mockUseAccounts,
   useApi: () => mockUseApi,
   useAssets: () => mockUseAssets,
   useAssetsConstants: () => mockUseAssetsConstants,
-  useBalances: () => mockUseBalances,
+  useBalances: (account: string) => mockedUseBalances(account),
   useTransaction: () => mockUseTransaction,
   useActiveAccount: () => mockUseActiveAccount
 }))
@@ -267,6 +284,56 @@ describe('New asset modal', () => {
       clickButton('Next')
 
       assertSteps(['past', 'active', 'unvisited', 'unvisited'])
+    })
+  })
+
+  describe('shows insufficient funds info', () => {
+    beforeEach(async () => {
+      renderModal()
+      await openModal()
+      await fillFirstStep()
+      clickButton('Next')
+
+      await assertText('Owner account')
+    })
+
+    it('for one account', async () => {
+      await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+      await assertTextInAccountSelect('ALICE', ADMIN_DROPDOWN_INDEX)
+      await selectAccountFromDropdown(ISSUER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
+      await assertTextInAccountSelect('BOB', ISSUER_DROPDOWN_INDEX)
+      await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
+      await assertTextInAccountSelect('BOB', FREEZER_DROPDOWN_INDEX)
+
+      const infobox = await screen.findByTestId('infobox')
+
+      expect(infobox).toHaveTextContent('Insufficient funds on the Admin account to create assets.')
+    })
+
+    it('for two accounts', async () => {
+      await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+      await assertTextInAccountSelect('ALICE', ADMIN_DROPDOWN_INDEX)
+      await selectAccountFromDropdown(ISSUER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+      await assertTextInAccountSelect('ALICE', ISSUER_DROPDOWN_INDEX)
+      await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
+      await assertTextInAccountSelect('BOB', FREEZER_DROPDOWN_INDEX)
+
+      const infobox = await screen.findByTestId('infobox')
+
+      expect(infobox).toHaveTextContent('Insufficient funds on the Admin and Issuer accounts to create assets.')
+    })
+
+    it('for three accounts', async () => {
+      await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+      await assertTextInAccountSelect('ALICE', ADMIN_DROPDOWN_INDEX)
+      await selectAccountFromDropdown(ISSUER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+      await assertTextInAccountSelect('ALICE', ISSUER_DROPDOWN_INDEX)
+      await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+      await assertTextInAccountSelect('ALICE', FREEZER_DROPDOWN_INDEX)
+
+      const infobox = await screen.findByTestId('infobox')
+
+      expect(infobox).toHaveTextContent('Insufficient funds on the Admin, Issuer and Freezer accounts to create assets.')
     })
   })
 })
