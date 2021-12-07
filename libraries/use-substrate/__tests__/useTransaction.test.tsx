@@ -1,10 +1,14 @@
 import type { ReactNode } from 'react'
 
+import { ApiRx } from '@polkadot/api'
 import { renderHook } from '@testing-library/react-hooks'
+import BN from 'bn.js'
 import React from 'react'
+import { of } from 'rxjs'
+import { createType } from 'test-helpers'
 
-import { Chains, useApi, useTransaction } from '../src'
-import { MockedApiProvider } from './mocks/MockedApiProvider'
+import { Chains, UseApi, useApi, useTransaction } from '../src'
+import { MockedApiProvider, mockedKusamaApi, noop } from './mocks/MockedApiProvider'
 import { ALICE, BOB } from './consts'
 
 const mockExtensionDapp = {
@@ -37,7 +41,7 @@ describe('useTransaction hook', () => {
     })
 
     it('for ready transaction', async () => {
-      const { result } = renderResult()
+      const { result } = renderResult(customApi)
       const { status } = result.current || {}
 
       expect(status).toEqual('Ready')
@@ -46,7 +50,7 @@ describe('useTransaction hook', () => {
     it('for awaiting sign', async () => {
       jest.doMock('@polkadot/extension-dapp', () => mockExtensionDapp)
 
-      const { result, waitForNextUpdate } = renderResult()
+      const { result, waitForNextUpdate } = renderResult(customApi)
       result.current?.tx()
 
       await waitForNextUpdate()
@@ -55,12 +59,12 @@ describe('useTransaction hook', () => {
     })
   })
 
-  const renderResult = () => {
+  const renderResult = (customApi?: UseApi) => {
     const params = [BOB, 123]
     const signer = ALICE
 
     const wrapper = ({ children }: { children: ReactNode }) => (
-      <MockedApiProvider>
+      <MockedApiProvider customApi={customApi}>
         {children}
       </MockedApiProvider>
     )
@@ -72,3 +76,23 @@ describe('useTransaction hook', () => {
     }, { wrapper })
   }
 })
+
+const customApi: UseApi = {
+  isConnected: true,
+  connectionState: 'connected',
+  api: {
+    ...mockedKusamaApi.api,
+    tx: {
+      ...mockedKusamaApi.api?.tx,
+      balances: {
+        transfer: () => ({
+          paymentInfo: () => of(createType('RuntimeDispatchInfo', {
+            weight: 6,
+            partialFee: new BN(3)
+          })),
+          signAndSend: () => ({ subscribe: () => noop })
+        })
+      }
+    }
+  } as unknown as ApiRx
+}

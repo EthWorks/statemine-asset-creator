@@ -78,8 +78,7 @@ export const mockedKusamaApi: UseApi = {
           paymentInfo: () => of(createType('RuntimeDispatchInfo', {
             weight: 6,
             partialFee: new BN(3)
-          })),
-          signAndSend: () => ({ subscribe: () => noop })
+          }))
         })
       }
     }
