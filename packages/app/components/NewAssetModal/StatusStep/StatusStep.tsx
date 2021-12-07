@@ -1,3 +1,5 @@
+import type { StaticImageData } from '../types'
+
 import Image from 'next/image'
 import React from 'react'
 import styled from 'styled-components'
@@ -17,8 +19,7 @@ export interface StatusStepProps {
   text: string
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const renderIcon = (status:string) => {
+const renderIcon = (status:string): StaticImageData => {
   switch (status) {
     case 'pending': {
       return pending
