@@ -35,6 +35,8 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
     setFreezer(admin)
   }
 
+  const useAdminEverywhereButton = <StyledLink onClick={_setAdminForAllAccounts}>Use everywhere</StyledLink>
+
   return (
     <form onSubmit={_onNext}>
       <AccountSelect
@@ -50,7 +52,7 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
         currentAccount={admin}
         setCurrentAccount={setAdmin}
         withAccountInput
-        button={<StyledLink onClick={_setAdminForAllAccounts}>Use everywhere</StyledLink>}
+        button={useAdminEverywhereButton}
       />
       <AccountSelect
         label='Issuer account'

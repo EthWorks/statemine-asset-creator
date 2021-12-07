@@ -70,6 +70,8 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
     setKusamaAccountSelectVisible(false)
   }
 
+  const hideKusamaSelectButton = <StyledCloseButton data-testid='close-account-select' onClick={_onKusamaSelectHide}/>
+
   if (accounts.extensionStatus === 'Loading') return <Loader />
 
   return (
@@ -114,7 +116,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
             currentAccount={kusamaAccount}
             setCurrentAccount={setKusamaAccount}
             tip={kusamaAccountInfo}
-            button={<StyledCloseButton data-testid='close-account-select' onClick={_onKusamaSelectHide}/>}
+            button={hideKusamaSelectButton}
           />
         </>
       )}
