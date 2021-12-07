@@ -17,6 +17,7 @@ export interface StatusStepProps {
   text: string
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const renderIcon = (status:string) => {
   switch (status) {
     case 'pending': {

@@ -1,6 +1,5 @@
+import type { Story } from '@storybook/react'
 import type { StatusStepProps } from './StatusStep'
-
-import { Story } from '@storybook/react'
 
 import { Card } from '../..'
 import { StatusStep } from './StatusStep'
