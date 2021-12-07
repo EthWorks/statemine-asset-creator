@@ -11,8 +11,4 @@ export const shortAddress = (address: string, length = 12): string => (
     : address.substring(0, Math.ceil(length / 2)) + '...' + address.substring(address.length - Math.floor(length / 2), address.length)
 )
 
-export const cutString = (string: string, length: number): string => (
-  length >= string.length
-    ? string
-    : string.substring(0, length)
-)
+export const cutString = (string: string, length: number): string => string.substring(0, length)

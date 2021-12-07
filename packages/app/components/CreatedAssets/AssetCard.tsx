@@ -55,7 +55,7 @@ export const AssetCard: FC<AssetCardProps> = ({ asset }) => {
           </CardInfo>
           <CardInfo>
             <Text size='XXS' bold>total supply:</Text>
-            <FormatBalance token={symbol} chainDecimals={decimals} value={supply} />
+            <FormatBalance token={cutString(symbol, 4)} chainDecimals={decimals} value={supply} />
           </CardInfo>
           <CardInfo>
             <Text size='XXS' bold>decimals:</Text>
