@@ -11,8 +11,10 @@ import { from, of } from 'rxjs'
 import { createType } from 'test-helpers'
 
 import { ApiContext } from '../../src'
-import { ALICE, BOB } from '../consts/addresses'
+import { ALICE, BOB } from '../consts'
 import { createAssetStorageKey } from '../utils'
+
+export const noop = () => { /**/ }
 
 export const mockedKusamaApi: UseApi = {
   isConnected: true,
@@ -76,7 +78,8 @@ export const mockedKusamaApi: UseApi = {
           paymentInfo: () => of(createType('RuntimeDispatchInfo', {
             weight: 6,
             partialFee: new BN(3)
-          }))
+          })),
+          signAndSend: () => ({ subscribe: () => noop })
         })
       }
     }
