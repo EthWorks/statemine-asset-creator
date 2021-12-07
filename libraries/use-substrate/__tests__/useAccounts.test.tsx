@@ -4,7 +4,7 @@ import { act, renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
 
 import { AccountsContextProvider, useAccounts } from '../src'
-import { ALICE } from './consts/addresses'
+import { ALICE } from './consts'
 
 describe('useAccountsHook', () => {
   beforeAll(() => {
