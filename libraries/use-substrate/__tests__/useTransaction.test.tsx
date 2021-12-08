@@ -14,16 +14,8 @@ import { createType } from 'test-helpers'
 
 import { Chains, TransactionStatus, useApi, useTransaction } from '../src'
 import { MockedApiProvider, mockedKusamaApi } from './mocks/MockedApiProvider'
+import { mockExtensionDapp } from './mocks/mockExtensionDapp'
 import { ALICE, BOB } from './consts'
-
-const mockExtensionDapp = {
-  web3Enable: async () => ({}),
-  web3AccountsSubscribe: async () => ({}),
-  web3Accounts: async () => [],
-  web3FromAddress: () => ({
-    signer: ALICE
-  })
-}
 
 describe('useTransaction hook', () => {
   it('returns tx and paymentInfo', async () => {
