@@ -16,6 +16,12 @@ export const AssetImage = styled.div<ColorRingProps>`
   border-radius: ${({ theme }) => theme.borderRadius.circle};
   border: 1px solid ${({ color }) => color};
   
+  &:hover {
+    & > div {
+      display: block;
+    }
+  }
+  
   &:before {
     content: '';
     position: absolute;
