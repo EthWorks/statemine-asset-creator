@@ -4,9 +4,9 @@ import type { ApiRx } from '@polkadot/api'
 import type { GenericEventData, Vec } from '@polkadot/types'
 import type { EventRecord, Hash, Phase } from '@polkadot/types/interfaces'
 import type { ISubmittableResult } from '@polkadot/types/types'
-import type { UseApi } from '../src'
+import type { UseApi, UseTransaction } from '../src'
 
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act, renderHook, RenderResult } from '@testing-library/react-hooks'
 import BN from 'bn.js'
 import React from 'react'
 import { concatMap, delay, from, of } from 'rxjs'
@@ -61,7 +61,7 @@ describe('useTransaction hook', () => {
 
       await waitForNextUpdate()
 
-      expect(result.current?.status).toEqual(TransactionStatus.AwaitingSign)
+      assertTransactionStatus(result, TransactionStatus.AwaitingSign)
     })
 
     it('for in block transaction', async () => {
@@ -74,14 +74,13 @@ describe('useTransaction hook', () => {
 
       await waitForNextUpdate()
 
-      expect(result.current?.status).toEqual(TransactionStatus.AwaitingSign)
+      assertTransactionStatus(result, TransactionStatus.AwaitingSign)
 
       act(() => {
         jest.runOnlyPendingTimers()
         jest.runOnlyPendingTimers()
       })
-
-      expect(result.current?.status).toEqual(TransactionStatus.InBlock)
+      assertTransactionStatus(result, TransactionStatus.InBlock)
     })
 
     it('for finalized block', async () => {
@@ -95,7 +94,7 @@ describe('useTransaction hook', () => {
 
       await waitForNextUpdate()
 
-      expect(result.current?.status).toEqual(TransactionStatus.AwaitingSign)
+      assertTransactionStatus(result, TransactionStatus.AwaitingSign)
 
       act(() => {
         jest.runOnlyPendingTimers()
@@ -103,7 +102,7 @@ describe('useTransaction hook', () => {
         jest.runOnlyPendingTimers()
       })
 
-      expect(result.current?.status).toEqual(TransactionStatus.Success)
+      assertTransactionStatus(result, TransactionStatus.Success)
       expect(result.current?.errorDetails).toBeUndefined()
     })
 
@@ -118,7 +117,7 @@ describe('useTransaction hook', () => {
 
       await waitForNextUpdate()
 
-      expect(result.current?.status).toEqual(TransactionStatus.AwaitingSign)
+      assertTransactionStatus(result, TransactionStatus.AwaitingSign)
 
       act(() => {
         jest.runOnlyPendingTimers()
@@ -126,7 +125,8 @@ describe('useTransaction hook', () => {
         jest.runOnlyPendingTimers()
       })
 
-      expect(result.current?.status).toEqual(TransactionStatus.Error)
+      assertTransactionStatus(result, TransactionStatus.Error)
+
       expect(result.current?.errorDetails).toEqual([{
         docs: 'Invalid metadata given.',
         name: 'BadMetadata',
@@ -145,7 +145,7 @@ describe('useTransaction hook', () => {
 
       await waitForNextUpdate()
 
-      expect(result.current?.status).toEqual(TransactionStatus.AwaitingSign)
+      assertTransactionStatus(result, TransactionStatus.AwaitingSign)
 
       act(() => {
         jest.runOnlyPendingTimers()
@@ -153,7 +153,8 @@ describe('useTransaction hook', () => {
         jest.runOnlyPendingTimers()
       })
 
-      expect(result.current?.status).toEqual(TransactionStatus.Error)
+      assertTransactionStatus(result, TransactionStatus.Error)
+
       expect(result.current?.errorDetails).toEqual([{
         docs: 'Invalid metadata given.',
         name: 'BadMetadata',
@@ -235,3 +236,7 @@ const BATCH_FAIL_EVENT: EventRecord[] = [
     topics: [] as unknown as Vec<Hash>
   } as EventRecord
 ]
+
+function assertTransactionStatus(result: RenderResult<UseTransaction | undefined>, status: TransactionStatus) {
+  expect(result.current?.status).toEqual(status)
+}
