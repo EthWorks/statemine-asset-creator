@@ -14,8 +14,6 @@ import { ApiContext } from '../../src'
 import { ALICE, BOB } from '../consts'
 import { createAssetStorageKey } from '../utils'
 
-export const noop = () => { /**/ }
-
 export const mockedKusamaApi: UseApi = {
   isConnected: true,
   api: {

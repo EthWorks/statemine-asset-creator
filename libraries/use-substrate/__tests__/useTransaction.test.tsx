@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import type { ApiRx } from '@polkadot/api'
 
-import { GenericEvent, GenericEventData, Vec } from '@polkadot/types'
+import { GenericEventData, Vec } from '@polkadot/types'
 import { EventRecord, Hash, Phase } from '@polkadot/types/interfaces'
 import { ISubmittableResult } from '@polkadot/types/types'
 import { act, renderHook } from '@testing-library/react-hooks'
@@ -10,7 +10,7 @@ import React from 'react'
 import { concatMap, delay, from, ObservableInput, of } from 'rxjs'
 import { createType } from 'test-helpers'
 
-import { Chains, UseApi, useApi, useTransaction } from '../src'
+import { Chains, TransactionStatus, UseApi, useApi, useTransaction } from '../src'
 import { MockedApiProvider, mockedKusamaApi } from './mocks/MockedApiProvider'
 import { ALICE, BOB } from './consts'
 
@@ -55,7 +55,7 @@ describe('useTransaction hook', () => {
       const { result } = renderResult(createCustomApi([]))
       const { status } = result.current || {}
 
-      expect(status).toEqual('Ready')
+      expect(status).toEqual(TransactionStatus.Ready)
     })
 
     it('for awaiting sign', async () => {
@@ -67,7 +67,7 @@ describe('useTransaction hook', () => {
 
       await waitForNextUpdate()
 
-      expect(result.current?.status).toEqual('AwaitingSign')
+      expect(result.current?.status).toEqual(TransactionStatus.AwaitingSign)
     })
 
     it('for in block transaction', async () => {
@@ -80,14 +80,14 @@ describe('useTransaction hook', () => {
 
       await waitForNextUpdate()
 
-      expect(result.current?.status).toEqual('AwaitingSign')
+      expect(result.current?.status).toEqual(TransactionStatus.AwaitingSign)
 
       act(() => {
         jest.runOnlyPendingTimers()
         jest.runOnlyPendingTimers()
       })
 
-      expect(result.current?.status).toEqual('InBlock')
+      expect(result.current?.status).toEqual(TransactionStatus.InBlock)
     })
 
     it('for finalized block', async () => {
@@ -101,7 +101,7 @@ describe('useTransaction hook', () => {
 
       await waitForNextUpdate()
 
-      expect(result.current?.status).toEqual('AwaitingSign')
+      expect(result.current?.status).toEqual(TransactionStatus.AwaitingSign)
 
       act(() => {
         jest.runOnlyPendingTimers()
@@ -109,22 +109,22 @@ describe('useTransaction hook', () => {
         jest.runOnlyPendingTimers()
       })
 
-      expect(result.current?.status).toEqual('Finalized')
+      expect(result.current?.status).toEqual(TransactionStatus.Success)
       expect(result.current?.errorMessage).toBeUndefined()
     })
 
-    it('for transaction error', async () => {
+    it('for extrinsic error', async () => {
       const { result, waitForNextUpdate } = renderResult(createCustomApi([
         { status: { isInBlock: false }, events: [] } as unknown as ISubmittableResult,
         { status: { isInBlock: true }, events: [] } as unknown as ISubmittableResult,
-        { status: { isFinalized: true }, events: FAIL_EVENTS } as unknown as ISubmittableResult
+        { status: { isFinalized: true }, events: EXTRINSIC_FAIL_EVENT } as unknown as ISubmittableResult
       ]))
 
       result.current?.tx()
 
       await waitForNextUpdate()
 
-      expect(result.current?.status).toEqual('AwaitingSign')
+      expect(result.current?.status).toEqual(TransactionStatus.AwaitingSign)
 
       act(() => {
         jest.runOnlyPendingTimers()
@@ -132,7 +132,30 @@ describe('useTransaction hook', () => {
         jest.runOnlyPendingTimers()
       })
 
-      expect(result.current?.status).toEqual('Error')
+      expect(result.current?.status).toEqual(TransactionStatus.Error)
+      expect(result.current?.errorMessage).toEqual(['assets.BadMetadata'])
+    })
+
+    it('for batch error', async () => {
+      const { result, waitForNextUpdate } = renderResult(createCustomApi([
+        { status: { isInBlock: false }, events: [] } as unknown as ISubmittableResult,
+        { status: { isInBlock: true }, events: [] } as unknown as ISubmittableResult,
+        { status: { isFinalized: true }, events: BATCH_FAIL_EVENT } as unknown as ISubmittableResult
+      ]))
+
+      result.current?.tx()
+
+      await waitForNextUpdate()
+
+      expect(result.current?.status).toEqual(TransactionStatus.AwaitingSign)
+
+      act(() => {
+        jest.runOnlyPendingTimers()
+        jest.runOnlyPendingTimers()
+        jest.runOnlyPendingTimers()
+      })
+
+      expect(result.current?.status).toEqual(TransactionStatus.Error)
       expect(result.current?.errorMessage).toEqual(['assets.BadMetadata'])
     })
   })
@@ -177,21 +200,31 @@ function createCustomApi(arg: ISubmittableResult[]): UseApi {
     } as unknown as ApiRx
   }
 }
-const FAIL_EVENTS: EventRecord[] = [
+const EXTRINSIC_FAIL_EVENT: EventRecord[] = [
   {
     phase: { asApplyExtrinsic: new BN(1) } as Phase,
     event: {
-      index: createType('EventId', '0x0608'),
-      data: ['5GcA4FiM3dGAUSBiaqp9KzNEdp9EJLSNY7P1wtPkqQfWYbMY', 2210521584529] as unknown as GenericEventData
-    } as GenericEvent,
-    topics: [] as unknown as Vec<Hash>
-  } as EventRecord,
-  {
-    phase: { asApplyExtrinsic: new BN(1) } as Phase,
-    event: {
+      section: 'system',
       method: 'ExtrinsicFailed',
       index: createType('EventId', '0x0001'),
       data: [{ module: { index: 34, error: 9 }, asModule: {}, isModule: true, registry: { findMetaError: () => ({ section: 'assets', name: 'BadMetadata' }) } }, {
+        weight: 397453000,
+        class: 'Normal',
+        paysFee: 'Yes'
+      }] as unknown as GenericEventData
+    },
+    topics: [] as unknown as Vec<Hash>
+  } as EventRecord
+]
+
+const BATCH_FAIL_EVENT: EventRecord[] = [
+  {
+    phase: { asApplyExtrinsic: new BN(1) } as Phase,
+    event: {
+      section: 'utility',
+      method: 'BatchInterrupted',
+      index: createType('EventId', '0x0001'),
+      data: [createType('EventId', '0x0001'), { module: { index: 34, error: 9 }, asModule: {}, isModule: true, registry: { findMetaError: () => ({ section: 'assets', name: 'BadMetadata' }) } }, {
         weight: 397453000,
         class: 'Normal',
         paysFee: 'Yes'
