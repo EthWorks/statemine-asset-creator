@@ -54,7 +54,7 @@ describe('useTransaction hook', () => {
 
     it('for awaiting sign', async () => {
       const { result, waitForNextUpdate } = renderResult(createCustomApi([
-        { status: { isInBlock: false }, events: [] } as unknown as ISubmittableResult
+        AWAITING_SIGN_TRANSACTION_STATUS
       ]))
 
       result.current?.tx()
@@ -66,8 +66,8 @@ describe('useTransaction hook', () => {
 
     it('for in block transaction', async () => {
       const { result, waitForNextUpdate } = renderResult(createCustomApi([
-        { status: { isInBlock: false }, events: [] } as unknown as ISubmittableResult,
-        { status: { isInBlock: true }, events: [] } as unknown as ISubmittableResult
+        AWAITING_SIGN_TRANSACTION_STATUS,
+        IN_BLOCK_TRANSACTION_STATUS
       ]))
 
       result.current?.tx()
@@ -85,9 +85,9 @@ describe('useTransaction hook', () => {
 
     it('for finalized block', async () => {
       const { result, waitForNextUpdate } = renderResult(createCustomApi([
-        { status: { isInBlock: false }, events: [] } as unknown as ISubmittableResult,
-        { status: { isInBlock: true }, events: [] } as unknown as ISubmittableResult,
-        { status: { isFinalized: true }, events: [] } as unknown as ISubmittableResult
+        AWAITING_SIGN_TRANSACTION_STATUS,
+        IN_BLOCK_TRANSACTION_STATUS,
+        SUCCESS_TRANSACTION_STATUS
       ]))
 
       result.current?.tx()
@@ -108,9 +108,9 @@ describe('useTransaction hook', () => {
 
     it('for extrinsic error', async () => {
       const { result, waitForNextUpdate } = renderResult(createCustomApi([
-        { status: { isInBlock: false }, events: [] } as unknown as ISubmittableResult,
-        { status: { isInBlock: true }, events: [] } as unknown as ISubmittableResult,
-        { status: { isFinalized: true }, events: EXTRINSIC_FAIL_EVENT } as unknown as ISubmittableResult
+        AWAITING_SIGN_TRANSACTION_STATUS,
+        IN_BLOCK_TRANSACTION_STATUS,
+        EXTRINSIC_ERROR_TRANSACTION_STATUS
       ]))
 
       result.current?.tx()
@@ -136,9 +136,9 @@ describe('useTransaction hook', () => {
 
     it('for batch error', async () => {
       const { result, waitForNextUpdate } = renderResult(createCustomApi([
-        { status: { isInBlock: false }, events: [] } as unknown as ISubmittableResult,
-        { status: { isInBlock: true }, events: [] } as unknown as ISubmittableResult,
-        { status: { isFinalized: true }, events: BATCH_FAIL_EVENT } as unknown as ISubmittableResult
+        AWAITING_SIGN_TRANSACTION_STATUS,
+        IN_BLOCK_TRANSACTION_STATUS,
+        BATCH_ERROR_TRANSACTION_STATUS
       ]))
 
       result.current?.tx()
@@ -236,6 +236,12 @@ const BATCH_FAIL_EVENT: EventRecord[] = [
     topics: [] as unknown as Vec<Hash>
   } as EventRecord
 ]
+
+const AWAITING_SIGN_TRANSACTION_STATUS = { status: { isInBlock: false }, events: [] } as unknown as ISubmittableResult
+const IN_BLOCK_TRANSACTION_STATUS = { status: { isInBlock: true }, events: [] } as unknown as ISubmittableResult
+const SUCCESS_TRANSACTION_STATUS = { status: { isFinalized: true }, events: [] } as unknown as ISubmittableResult
+const EXTRINSIC_ERROR_TRANSACTION_STATUS = { status: { isFinalized: true }, events: EXTRINSIC_FAIL_EVENT } as unknown as ISubmittableResult
+const BATCH_ERROR_TRANSACTION_STATUS = { status: { isFinalized: true }, events: BATCH_FAIL_EVENT } as unknown as ISubmittableResult
 
 function assertTransactionStatus(result: RenderResult<UseTransaction | undefined>, status: TransactionStatus) {
   expect(result.current?.status).toEqual(status)
