@@ -1,16 +1,18 @@
 import type { ReactNode } from 'react'
+import type { ObservableInput } from 'rxjs'
 import type { ApiRx } from '@polkadot/api'
+import type { GenericEventData, Vec } from '@polkadot/types'
+import type { EventRecord, Hash, Phase } from '@polkadot/types/interfaces'
+import type { ISubmittableResult } from '@polkadot/types/types'
+import type { UseApi } from '../src'
 
-import { GenericEventData, Vec } from '@polkadot/types'
-import { EventRecord, Hash, Phase } from '@polkadot/types/interfaces'
-import { ISubmittableResult } from '@polkadot/types/types'
 import { act, renderHook } from '@testing-library/react-hooks'
 import BN from 'bn.js'
 import React from 'react'
-import { concatMap, delay, from, ObservableInput, of } from 'rxjs'
+import { concatMap, delay, from, of } from 'rxjs'
 import { createType } from 'test-helpers'
 
-import { Chains, TransactionStatus, UseApi, useApi, useTransaction } from '../src'
+import { Chains, TransactionStatus, useApi, useTransaction } from '../src'
 import { MockedApiProvider, mockedKusamaApi } from './mocks/MockedApiProvider'
 import { ALICE, BOB } from './consts'
 
@@ -110,7 +112,7 @@ describe('useTransaction hook', () => {
       })
 
       expect(result.current?.status).toEqual(TransactionStatus.Success)
-      expect(result.current?.errorMessage).toBeUndefined()
+      expect(result.current?.errorDetails).toBeUndefined()
     })
 
     it('for extrinsic error', async () => {
@@ -133,7 +135,11 @@ describe('useTransaction hook', () => {
       })
 
       expect(result.current?.status).toEqual(TransactionStatus.Error)
-      expect(result.current?.errorMessage).toEqual(['assets.BadMetadata'])
+      expect(result.current?.errorDetails).toEqual([{
+        docs: 'Invalid metadata given.',
+        name: 'BadMetadata',
+        section: 'assets'
+      }])
     })
 
     it('for batch error', async () => {
@@ -156,7 +162,11 @@ describe('useTransaction hook', () => {
       })
 
       expect(result.current?.status).toEqual(TransactionStatus.Error)
-      expect(result.current?.errorMessage).toEqual(['assets.BadMetadata'])
+      expect(result.current?.errorDetails).toEqual([{
+        docs: 'Invalid metadata given.',
+        name: 'BadMetadata',
+        section: 'assets'
+      }])
     })
   })
 
@@ -207,7 +217,7 @@ const EXTRINSIC_FAIL_EVENT: EventRecord[] = [
       section: 'system',
       method: 'ExtrinsicFailed',
       index: createType('EventId', '0x0001'),
-      data: [{ module: { index: 34, error: 9 }, asModule: {}, isModule: true, registry: { findMetaError: () => ({ section: 'assets', name: 'BadMetadata' }) } }, {
+      data: [{ module: { index: 34, error: 9 }, asModule: {}, isModule: true, registry: { findMetaError: () => ({ section: 'assets', name: 'BadMetadata', docs: 'Invalid metadata given.' }) } }, {
         weight: 397453000,
         class: 'Normal',
         paysFee: 'Yes'
@@ -224,7 +234,7 @@ const BATCH_FAIL_EVENT: EventRecord[] = [
       section: 'utility',
       method: 'BatchInterrupted',
       index: createType('EventId', '0x0001'),
-      data: [createType('EventId', '0x0001'), { module: { index: 34, error: 9 }, asModule: {}, isModule: true, registry: { findMetaError: () => ({ section: 'assets', name: 'BadMetadata' }) } }, {
+      data: [createType('EventId', '0x0001'), { module: { index: 34, error: 9 }, asModule: {}, isModule: true, registry: { findMetaError: () => ({ section: 'assets', name: 'BadMetadata', docs: 'Invalid metadata given.' }) } }, {
         weight: 397453000,
         class: 'Normal',
         paysFee: 'Yes'
