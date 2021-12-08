@@ -11,20 +11,30 @@ import { useObservable } from './useObservable'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Transaction = ((...args: any[]) => SubmittableExtrinsic<'rxjs'>)
 
-type TransactionStatus = 'Ready' | 'Sign' | 'Pending' | 'Finalized' | 'Error'
+type TransactionStatus = 'Ready' | 'AwaitingSign' | 'InBlock' | 'Finalized' | 'Error'
 
 export interface UseTransaction {
   tx: () => Promise<void>
   paymentInfo: RuntimeDispatchInfo | undefined,
-  status: TransactionStatus
+  status: TransactionStatus,
+  errorMessage?: string[]
 }
 
 export function useTransaction(transaction: Transaction | undefined, params: unknown[], signer: string | undefined): UseTransaction | undefined {
   const [status, setStatus] = useState<TransactionStatus>('Ready')
+  const [errorMessage, setErrorMessage] = useState<string[]>()
   const transactionPaymentInfo = useMemo(() => transaction && signer ? transaction(...params).paymentInfo(signer) : undefined,
     [transaction, signer, params])
 
   const paymentInfo = useObservable(transactionPaymentInfo, [transactionPaymentInfo])
+
+  const _setError = (error: string): void => {
+    if (!errorMessage) {
+      setErrorMessage([error])
+    } else {
+      setErrorMessage([...errorMessage, error])
+    }
+  }
 
   const tx = useCallback(async (): Promise<void> => {
     if (!transaction || !signer || !paymentInfo) {
@@ -35,44 +45,35 @@ export function useTransaction(transaction: Transaction | undefined, params: unk
 
     const extension = await web3FromAddress(signer)
 
-    observeTransaction(transaction(...params).signAndSend(signer, { signer: extension.signer }), fee)
-    setStatus('Sign')
+    observeTransaction(transaction(...params).signAndSend(signer, { signer: extension.signer }), fee, setStatus, _setError)
+    setStatus('AwaitingSign')
   }, [transaction, signer, paymentInfo, params])
 
   return {
     tx,
     paymentInfo,
-    status
+    status,
+    errorMessage
   }
 }
 
-const observeTransaction = (transaction: Observable<ISubmittableResult>, fee: BN): void => {
+const observeTransaction = (transaction: Observable<ISubmittableResult>, fee: BN, setStatus: (status: TransactionStatus) => void, setErrorMessage: (message: string) => void): void => {
   const statusCallback = (result: ISubmittableResult): void => {
     const { status, events } = result
-
     if (status.isInBlock) {
+      setStatus('InBlock')
+    }
+
+    if (status.isFinalized) {
       events.forEach((event) => {
-        const {
-          event: { data, method, section },
-          phase
-        } = event
-
-        console.log('\t', JSON.stringify(phase), `: ${section}.${method}`, JSON.stringify(data))
-
         if (isErrorEvent(event)) {
           const error = toDispatchError(event)
           const message = error ? `${error.section}.${error.name}` : 'Unknown'
-
-          console.log(`\t\t Error: %c${message}`, 'color: red')
+          setErrorMessage(message)
         }
       })
-      console.log(JSON.stringify(events))
 
-      console.log({
-        type: isError(events) ? 'ERROR' : 'SUCCESS',
-        events,
-        fee
-      })
+      setStatus(isError(events) ? 'Error' : 'Finalized')
     }
   }
 
