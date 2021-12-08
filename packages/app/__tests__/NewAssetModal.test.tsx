@@ -149,9 +149,11 @@ describe('New asset modal', () => {
     assertSteps(['active', 'unvisited', 'unvisited', 'unvisited'])
   })
 
-  it('sends transaction on confirm', async () => {
+  it('sends transaction and shows modals on confirm', async () => {
     renderModal()
     await createAsset()
+    await waitFor(() => expect(screen.getByTestId('status-step-pending')).toBeTruthy())
+    await waitFor(() => expect(screen.getByTestId('status-step-complete')).toBeTruthy())
 
     expect(mockUseApi.api.tx.assets.create).toBeCalledWith(ASSET_ID, bobAccount.address, MIN_BALANCE)
     expect(mockUseApi.api.tx.assets.setMetadata).toBeCalledWith(ASSET_ID, ASSET_NAME, ASSET_SYMBOL, ASSET_DECIMALS)

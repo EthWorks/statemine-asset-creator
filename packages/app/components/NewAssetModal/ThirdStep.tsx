@@ -3,14 +3,29 @@ import type { ModalStep } from './types'
 import { useMemo } from 'react'
 import styled from 'styled-components'
 
-import { Chains, useActiveAccount, useApi, useTransaction } from 'use-substrate'
+import { Chains, TransactionStatus, useActiveAccount, useApi, useTransaction } from 'use-substrate'
 
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { ArrowLeft, ArrowRight } from '../icons'
 import { Loader } from '../Loader'
 import { Label, Text } from '../typography'
 import { useNewAssetModal } from './context/useNewAssetModal'
+import { ModalTransactionStatus } from './StatusStep/StatusStep'
 import { ModalFooter } from './ModalFooter'
+
+const transactionStatus: { [key in TransactionStatus]?: ModalTransactionStatus } = {
+  [TransactionStatus.InBlock]: 'pending',
+  [TransactionStatus.Success]: 'complete',
+  [TransactionStatus.Error]: 'fail'
+}
+
+const getStatus = (status: TransactionStatus): ModalTransactionStatus | undefined => {
+  if (transactionStatus === TransactionStatus.Ready || transactionStatus === TransactionStatus.AwaitingSign) {
+    return undefined
+  }
+
+  return transactionStatus[status]
+}
 
 export function ThirdStep({ onNext, onBack }: ModalStep): JSX.Element {
   const { admin, issuer, freezer, assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
@@ -31,7 +46,7 @@ export function ThirdStep({ onNext, onBack }: ModalStep): JSX.Element {
       ]
     : [], [admin, issuer, freezer, api, assetDecimals, assetId, assetName, assetSymbol, minBalance])
 
-  const { tx } = useTransaction(api?.tx.utility.batchAll, [txs], ownerAddress?.toString()) || {}
+  const { tx, status: transactionStatus } = useTransaction(api?.tx.utility.batchAll, [txs], ownerAddress?.toString()) || {}
 
   if (!api || !ownerAddress || !tx) return <Loader/>
 
@@ -39,6 +54,8 @@ export function ThirdStep({ onNext, onBack }: ModalStep): JSX.Element {
     await tx()
     onNext()
   }
+
+  const modalStatus = transactionStatus ? getStatus(transactionStatus) : undefined
 
   return (
     <>

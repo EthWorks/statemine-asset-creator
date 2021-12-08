@@ -11,10 +11,12 @@ import { ButtonOutline, ButtonTertiary } from '../../button/Button'
 import { ViewIcon } from '../../icons'
 import { Text } from '../../typography'
 
+export type ModalTransactionStatus = 'pending' | 'complete' | 'fail';
+
 export interface StatusStepProps {
   name?: string,
   number?: number,
-  status: 'pending' | 'complete' | 'fail',
+  status: ModalTransactionStatus,
   title: string,
   text: string
 }
@@ -34,7 +36,7 @@ const renderIcon = (status:string): StaticImageData => {
 }
 
 export const StatusStep = ({ name, number, status, title, text }: StatusStepProps): JSX.Element => (
-  <StatusStepWrapper>
+  <StatusStepWrapper data-testid={`status-step-${status}`}>
     <CoinWrapper>
       <Image src={renderIcon(status)} alt='' width='120' height='120' />
     </CoinWrapper>
