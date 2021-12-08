@@ -70,12 +70,12 @@ const observeTransaction = (transaction: Observable<ISubmittableResult>, fee: BN
     }
   }
 
-  const errorHandler = (): void => {
+  const subscriptionErrorHandler = (): void => {
     setStatus(TransactionStatus.Error)
     setErrorDetails({ section: 'Unknown', name: 'Subscription error', docs: [] })
   }
 
-  const subscription = transaction.subscribe({ next: statusCallback, error: errorHandler })
+  const subscription = transaction.subscribe({ next: statusCallback, error: subscriptionErrorHandler })
 }
 
 export const isErrorEvent = ({ event: { method } }: EventRecord): boolean => {
