@@ -1,7 +1,9 @@
 import type { Observable } from 'rxjs'
-import type { SubmittableExtrinsic } from '@polkadot/api/types'
-import type { DispatchError, EventRecord, RuntimeDispatchInfo } from '@polkadot/types/interfaces'
-import type { ISubmittableResult, ITuple, RegistryError } from '@polkadot/types/types'
+import type { AugmentedEvent, SubmittableExtrinsic } from '@polkadot/api/types'
+import type { AugmentedEvents } from '@polkadot/api/types/events'
+import type { EventRecord, RuntimeDispatchInfo } from '@polkadot/types/interfaces'
+import type { SpRuntimeDispatchError } from '@polkadot/types/lookup'
+import type { AnyTuple, IEvent, ISubmittableResult, RegistryError } from '@polkadot/types/types'
 
 import BN from 'bn.js'
 import { useCallback, useMemo, useState } from 'react'
@@ -11,7 +13,15 @@ import { useObservable } from './useObservable'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Transaction = ((...args: any[]) => SubmittableExtrinsic<'rxjs'>)
 
-type TransactionStatus = 'Ready' | 'AwaitingSign' | 'InBlock' | 'Finalized' | 'Error'
+export enum TransactionStatus {
+  Ready= 'Ready',
+  AwaitingSign= 'AwaitingSign',
+  InBlock = 'InBlock',
+  Success = 'Success',
+  Error = 'Error'
+}
+
+type ExtractTuple<P> = P extends AugmentedEvent<'rxjs', infer T> ? T : never
 
 export interface UseTransaction {
   tx: () => Promise<void>
@@ -21,7 +31,7 @@ export interface UseTransaction {
 }
 
 export function useTransaction(transaction: Transaction | undefined, params: unknown[], signer: string | undefined): UseTransaction | undefined {
-  const [status, setStatus] = useState<TransactionStatus>('Ready')
+  const [status, setStatus] = useState<TransactionStatus>(TransactionStatus.Ready)
   const [errorMessage, setErrorMessage] = useState<string[]>()
   const transactionPaymentInfo = useMemo(() => transaction && signer ? transaction(...params).paymentInfo(signer) : undefined,
     [transaction, signer, params])
@@ -46,7 +56,7 @@ export function useTransaction(transaction: Transaction | undefined, params: unk
     const extension = await web3FromAddress(signer)
 
     observeTransaction(transaction(...params).signAndSend(signer, { signer: extension.signer }), fee, setStatus, _setError)
-    setStatus('AwaitingSign')
+    setStatus(TransactionStatus.AwaitingSign)
   }, [transaction, signer, paymentInfo, params])
 
   return {
@@ -60,8 +70,9 @@ export function useTransaction(transaction: Transaction | undefined, params: unk
 const observeTransaction = (transaction: Observable<ISubmittableResult>, fee: BN, setStatus: (status: TransactionStatus) => void, setErrorMessage: (message: string) => void): void => {
   const statusCallback = (result: ISubmittableResult): void => {
     const { status, events } = result
+
     if (status.isInBlock) {
-      setStatus('InBlock')
+      setStatus(TransactionStatus.InBlock)
     }
 
     if (status.isFinalized) {
@@ -69,17 +80,22 @@ const observeTransaction = (transaction: Observable<ISubmittableResult>, fee: BN
         if (isErrorEvent(event)) {
           const error = toDispatchError(event)
           const message = error ? `${error.section}.${error.name}` : 'Unknown'
+
           setErrorMessage(message)
         }
       })
 
-      setStatus(isError(events) ? 'Error' : 'Finalized')
+      setStatus(isError(events) ? TransactionStatus.Error : TransactionStatus.Success)
+      subscription.unsubscribe()
     }
   }
 
-  const errorHandler = (): void => console.error({ type: 'ERROR', events: [] })
+  const errorHandler = (): void => {
+    setStatus(TransactionStatus.Error)
+    setErrorMessage('Subscription error')
+  }
 
-  transaction.subscribe({ next: statusCallback, error: errorHandler })
+  const subscription = transaction.subscribe({ next: statusCallback, error: errorHandler })
 }
 
 export const isErrorEvent = ({ event: { method } }: EventRecord): boolean => {
@@ -89,9 +105,31 @@ export const isErrorEvent = ({ event: { method } }: EventRecord): boolean => {
 export const isError = (events: EventRecord[]): boolean => !!events.find(isErrorEvent)
 
 export const toDispatchError = (event: EventRecord): RegistryError | undefined => {
-  const [dispatchError] = (event.event.data as unknown) as ITuple<[DispatchError]>
+  if (isModuleEvent(event.event, 'utility', 'BatchInterrupted')) {
+    const [, error] = event.event.data
 
-  if (dispatchError.isModule) {
-    return dispatchError.registry.findMetaError(dispatchError.asModule)
+    return getErrorMeta(error)
+  }
+
+  if (isModuleEvent(event.event, 'system', 'ExtrinsicFailed')) {
+    const [error] = event.event.data
+
+    return getErrorMeta(error)
+  }
+}
+
+export const isModuleEvent = <
+  Module extends keyof AugmentedEvents<'rxjs'>,
+  Event extends keyof AugmentedEvents<'rxjs'>[Module],
+  Tuple extends ExtractTuple<AugmentedEvents<'rxjs'>[Module][Event]>
+>(
+  event: IEvent<AnyTuple>,
+  module: Module,
+  eventName: Event
+): event is IEvent<Tuple> => event.section === module && event.method === eventName
+
+const getErrorMeta = (error: SpRuntimeDispatchError): RegistryError | undefined => {
+  if (error.isModule) {
+    return error.registry.findMetaError(error.asModule)
   }
 }
