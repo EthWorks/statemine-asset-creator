@@ -18,7 +18,7 @@ import { mockExtensionDapp } from './mocks/mockExtensionDapp'
 import { ALICE, BOB } from './consts'
 
 describe('useTransaction hook', () => {
-  it('returns tx and paymentInfo', async () => {
+  it('returns tx and paymentInfo', () => {
     const { result } = renderResult()
     const { tx, paymentInfo } = result.current || {}
 
@@ -45,7 +45,7 @@ describe('useTransaction hook', () => {
       jest.resetAllMocks()
     })
 
-    it('for ready transaction', async () => {
+    it('for ready transaction', () => {
       const { result } = renderResult(createCustomApi([]))
       const { status } = result.current || {}
 
