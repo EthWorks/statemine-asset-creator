@@ -1,48 +1,29 @@
 import type { Observable } from 'rxjs'
-import type { AugmentedEvent, SubmittableExtrinsic } from '@polkadot/api/types'
 import type { AugmentedEvents } from '@polkadot/api/types/events'
-import type { EventRecord, RuntimeDispatchInfo } from '@polkadot/types/interfaces'
+import type { EventRecord } from '@polkadot/types/interfaces'
 import type { SpRuntimeDispatchError } from '@polkadot/types/lookup'
 import type { AnyTuple, IEvent, ISubmittableResult, RegistryError } from '@polkadot/types/types'
+import type { ErrorDetails, ExtractTuple, Transaction, UseTransaction } from './types/useTransaction'
 
 import BN from 'bn.js'
 import { useCallback, useMemo, useState } from 'react'
 
+import { TransactionStatus } from './types/useTransaction'
 import { useObservable } from './useObservable'
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type Transaction = ((...args: any[]) => SubmittableExtrinsic<'rxjs'>)
-
-export enum TransactionStatus {
-  Ready= 'Ready',
-  AwaitingSign= 'AwaitingSign',
-  InBlock = 'InBlock',
-  Success = 'Success',
-  Error = 'Error'
-}
-
-type ExtractTuple<P> = P extends AugmentedEvent<'rxjs', infer T> ? T : never
-
-export interface UseTransaction {
-  tx: () => Promise<void>
-  paymentInfo: RuntimeDispatchInfo | undefined,
-  status: TransactionStatus,
-  errorMessage?: string[]
-}
 
 export function useTransaction(transaction: Transaction | undefined, params: unknown[], signer: string | undefined): UseTransaction | undefined {
   const [status, setStatus] = useState<TransactionStatus>(TransactionStatus.Ready)
-  const [errorMessage, setErrorMessage] = useState<string[]>()
+  const [errorDetails, setErrorDetails] = useState<ErrorDetails[]>()
   const transactionPaymentInfo = useMemo(() => transaction && signer ? transaction(...params).paymentInfo(signer) : undefined,
     [transaction, signer, params])
 
   const paymentInfo = useObservable(transactionPaymentInfo, [transactionPaymentInfo])
 
-  const _setError = (error: string): void => {
-    if (!errorMessage) {
-      setErrorMessage([error])
+  const _setErrorDetails = (details: ErrorDetails): void => {
+    if (!errorDetails) {
+      setErrorDetails([details])
     } else {
-      setErrorMessage([...errorMessage, error])
+      setErrorDetails([...errorDetails, details])
     }
   }
 
@@ -55,7 +36,7 @@ export function useTransaction(transaction: Transaction | undefined, params: unk
 
     const extension = await web3FromAddress(signer)
 
-    observeTransaction(transaction(...params).signAndSend(signer, { signer: extension.signer }), fee, setStatus, _setError)
+    observeTransaction(transaction(...params).signAndSend(signer, { signer: extension.signer }), fee, setStatus, _setErrorDetails)
     setStatus(TransactionStatus.AwaitingSign)
   }, [transaction, signer, paymentInfo, params])
 
@@ -63,11 +44,11 @@ export function useTransaction(transaction: Transaction | undefined, params: unk
     tx,
     paymentInfo,
     status,
-    errorMessage
+    errorDetails
   }
 }
 
-const observeTransaction = (transaction: Observable<ISubmittableResult>, fee: BN, setStatus: (status: TransactionStatus) => void, setErrorMessage: (message: string) => void): void => {
+const observeTransaction = (transaction: Observable<ISubmittableResult>, fee: BN, setStatus: (status: TransactionStatus) => void, setErrorDetails: (details: ErrorDetails) => void): void => {
   const statusCallback = (result: ISubmittableResult): void => {
     const { status, events } = result
 
@@ -78,10 +59,9 @@ const observeTransaction = (transaction: Observable<ISubmittableResult>, fee: BN
     if (status.isFinalized) {
       events.forEach((event) => {
         if (isErrorEvent(event)) {
-          const error = toDispatchError(event)
-          const message = error ? `${error.section}.${error.name}` : 'Unknown'
+          const { section, name, docs } = toDispatchError(event) || { section: 'Unknown', name: 'Unknown', docs: [] }
 
-          setErrorMessage(message)
+          setErrorDetails({ section, name, docs })
         }
       })
 
@@ -92,7 +72,7 @@ const observeTransaction = (transaction: Observable<ISubmittableResult>, fee: BN
 
   const errorHandler = (): void => {
     setStatus(TransactionStatus.Error)
-    setErrorMessage('Subscription error')
+    setErrorDetails({ section: 'Unknown', name: 'Subscription error', docs: [] })
   }
 
   const subscription = transaction.subscribe({ next: statusCallback, error: errorHandler })
