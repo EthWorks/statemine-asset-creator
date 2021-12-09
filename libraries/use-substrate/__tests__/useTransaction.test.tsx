@@ -9,7 +9,7 @@ import type { UseApi, UseTransaction } from '../src'
 import { act, renderHook, RenderResult } from '@testing-library/react-hooks'
 import BN from 'bn.js'
 import React from 'react'
-import { concatMap, delay, from, of } from 'rxjs'
+import { asyncScheduler, from, observeOn, of } from 'rxjs'
 import { createType } from 'test-helpers'
 
 import { Chains, TransactionStatus, useApi, useTransaction } from '../src'
@@ -196,7 +196,7 @@ function createCustomApi(arg: ISubmittableResult[]): UseApi {
               partialFee: new BN(3)
             })),
             signAndSend: () => from<ObservableInput<ISubmittableResult>>(arg)
-              .pipe(concatMap(x => of(x).pipe(delay(100))))
+              .pipe(observeOn(asyncScheduler, 100))
           })
         }
       }
