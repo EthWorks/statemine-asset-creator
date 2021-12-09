@@ -1,13 +1,13 @@
 import type { ModalStep } from './types'
 
 import { useMemo } from 'react'
-import styled from 'styled-components'
 
 import { Chains, TransactionStatus, useActiveAccount, useApi, useTransaction } from 'use-substrate'
 
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { ArrowLeft, ArrowRight } from '../icons'
 import { Loader } from '../Loader'
+import { InfoRow, TransactionInfoBlock } from '../TransactionInfoBlock/TransactionInfoBlock'
 import { Label, Text } from '../typography'
 import { useNewAssetModal } from './context/useNewAssetModal'
 import { ModalTransactionStatus } from './StatusStep/StatusStep'
@@ -59,18 +59,28 @@ export function ThirdStep({ onNext, onBack }: ModalStep): JSX.Element {
 
   return (
     <>
-      <InfoContainer>
-        <Label>Asset name</Label>
-        <Text size='XS' color='white' bold>{assetName}</Text>
-        <Label>Asset symbol</Label>
-        <Text size='XS' color='white' bold>{assetSymbol}</Text>
-        <Label>Asset decimals</Label>
-        <Text size='XS' color='white' bold>{assetDecimals}</Text>
-        <Label>Asset id</Label>
-        <Text size='XS' color='white' bold>{assetId}</Text>
-        <Label>Asset minimal balance</Label>
-        <Text size='XS' color='white' bold>{minBalance}</Text>
-      </InfoContainer>
+      <TransactionInfoBlock>
+        <InfoRow>
+          <Label>Asset name</Label>
+          <Text size='XS' color='white' bold>{assetName}</Text>
+        </InfoRow>
+        <InfoRow>
+          <Label>Asset symbol</Label>
+          <Text size='XS' color='white' bold>{assetSymbol}</Text>
+        </InfoRow>
+        <InfoRow>
+          <Label>Asset decimals</Label>
+          <Text size='XS' color='white' bold>{assetDecimals}</Text>
+        </InfoRow>
+        <InfoRow>
+          <Label>Asset minimal balance</Label>
+          <Text size='XS' color='white' bold>{minBalance}</Text>
+        </InfoRow>
+        <InfoRow>
+          <Label>Asset id</Label>
+          <Text size='XS' color='white' bold>{assetId}</Text>
+        </InfoRow>
+      </TransactionInfoBlock>
 
       <ModalFooter contentPosition='between'>
         <ButtonOutline onClick={onBack}>
@@ -85,12 +95,3 @@ export function ThirdStep({ onNext, onBack }: ModalStep): JSX.Element {
     </>
   )
 }
-
-const InfoContainer = styled.div`
-  display: grid;
-  grid-template-columns: 100px auto;
-  grid-column-gap: 40px;
-  grid-row-gap: 4px;
-  align-items: center;
-  margin-bottom: 16px;
-`

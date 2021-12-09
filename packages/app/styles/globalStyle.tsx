@@ -28,6 +28,17 @@ const GlobalStyle = createGlobalStyle`
   h1, h2, h3, h4, h5, h6, p {
     margin: 0;
   }
+
+
+  @keyframes sign {
+    0% {
+      transform: translateX(0);
+    }
+
+    100%{
+      transform: translateX(500%);
+    }
+  }
 `
 
 export default GlobalStyle
