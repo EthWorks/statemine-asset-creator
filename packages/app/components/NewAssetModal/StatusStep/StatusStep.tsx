@@ -4,6 +4,8 @@ import Image from 'next/image'
 import React from 'react'
 import styled from 'styled-components'
 
+import { TransactionStatus } from 'use-substrate'
+
 import pending from '../../../assets/coin.gif'
 import complete from '../../../assets/complet.svg'
 import fail from '../../../assets/fail.svg'
@@ -11,57 +13,62 @@ import { ButtonOutline, ButtonTertiary } from '../../button/Button'
 import { ViewIcon } from '../../icons'
 import { Text } from '../../typography'
 
-export type ModalTransactionStatus = 'pending' | 'complete' | 'fail';
-
 export interface StatusStepProps {
   name?: string,
   number?: number,
-  status: ModalTransactionStatus,
+  status: TransactionStatus;
   title: string,
   text: string
 }
 
-const renderIcon = (status:string): StaticImageData => {
+const renderIcon = (status: TransactionStatus): StaticImageData => {
   switch (status) {
-    case 'pending': {
-      return pending
+    case TransactionStatus.Error: {
+      return fail
     }
-    case 'complete': {
+    case TransactionStatus.Success: {
       return complete
     }
+
     default: {
-      return fail
+      return pending
     }
   }
 }
 
-export const StatusStep = ({ name, number, status, title, text }: StatusStepProps): JSX.Element => (
-  <StatusStepWrapper data-testid={`status-step-${status}`}>
-    <CoinWrapper>
-      <Image src={renderIcon(status)} alt='' width='120' height='120' />
-    </CoinWrapper>
-    <TitleText size='2XL' color='white' bold>{title}</TitleText>
-    {status === 'pending' &&
-      <TransactionWrapper>
-        <Text size='SM'>Transaction #{number}</Text>
-        <Text size='SM' color='white'>{name}</Text>
-      </TransactionWrapper>
-    }
-    <StyledText size='SM'>{text}</StyledText>
-    <ButtonWrapper>
-      {status === 'complete'
-        ? <>
-          <ButtonOutline>
-            View asset in explorer
-            <ViewIcon width='20' height='20' />
-          </ButtonOutline>
-          <ButtonTertiary>Back to dashboard</ButtonTertiary>
-        </>
-        : status === 'fail' && <ButtonTertiary>Back to dashboard</ButtonTertiary>
+export const StatusStep = ({ name, number, status, title, text }: StatusStepProps): JSX.Element | null => {
+  if (status === TransactionStatus.Ready || status === TransactionStatus.AwaitingSign) {
+    return null
+  }
+
+  return (
+    <StatusStepWrapper data-testid={`status-step-${status}`}>
+      <CoinWrapper>
+        <Image src={renderIcon(status)} alt='' width='120' height='120'/>
+      </CoinWrapper>
+      <TitleText size='2XL' color='white' bold>{title}</TitleText>
+      {status === TransactionStatus.InBlock &&
+        <TransactionWrapper>
+          <Text size='SM'>Transaction #{number}</Text>
+          <Text size='SM' color='white'>{name}</Text>
+        </TransactionWrapper>
       }
-    </ButtonWrapper>
-  </StatusStepWrapper>
-)
+      <StyledText size='SM'>{text}</StyledText>
+      <ButtonWrapper>
+        {status === TransactionStatus.Success
+          ? <>
+            <ButtonOutline>
+                        View asset in explorer
+              <ViewIcon width='20' height='20'/>
+            </ButtonOutline>
+            <ButtonTertiary>Back to dashboard</ButtonTertiary>
+          </>
+          : status === TransactionStatus.Error && <ButtonTertiary>Back to dashboard</ButtonTertiary>
+        }
+      </ButtonWrapper>
+    </StatusStepWrapper>
+  )
+}
 
 const StatusStepWrapper = styled.div`
   display: flex;

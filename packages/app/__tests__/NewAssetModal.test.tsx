@@ -1,7 +1,11 @@
-import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, RenderResult, screen, waitFor } from '@testing-library/react'
 import React from 'react'
+import { ThemeProvider } from 'styled-components'
+
+import { TransactionStatus } from 'use-substrate'
 
 import { NewAssetModal } from '../components'
+import { theme } from '../styles/styleVariables'
 import { BN_ZERO as MOCK_BN_ZERO, useToggle } from '../utils'
 import {
   assertButtonDisabled,
@@ -43,8 +47,9 @@ function TestComponent(): JSX.Element {
   )
 }
 
+let mockStatus: TransactionStatus = TransactionStatus.Ready
 const mockTransaction = jest.fn()
-const mockUseTransaction = { tx: mockTransaction, paymentInfo: {} }
+const mockUseTransaction = { tx: mockTransaction, paymentInfo: {}, status: mockStatus }
 const ASSET_ID = '7'
 const MIN_BALANCE = '300'
 const ASSET_NAME = 'kusama'
@@ -149,11 +154,9 @@ describe('New asset modal', () => {
     assertSteps(['active', 'unvisited', 'unvisited', 'unvisited'])
   })
 
-  it('sends transaction and shows modals on confirm', async () => {
+  it('sends transaction on confirm', async () => {
     renderModal()
     await createAsset()
-    await waitFor(() => expect(screen.getByTestId('status-step-pending')).toBeTruthy())
-    await waitFor(() => expect(screen.getByTestId('status-step-complete')).toBeTruthy())
 
     expect(mockUseApi.api.tx.assets.create).toBeCalledWith(ASSET_ID, bobAccount.address, MIN_BALANCE)
     expect(mockUseApi.api.tx.assets.setMetadata).toBeCalledWith(ASSET_ID, ASSET_NAME, ASSET_SYMBOL, ASSET_DECIMALS)
@@ -340,28 +343,43 @@ describe('New asset modal', () => {
     })
   })
 
-  describe('Use everywhere', () => {
-    it('sets admin account for issuer and freezer account', async () => {
+  it('Use everywhere button sets admin account for issuer and freezer account', async () => {
+    renderModal()
+    await openModal()
+    fillFirstStep()
+    clickButton('Next')
+
+    await assertTextInAccountSelect(bobAccount.name, ADMIN_DROPDOWN_INDEX)
+    await assertTextInAccountSelect(bobAccount.name, ISSUER_DROPDOWN_INDEX)
+    await assertTextInAccountSelect(bobAccount.name, FREEZER_DROPDOWN_INDEX)
+
+    await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+    await clickByText('Use everywhere')
+
+    await assertTextInAccountSelect(aliceAccount.name, ISSUER_DROPDOWN_INDEX)
+    await assertTextInAccountSelect(aliceAccount.name, FREEZER_DROPDOWN_INDEX)
+  })
+
+  describe('Transaction status modal', () => {
+    it('is shown after confirm', async () => {
       renderModal()
-      await openModal()
-      fillFirstStep()
-      clickButton('Next')
+      await createAsset()
+      mockStatus = TransactionStatus.InBlock
+      const { rerender } = renderModal()
+      rerender(<ThemeProvider theme = {theme} ><TestComponent/></ThemeProvider>)
 
-      await assertTextInAccountSelect(bobAccount.name, ADMIN_DROPDOWN_INDEX)
-      await assertTextInAccountSelect(bobAccount.name, ISSUER_DROPDOWN_INDEX)
-      await assertTextInAccountSelect(bobAccount.name, FREEZER_DROPDOWN_INDEX)
+      await waitFor(() => expect(screen.getByTestId('status-step-InBlock')).toBeTruthy())
+      await waitFor(() => expect(screen.getByTestId('status-step-Success')).toBeTruthy())
+    })
 
-      await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
-      await clickByText('Use everywhere')
-
-      await assertTextInAccountSelect(aliceAccount.name, ISSUER_DROPDOWN_INDEX)
-      await assertTextInAccountSelect(aliceAccount.name, FREEZER_DROPDOWN_INDEX)
+    it('does not display modal steps', async () => {
+      expect(screen.queryByTestId('step-bar')).not.toBeTruthy()
     })
   })
 })
 
-const renderModal = (): void => {
-  renderWithTheme(<TestComponent/>)
+const renderModal = (): RenderResult => {
+  return renderWithTheme(<TestComponent/>)
 }
 
 const fillFirstStep = (): void => {

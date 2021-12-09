@@ -10,22 +10,8 @@ import { Loader } from '../Loader'
 import { InfoRow, TransactionInfoBlock } from '../TransactionInfoBlock/TransactionInfoBlock'
 import { Label, Text } from '../typography'
 import { useNewAssetModal } from './context/useNewAssetModal'
-import { ModalTransactionStatus } from './StatusStep/StatusStep'
+import { StatusStep } from './StatusStep/StatusStep'
 import { ModalFooter } from './ModalFooter'
-
-const transactionStatus: { [key in TransactionStatus]?: ModalTransactionStatus } = {
-  [TransactionStatus.InBlock]: 'pending',
-  [TransactionStatus.Success]: 'complete',
-  [TransactionStatus.Error]: 'fail'
-}
-
-const getStatus = (status: TransactionStatus): ModalTransactionStatus | undefined => {
-  if (transactionStatus === TransactionStatus.Ready || transactionStatus === TransactionStatus.AwaitingSign) {
-    return undefined
-  }
-
-  return transactionStatus[status]
-}
 
 export function ThirdStep({ onNext, onBack }: ModalStep): JSX.Element {
   const { admin, issuer, freezer, assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
@@ -46,7 +32,7 @@ export function ThirdStep({ onNext, onBack }: ModalStep): JSX.Element {
       ]
     : [], [admin, issuer, freezer, api, assetDecimals, assetId, assetName, assetSymbol, minBalance])
 
-  const { tx, status: transactionStatus } = useTransaction(api?.tx.utility.batchAll, [txs], ownerAddress?.toString()) || {}
+  const { tx, status } = useTransaction(api?.tx.utility.batchAll, [txs], ownerAddress?.toString()) || {}
 
   if (!api || !ownerAddress || !tx) return <Loader/>
 
@@ -55,43 +41,43 @@ export function ThirdStep({ onNext, onBack }: ModalStep): JSX.Element {
     onNext()
   }
 
-  const modalStatus = transactionStatus ? getStatus(transactionStatus) : undefined
+  return status && status !== TransactionStatus.Ready && status !== TransactionStatus.AwaitingSign
+    ? <StatusStep status={status} title={'title'} text={'name'}/>
+    : (
+      <>
+        <TransactionInfoBlock>
+          <InfoRow>
+            <Label>Asset name</Label>
+            <Text size='XS' color='white' bold>{assetName}</Text>
+          </InfoRow>
+          <InfoRow>
+            <Label>Asset symbol</Label>
+            <Text size='XS' color='white' bold>{assetSymbol}</Text>
+          </InfoRow>
+          <InfoRow>
+            <Label>Asset decimals</Label>
+            <Text size='XS' color='white' bold>{assetDecimals}</Text>
+          </InfoRow>
+          <InfoRow>
+            <Label>Asset minimal balance</Label>
+            <Text size='XS' color='white' bold>{minBalance}</Text>
+          </InfoRow>
+          <InfoRow>
+            <Label>Asset id</Label>
+            <Text size='XS' color='white' bold>{assetId}</Text>
+          </InfoRow>
+        </TransactionInfoBlock>
 
-  return (
-    <>
-      <TransactionInfoBlock>
-        <InfoRow>
-          <Label>Asset name</Label>
-          <Text size='XS' color='white' bold>{assetName}</Text>
-        </InfoRow>
-        <InfoRow>
-          <Label>Asset symbol</Label>
-          <Text size='XS' color='white' bold>{assetSymbol}</Text>
-        </InfoRow>
-        <InfoRow>
-          <Label>Asset decimals</Label>
-          <Text size='XS' color='white' bold>{assetDecimals}</Text>
-        </InfoRow>
-        <InfoRow>
-          <Label>Asset minimal balance</Label>
-          <Text size='XS' color='white' bold>{minBalance}</Text>
-        </InfoRow>
-        <InfoRow>
-          <Label>Asset id</Label>
-          <Text size='XS' color='white' bold>{assetId}</Text>
-        </InfoRow>
-      </TransactionInfoBlock>
-
-      <ModalFooter contentPosition='between'>
-        <ButtonOutline onClick={onBack}>
-          <ArrowLeft />
+        <ModalFooter contentPosition='between'>
+          <ButtonOutline onClick={onBack}>
+            <ArrowLeft />
           Back
-        </ButtonOutline>
-        <ButtonPrimary onClick={_onSubmit}>
+          </ButtonOutline>
+          <ButtonPrimary onClick={_onSubmit}>
           Confirm
-          <ArrowRight />
-        </ButtonPrimary>
-      </ModalFooter>
-    </>
-  )
+            <ArrowRight />
+          </ButtonPrimary>
+        </ModalFooter>
+      </>
+    )
 }

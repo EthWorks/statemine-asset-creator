@@ -8,7 +8,7 @@ import type { ErrorDetails, ExtractTuple, Transaction, UseTransaction } from './
 import BN from 'bn.js'
 import { useCallback, useMemo, useState } from 'react'
 
-import { TransactionStatus } from './types/useTransaction'
+import { TransactionStatus } from '../consts'
 import { useObservable } from './useObservable'
 
 export function useTransaction(transaction: Transaction | undefined, params: unknown[], signer: string | undefined): UseTransaction | undefined {
