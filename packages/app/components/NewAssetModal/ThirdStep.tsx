@@ -1,5 +1,7 @@
 import type { ModalStep } from './types'
 
+import { useState } from 'react'
+
 import { Chains, useActiveAccount } from 'use-substrate'
 
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
@@ -16,17 +18,18 @@ interface StepBarProps {
   setStepBarVisible: (arg: boolean) => void
 }
 export function ThirdStep({ onBack, setStepBarVisible }: ModalStep & StepBarProps): JSX.Element {
-  const { state, dispatch, status, stepDetails } = useThirdStep()
-  const { isContentVisible } = state
+  const { tx, status, stepDetails } = useThirdStep()
   const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
   const { activeAccount } = useActiveAccount(Chains.Statemine)
   const { address: ownerAddress } = activeAccount || {}
+  const [isContentVisible, setIsContentVisible] = useState<boolean>(true)
 
   if (!ownerAddress) return <Loader/>
 
   const _onSubmit = async (): Promise<void> => {
     setStepBarVisible(false)
-    await dispatch({ type: 'createAsset' })
+    setIsContentVisible(false)
+    tx && await tx()
   }
 
   return (
