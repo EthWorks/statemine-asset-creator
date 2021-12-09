@@ -1,8 +1,6 @@
 import type { ModalStep } from './types'
 
-import { useMemo } from 'react'
-
-import { Chains, TransactionStatus, useActiveAccount, useApi, useTransaction } from 'use-substrate'
+import {Chains, TransactionStatus, useActiveAccount} from 'use-substrate'
 
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { ArrowLeft, ArrowRight } from '../icons'
@@ -10,88 +8,64 @@ import { Loader } from '../Loader'
 import { InfoRow, TransactionInfoBlock } from '../TransactionInfoBlock/TransactionInfoBlock'
 import { Label, Text } from '../typography'
 import { useNewAssetModal } from './context/useNewAssetModal'
-import { ModalTransactionStatus } from './StatusStep/StatusStep'
+import { useThirdStep } from './helpers/useThirdStep'
+import { StatusStep } from './StatusStep/StatusStep'
 import { ModalFooter } from './ModalFooter'
-
-const transactionStatus: { [key in TransactionStatus]?: ModalTransactionStatus } = {
-  [TransactionStatus.InBlock]: 'pending',
-  [TransactionStatus.Success]: 'complete',
-  [TransactionStatus.Error]: 'fail'
-}
-
-const getStatus = (status: TransactionStatus): ModalTransactionStatus | undefined => {
-  if (transactionStatus === TransactionStatus.Ready || transactionStatus === TransactionStatus.AwaitingSign) {
-    return undefined
-  }
-
-  return transactionStatus[status]
-}
+import {useEffect} from "react";
 
 export function ThirdStep({ onNext, onBack }: ModalStep): JSX.Element {
-  const { admin, issuer, freezer, assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
-  const { api } = useApi(Chains.Statemine)
+  const { state, dispatch, status } = useThirdStep()
+  const { statusStep, isContentVisible } = state
+  const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
   const { activeAccount } = useActiveAccount(Chains.Statemine)
   const { address: ownerAddress } = activeAccount || {}
 
-  const txs = useMemo(() => admin && issuer && freezer
-    ? admin.address === issuer.address && admin.address === freezer.address
-      ? [
-        api?.tx.assets.create(assetId, admin.address, minBalance),
-        api?.tx.assets.setMetadata(assetId, assetName, assetSymbol, assetDecimals)
-      ]
-      : [
-        api?.tx.assets.create(assetId, admin.address, minBalance),
-        api?.tx.assets.setMetadata(assetId, assetName, assetSymbol, assetDecimals),
-        api?.tx.assets.setTeam(assetId, issuer.address, admin.address, freezer.address)
-      ]
-    : [], [admin, issuer, freezer, api, assetDecimals, assetId, assetName, assetSymbol, minBalance])
-
-  const { tx, status: transactionStatus } = useTransaction(api?.tx.utility.batchAll, [txs], ownerAddress?.toString()) || {}
-
-  if (!api || !ownerAddress || !tx) return <Loader/>
+  if (!ownerAddress) return <Loader/>
 
   const _onSubmit = async (): Promise<void> => {
-    await tx()
-    onNext()
+    await dispatch({ type: 'createAsset' })
   }
-
-  const modalStatus = transactionStatus ? getStatus(transactionStatus) : undefined
 
   return (
     <>
-      <TransactionInfoBlock>
-        <InfoRow>
-          <Label>Asset name</Label>
-          <Text size='XS' color='white' bold>{assetName}</Text>
-        </InfoRow>
-        <InfoRow>
-          <Label>Asset symbol</Label>
-          <Text size='XS' color='white' bold>{assetSymbol}</Text>
-        </InfoRow>
-        <InfoRow>
-          <Label>Asset decimals</Label>
-          <Text size='XS' color='white' bold>{assetDecimals}</Text>
-        </InfoRow>
-        <InfoRow>
-          <Label>Asset minimal balance</Label>
-          <Text size='XS' color='white' bold>{minBalance}</Text>
-        </InfoRow>
-        <InfoRow>
-          <Label>Asset id</Label>
-          <Text size='XS' color='white' bold>{assetId}</Text>
-        </InfoRow>
-      </TransactionInfoBlock>
+      {statusStep && <StatusStep status={status} title={statusStep.title} text={statusStep.text}/>}
+      {isContentVisible && (
+        <div data-testid='third-step-content'>
+          <TransactionInfoBlock>
+            <InfoRow>
+              <Label>Asset name</Label>
+              <Text size='XS' color='white' bold>{assetName}</Text>
+            </InfoRow>
+            <InfoRow>
+              <Label>Asset symbol</Label>
+              <Text size='XS' color='white' bold>{assetSymbol}</Text>
+            </InfoRow>
+            <InfoRow>
+              <Label>Asset decimals</Label>
+              <Text size='XS' color='white' bold>{assetDecimals}</Text>
+            </InfoRow>
+            <InfoRow>
+              <Label>Asset minimal balance</Label>
+              <Text size='XS' color='white' bold>{minBalance}</Text>
+            </InfoRow>
+            <InfoRow>
+              <Label>Asset id</Label>
+              <Text size='XS' color='white' bold>{assetId}</Text>
+            </InfoRow>
+          </TransactionInfoBlock>
 
-      <ModalFooter contentPosition='between'>
-        <ButtonOutline onClick={onBack}>
-          <ArrowLeft />
+          <ModalFooter contentPosition='between'>
+            <ButtonOutline onClick={onBack}>
+              <ArrowLeft />
           Back
-        </ButtonOutline>
-        <ButtonPrimary onClick={_onSubmit}>
+            </ButtonOutline>
+            <ButtonPrimary onClick={_onSubmit}>
           Confirm
-          <ArrowRight />
-        </ButtonPrimary>
-      </ModalFooter>
+              <ArrowRight />
+            </ButtonPrimary>
+          </ModalFooter>
+        </div>
+      )}
     </>
   )
 }

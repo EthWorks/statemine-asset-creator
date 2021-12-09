@@ -1,5 +1,7 @@
-import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, RenderResult, screen, waitFor } from '@testing-library/react'
 import React from 'react'
+
+import { TransactionStatus } from 'use-substrate'
 
 import { NewAssetModal } from '../components'
 import { BN_ZERO as MOCK_BN_ZERO, useToggle } from '../utils'
@@ -44,7 +46,8 @@ function TestComponent(): JSX.Element {
 }
 
 const mockTransaction = jest.fn()
-const mockUseTransaction = { tx: mockTransaction, paymentInfo: {} }
+const mockTransactionStatus = TransactionStatus.Ready
+let mockUseTransaction = { tx: mockTransaction, paymentInfo: {}, status: mockTransactionStatus }
 const ASSET_ID = '7'
 const MIN_BALANCE = '300'
 const ASSET_NAME = 'kusama'
@@ -152,8 +155,6 @@ describe('New asset modal', () => {
   it('sends transaction and shows modals on confirm', async () => {
     renderModal()
     await createAsset()
-    await waitFor(() => expect(screen.getByTestId('status-step-pending')).toBeTruthy())
-    await waitFor(() => expect(screen.getByTestId('status-step-complete')).toBeTruthy())
 
     expect(mockUseApi.api.tx.assets.create).toBeCalledWith(ASSET_ID, bobAccount.address, MIN_BALANCE)
     expect(mockUseApi.api.tx.assets.setMetadata).toBeCalledWith(ASSET_ID, ASSET_NAME, ASSET_SYMBOL, ASSET_DECIMALS)
@@ -358,10 +359,41 @@ describe('New asset modal', () => {
       await assertTextInAccountSelect(aliceAccount.name, FREEZER_DROPDOWN_INDEX)
     })
   })
+
+  describe('Third step', () => {
+    it('displays content, steps bar and confirm button', async () => {
+      renderModal()
+      await enterThirdStep()
+      const stepBar = screen.queryAllByTestId('steps-bar')
+      expect(stepBar).toHaveLength(1)
+
+      const thirdStepContent = screen.queryAllByTestId('third-step-content')
+      expect(thirdStepContent).toHaveLength(1)
+
+      assertButtonNotDisabled('Confirm')
+    })
+
+    it('hides content and shows pending transaction for ongoing transaction', async () => {
+      mockUseTransaction = {
+        ...mockUseTransaction,
+        status: TransactionStatus.InBlock
+      }
+
+      renderModal()
+      await enterThirdStep()
+      const stepBar = screen.queryAllByTestId('steps-bar')
+      expect(stepBar).toHaveLength(0)
+
+      const thirdStepContent = screen.queryAllByTestId('third-step-content')
+      expect(thirdStepContent).toHaveLength(0)
+
+      screen.getByTestId('transaction-status-InBlock')
+    })
+  })
 })
 
-const renderModal = (): void => {
-  renderWithTheme(<TestComponent/>)
+const renderModal = (): RenderResult => {
+  return renderWithTheme(<TestComponent/>)
 }
 
 const fillFirstStep = (): void => {
@@ -414,6 +446,16 @@ const createAsset = async (): Promise<void> => {
 
   await clickButton('Next')
   await act(async () => await findAndClickButton('Confirm'))
+}
+
+const enterThirdStep = async (): Promise<void> => {
+  await openModal()
+
+  fillFirstStep()
+  clickButton('Next')
+  await fillSecondStep()
+
+  await clickButton('Next')
 }
 
 const closeModal = async () => {

@@ -1,6 +1,8 @@
 import type { Story } from '@storybook/react'
 import type { StatusStepProps } from './StatusStep'
 
+import { TransactionStatus } from 'use-substrate'
+
 import { Card } from '../..'
 import { StatusStep } from './StatusStep'
 
@@ -10,7 +12,7 @@ const Default = {
   argTypes: {
     status: {
       control: { type: 'select' },
-      options: ['pending', 'complete', 'fail']
+      options: [TransactionStatus.InBlock, TransactionStatus.Success, TransactionStatus.Error]
     }
   }
 }
@@ -24,7 +26,7 @@ const Template: Story<StatusStepProps> = (args) =>
 
 export const Base = Template.bind({})
 Base.args = {
-  status: 'complete',
+  status: TransactionStatus.Success,
   title: 'Congratulations!',
   text: 'Your asset have been created.'
 }
