@@ -11,7 +11,7 @@ import { from, of } from 'rxjs'
 import { createType } from 'test-helpers'
 
 import { ApiContext } from '../../src'
-import { ALICE, BOB } from '../consts/addresses'
+import { ALICE, BOB } from '../consts'
 import { createAssetStorageKey } from '../utils'
 
 export const mockedKusamaApi: UseApi = {

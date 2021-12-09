@@ -4,7 +4,8 @@ import { act, renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
 
 import { AccountsContextProvider, useAccounts } from '../src'
-import { ALICE } from './consts/addresses'
+import { mockExtensionDapp } from './mocks/mockExtensionDapp'
+import { ALICE } from './consts'
 
 describe('useAccountsHook', () => {
   beforeAll(() => {
@@ -16,14 +17,8 @@ describe('useAccountsHook', () => {
     jest.resetModules()
   })
 
-  const mockExtensionDapp = {
-    web3Enable: async () => ({}),
-    web3AccountsSubscribe: async () => ({}),
-    web3Accounts: async () => []
-  }
-
   it('returns for no accounts in keyring', async () => {
-    jest.doMock('@polkadot/extension-dapp', () => (mockExtensionDapp))
+    jest.doMock('@polkadot/extension-dapp', () => mockExtensionDapp)
     const { result, waitForNextUpdate } = renderAccounts()
 
     await waitForNextUpdate()
