@@ -77,8 +77,7 @@ describe('useTransaction hook', () => {
       assertTransactionStatus(result, TransactionStatus.AwaitingSign)
 
       act(() => {
-        jest.runOnlyPendingTimers()
-        jest.runOnlyPendingTimers()
+        jest.advanceTimersByTime(200)
       })
       assertTransactionStatus(result, TransactionStatus.InBlock)
     })
@@ -97,9 +96,7 @@ describe('useTransaction hook', () => {
       assertTransactionStatus(result, TransactionStatus.AwaitingSign)
 
       act(() => {
-        jest.runOnlyPendingTimers()
-        jest.runOnlyPendingTimers()
-        jest.runOnlyPendingTimers()
+        jest.advanceTimersByTime(300)
       })
 
       assertTransactionStatus(result, TransactionStatus.Success)
@@ -120,9 +117,7 @@ describe('useTransaction hook', () => {
       assertTransactionStatus(result, TransactionStatus.AwaitingSign)
 
       act(() => {
-        jest.runOnlyPendingTimers()
-        jest.runOnlyPendingTimers()
-        jest.runOnlyPendingTimers()
+        jest.advanceTimersByTime(300)
       })
 
       assertTransactionStatus(result, TransactionStatus.Error)
@@ -148,9 +143,7 @@ describe('useTransaction hook', () => {
       assertTransactionStatus(result, TransactionStatus.AwaitingSign)
 
       act(() => {
-        jest.runOnlyPendingTimers()
-        jest.runOnlyPendingTimers()
-        jest.runOnlyPendingTimers()
+        jest.advanceTimersByTime(300)
       })
 
       assertTransactionStatus(result, TransactionStatus.Error)
