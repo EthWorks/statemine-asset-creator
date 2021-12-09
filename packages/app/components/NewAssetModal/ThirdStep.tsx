@@ -1,6 +1,6 @@
 import type { ModalStep } from './types'
 
-import {Chains, TransactionStatus, useActiveAccount} from 'use-substrate'
+import { Chains, useActiveAccount } from 'use-substrate'
 
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { ArrowLeft, ArrowRight } from '../icons'
@@ -11,11 +11,13 @@ import { useNewAssetModal } from './context/useNewAssetModal'
 import { useThirdStep } from './helpers/useThirdStep'
 import { StatusStep } from './StatusStep/StatusStep'
 import { ModalFooter } from './ModalFooter'
-import {useEffect} from "react";
 
-export function ThirdStep({ onNext, onBack }: ModalStep): JSX.Element {
-  const { state, dispatch, status } = useThirdStep()
-  const { statusStep, isContentVisible } = state
+interface StepBarProps {
+  setStepBarVisible: (arg: boolean) => void
+}
+export function ThirdStep({ onBack, setStepBarVisible }: ModalStep & StepBarProps): JSX.Element {
+  const { state, dispatch, status, stepDetails } = useThirdStep()
+  const { isContentVisible } = state
   const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
   const { activeAccount } = useActiveAccount(Chains.Statemine)
   const { address: ownerAddress } = activeAccount || {}
@@ -23,12 +25,13 @@ export function ThirdStep({ onNext, onBack }: ModalStep): JSX.Element {
   if (!ownerAddress) return <Loader/>
 
   const _onSubmit = async (): Promise<void> => {
+    setStepBarVisible(false)
     await dispatch({ type: 'createAsset' })
   }
 
   return (
     <>
-      {statusStep && <StatusStep status={status} title={statusStep.title} text={statusStep.text}/>}
+      {stepDetails && <StatusStep status={status} title={stepDetails.title} text={stepDetails.text} name={stepDetails.name} number={stepDetails.number}/>}
       {isContentVisible && (
         <div data-testid='third-step-content'>
           <TransactionInfoBlock>

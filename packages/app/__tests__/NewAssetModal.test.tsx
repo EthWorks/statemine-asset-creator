@@ -121,7 +121,12 @@ describe('New asset modal', () => {
     })
 
     it('on confirm', async () => {
+      mockUseTransaction = {
+        ...mockUseTransaction,
+        status: TransactionStatus.Success
+      }
       clickButton('Confirm')
+      await closeModal()
       await openModal()
 
       await assertText('Create asset')
@@ -373,21 +378,71 @@ describe('New asset modal', () => {
       assertButtonNotDisabled('Confirm')
     })
 
-    it('hides content and shows pending transaction for ongoing transaction', async () => {
-      mockUseTransaction = {
-        ...mockUseTransaction,
-        status: TransactionStatus.InBlock
-      }
+    describe('hides content and shows pending transaction for ongoing transaction', () => {
+      it('InBlock', async () => {
+        mockUseTransaction = {
+          ...mockUseTransaction,
+          status: TransactionStatus.InBlock
+        }
 
-      renderModal()
-      await enterThirdStep()
-      const stepBar = screen.queryAllByTestId('steps-bar')
-      expect(stepBar).toHaveLength(0)
+        renderModal()
+        await createAsset()
 
-      const thirdStepContent = screen.queryAllByTestId('third-step-content')
-      expect(thirdStepContent).toHaveLength(0)
+        const stepBar = screen.queryAllByTestId('steps-bar')
+        expect(stepBar).toHaveLength(0)
 
-      screen.getByTestId('transaction-status-InBlock')
+        const thirdStepContent = screen.queryAllByTestId('third-step-content')
+        expect(thirdStepContent).toHaveLength(0)
+
+        const modalContent = screen.getByTestId('status-step-InBlock')
+        expect(modalContent).toHaveTextContent('Pending transaction 1/1...')
+        expect(modalContent).toHaveTextContent('Transaction #1')
+        expect(modalContent).toHaveTextContent('Asset Creation')
+        expect(modalContent).toHaveTextContent('It takes time to create your asset. In order to do so, we need to create a transaction and wait until blockchain validates it.')
+      })
+
+      it('Success', async () => {
+        mockUseTransaction = {
+          ...mockUseTransaction,
+          status: TransactionStatus.Success
+        }
+
+        renderModal()
+        await createAsset()
+
+        const stepBar = screen.queryAllByTestId('steps-bar')
+        expect(stepBar).toHaveLength(0)
+
+        const thirdStepContent = screen.queryAllByTestId('third-step-content')
+        expect(thirdStepContent).toHaveLength(0)
+
+        const modalContent = screen.getByTestId('status-step-Success')
+        expect(modalContent).toHaveTextContent('Congratulations!')
+        expect(modalContent).toHaveTextContent('Your asset have been created.')
+        assertButtonNotDisabled('View asset in explorer')
+        assertButtonNotDisabled('Back to dashboard')
+      })
+
+      it('Error', async () => {
+        mockUseTransaction = {
+          ...mockUseTransaction,
+          status: TransactionStatus.Error
+        }
+
+        renderModal()
+        await createAsset()
+
+        const stepBar = screen.queryAllByTestId('steps-bar')
+        expect(stepBar).toHaveLength(0)
+
+        const thirdStepContent = screen.queryAllByTestId('third-step-content')
+        expect(thirdStepContent).toHaveLength(0)
+
+        const modalContent = screen.getByTestId('status-step-Error')
+        expect(modalContent).toHaveTextContent('Something went wrong')
+        expect(modalContent).toHaveTextContent('Lorem ipsum')
+        assertButtonNotDisabled('Back to dashboard')
+      })
     })
   })
 })

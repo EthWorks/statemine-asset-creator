@@ -41,7 +41,7 @@ export const StatusStep = ({ name, number, status, title, text }: StatusStepProp
   return (
     <StatusStepWrapper data-testid={`status-step-${status}`}>
       <CoinWrapper>
-        <Image src={renderIcon(status)} alt='' width='120' height='120' />
+        <Image src={renderIcon(status)} alt='' width='120' height='120'/>
       </CoinWrapper>
       <TitleText size='2XL' color='white' bold>{title}</TitleText>
       {status === TransactionStatus.InBlock &&
