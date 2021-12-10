@@ -1,18 +1,16 @@
-import { Balance } from '@polkadot/types/interfaces'
+import type { Balance } from '@polkadot/types/interfaces'
+
 import * as Popover from '@radix-ui/react-popover'
 import { useState } from 'react'
 import styled from 'styled-components'
 
 import { Chains, useBalances } from 'use-substrate'
 
-import { FormatBalance } from '../FormatBalance'
 import { Arrow } from '../icons'
-import { Text } from '../typography'
+import { FeeRow } from './FeeRow'
 
 export interface FeeSelectProps {
   account: string,
-  balance?: string,
-  symbol: string
 }
 
 interface FeeSelectItem {
@@ -27,10 +25,10 @@ const TOKEN = 'KSM'
 export const FeeSelect = ({ account }: FeeSelectProps): JSX.Element => {
   const [isOpen, setOpen] = useState(false)
   const { availableBalance } = useBalances(account, Chains.Statemine) || {}
-  const feeArr: FeeSelectItem[] = [{ balance: availableBalance, token: TOKEN, decimals: DECIMALS }]
+  const selectItems: FeeSelectItem[] = [{ balance: availableBalance, token: TOKEN, decimals: DECIMALS }]
   const [currentFeeIndex, setCurrentFeeIndex] = useState<number>(0)
 
-  const selected = feeArr[currentFeeIndex]
+  const selected = selectItems[currentFeeIndex]
 
   const handleClick = (index: number): void => {
     setCurrentFeeIndex(index)
@@ -41,22 +39,14 @@ export const FeeSelect = ({ account }: FeeSelectProps): JSX.Element => {
     <div>
       <Popover.Root onOpenChange={setOpen} open={isOpen}>
         <Select>
-          <FeeRow>
-            <FeeSymbol size='SM' color='white'>{selected.token}</FeeSymbol>
-            <StyledText size='XS'>BALANCE</StyledText>
-            <StyledFormatBalance chainDecimals={selected.decimals} token={selected.token} value={selected.balance} />
-          </FeeRow>
+          <FeeRow balance={selected.balance} decimals={selected.decimals} token={selected.token} />
           <StyledArrow width='10' height='6' direction='down'/>
         </Select>
         <Dropdown>
           <ul>
-            {feeArr.map(({ balance, token, decimals }, index) => (
+            {selectItems.map(({ balance, token, decimals }, index) => (
               <li key={index} onClick={() => handleClick(index)}>
-                <FeeRow>
-                  <FeeSymbol size='SM' color='white'>{token}</FeeSymbol>
-                  <StyledText size='XS'>BALANCE</StyledText>
-                  <StyledFormatBalance chainDecimals={decimals} token={token} value={balance} />
-                </FeeRow>
+                <FeeRow balance={balance} decimals={decimals} token={token} />
               </li>
             ))}
           </ul>
@@ -115,31 +105,6 @@ const Dropdown = styled(Popover.Content)`
       }
     }
   }
-`
-
-const FeeRow = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr 0.7fr;
-  grid-column-gap: 12px;
-  align-items: center;
-  padding-right: 26px;
-  width: 100%;
-`
-
-const FeeSymbol = styled(Text)`
-  margin-right: auto;
-`
-
-const StyledFormatBalance = styled(FormatBalance)`
-  justify-content: flex-end;
-  
-  p {
-    text-align: right;
-  }
-`
-
-const StyledText = styled(Text)`
-  text-align: right;
 `
 
 const StyledArrow = styled(Arrow)`
