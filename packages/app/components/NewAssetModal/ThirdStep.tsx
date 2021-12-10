@@ -74,7 +74,7 @@ export function ThirdStep({ onBack, setStepBarVisible }: ModalStep & StepBarProp
               <Text size='XS' color='white' bold>{assetId}</Text>
             </InfoRow>
           </TransactionInfoBlock>
-          <FeeSelect symbol='KSM' account={ownerAddress.toString()}/>
+          <FeeSelect account={ownerAddress.toString()}/>
 
           <ModalFooter contentPosition='between'>
             <ButtonOutline onClick={onBack} disabled={areButtonsDisabled}>
