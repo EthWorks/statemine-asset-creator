@@ -34,7 +34,7 @@ export const ActiveAccountBar: FC<Props> = ({ onClick }) => (
 
 const ActiveAccountWrapper = styled.div`
   display: grid;
-  grid-template-columns: auto auto 24px;
+  grid-template-columns: auto auto auto;
   grid-column-gap: 8px;
   align-items: center;
   padding: 4px 8px 4px 4px;
