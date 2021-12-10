@@ -35,10 +35,10 @@ export function ThirdStep({ onBack, setStepBarVisible }: ModalStep & StepBarProp
     }
   }, [setStepBarVisible, status])
 
-  if (!ownerAddress && !tx && !status) return <Loader/>
+  if (!ownerAddress || !tx || !status) return <Loader/>
 
   const _onSubmit = async (): Promise<void> => {
-    tx && await tx()
+    await tx()
   }
 
   const areButtonsDisabled = status !== TransactionStatus.Ready
