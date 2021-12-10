@@ -3,11 +3,13 @@ import type { RuntimeDispatchInfo } from '@polkadot/types/interfaces'
 import type { ErrorDetails, UseTransaction } from 'use-substrate'
 
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import BN from 'bn.js'
 import React from 'react'
 
 import { TransactionStatus } from 'use-substrate'
 
 import { NewAssetModal } from '../components'
+import { TransactionInfoBlockStatus } from '../components/TransactionInfoBlock/TransactionInfoBlock'
 import { BN_ZERO as MOCK_BN_ZERO, useToggle } from '../utils'
 import {
   assertButtonDisabled,
@@ -49,8 +51,9 @@ function TestComponent(): JSX.Element {
   )
 }
 
+const FEE = '30000000000'
 const mockTransaction = jest.fn()
-let mockUseTransaction: UseTransaction = { tx: mockTransaction, paymentInfo: {} as RuntimeDispatchInfo, status: TransactionStatus.Ready }
+let mockUseTransaction: UseTransaction = { tx: mockTransaction, paymentInfo: { partialFee: new BN(FEE) } as RuntimeDispatchInfo, status: TransactionStatus.Ready }
 const ASSET_ID = '7'
 const MIN_BALANCE = '300'
 const ASSET_NAME = 'kusama'
@@ -355,6 +358,18 @@ describe('New asset modal', () => {
       expect(mockUseApi.api.tx.assets.setTeam).not.toBeCalled()
     })
 
+    describe('content', () => {
+      it('Create asset without teleport', async () => {
+        renderModal()
+        await enterThirdStep()
+
+        await assertTransactionInfoBlock(1, 'ready', [
+          'ChainStatemine',
+          'Statemine fee0.0300KSM'
+        ])
+      })
+    })
+
     describe('displays content, steps bar and confirm button', () => {
       it('Ready', async () => {
         renderModal()
@@ -380,6 +395,11 @@ describe('New asset modal', () => {
 
         assertButtonDisabled('Confirm')
         assertButtonDisabled('Back')
+
+        await assertTransactionInfoBlock(1, 'sign', [
+          'ChainStatemine',
+          'Statemine fee0.0300KSM'
+        ])
       })
     })
 
@@ -557,7 +577,7 @@ const assertFirstStepFilled = () => {
   assertInput('Minimum balance', MIN_BALANCE)
 }
 
-function assertFirstStepEmpty() {
+const assertFirstStepEmpty = () => {
   assertInput('Asset name', '')
   assertInput('Asset symbol', '')
   assertInput('Asset decimals', '')
@@ -565,7 +585,7 @@ function assertFirstStepEmpty() {
   assertInput('Minimum balance', '')
 }
 
-async function assertSummary() {
+const assertSummary = async () => {
   const assetModal = await screen.getByTestId('modal')
   expect(assetModal).toHaveTextContent(`Asset name${ASSET_NAME}`)
   expect(assetModal).toHaveTextContent(`Asset symbol${ASSET_SYMBOL}`)
@@ -595,7 +615,7 @@ const enterThirdStep = async (): Promise<void> => {
   clickButton('Next')
 }
 
-async function enterSecondStep() {
+const enterSecondStep = async () => {
   await openModal()
   await fillFirstStep()
   clickButton('Next')
@@ -640,22 +660,22 @@ const assertStepPast = (step: HTMLElement) => {
   expect(step).not.toHaveClass('active')
 }
 
-function assertStepsBarHidden() {
+const assertStepsBarHidden = () => {
   const stepBar = screen.queryAllByTestId('steps-bar')
   expect(stepBar).toHaveLength(0)
 }
 
-function assertContentHidden() {
+const assertContentHidden = () => {
   const thirdStepContent = screen.queryAllByTestId('third-step-content')
   expect(thirdStepContent).toHaveLength(0)
 }
 
-function assertStepsBarVisible() {
+const assertStepsBarVisible = () => {
   const stepBar = screen.queryAllByTestId('steps-bar')
   expect(stepBar).toHaveLength(1)
 }
 
-function assertContentVisible() {
+const assertContentVisible = () => {
   const thirdStepContent = screen.queryAllByTestId('third-step-content')
   expect(thirdStepContent).toHaveLength(1)
 }
@@ -666,7 +686,7 @@ interface TestErrorDetails {
   docs?: string[];
 }
 
-function setErrorDetails(errorDetails: ErrorDetails[] | undefined) {
+const setErrorDetails = (errorDetails: ErrorDetails[] | undefined) => {
   mockUseTransaction = {
     ...mockUseTransaction,
     status: TransactionStatus.Error,
@@ -674,6 +694,14 @@ function setErrorDetails(errorDetails: ErrorDetails[] | undefined) {
   }
 }
 
-function errorDetail({ section = '', name = '', docs = [] }: TestErrorDetails): ErrorDetails {
-  return { section, name, docs: docs }
+const errorDetail = ({ section = '', name = '', docs = [] }: TestErrorDetails): ErrorDetails => ({
+  section,
+  name,
+  docs: docs
+})
+
+const assertTransactionInfoBlock = async (transactionNumber: number, status: TransactionInfoBlockStatus, content: string[]) => {
+  const transactionInfoBlock = await screen.findByTestId(`transaction-info-block-${transactionNumber}-${status}`)
+
+  content.forEach(text => expect(transactionInfoBlock).toHaveTextContent(text))
 }

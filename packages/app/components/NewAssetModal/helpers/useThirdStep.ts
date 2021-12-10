@@ -1,5 +1,6 @@
 import type { StepDetails } from './getTransactionModalDetails'
 
+import BN from 'bn.js'
 import { useMemo } from 'react'
 
 import { Chains, TransactionStatus, useActiveAccount, useApi, useTransaction } from 'use-substrate'
@@ -11,6 +12,7 @@ interface UseThirdStep {
   tx: (() => Promise<void>) | undefined,
   status: TransactionStatus | undefined,
   stepDetails: StepDetails
+  transactionFee: BN | undefined
 }
 
 export function useThirdStep(): UseThirdStep {
@@ -32,12 +34,13 @@ export function useThirdStep(): UseThirdStep {
       ]
     : [], [admin, issuer, freezer, api, assetDecimals, assetId, assetName, assetSymbol, minBalance])
 
-  const { tx, status, errorDetails } = useTransaction(api?.tx.utility.batchAll, [txs], ownerAddress?.toString()) || {}
+  const { tx, status, errorDetails, paymentInfo } = useTransaction(api?.tx.utility.batchAll, [txs], ownerAddress?.toString()) || {}
   const stepDetails = useMemo(() => getTransactionModalDetails(status, errorDetails), [status, errorDetails])
 
   return {
     tx,
     stepDetails,
-    status
+    status,
+    transactionFee: paymentInfo?.partialFee
   }
 }
