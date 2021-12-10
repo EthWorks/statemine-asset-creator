@@ -1,6 +1,6 @@
+import type { Story } from '@storybook/react'
 import type { TransactionInfoBlockProps } from './TransactionInfoBlock'
 
-import { Story } from '@storybook/react'
 import BN from 'bn.js'
 
 import { Card } from '../Card'

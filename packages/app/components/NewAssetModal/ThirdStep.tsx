@@ -5,6 +5,7 @@ import { useMemo } from 'react'
 import { Chains, useActiveAccount, useApi, useTransaction } from 'use-substrate'
 
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
+import { FeeSelect } from '../FeeSelect'
 import { ArrowLeft, ArrowRight } from '../icons'
 import { Loader } from '../Loader'
 import { InfoRow, TransactionInfoBlock } from '../TransactionInfoBlock/TransactionInfoBlock'
@@ -64,6 +65,7 @@ export function ThirdStep({ onNext, onBack }: ModalStep): JSX.Element {
           <Text size='XS' color='white' bold>{assetId}</Text>
         </InfoRow>
       </TransactionInfoBlock>
+      <FeeSelect symbol='KSM' account={ownerAddress.toString()}/>
 
       <ModalFooter contentPosition='between'>
         <ButtonOutline onClick={onBack}>
