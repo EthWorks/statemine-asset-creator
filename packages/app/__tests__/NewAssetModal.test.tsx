@@ -1,6 +1,6 @@
 import type { RenderResult } from '@testing-library/react'
 import type { RuntimeDispatchInfo } from '@polkadot/types/interfaces'
-import type { UseTransaction } from 'use-substrate'
+import type { ErrorDetails, UseTransaction } from 'use-substrate'
 
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import React from 'react'
@@ -423,15 +423,9 @@ describe('New asset modal', () => {
       })
       describe('Error', () => {
         it('with error details', async () => {
-          mockUseTransaction = {
-            ...mockUseTransaction,
-            status: TransactionStatus.Error,
-            errorDetails: [{
-              section: 'assets',
-              name: 'BadMetadata',
-              docs: ['Invalid metadata given.']
-            }]
-          }
+          setErrorDetails([
+            errorDetail({ section: 'assets', name: 'BadMetadata', docs: ['Invalid metadata given.'] })
+          ])
 
           renderModal()
           await enterThirdStep()
@@ -446,11 +440,7 @@ describe('New asset modal', () => {
         })
 
         it('with missing error details', async () => {
-          mockUseTransaction = {
-            ...mockUseTransaction,
-            status: TransactionStatus.Error,
-            errorDetails: undefined
-          }
+          setErrorDetails(undefined)
 
           renderModal()
           await enterThirdStep()
@@ -464,20 +454,62 @@ describe('New asset modal', () => {
           assertButtonNotDisabled('Back to dashboard')
         })
 
+        it('with missing error section', async () => {
+          setErrorDetails([
+            errorDetail({ name: 'BadMetadata', docs: ['Invalid metadata given.'] })
+          ])
+
+          renderModal()
+          await enterThirdStep()
+
+          assertStepsBarHidden()
+          assertContentHidden()
+
+          const modalContent = screen.getByTestId('status-step-Error')
+          expect(modalContent).toHaveTextContent('Something went wrong')
+          expect(modalContent).toHaveTextContent('[BadMetadata]: Invalid metadata given.')
+          assertButtonNotDisabled('Back to dashboard')
+        })
+
+        it('with missing docs', async () => {
+          setErrorDetails([
+            errorDetail({ section: 'assets', name: 'BadMetadata' })
+          ])
+
+          renderModal()
+          await enterThirdStep()
+
+          assertStepsBarHidden()
+          assertContentHidden()
+
+          const modalContent = screen.getByTestId('status-step-Error')
+          expect(modalContent).toHaveTextContent('Something went wrong')
+          expect(modalContent).toHaveTextContent('[assets.BadMetadata]')
+          assertButtonNotDisabled('Back to dashboard')
+        })
+
+        it('with missing error name', async () => {
+          setErrorDetails([
+            errorDetail({ section: 'assets', name: undefined, docs: ['Invalid metadata given.'] })
+          ])
+
+          renderModal()
+          await enterThirdStep()
+
+          assertStepsBarHidden()
+          assertContentHidden()
+
+          const modalContent = screen.getByTestId('status-step-Error')
+          expect(modalContent).toHaveTextContent('Something went wrong')
+          expect(modalContent).toHaveTextContent('[assets]: Invalid metadata given.')
+          assertButtonNotDisabled('Back to dashboard')
+        })
+
         it('with multiple error details', async () => {
-          mockUseTransaction = {
-            ...mockUseTransaction,
-            status: TransactionStatus.Error,
-            errorDetails: [{
-              section: 'assets',
-              name: 'BadMetadata',
-              docs: ['Invalid metadata given.']
-            }, {
-              section: 'assets',
-              name: 'InUse',
-              docs: ['The asset ID is already taken.']
-            }]
-          }
+          setErrorDetails([
+            errorDetail({ section: 'assets', name: 'BadMetadata', docs: ['Invalid metadata given.'] }),
+            errorDetail({ section: 'assets', name: 'InUse', docs: ['The asset ID is already taken.'] })
+          ])
 
           renderModal()
           await enterThirdStep()
@@ -625,4 +657,22 @@ function assertStepsBarVisible() {
 function assertContentVisible() {
   const thirdStepContent = screen.queryAllByTestId('third-step-content')
   expect(thirdStepContent).toHaveLength(1)
+}
+
+interface TestErrorDetails {
+  section?: string;
+  name?: string;
+  docs?: string[];
+}
+
+function setErrorDetails(errorDetails: ErrorDetails[] | undefined) {
+  mockUseTransaction = {
+    ...mockUseTransaction,
+    status: TransactionStatus.Error,
+    errorDetails
+  }
+}
+
+function errorDetail({ section = '', name = '', docs = [] }: TestErrorDetails): ErrorDetails {
+  return { section, name, docs: docs }
 }

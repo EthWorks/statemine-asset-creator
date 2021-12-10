@@ -37,5 +37,10 @@ export function getTransactionModalDetails(status: TransactionStatus | undefined
 }
 
 function formatErrorDetails(errorDetails: ErrorDetails[]): string {
-  return errorDetails.map(({ docs, section, name }) => `[${section}.${name}]: ${docs.join(' ')}`).join('\n')
+  return errorDetails.map(({ docs, section, name }) => {
+    const firstPart = section && name ? `${section}.${name}` : `${section}${name}`
+    const secondPart = docs.length !== 0 ? (`: ${docs.join(' ')}`) : ''
+
+    return `[${firstPart}]${secondPart}`
+  }).join('\n')
 }
