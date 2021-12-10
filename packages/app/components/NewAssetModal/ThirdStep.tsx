@@ -6,21 +6,25 @@ import { Chains, TransactionStatus, useActiveAccount } from 'use-substrate'
 
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { FeeSelect } from '../FeeSelect'
+import { FormatBalance } from '../FormatBalance'
 import { ArrowLeft, ArrowRight } from '../icons'
 import { Loader } from '../Loader'
 import { InfoRow, TransactionInfoBlock } from '../TransactionInfoBlock/TransactionInfoBlock'
 import { Label, Text } from '../typography'
 import { useNewAssetModal } from './context/useNewAssetModal'
-import { useThirdStep } from './helpers/useThirdStep'
-import { TransactionState } from './StatusStep/TransactionState'
+import { TransactionState } from './TransactionState/TransactionState'
+import { mapToTransactionInfoBlockStatus, useThirdStep } from './helpers'
 import { ModalFooter } from './ModalFooter'
 
 interface StepBarProps {
   setStepBarVisible: (arg: boolean) => void
 }
 
+const TOKEN = 'KSM'
+const DECIMALS = 12
+
 export function ThirdStep({ onBack, setStepBarVisible }: ModalStep & StepBarProps): JSX.Element {
-  const { tx, status, stepDetails } = useThirdStep()
+  const { tx, status, stepDetails, transactionFee } = useThirdStep()
   const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
   const { activeAccount } = useActiveAccount(Chains.Statemine)
   const { address: ownerAddress } = activeAccount || {}
@@ -74,6 +78,17 @@ export function ThirdStep({ onBack, setStepBarVisible }: ModalStep & StepBarProp
               <Text size='XS' color='white' bold>{assetId}</Text>
             </InfoRow>
           </TransactionInfoBlock>
+          <TransactionInfoBlock name='Asset Creation' number={1} status={mapToTransactionInfoBlockStatus(status)}>
+            <InfoRow>
+              <Label>Chain</Label>
+              <Text size='XS' color='white' bold>Statemine</Text>
+            </InfoRow>
+            <InfoRow>
+              <Label>Statemine fee</Label>
+              <FormatBalance chainDecimals={DECIMALS} token={TOKEN} value={transactionFee}/>
+            </InfoRow>
+          </TransactionInfoBlock>
+
           <FeeSelect account={ownerAddress.toString()}/>
 
           <ModalFooter contentPosition='between'>

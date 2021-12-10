@@ -1,5 +1,5 @@
 import type { ErrorDetails } from 'use-substrate'
-import type { TransactionStateProps } from '../StatusStep/TransactionState'
+import type { TransactionStateProps } from '../TransactionState/TransactionState'
 
 import { TransactionStatus } from 'use-substrate'
 

@@ -4,15 +4,17 @@ import styled from 'styled-components'
 import { CheckIcon } from '../icons'
 import { Text } from '../typography'
 
+export type TransactionInfoBlockStatus = 'waiting' | 'sign' | 'done' | 'ready';
+
 export interface TransactionInfoBlockProps {
   children: ReactNode,
   name?: string,
   number?: number,
-  status?: 'waiting' | 'sign' | 'done'
+  status?: TransactionInfoBlockStatus
 }
 
-export const TransactionInfoBlock = ({ children, name, number, status }: TransactionInfoBlockProps): JSX.Element => (
-  <BlockWrapper className={status}>
+export const TransactionInfoBlock = ({ children, name, number, status = 'ready' }: TransactionInfoBlockProps): JSX.Element => (
+  <BlockWrapper data-testid={`transaction-info-block-${number}-${status}`} className={status}>
     {name &&
       <BlockHeader className={status}>
         <BlockHeaderLine className={status}/>
