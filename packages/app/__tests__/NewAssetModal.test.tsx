@@ -238,9 +238,7 @@ describe('New asset modal', () => {
   describe('Second step', () => {
     it('shows owner account', async () => {
       renderModal()
-      await openModal()
-      await fillFirstStep()
-      clickButton('Next')
+      await enterSecondStep()
 
       const ownerAccountSelect = await getAccountSelect(OWNER_DROPDOWN_INDEX)
       expect(ownerAccountSelect).toHaveAttribute('disabled')
@@ -250,9 +248,7 @@ describe('New asset modal', () => {
     describe('shows insufficient funds info', () => {
       beforeEach(async () => {
         renderModal()
-        await openModal()
-        await fillFirstStep()
-        clickButton('Next')
+        await enterSecondStep()
 
         await assertText('Owner account')
       })
@@ -300,9 +296,7 @@ describe('New asset modal', () => {
     describe('allows to select account for', () => {
       beforeEach(async () => {
         renderModal()
-        await openModal()
-        await fillFirstStep()
-        clickButton('Next')
+        await enterSecondStep()
       })
 
       it('admin', async () => {
@@ -334,9 +328,7 @@ describe('New asset modal', () => {
     describe('Use everywhere', () => {
       it('sets admin account for issuer and freezer account', async () => {
         renderModal()
-        await openModal()
-        fillFirstStep()
-        clickButton('Next')
+        await enterSecondStep()
 
         await assertTextInAccountSelect(bobAccount.name, ADMIN_DROPDOWN_INDEX)
         await assertTextInAccountSelect(bobAccount.name, ISSUER_DROPDOWN_INDEX)
@@ -526,6 +518,12 @@ const enterThirdStep = async (): Promise<void> => {
   clickButton('Next')
   await fillSecondStep()
 
+  clickButton('Next')
+}
+
+async function enterSecondStep() {
+  await openModal()
+  await fillFirstStep()
   clickButton('Next')
 }
 
