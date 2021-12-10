@@ -46,8 +46,7 @@ function TestComponent(): JSX.Element {
 }
 
 const mockTransaction = jest.fn()
-const mockTransactionStatus = TransactionStatus.Ready
-let mockUseTransaction = { tx: mockTransaction, paymentInfo: {}, status: mockTransactionStatus }
+let mockUseTransaction = { tx: mockTransaction, paymentInfo: {}, status: TransactionStatus.Ready }
 const ASSET_ID = '7'
 const MIN_BALANCE = '300'
 const ASSET_NAME = 'kusama'
@@ -122,10 +121,6 @@ describe('New asset modal', () => {
       })
 
       it('on confirm', async () => {
-        mockUseTransaction = {
-          ...mockUseTransaction,
-          status: TransactionStatus.Success
-        }
         clickButton('Confirm')
         await closeModal()
         await openModal()
@@ -319,7 +314,7 @@ describe('New asset modal', () => {
       it('admin', async () => {
         await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
         clickButton('Next')
-        await act(() => findAndClickButton('Confirm'))
+        await findAndClickButton('Confirm')
 
         expect(mockUseApi.api.tx.assets.create).toBeCalledWith(ASSET_ID, aliceAccount.address, MIN_BALANCE)
         expect(mockUseApi.api.tx.assets.setTeam).toBeCalledWith(ASSET_ID, bobAccount.address, aliceAccount.address, bobAccount.address)
