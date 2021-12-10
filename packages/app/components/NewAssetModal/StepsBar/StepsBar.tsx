@@ -10,7 +10,7 @@ export interface StepsBarProps {
 }
 
 export const StepsBar = ({ optional, activeStep }: StepsBarProps): JSX.Element => (
-  <StyledStepBar>
+  <StyledStepBar data-testid='steps-bar'>
     {NAVIGATION_STEPS.map((step, index) => (
       <Step
         key={index}
