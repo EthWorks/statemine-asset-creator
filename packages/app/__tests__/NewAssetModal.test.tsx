@@ -17,6 +17,7 @@ import {
   assertInput,
   assertInputError,
   assertInputValue,
+  assertModalClosed,
   assertNoInputError,
   assertText,
   assertTextInAccountSelect,
@@ -382,10 +383,7 @@ describe('New asset modal', () => {
       })
 
       it('AwaitingSign', async () => {
-        mockUseTransaction = {
-          ...mockUseTransaction,
-          status: TransactionStatus.AwaitingSign
-        }
+        setTransactionStatus(TransactionStatus.AwaitingSign)
 
         renderModal()
         await enterThirdStep()
@@ -405,10 +403,7 @@ describe('New asset modal', () => {
 
     describe('hides content and shows pending transaction for ongoing transaction', () => {
       it('InBlock', async () => {
-        mockUseTransaction = {
-          ...mockUseTransaction,
-          status: TransactionStatus.InBlock
-        }
+        setTransactionStatus(TransactionStatus.InBlock)
 
         renderModal()
         await enterThirdStep()
@@ -424,10 +419,7 @@ describe('New asset modal', () => {
       })
 
       it('Success', async () => {
-        mockUseTransaction = {
-          ...mockUseTransaction,
-          status: TransactionStatus.Success
-        }
+        setTransactionStatus(TransactionStatus.Success)
 
         renderModal()
         await enterThirdStep()
@@ -543,6 +535,19 @@ describe('New asset modal', () => {
           expect(modalContent).toHaveTextContent('[assets.InUse]: The asset ID is already taken.')
           assertButtonNotDisabled('Back to dashboard')
         })
+      })
+
+      it('enables to go back to dashboard', async () => {
+        setTransactionStatus(TransactionStatus.Success)
+
+        renderModal()
+        await enterThirdStep()
+
+        clickButton('Back to dashboard')
+        assertModalClosed()
+
+        clickButton('Create new asset')
+        assertFirstStepEmpty()
       })
     })
   })
@@ -684,6 +689,13 @@ interface TestErrorDetails {
   section?: string;
   name?: string;
   docs?: string[];
+}
+
+const setTransactionStatus = (status: TransactionStatus) => {
+  mockUseTransaction = {
+    ...mockUseTransaction,
+    status
+  }
 }
 
 const setErrorDetails = (errorDetails: ErrorDetails[] | undefined) => {
