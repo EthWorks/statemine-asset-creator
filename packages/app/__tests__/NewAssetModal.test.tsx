@@ -359,7 +359,7 @@ describe('New asset modal', () => {
     })
 
     describe('content', () => {
-      it('Create asset without teleport', async () => {
+      it('create asset without teleport', async () => {
         renderModal()
         await enterThirdStep()
 
@@ -697,7 +697,7 @@ const setErrorDetails = (errorDetails: ErrorDetails[] | undefined) => {
 const errorDetail = ({ section = '', name = '', docs = [] }: TestErrorDetails): ErrorDetails => ({
   section,
   name,
-  docs: docs
+  docs
 })
 
 const assertTransactionInfoBlock = async (transactionNumber: number, status: TransactionInfoBlockStatus, content: string[]) => {
