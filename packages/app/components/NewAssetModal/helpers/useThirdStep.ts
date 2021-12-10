@@ -32,8 +32,8 @@ export function useThirdStep(): UseThirdStep {
       ]
     : [], [admin, issuer, freezer, api, assetDecimals, assetId, assetName, assetSymbol, minBalance])
 
-  const { tx, status } = useTransaction(api?.tx.utility.batchAll, [txs], ownerAddress?.toString()) || {}
-  const stepDetails = useMemo(() => getTransactionModalDetails(status), [status])
+  const { tx, status, errorDetails } = useTransaction(api?.tx.utility.batchAll, [txs], ownerAddress?.toString()) || {}
+  const stepDetails = useMemo(() => getTransactionModalDetails(status, errorDetails), [status, errorDetails])
 
   return {
     tx,
