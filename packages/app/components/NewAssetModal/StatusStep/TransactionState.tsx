@@ -13,7 +13,7 @@ import { ButtonOutline, ButtonTertiary } from '../../button/Button'
 import { ViewIcon } from '../../icons'
 import { Text } from '../../typography'
 
-export interface StatusStepProps {
+export interface TransactionStateProps {
   name?: string,
   number?: number,
   status: TransactionStatus | undefined,
@@ -35,11 +35,11 @@ const getIcon = (status: TransactionStatus): StaticImageData => {
   }
 }
 
-export const StatusStep = ({ name, number, status, title, text }: StatusStepProps): JSX.Element | null => {
+export const TransactionState = ({ name, number, status, title, text }: TransactionStateProps): JSX.Element | null => {
   if (!status || status === TransactionStatus.Ready || status === TransactionStatus.AwaitingSign) return null
 
   return (
-    <StatusStepWrapper data-testid={`status-step-${status}`}>
+    <TransactionStateWrapper data-testid={`status-step-${status}`}>
       <CoinWrapper>
         <Image src={getIcon(status)} alt='' width='120' height='120'/>
       </CoinWrapper>
@@ -63,12 +63,12 @@ export const StatusStep = ({ name, number, status, title, text }: StatusStepProp
           : status === TransactionStatus.Error && <ButtonTertiary>Back to dashboard</ButtonTertiary>
         }
       </ButtonWrapper>
-    </StatusStepWrapper>
+    </TransactionStateWrapper>
 
   )
 }
 
-const StatusStepWrapper = styled.div`
+const TransactionStateWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;

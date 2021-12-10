@@ -11,7 +11,7 @@ import { InfoRow, TransactionInfoBlock } from '../TransactionInfoBlock/Transacti
 import { Label, Text } from '../typography'
 import { useNewAssetModal } from './context/useNewAssetModal'
 import { useThirdStep } from './helpers/useThirdStep'
-import { StatusStep } from './StatusStep/StatusStep'
+import { TransactionState } from './StatusStep/TransactionState'
 import { ModalFooter } from './ModalFooter'
 
 interface StepBarProps {
@@ -48,7 +48,7 @@ export function ThirdStep({ onBack, setStepBarVisible }: ModalStep & StepBarProp
 
   return (
     <>
-      {stepDetails && <StatusStep status={status} title={stepDetails.title} text={stepDetails.text} name={stepDetails.name} number={stepDetails.number}/>}
+      {stepDetails && <TransactionState status={status} title={stepDetails.title} text={stepDetails.text} name={stepDetails.name} number={stepDetails.number}/>}
       {isContentVisible && (
         <div data-testid='third-step-content'>
           <TransactionInfoBlock>

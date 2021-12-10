@@ -1,14 +1,14 @@
 import type { Story } from '@storybook/react'
-import type { StatusStepProps } from './StatusStep'
+import type { TransactionStateProps } from './TransactionState'
 
 import { TransactionStatus } from 'use-substrate'
 
 import { Card } from '../..'
-import { StatusStep } from './StatusStep'
+import { TransactionState } from './TransactionState'
 
 const Default = {
-  title: 'Components/StatusStep',
-  component: StatusStep,
+  title: 'Components/TransactionState',
+  component: TransactionState,
   argTypes: {
     status: {
       control: { type: 'select' },
@@ -19,9 +19,9 @@ const Default = {
 
 export default Default
 
-const Template: Story<StatusStepProps> = (args) =>
+const Template: Story<TransactionStateProps> = (args) =>
   <Card padding='l'>
-    <StatusStep {...args} />
+    <TransactionState {...args} />
   </Card>
 
 export const Base = Template.bind({})

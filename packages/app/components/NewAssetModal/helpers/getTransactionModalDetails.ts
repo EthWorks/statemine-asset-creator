@@ -1,8 +1,8 @@
-import type { StatusStepProps } from '../StatusStep/StatusStep'
+import type { TransactionStateProps } from '../StatusStep/TransactionState'
 
 import { TransactionStatus } from 'use-substrate'
 
-export type StepDetails = Omit<StatusStepProps, 'status'> | undefined
+export type StepDetails = Omit<TransactionStateProps, 'status'> | undefined
 
 export function getTransactionModalDetails(status: TransactionStatus | undefined): StepDetails {
   switch (status) {
