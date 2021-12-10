@@ -1,6 +1,6 @@
 import type { RenderResult } from '@testing-library/react'
 import type { RuntimeDispatchInfo } from '@polkadot/types/interfaces'
-import type{ UseTransaction } from 'use-substrate'
+import type { UseTransaction } from 'use-substrate'
 
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import React from 'react'
