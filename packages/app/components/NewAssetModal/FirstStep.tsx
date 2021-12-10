@@ -59,6 +59,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
 
   const _onNext = useCallback((e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
     if (stringLimit && !assetNameError && !assetSymbolError) {
       onNext()
     }

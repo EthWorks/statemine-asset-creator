@@ -11,6 +11,7 @@ import { ThirdStep } from './ThirdStep'
 
 export function NewAssetModal({ isOpen, closeModal }: NewAssetModalProps): JSX.Element {
   const [activeStep, setActiveStep] = useState<number>(1)
+  const [stepBarVisible, setStepBarVisible] = useState<boolean>(true)
 
   const _moveToStep = (step: number): void => {
     setActiveStep(step)
@@ -30,7 +31,7 @@ export function NewAssetModal({ isOpen, closeModal }: NewAssetModalProps): JSX.E
         return <SecondStep onNext={() => _moveToStep(3)} onBack={() => _moveToStep(1)}/>
       }
       default: {
-        return <ThirdStep onNext={_onClose} onBack={() => _moveToStep(2)}/>
+        return <ThirdStep onNext={_onClose} onBack={() => _moveToStep(2)} setStepBarVisible={setStepBarVisible}/>
       }
     }
   }
@@ -43,7 +44,7 @@ export function NewAssetModal({ isOpen, closeModal }: NewAssetModalProps): JSX.E
       title='Create asset'
     >
       <NewAssetModalProvider>
-        <StepsBar activeStep={activeStep - 1} />
+        {stepBarVisible && <StepsBar activeStep={activeStep - 1} />}
         <div>
           {renderStep()}
         </div>
