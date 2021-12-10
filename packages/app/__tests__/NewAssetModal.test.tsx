@@ -479,11 +479,12 @@ function assertFirstStepEmpty() {
 }
 
 async function assertSummary() {
-  await assertText(ASSET_NAME)
-  await assertText(ASSET_SYMBOL)
-  await assertText(ASSET_DECIMALS)
-  await assertText(ASSET_ID)
-  await assertText(MIN_BALANCE)
+  const assetModal = await screen.getByTestId('modal')
+  expect(assetModal).toHaveTextContent(`Asset name${ASSET_NAME}`)
+  expect(assetModal).toHaveTextContent(`Asset symbol${ASSET_SYMBOL}`)
+  expect(assetModal).toHaveTextContent(`Asset decimals${ASSET_DECIMALS}`)
+  expect(assetModal).toHaveTextContent(`Asset minimal balance${MIN_BALANCE}`)
+  expect(assetModal).toHaveTextContent(`Asset id${ASSET_ID}`)
 }
 
 const createAsset = async (): Promise<void> => {

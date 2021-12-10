@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Chains, TransactionStatus, useActiveAccount } from 'use-substrate'
 
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
+import { FeeSelect } from '../FeeSelect'
 import { ArrowLeft, ArrowRight } from '../icons'
 import { Loader } from '../Loader'
 import { InfoRow, TransactionInfoBlock } from '../TransactionInfoBlock/TransactionInfoBlock'
@@ -73,6 +74,7 @@ export function ThirdStep({ onBack, setStepBarVisible }: ModalStep & StepBarProp
               <Text size='XS' color='white' bold>{assetId}</Text>
             </InfoRow>
           </TransactionInfoBlock>
+          <FeeSelect account={ownerAddress.toString()}/>
 
           <ModalFooter contentPosition='between'>
             <ButtonOutline onClick={onBack} disabled={areButtonsDisabled}>
