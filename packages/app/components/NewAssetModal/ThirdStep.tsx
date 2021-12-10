@@ -1,8 +1,8 @@
 import type { ModalStep } from './types'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { Chains, useActiveAccount } from 'use-substrate'
+import { Chains, TransactionStatus, useActiveAccount } from 'use-substrate'
 
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { ArrowLeft, ArrowRight } from '../icons'
@@ -24,13 +24,23 @@ export function ThirdStep({ onBack, setStepBarVisible }: ModalStep & StepBarProp
   const { address: ownerAddress } = activeAccount || {}
   const [isContentVisible, setIsContentVisible] = useState<boolean>(true)
 
-  if (!ownerAddress) return <Loader/>
+  useEffect(() => {
+    if (status === TransactionStatus.Ready || status === TransactionStatus.AwaitingSign) {
+      setIsContentVisible(true)
+      setStepBarVisible(true)
+    } else {
+      setIsContentVisible(false)
+      setStepBarVisible(false)
+    }
+  }, [setStepBarVisible, status])
+
+  if (!ownerAddress && !tx && !status) return <Loader/>
 
   const _onSubmit = async (): Promise<void> => {
-    setStepBarVisible(false)
-    setIsContentVisible(false)
     tx && await tx()
   }
+
+  const areButtonsDisabled = status !== TransactionStatus.Ready
 
   return (
     <>
@@ -61,11 +71,11 @@ export function ThirdStep({ onBack, setStepBarVisible }: ModalStep & StepBarProp
           </TransactionInfoBlock>
 
           <ModalFooter contentPosition='between'>
-            <ButtonOutline onClick={onBack}>
+            <ButtonOutline onClick={onBack} disabled={areButtonsDisabled}>
               <ArrowLeft />
           Back
             </ButtonOutline>
-            <ButtonPrimary onClick={_onSubmit}>
+            <ButtonPrimary onClick={_onSubmit} disabled={areButtonsDisabled}>
           Confirm
               <ArrowRight />
             </ButtonPrimary>

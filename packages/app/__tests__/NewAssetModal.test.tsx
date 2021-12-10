@@ -372,16 +372,37 @@ describe('New asset modal', () => {
       expect(mockUseApi.api.tx.assets.setTeam).not.toBeCalled()
     })
 
-    it('displays content, steps bar and confirm button', async () => {
-      renderModal()
-      await enterThirdStep()
-      const stepBar = screen.queryAllByTestId('steps-bar')
-      expect(stepBar).toHaveLength(1)
+    describe('displays content, steps bar and confirm button', () => {
+      it('Ready', async () => {
+        renderModal()
+        await enterThirdStep()
+        const stepBar = screen.queryAllByTestId('steps-bar')
+        expect(stepBar).toHaveLength(1)
 
-      const thirdStepContent = screen.queryAllByTestId('third-step-content')
-      expect(thirdStepContent).toHaveLength(1)
+        const thirdStepContent = screen.queryAllByTestId('third-step-content')
+        expect(thirdStepContent).toHaveLength(1)
 
-      assertButtonNotDisabled('Confirm')
+        assertButtonNotDisabled('Confirm')
+      })
+
+      it('AwaitingSign', async () => {
+        mockUseTransaction = {
+          ...mockUseTransaction,
+          status: TransactionStatus.AwaitingSign
+        }
+
+        renderModal()
+        await enterThirdStep()
+
+        const stepBar = screen.queryAllByTestId('steps-bar')
+        expect(stepBar).toHaveLength(1)
+
+        const thirdStepContent = screen.queryAllByTestId('third-step-content')
+        expect(thirdStepContent).toHaveLength(1)
+
+        assertButtonDisabled('Confirm')
+        assertButtonDisabled('Back')
+      })
     })
 
     describe('hides content and shows pending transaction for ongoing transaction', () => {
@@ -392,7 +413,7 @@ describe('New asset modal', () => {
         }
 
         renderModal()
-        await createAsset()
+        await enterThirdStep()
 
         const stepBar = screen.queryAllByTestId('steps-bar')
         expect(stepBar).toHaveLength(0)
@@ -414,7 +435,7 @@ describe('New asset modal', () => {
         }
 
         renderModal()
-        await createAsset()
+        await enterThirdStep()
 
         const stepBar = screen.queryAllByTestId('steps-bar')
         expect(stepBar).toHaveLength(0)
@@ -436,7 +457,7 @@ describe('New asset modal', () => {
         }
 
         renderModal()
-        await createAsset()
+        await enterThirdStep()
 
         const stepBar = screen.queryAllByTestId('steps-bar')
         expect(stepBar).toHaveLength(0)
