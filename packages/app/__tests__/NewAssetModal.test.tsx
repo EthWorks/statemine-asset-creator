@@ -357,11 +357,9 @@ describe('New asset modal', () => {
       it('Ready', async () => {
         renderModal()
         await enterThirdStep()
-        const stepBar = screen.queryAllByTestId('steps-bar')
-        expect(stepBar).toHaveLength(1)
 
-        const thirdStepContent = screen.queryAllByTestId('third-step-content')
-        expect(thirdStepContent).toHaveLength(1)
+        assertStepsBarVisible()
+        assertContentVisible()
 
         assertButtonNotDisabled('Confirm')
       })
@@ -375,11 +373,8 @@ describe('New asset modal', () => {
         renderModal()
         await enterThirdStep()
 
-        const stepBar = screen.queryAllByTestId('steps-bar')
-        expect(stepBar).toHaveLength(1)
-
-        const thirdStepContent = screen.queryAllByTestId('third-step-content')
-        expect(thirdStepContent).toHaveLength(1)
+        assertStepsBarVisible()
+        assertContentVisible()
 
         assertButtonDisabled('Confirm')
         assertButtonDisabled('Back')
@@ -396,11 +391,8 @@ describe('New asset modal', () => {
         renderModal()
         await enterThirdStep()
 
-        const stepBar = screen.queryAllByTestId('steps-bar')
-        expect(stepBar).toHaveLength(0)
-
-        const thirdStepContent = screen.queryAllByTestId('third-step-content')
-        expect(thirdStepContent).toHaveLength(0)
+        assertStepsBarHidden()
+        assertContentHidden()
 
         const modalContent = screen.getByTestId('status-step-InBlock')
         expect(modalContent).toHaveTextContent('Pending transaction 1/1...')
@@ -418,11 +410,8 @@ describe('New asset modal', () => {
         renderModal()
         await enterThirdStep()
 
-        const stepBar = screen.queryAllByTestId('steps-bar')
-        expect(stepBar).toHaveLength(0)
-
-        const thirdStepContent = screen.queryAllByTestId('third-step-content')
-        expect(thirdStepContent).toHaveLength(0)
+        assertStepsBarHidden()
+        assertContentHidden()
 
         const modalContent = screen.getByTestId('status-step-Success')
         expect(modalContent).toHaveTextContent('Congratulations!')
@@ -440,11 +429,8 @@ describe('New asset modal', () => {
         renderModal()
         await enterThirdStep()
 
-        const stepBar = screen.queryAllByTestId('steps-bar')
-        expect(stepBar).toHaveLength(0)
-
-        const thirdStepContent = screen.queryAllByTestId('third-step-content')
-        expect(thirdStepContent).toHaveLength(0)
+        assertStepsBarHidden()
+        assertContentHidden()
 
         const modalContent = screen.getByTestId('status-step-Error')
         expect(modalContent).toHaveTextContent('Something went wrong')
@@ -564,4 +550,24 @@ const assertStepUnvisited = (step: HTMLElement) => {
 const assertStepPast = (step: HTMLElement) => {
   expect(step).toHaveClass('past')
   expect(step).not.toHaveClass('active')
+}
+
+function assertStepsBarHidden() {
+  const stepBar = screen.queryAllByTestId('steps-bar')
+  expect(stepBar).toHaveLength(0)
+}
+
+function assertContentHidden() {
+  const thirdStepContent = screen.queryAllByTestId('third-step-content')
+  expect(thirdStepContent).toHaveLength(0)
+}
+
+function assertStepsBarVisible() {
+  const stepBar = screen.queryAllByTestId('steps-bar')
+  expect(stepBar).toHaveLength(1)
+}
+
+function assertContentVisible() {
+  const thirdStepContent = screen.queryAllByTestId('third-step-content')
+  expect(thirdStepContent).toHaveLength(1)
 }
