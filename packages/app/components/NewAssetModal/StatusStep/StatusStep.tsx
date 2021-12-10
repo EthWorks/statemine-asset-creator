@@ -21,7 +21,7 @@ export interface StatusStepProps {
   text: string
 }
 
-const renderIcon = (status: TransactionStatus): StaticImageData => {
+const getIcon = (status: TransactionStatus): StaticImageData => {
   switch (status) {
     case TransactionStatus.InBlock: {
       return pending
@@ -41,7 +41,7 @@ export const StatusStep = ({ name, number, status, title, text }: StatusStepProp
   return (
     <StatusStepWrapper data-testid={`status-step-${status}`}>
       <CoinWrapper>
-        <Image src={renderIcon(status)} alt='' width='120' height='120'/>
+        <Image src={getIcon(status)} alt='' width='120' height='120'/>
       </CoinWrapper>
       <TitleText size='2XL' color='white' bold>{title}</TitleText>
       {status === TransactionStatus.InBlock &&
