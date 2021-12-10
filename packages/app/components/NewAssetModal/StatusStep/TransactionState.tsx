@@ -107,6 +107,7 @@ const TransactionWrapper = styled.div`
 
 const StyledText = styled(Text)`
   text-align: center;
+  white-space: break-spaces;
 `
 
 const ButtonWrapper = styled.div`

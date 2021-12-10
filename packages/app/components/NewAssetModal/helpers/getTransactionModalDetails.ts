@@ -1,10 +1,14 @@
+import type { ErrorDetails } from 'use-substrate'
 import type { TransactionStateProps } from '../StatusStep/TransactionState'
 
 import { TransactionStatus } from 'use-substrate'
 
 export type StepDetails = Omit<TransactionStateProps, 'status'> | undefined
 
-export function getTransactionModalDetails(status: TransactionStatus | undefined): StepDetails {
+const DEFAULT_ERROR_MESSAGE = 'Unknown error.'
+
+export function getTransactionModalDetails(status: TransactionStatus | undefined, errorDetails: ErrorDetails[] | undefined
+): StepDetails {
   switch (status) {
     case (TransactionStatus.InBlock):
       return {
@@ -25,9 +29,18 @@ export function getTransactionModalDetails(status: TransactionStatus | undefined
         name: undefined,
         number: undefined,
         title: 'Something went wrong',
-        text: 'Lorem ipsum'
+        text: errorDetails ? formatErrorDetails(errorDetails) : DEFAULT_ERROR_MESSAGE
       }
     default:
       return undefined
   }
+}
+
+function formatErrorDetails(errorDetails: ErrorDetails[]): string {
+  return errorDetails.map(({ docs, section, name }) => {
+    const firstPart = section && name ? `${section}.${name}` : `${section}${name}`
+    const secondPart = docs.length !== 0 ? (`: ${docs.join(' ')}`) : ''
+
+    return `[${firstPart}]${secondPart}`
+  }).join('\n')
 }
