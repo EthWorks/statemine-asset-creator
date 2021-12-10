@@ -1,4 +1,6 @@
-import { act, fireEvent, RenderResult, screen, waitFor } from '@testing-library/react'
+import type { RenderResult } from '@testing-library/react'
+
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 
 import { TransactionStatus } from 'use-substrate'
@@ -100,11 +102,7 @@ describe('New asset modal', () => {
     it('saves data in context', async () => {
       renderModal()
 
-      await openModal()
-      fillFirstStep()
-      clickButton('Next')
-      await fillSecondStep()
-      clickButton('Next')
+      await enterThirdStep()
 
       await waitFor(() => expect(screen.getByText('Confirm')).toBeTruthy())
       await assertSummary()
@@ -113,11 +111,7 @@ describe('New asset modal', () => {
     describe('closes modal and resets data', () => {
       beforeEach(async () => {
         renderModal()
-        await openModal()
-        fillFirstStep()
-        clickButton('Next')
-        await fillSecondStep()
-        clickButton('Next')
+        await enterThirdStep()
       })
 
       it('on confirm', async () => {
@@ -521,7 +515,7 @@ const createAsset = async (): Promise<void> => {
   clickButton('Next')
   await fillSecondStep()
 
-  await clickButton('Next')
+  clickButton('Next')
   await act(async () => await findAndClickButton('Confirm'))
 }
 
@@ -532,7 +526,7 @@ const enterThirdStep = async (): Promise<void> => {
   clickButton('Next')
   await fillSecondStep()
 
-  await clickButton('Next')
+  clickButton('Next')
 }
 
 const closeModal = async () => {
