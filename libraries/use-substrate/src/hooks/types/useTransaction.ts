@@ -1,6 +1,7 @@
-import type {AugmentedEvent, SubmittableExtrinsic} from '@polkadot/api/types'
-import type {RuntimeDispatchInfo} from '@polkadot/types/interfaces'
-import {TransactionStatus} from "../../consts";
+import type { AugmentedEvent, SubmittableExtrinsic } from '@polkadot/api/types'
+import type { RuntimeDispatchInfo } from '@polkadot/types/interfaces'
+
+import { TransactionStatus } from '../../consts'
 
 export type ExtractTuple<P> = P extends AugmentedEvent<'rxjs', infer T> ? T : never
 
