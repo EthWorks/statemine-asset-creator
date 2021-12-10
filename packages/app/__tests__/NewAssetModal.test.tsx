@@ -97,275 +97,281 @@ describe('New asset modal', () => {
     mockUseApi.api.tx.assets.setTeam.mockClear()
   })
 
-  it('saves data in context', async () => {
-    renderModal()
-
-    await openModal()
-    fillFirstStep()
-    clickButton('Next')
-    await fillSecondStep()
-    clickButton('Next')
-
-    await waitFor(() => expect(screen.getByText('Confirm')).toBeTruthy())
-    await assertSummary()
-  })
-
-  describe('closes modal and resets data', () => {
-    beforeEach(async () => {
+  describe('Functionality', () => {
+    it('saves data in context', async () => {
       renderModal()
+
       await openModal()
       fillFirstStep()
       clickButton('Next')
       await fillSecondStep()
       clickButton('Next')
+
+      await waitFor(() => expect(screen.getByText('Confirm')).toBeTruthy())
+      await assertSummary()
     })
 
-    it('on confirm', async () => {
-      mockUseTransaction = {
-        ...mockUseTransaction,
-        status: TransactionStatus.Success
-      }
-      clickButton('Confirm')
-      await closeModal()
-      await openModal()
+    describe('closes modal and resets data', () => {
+      beforeEach(async () => {
+        renderModal()
+        await openModal()
+        fillFirstStep()
+        clickButton('Next')
+        await fillSecondStep()
+        clickButton('Next')
+      })
 
-      await assertText('Create asset')
-      assertFirstStepEmpty()
+      it('on confirm', async () => {
+        mockUseTransaction = {
+          ...mockUseTransaction,
+          status: TransactionStatus.Success
+        }
+        clickButton('Confirm')
+        await closeModal()
+        await openModal()
+
+        await assertText('Create asset')
+        assertFirstStepEmpty()
+      })
+
+      it('on close', async () => {
+        await closeModal()
+        await openModal()
+
+        await assertText('Create asset')
+        assertFirstStepEmpty()
+      })
     })
 
-    it('on close', async () => {
-      await closeModal()
-      await openModal()
-
-      await assertText('Create asset')
-      assertFirstStepEmpty()
-    })
-  })
-
-  it('allows to go back to first step', async () => {
-    renderModal()
-
-    await openModal()
-    fillFirstStep()
-    await findAndClickButton('Next')
-    await screen.findByText('Admin account')
-    assertSteps(['past', 'active', 'unvisited', 'unvisited'])
-
-    await findAndClickButton('Back')
-
-    assertFirstStepFilled()
-    assertSteps(['active', 'unvisited', 'unvisited', 'unvisited'])
-  })
-
-  it('sends transaction and shows modals on confirm', async () => {
-    renderModal()
-    await createAsset()
-
-    expect(mockUseApi.api.tx.assets.create).toBeCalledWith(ASSET_ID, bobAccount.address, MIN_BALANCE)
-    expect(mockUseApi.api.tx.assets.setMetadata).toBeCalledWith(ASSET_ID, ASSET_NAME, ASSET_SYMBOL, ASSET_DECIMALS)
-    expect(mockUseApi.api.tx.assets.setTeam).not.toBeCalled()
-  })
-
-  describe('validates inputs', () => {
-    beforeEach(async () => {
+    it('allows to go back to first step', async () => {
       renderModal()
+
       await openModal()
       fillFirstStep()
-      assertButtonNotDisabled('Next')
+      await findAndClickButton('Next')
+      await screen.findByText('Admin account')
+      assertSteps(['past', 'active', 'unvisited', 'unvisited'])
+
+      await findAndClickButton('Back')
+
+      assertFirstStepFilled()
+      assertSteps(['active', 'unvisited', 'unvisited', 'unvisited'])
     })
 
-    describe('Disables Next button when input is empty', () => {
-      ;['Asset name', 'Asset symbol', 'Asset ID', 'Asset decimals', 'Minimum balance'].forEach(inputName => {
-        it(`for ${inputName}`, async () => {
-          fillInput(inputName, '')
+    describe('step bar', () => {
+      it('sets proper styles', async () => {
+        renderModal()
 
-          assertButtonDisabled('Next')
-        })
-      })
-    })
+        await openModal()
+        assertSteps(['active', 'unvisited', 'unvisited', 'unvisited'])
 
-    ;['Asset name', 'Asset symbol'].forEach(inputName => {
-      describe(inputName, () => {
-        it('does not allow to exceed StringLimit', async () => {
-          fillInput(inputName, 'a'.repeat(mockedStringLimit + 1))
-          await assertInputError(inputName, `Maximum length of ${mockedStringLimit} characters exceeded`)
-
-          assertButtonDisabled('Next')
-        })
-
-        it('does not display error when asset name length decreased', async () => {
-          fillInput(inputName, 'a'.repeat(mockedStringLimit + 1))
-          await assertInputError(inputName, `Maximum length of ${mockedStringLimit} characters exceeded`)
-
-          assertButtonDisabled('Next')
-
-          fillInput(inputName, 'a'.repeat(mockedStringLimit))
-          await assertNoInputError(inputName)
-
-          assertButtonNotDisabled('Next')
-        })
-      })
-    })
-
-    describe('Asset id', () => {
-      it('accepts only unique id values', async () => {
-        fillInput('Asset ID', mockUseAssets[0].id)
-
-        await assertInputError('Asset ID', 'Value cannot match an already-existing asset id.')
-        assertButtonDisabled('Next')
-      })
-    })
-
-    describe('Asset decimals', () => {
-      beforeEach(() => {
         fillFirstStep()
-        clearInput('Asset decimals')
+        clickButton('Next')
+
+        assertSteps(['past', 'active', 'unvisited', 'unvisited'])
       })
+    })
+  })
 
-      it('allows 0', () => {
-        fillInput('Asset decimals', '0')
-
-        assertInputValue('Asset decimals', '0')
+  describe('First step', () => {
+    describe('validates inputs', () => {
+      beforeEach(async () => {
+        renderModal()
+        await openModal()
+        fillFirstStep()
         assertButtonNotDisabled('Next')
       })
 
-      it('does not accept decimals', async () => {
-        typeInInput('Asset decimals', '1.5')
+      describe('Disables Next button when input is empty', () => {
+        ;['Asset name', 'Asset symbol', 'Asset ID', 'Asset decimals', 'Minimum balance'].forEach(inputName => {
+          it(`for ${inputName}`, async () => {
+            fillInput(inputName, '')
 
-        assertInputValue('Asset decimals', '15')
+            assertButtonDisabled('Next')
+          })
+        })
+      })
+
+      ;['Asset name', 'Asset symbol'].forEach(inputName => {
+        describe(inputName, () => {
+          it('does not allow to exceed StringLimit', async () => {
+            fillInput(inputName, 'a'.repeat(mockedStringLimit + 1))
+            await assertInputError(inputName, `Maximum length of ${mockedStringLimit} characters exceeded`)
+
+            assertButtonDisabled('Next')
+          })
+
+          it('does not display error when asset name length decreased', async () => {
+            fillInput(inputName, 'a'.repeat(mockedStringLimit + 1))
+            await assertInputError(inputName, `Maximum length of ${mockedStringLimit} characters exceeded`)
+
+            assertButtonDisabled('Next')
+
+            fillInput(inputName, 'a'.repeat(mockedStringLimit))
+            await assertNoInputError(inputName)
+
+            assertButtonNotDisabled('Next')
+          })
+        })
+      })
+
+      describe('Asset id', () => {
+        it('accepts only unique id values', async () => {
+          fillInput('Asset ID', mockUseAssets[0].id)
+
+          await assertInputError('Asset ID', 'Value cannot match an already-existing asset id.')
+          assertButtonDisabled('Next')
+        })
+      })
+
+      describe('Asset decimals', () => {
+        beforeEach(() => {
+          fillFirstStep()
+          clearInput('Asset decimals')
+        })
+
+        it('allows 0', () => {
+          fillInput('Asset decimals', '0')
+
+          assertInputValue('Asset decimals', '0')
+          assertButtonNotDisabled('Next')
+        })
+
+        it('does not accept decimals', async () => {
+          typeInInput('Asset decimals', '1.5')
+
+          assertInputValue('Asset decimals', '15')
+        })
       })
     })
   })
 
-  describe('allows to select account for', () => {
-    beforeEach(async () => {
-      renderModal()
-      await openModal()
-      await fillFirstStep()
-      clickButton('Next')
-    })
-
-    it('admin', async () => {
-      await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
-      clickButton('Next')
-      await act(() => findAndClickButton('Confirm'))
-
-      expect(mockUseApi.api.tx.assets.create).toBeCalledWith(ASSET_ID, aliceAccount.address, MIN_BALANCE)
-      expect(mockUseApi.api.tx.assets.setTeam).toBeCalledWith(ASSET_ID, bobAccount.address, aliceAccount.address, bobAccount.address)
-    })
-
-    it('issuer', async () => {
-      await selectAccountFromDropdown(ISSUER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
-      clickButton('Next')
-      await act(() => findAndClickButton('Confirm'))
-
-      expect(mockUseApi.api.tx.assets.setTeam).toBeCalledWith(ASSET_ID, aliceAccount.address, bobAccount.address, bobAccount.address)
-    })
-
-    it('freezer', async () => {
-      await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
-      clickButton('Next')
-      await act(() => findAndClickButton('Confirm'))
-
-      expect(mockUseApi.api.tx.assets.setTeam).toBeCalledWith(ASSET_ID, bobAccount.address, bobAccount.address, aliceAccount.address)
-    })
-  })
-
-  it('shows owner account', async () => {
-    renderModal()
-    await openModal()
-    await fillFirstStep()
-    clickButton('Next')
-
-    const ownerAccountSelect = await getAccountSelect(OWNER_DROPDOWN_INDEX)
-    expect(ownerAccountSelect).toHaveAttribute('disabled')
-    await assertTextInAccountSelect('BOB', OWNER_DROPDOWN_INDEX)
-  })
-
-  describe('step bar', () => {
-    it('sets proper styles', async () => {
-      renderModal()
-
-      await openModal()
-      assertSteps(['active', 'unvisited', 'unvisited', 'unvisited'])
-
-      fillFirstStep()
-      clickButton('Next')
-
-      assertSteps(['past', 'active', 'unvisited', 'unvisited'])
-    })
-  })
-
-  describe('shows insufficient funds info', () => {
-    beforeEach(async () => {
+  describe('Second step', () => {
+    it('shows owner account', async () => {
       renderModal()
       await openModal()
       await fillFirstStep()
       clickButton('Next')
 
-      await assertText('Owner account')
+      const ownerAccountSelect = await getAccountSelect(OWNER_DROPDOWN_INDEX)
+      expect(ownerAccountSelect).toHaveAttribute('disabled')
+      await assertTextInAccountSelect('BOB', OWNER_DROPDOWN_INDEX)
     })
 
-    it('for one account', async () => {
-      await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
-      await assertTextInAccountSelect('ALICE', ADMIN_DROPDOWN_INDEX)
-      await selectAccountFromDropdown(ISSUER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
-      await assertTextInAccountSelect('BOB', ISSUER_DROPDOWN_INDEX)
-      await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
-      await assertTextInAccountSelect('BOB', FREEZER_DROPDOWN_INDEX)
+    describe('shows insufficient funds info', () => {
+      beforeEach(async () => {
+        renderModal()
+        await openModal()
+        await fillFirstStep()
+        clickButton('Next')
 
-      const infobox = await screen.findByTestId('infobox')
+        await assertText('Owner account')
+      })
 
-      expect(infobox).toHaveTextContent('Insufficient funds on the Admin account to create assets.')
+      it('for one account', async () => {
+        await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+        await assertTextInAccountSelect('ALICE', ADMIN_DROPDOWN_INDEX)
+        await selectAccountFromDropdown(ISSUER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
+        await assertTextInAccountSelect('BOB', ISSUER_DROPDOWN_INDEX)
+        await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
+        await assertTextInAccountSelect('BOB', FREEZER_DROPDOWN_INDEX)
+
+        const infobox = await screen.findByTestId('infobox')
+
+        expect(infobox).toHaveTextContent('Insufficient funds on the Admin account to create assets.')
+      })
+
+      it('for two accounts', async () => {
+        await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+        await assertTextInAccountSelect('ALICE', ADMIN_DROPDOWN_INDEX)
+        await selectAccountFromDropdown(ISSUER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+        await assertTextInAccountSelect('ALICE', ISSUER_DROPDOWN_INDEX)
+        await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
+        await assertTextInAccountSelect('BOB', FREEZER_DROPDOWN_INDEX)
+
+        const infobox = await screen.findByTestId('infobox')
+
+        expect(infobox).toHaveTextContent('Insufficient funds on the Admin and Issuer accounts to create assets.')
+      })
+
+      it('for three accounts', async () => {
+        await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+        await assertTextInAccountSelect('ALICE', ADMIN_DROPDOWN_INDEX)
+        await selectAccountFromDropdown(ISSUER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+        await assertTextInAccountSelect('ALICE', ISSUER_DROPDOWN_INDEX)
+        await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+        await assertTextInAccountSelect('ALICE', FREEZER_DROPDOWN_INDEX)
+
+        const infobox = await screen.findByTestId('infobox')
+
+        expect(infobox).toHaveTextContent('Insufficient funds on the Admin, Issuer and Freezer accounts to create assets.')
+      })
     })
 
-    it('for two accounts', async () => {
-      await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
-      await assertTextInAccountSelect('ALICE', ADMIN_DROPDOWN_INDEX)
-      await selectAccountFromDropdown(ISSUER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
-      await assertTextInAccountSelect('ALICE', ISSUER_DROPDOWN_INDEX)
-      await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
-      await assertTextInAccountSelect('BOB', FREEZER_DROPDOWN_INDEX)
+    describe('allows to select account for', () => {
+      beforeEach(async () => {
+        renderModal()
+        await openModal()
+        await fillFirstStep()
+        clickButton('Next')
+      })
 
-      const infobox = await screen.findByTestId('infobox')
+      it('admin', async () => {
+        await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+        clickButton('Next')
+        await act(() => findAndClickButton('Confirm'))
 
-      expect(infobox).toHaveTextContent('Insufficient funds on the Admin and Issuer accounts to create assets.')
+        expect(mockUseApi.api.tx.assets.create).toBeCalledWith(ASSET_ID, aliceAccount.address, MIN_BALANCE)
+        expect(mockUseApi.api.tx.assets.setTeam).toBeCalledWith(ASSET_ID, bobAccount.address, aliceAccount.address, bobAccount.address)
+      })
+
+      it('issuer', async () => {
+        await selectAccountFromDropdown(ISSUER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+        clickButton('Next')
+        await act(() => findAndClickButton('Confirm'))
+
+        expect(mockUseApi.api.tx.assets.setTeam).toBeCalledWith(ASSET_ID, aliceAccount.address, bobAccount.address, bobAccount.address)
+      })
+
+      it('freezer', async () => {
+        await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+        clickButton('Next')
+        await act(() => findAndClickButton('Confirm'))
+
+        expect(mockUseApi.api.tx.assets.setTeam).toBeCalledWith(ASSET_ID, bobAccount.address, bobAccount.address, aliceAccount.address)
+      })
     })
 
-    it('for three accounts', async () => {
-      await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
-      await assertTextInAccountSelect('ALICE', ADMIN_DROPDOWN_INDEX)
-      await selectAccountFromDropdown(ISSUER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
-      await assertTextInAccountSelect('ALICE', ISSUER_DROPDOWN_INDEX)
-      await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
-      await assertTextInAccountSelect('ALICE', FREEZER_DROPDOWN_INDEX)
+    describe('Use everywhere', () => {
+      it('sets admin account for issuer and freezer account', async () => {
+        renderModal()
+        await openModal()
+        fillFirstStep()
+        clickButton('Next')
 
-      const infobox = await screen.findByTestId('infobox')
+        await assertTextInAccountSelect(bobAccount.name, ADMIN_DROPDOWN_INDEX)
+        await assertTextInAccountSelect(bobAccount.name, ISSUER_DROPDOWN_INDEX)
+        await assertTextInAccountSelect(bobAccount.name, FREEZER_DROPDOWN_INDEX)
 
-      expect(infobox).toHaveTextContent('Insufficient funds on the Admin, Issuer and Freezer accounts to create assets.')
-    })
-  })
+        await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+        await clickByText('Use everywhere')
 
-  describe('Use everywhere', () => {
-    it('sets admin account for issuer and freezer account', async () => {
-      renderModal()
-      await openModal()
-      fillFirstStep()
-      clickButton('Next')
-
-      await assertTextInAccountSelect(bobAccount.name, ADMIN_DROPDOWN_INDEX)
-      await assertTextInAccountSelect(bobAccount.name, ISSUER_DROPDOWN_INDEX)
-      await assertTextInAccountSelect(bobAccount.name, FREEZER_DROPDOWN_INDEX)
-
-      await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
-      await clickByText('Use everywhere')
-
-      await assertTextInAccountSelect(aliceAccount.name, ISSUER_DROPDOWN_INDEX)
-      await assertTextInAccountSelect(aliceAccount.name, FREEZER_DROPDOWN_INDEX)
+        await assertTextInAccountSelect(aliceAccount.name, ISSUER_DROPDOWN_INDEX)
+        await assertTextInAccountSelect(aliceAccount.name, FREEZER_DROPDOWN_INDEX)
+      })
     })
   })
 
   describe('Third step', () => {
+    it('sends transaction on confirm', async () => {
+      renderModal()
+      await createAsset()
+
+      expect(mockUseApi.api.tx.assets.create).toBeCalledWith(ASSET_ID, bobAccount.address, MIN_BALANCE)
+      expect(mockUseApi.api.tx.assets.setMetadata).toBeCalledWith(ASSET_ID, ASSET_NAME, ASSET_SYMBOL, ASSET_DECIMALS)
+      expect(mockUseApi.api.tx.assets.setTeam).not.toBeCalled()
+    })
+
     it('displays content, steps bar and confirm button', async () => {
       renderModal()
       await enterThirdStep()
