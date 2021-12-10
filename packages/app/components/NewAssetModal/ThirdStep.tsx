@@ -1,6 +1,6 @@
 import type { ModalStep } from './types'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { Chains, TransactionStatus, useActiveAccount } from 'use-substrate'
 
@@ -25,15 +25,18 @@ export function ThirdStep({ onBack, setStepBarVisible }: ModalStep & StepBarProp
   const { address: ownerAddress } = activeAccount || {}
   const [isContentVisible, setIsContentVisible] = useState<boolean>(true)
 
+  const setSummaryVisible = useCallback((visible: boolean): void => {
+    setIsContentVisible(visible)
+    setStepBarVisible(visible)
+  }, [setStepBarVisible])
+
   useEffect(() => {
     if (status === TransactionStatus.Ready || status === TransactionStatus.AwaitingSign) {
-      setIsContentVisible(true)
-      setStepBarVisible(true)
+      setSummaryVisible(true)
     } else {
-      setIsContentVisible(false)
-      setStepBarVisible(false)
+      setSummaryVisible(false)
     }
-  }, [setStepBarVisible, status])
+  }, [setSummaryVisible, status])
 
   if (!ownerAddress || !tx || !status) return <Loader/>
 
