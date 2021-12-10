@@ -1,26 +1,31 @@
 import type { Observable } from 'rxjs'
-import type { SubmittableExtrinsic } from '@polkadot/api/types'
-import type { DispatchError, EventRecord, RuntimeDispatchInfo } from '@polkadot/types/interfaces'
-import type { ISubmittableResult, ITuple, RegistryError } from '@polkadot/types/types'
+import type { AugmentedEvents } from '@polkadot/api/types/events'
+import type { EventRecord } from '@polkadot/types/interfaces'
+import type { SpRuntimeDispatchError } from '@polkadot/types/lookup'
+import type { AnyTuple, IEvent, ISubmittableResult, RegistryError } from '@polkadot/types/types'
+import type { ErrorDetails, ExtractTuple, Transaction, UseTransaction } from './types/useTransaction'
 
 import BN from 'bn.js'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
+import { TransactionStatus } from './types/useTransaction'
 import { useObservable } from './useObservable'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type Transaction = ((...args: any[]) => SubmittableExtrinsic<'rxjs'>)
-
-export interface UseTransaction {
-  tx: () => Promise<void>
-  paymentInfo: RuntimeDispatchInfo | undefined
-}
-
 export function useTransaction(transaction: Transaction | undefined, params: unknown[], signer: string | undefined): UseTransaction | undefined {
+  const [status, setStatus] = useState<TransactionStatus>(TransactionStatus.Ready)
+  const [errorDetails, setErrorDetails] = useState<ErrorDetails[]>()
   const transactionPaymentInfo = useMemo(() => transaction && signer ? transaction(...params).paymentInfo(signer) : undefined,
     [transaction, signer, params])
 
   const paymentInfo = useObservable(transactionPaymentInfo, [transactionPaymentInfo])
+
+  const _setErrorDetails = (details: ErrorDetails): void => {
+    if (!errorDetails) {
+      setErrorDetails([details])
+    } else {
+      setErrorDetails([...errorDetails, details])
+    }
+  }
 
   const tx = useCallback(async (): Promise<void> => {
     if (!transaction || !signer || !paymentInfo) {
@@ -31,49 +36,46 @@ export function useTransaction(transaction: Transaction | undefined, params: unk
 
     const extension = await web3FromAddress(signer)
 
-    observeTransaction(transaction(...params).signAndSend(signer, { signer: extension.signer }), fee)
-    console.log('SIGN_EXTERNAL')
+    observeTransaction(transaction(...params).signAndSend(signer, { signer: extension.signer }), fee, setStatus, _setErrorDetails)
+    setStatus(TransactionStatus.AwaitingSign)
   }, [transaction, signer, paymentInfo, params])
 
   return {
     tx,
-    paymentInfo
+    paymentInfo,
+    status,
+    errorDetails
   }
 }
 
-const observeTransaction = (transaction: Observable<ISubmittableResult>, fee: BN): void => {
+const observeTransaction = (transaction: Observable<ISubmittableResult>, fee: BN, setStatus: (status: TransactionStatus) => void, setErrorDetails: (details: ErrorDetails) => void): void => {
   const statusCallback = (result: ISubmittableResult): void => {
     const { status, events } = result
 
     if (status.isInBlock) {
+      setStatus(TransactionStatus.InBlock)
+    }
+
+    if (status.isFinalized) {
       events.forEach((event) => {
-        const {
-          event: { data, method, section },
-          phase
-        } = event
-
-        console.log('\t', JSON.stringify(phase), `: ${section}.${method}`, JSON.stringify(data))
-
         if (isErrorEvent(event)) {
-          const error = toDispatchError(event)
-          const message = error ? `${error.section}.${error.name}` : 'Unknown'
+          const { section, name, docs } = toDispatchError(event) || { section: 'Unknown', name: 'Unknown', docs: [] }
 
-          console.log(`\t\t Error: %c${message}`, 'color: red')
+          setErrorDetails({ section, name, docs })
         }
       })
-      console.log(JSON.stringify(events))
 
-      console.log({
-        type: isError(events) ? 'ERROR' : 'SUCCESS',
-        events,
-        fee
-      })
+      setStatus(isError(events) ? TransactionStatus.Error : TransactionStatus.Success)
+      subscription.unsubscribe()
     }
   }
 
-  const errorHandler = (): void => console.error({ type: 'ERROR', events: [] })
+  const subscriptionErrorHandler = (): void => {
+    setStatus(TransactionStatus.Error)
+    setErrorDetails({ section: 'Unknown', name: 'Subscription error', docs: [] })
+  }
 
-  transaction.subscribe({ next: statusCallback, error: errorHandler })
+  const subscription = transaction.subscribe({ next: statusCallback, error: subscriptionErrorHandler })
 }
 
 export const isErrorEvent = ({ event: { method } }: EventRecord): boolean => {
@@ -83,9 +85,31 @@ export const isErrorEvent = ({ event: { method } }: EventRecord): boolean => {
 export const isError = (events: EventRecord[]): boolean => !!events.find(isErrorEvent)
 
 export const toDispatchError = (event: EventRecord): RegistryError | undefined => {
-  const [dispatchError] = (event.event.data as unknown) as ITuple<[DispatchError]>
+  if (isModuleEvent(event.event, 'utility', 'BatchInterrupted')) {
+    const [, error] = event.event.data
 
-  if (dispatchError.isModule) {
-    return dispatchError.registry.findMetaError(dispatchError.asModule)
+    return getErrorMeta(error)
+  }
+
+  if (isModuleEvent(event.event, 'system', 'ExtrinsicFailed')) {
+    const [error] = event.event.data
+
+    return getErrorMeta(error)
+  }
+}
+
+export const isModuleEvent = <
+  Module extends keyof AugmentedEvents<'rxjs'>,
+  Event extends keyof AugmentedEvents<'rxjs'>[Module],
+  Tuple extends ExtractTuple<AugmentedEvents<'rxjs'>[Module][Event]>
+>(
+  event: IEvent<AnyTuple>,
+  module: Module,
+  eventName: Event
+): event is IEvent<Tuple> => event.section === module && event.method === eventName
+
+const getErrorMeta = (error: SpRuntimeDispatchError): RegistryError | undefined => {
+  if (error.isModule) {
+    return error.registry.findMetaError(error.asModule)
   }
 }
