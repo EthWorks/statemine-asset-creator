@@ -17,6 +17,7 @@ import { ModalFooter } from './ModalFooter'
 interface StepBarProps {
   setStepBarVisible: (arg: boolean) => void
 }
+
 export function ThirdStep({ onBack, setStepBarVisible }: ModalStep & StepBarProps): JSX.Element {
   const { tx, status, stepDetails } = useThirdStep()
   const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
@@ -73,10 +74,10 @@ export function ThirdStep({ onBack, setStepBarVisible }: ModalStep & StepBarProp
           <ModalFooter contentPosition='between'>
             <ButtonOutline onClick={onBack} disabled={areButtonsDisabled}>
               <ArrowLeft />
-          Back
+              Back
             </ButtonOutline>
             <ButtonPrimary onClick={_onSubmit} disabled={areButtonsDisabled}>
-          Confirm
+              Confirm
               <ArrowRight />
             </ButtonPrimary>
           </ModalFooter>
