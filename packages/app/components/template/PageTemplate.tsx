@@ -1,36 +1,47 @@
 import Image from 'next/image'
 import { ReactNode } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 import { Text } from '../typography'
 
 export interface PageTemplateProps {
   background: string,
   children: ReactNode,
+  errorPage?: boolean,
   header?: ReactNode,
   title?: string,
-  templateHeader: ReactNode
+  templateHeader?: ReactNode
 }
 
-export const PageTemplate = ({ background, children, header, title, templateHeader }: PageTemplateProps): JSX.Element => (
+export const PageTemplate = ({ background, children, errorPage, header, title, templateHeader }: PageTemplateProps): JSX.Element => (
   <>
-    <PageWrapper>
+    <PageWrapper errorPage={errorPage}>
       <PageBg>
         <Image src={background} alt='' />
       </PageBg>
       {header && <MainHeader>{header}</MainHeader>}
-      <PgeTitleWrapper>
-        <Text size='2XL' color='white' bold>{title}</Text>
-        {templateHeader}
-      </PgeTitleWrapper>
+      {title || templateHeader
+        ? <PgeTitleWrapper>
+          <Text size='2XL' color='white' bold>{title}</Text>
+          {templateHeader}
+        </PgeTitleWrapper>
+        : null
+      }
       {children}
     </PageWrapper>
   </>
 )
 
-export const PageWrapper = styled.main`
+export const PageWrapper = styled.main<Pick<PageTemplateProps, 'errorPage'>>`
   position: relative;
   min-height: 100vh;
+  
+  ${({ errorPage }) => errorPage && css`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 11.111vw;
+  `}
 `
 
 export const PageBg = styled.div`
