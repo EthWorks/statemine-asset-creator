@@ -10,7 +10,7 @@ export interface TooltipBoxProps {
 
 export const TooltipBox = ({ text }: TooltipBoxProps): JSX.Element => (
   <Tooltip.Provider>
-    <Tooltip.Root>
+    <Tooltip.Root delayDuration={100}>
       <TooltipBtn>
         <TooltipIcon />
       </TooltipBtn>
@@ -34,7 +34,7 @@ const TooltipBtn = styled(Tooltip.Trigger)`
   background: none;
   border-radius: ${({ theme }) => theme.borderRadius.circle};
   border: none;
-  cursor: pointer;
+  cursor: help;
 `
 
 const Dropdown = styled(Tooltip.Content)`
