@@ -10,7 +10,7 @@ export interface TooltipBoxProps {
 
 export const TooltipBox = ({ text }: TooltipBoxProps): JSX.Element => (
   <Tooltip.Provider>
-    <Tooltip.Root delayDuration={100}>
+    <Tooltip.Root delayDuration={200}>
       <TooltipBtn>
         <TooltipIcon />
       </TooltipBtn>
