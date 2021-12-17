@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import error404 from '../assets/404.svg'
@@ -14,20 +15,18 @@ interface errorPageProps {
 
 const errorPage = ({ statusCode, text, title = 'Ooops...Something went wrong' }: errorPageProps): JSX.Element => {
   return (
-    <>
-      <PageTemplate background={background} errorPage>
-        {statusCode === 404
-          ? <Image src={error404} alt={`${statusCode}`} />
-          : <Image src={errorX} alt={`${statusCode}`} />
-        }
-        <StyledText size='2XL' color='white' bold>{title}</StyledText>
-        <InfoText size='SM'>{text}</InfoText>
-        {statusCode === 404
-          ? <ButtonTertiary>Back to dashboard</ButtonTertiary>
-          : <Text size='SM' bold>Try again later</Text>
-        }
-      </PageTemplate>
-    </>
+    <PageTemplate background={background} errorPage>
+      {statusCode === 404
+        ? <Image src={error404} alt={`${statusCode}`} />
+        : <Image src={errorX} alt={`${statusCode}`} />
+      }
+      <StyledText size='2XL' color='white' bold>{title}</StyledText>
+      <InfoText size='SM'>{text}</InfoText>
+      {statusCode === 404
+        ? <Link href='/' passHref><ButtonTertiary>Back to dashboard</ButtonTertiary></Link>
+        : <Text size='SM' bold>Try again later</Text>
+      }
+    </PageTemplate>
   )
 }
 
