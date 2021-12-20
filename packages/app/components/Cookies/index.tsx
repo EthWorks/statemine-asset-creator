@@ -2,19 +2,23 @@ import styled from 'styled-components'
 
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { Card } from '../Card'
-import { InfoIcon } from '../icons/InfoIcon'
+import { InfoIcon } from '../icons'
 import { Text } from '../typography'
 
-export interface CookiesProps {
+export interface CookiesBarProps {
   text: string
 }
 
-export const Cookies = ({ text }: CookiesProps): JSX.Element => (
+export const CookiesBar = ({ text }: CookiesBarProps): JSX.Element => (
   <CookiesWrapper>
-    <InfoIcon />
-    <StyledText color='white'>{text}</StyledText>
-    <ButtonOutline>Decline</ButtonOutline>
-    <ButtonPrimary>Approve</ButtonPrimary>
+    <CookiesBarBox>
+      <InfoIcon />
+      <StyledText color='white'>{text}</StyledText>
+    </CookiesBarBox>
+    <CookiesBarBox>
+      <ButtonOutline>Decline</ButtonOutline>
+      <ButtonPrimary>Approve</ButtonPrimary>
+    </CookiesBarBox>
   </CookiesWrapper>
 )
 
@@ -38,6 +42,11 @@ const CookiesWrapper = styled(Card)`
       margin-left: 16px;
     }
   }
+`
+
+const CookiesBarBox = styled.div`
+  display: flex;
+  align-items: center;
 `
 
 const StyledText = styled(Text)`

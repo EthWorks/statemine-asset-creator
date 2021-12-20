@@ -1,11 +1,11 @@
 import type { Story } from '@storybook/react'
-import type { CookiesProps } from './index'
+import type { CookiesBarProps } from './index'
 
-import { Cookies } from './index'
+import { CookiesBar } from './index'
 
 const Default = {
   title: 'Components/Cookies',
-  component: Cookies,
+  component: CookiesBar,
   parameters: {
     backgrounds: {
       default: 'trueGray',
@@ -18,8 +18,8 @@ const Default = {
 
 export default Default
 
-const Template: Story<CookiesProps> = (args) =>
-  <Cookies {...args} />
+const Template: Story<CookiesBarProps> = (args) =>
+  <CookiesBar {...args} />
 
 export const Base = Template.bind({})
 Base.args = {
