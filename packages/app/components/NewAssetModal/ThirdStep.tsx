@@ -56,7 +56,7 @@ export function ThirdStep({ onBack, setStepBarVisible }: ModalStep & StepBarProp
       {stepDetails && <TransactionState status={status} title={stepDetails.title} text={stepDetails.text} name={stepDetails.name} number={stepDetails.number}/>}
       {isContentVisible && (
         <div data-testid='third-step-content'>
-          <TransactionInfoBlock>
+          <TransactionInfoBlock status='baseInfo'>
             <InfoRow>
               <Label>Asset name</Label>
               <Text size='XS' color='white' bold>{assetName}</Text>

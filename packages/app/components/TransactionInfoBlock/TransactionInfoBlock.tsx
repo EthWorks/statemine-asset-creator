@@ -1,10 +1,12 @@
+import Image from 'next/image'
 import { ReactNode } from 'react'
 import styled from 'styled-components'
 
+import Coin from '../../assets/coin.gif'
 import { CheckIcon } from '../icons'
 import { Text } from '../typography'
 
-export type TransactionInfoBlockStatus = 'waiting' | 'sign' | 'done' | 'ready';
+export type TransactionInfoBlockStatus = 'baseInfo' | 'waiting' | 'sign' | 'done' | 'ready';
 
 export interface TransactionInfoBlockProps {
   children: ReactNode,
@@ -31,7 +33,12 @@ export const TransactionInfoBlock = ({ children, name, number, status = 'ready' 
         </TitleWrapper>
       </BlockHeader>
     }
-    {status !== 'done' && <InfoContainer>{children}</InfoContainer>}
+    {status !== 'done' &&
+      <ContentWrapper>
+        <InfoContainer>{children}</InfoContainer>
+        {status === 'baseInfo' && <CoinWrapper><Image src={Coin} width='120' height='120' /></CoinWrapper>}
+      </ContentWrapper>
+    }
   </BlockWrapper>
 )
 
@@ -157,6 +164,7 @@ const InfoContainer = styled.div`
   grid-template-columns: 1fr;
   grid-column-gap: 40px;
   grid-row-gap: 4px;
+  height: fit-content;
 `
 
 const CheckWrapper = styled.div`
@@ -169,6 +177,16 @@ const CheckWrapper = styled.div`
   color: ${({ theme }) => theme.colors.green};
   border: 1px solid ${({ theme }) => theme.colors.green};
   border-radius: ${({ theme }) => theme.borderRadius.circle};
+`
+
+const ContentWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
+const CoinWrapper = styled.div`
+  width: 120px;
+  height: 120px;
 `
 
 export const InfoRow = styled.div`
