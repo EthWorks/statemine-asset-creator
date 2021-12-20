@@ -18,6 +18,7 @@ specifiers:
   '@polkadot/util': ~8.0.5
   '@radix-ui/react-id': ~0.1.1
   '@radix-ui/react-popover': ~0.1.1
+  '@radix-ui/react-tooltip': ~0.1.4
   '@rush-temp/eslint-config-statemine': file:./projects/eslint-config-statemine.tgz
   '@rush-temp/local-statemint-launch': file:./projects/local-statemint-launch.tgz
   '@rush-temp/statemine-asset-creator': file:./projects/statemine-asset-creator.tgz
@@ -90,6 +91,7 @@ dependencies:
   '@polkadot/util': 8.0.5
   '@radix-ui/react-id': 0.1.1_react@17.0.2
   '@radix-ui/react-popover': 0.1.1_5539cae010396b202b015f3568914e95
+  '@radix-ui/react-tooltip': 0.1.6_react-dom@17.0.2+react@17.0.2
   '@rush-temp/eslint-config-statemine': file:projects/eslint-config-statemine.tgz_typescript@4.5.2
   '@rush-temp/local-statemint-launch': file:projects/local-statemint-launch.tgz
   '@rush-temp/statemine-asset-creator': file:projects/statemine-asset-creator.tgz
@@ -2322,6 +2324,10 @@ packages:
     dev: false
     optional: true
 
+  /@noble/hashes/0.4.1:
+    resolution: {integrity: sha512-Qxy9mZoDf5SyFrQ8hpWHeMZ2Scmb9BAz/lt23sKdr/QHnACW9dD6S+/WVJHd3R/BPoNHcUYWXoXXe74cxSEYoA==}
+    dev: false
+
   /@nodelib/fs.scandir/2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
@@ -2637,6 +2643,7 @@ packages:
     engines: {node: '>=14.0.0'}
     dependencies:
       '@babel/runtime': 7.16.3
+      '@noble/hashes': 0.4.1
       '@polkadot/networks': 8.0.5
       '@polkadot/util': 8.0.5
       '@polkadot/wasm-crypto': 4.4.1_40b3c6547f2f0ee935393a070d86b93e
@@ -2826,6 +2833,16 @@ packages:
       react: 17.0.2
     dev: false
 
+  /@radix-ui/react-arrow/0.1.3_react@17.0.2:
+    resolution: {integrity: sha512-9x1gRYdlUD5OUwY7L+M+4FY/YltDSsrNSj8QXGPbxZxL5ghWXB/4lhyIGccCwk/e8ggfmQYv9SRNmn3LavPo3A==}
+    peerDependencies:
+      react: ^16.8 || ^17.0
+    dependencies:
+      '@babel/runtime': 7.16.3
+      '@radix-ui/react-primitive': 0.1.3_react@17.0.2
+      react: 17.0.2
+    dev: false
+
   /@radix-ui/react-compose-refs/0.1.0_react@17.0.2:
     resolution: {integrity: sha512-eyclbh+b77k+69Dk72q3694OHrn9B3QsoIRx7ywX341U9RK1ThgQjMFZoPtmZNQTksXHLNEiefR8hGVeFyInGg==}
     peerDependencies:
@@ -2890,6 +2907,16 @@ packages:
       react: 17.0.2
     dev: false
 
+  /@radix-ui/react-id/0.1.4_react@17.0.2:
+    resolution: {integrity: sha512-/hq5m/D0ZfJWOS7TLF+G0l08KDRs87LBE46JkAvgKkg1fW4jkucx9At9D9vauIPSbdNmww5kXEp566hMlA8eXA==}
+    peerDependencies:
+      react: ^16.8 || ^17.0
+    dependencies:
+      '@babel/runtime': 7.16.3
+      '@radix-ui/react-use-layout-effect': 0.1.0_react@17.0.2
+      react: 17.0.2
+    dev: false
+
   /@radix-ui/react-popover/0.1.1_5539cae010396b202b015f3568914e95:
     resolution: {integrity: sha512-kPcuzpB72MQMbnLg24NR4NgOLRL7so5/ApukDKGQqGXs/ZBtAUBTdtNSnQIyItT4rvoRbtUOOIH0jC7072yFMg==}
     peerDependencies:
@@ -2934,6 +2961,23 @@ packages:
       react: 17.0.2
     dev: false
 
+  /@radix-ui/react-popper/0.1.3_react@17.0.2:
+    resolution: {integrity: sha512-2OV2YaJv7iTZexJY3HJ7B6Fs1A/3JXd3fRGU4JY0guACfGMD1C/jSgds505MKQOTiHE/quI6j3/q8yfzFjJR9g==}
+    peerDependencies:
+      react: ^16.8 || ^17.0
+    dependencies:
+      '@babel/runtime': 7.16.3
+      '@radix-ui/popper': 0.1.0
+      '@radix-ui/react-arrow': 0.1.3_react@17.0.2
+      '@radix-ui/react-compose-refs': 0.1.0_react@17.0.2
+      '@radix-ui/react-context': 0.1.1_react@17.0.2
+      '@radix-ui/react-primitive': 0.1.3_react@17.0.2
+      '@radix-ui/react-use-rect': 0.1.1_react@17.0.2
+      '@radix-ui/react-use-size': 0.1.0_react@17.0.2
+      '@radix-ui/rect': 0.1.1
+      react: 17.0.2
+    dev: false
+
   /@radix-ui/react-portal/0.1.1_react-dom@17.0.2+react@17.0.2:
     resolution: {integrity: sha512-ZJFgUBsaFS4cryONfRZXuYxtv87ziRGqFu+wP91rVKF8TpkeQgvPP2QBLIfIGzotr3G1n8t7gHaNJkZtKVeXvw==}
     peerDependencies:
@@ -2942,6 +2986,19 @@ packages:
     dependencies:
       '@babel/runtime': 7.16.3
       '@radix-ui/react-primitive': 0.1.1_react@17.0.2
+      '@radix-ui/react-use-layout-effect': 0.1.0_react@17.0.2
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+    dev: false
+
+  /@radix-ui/react-portal/0.1.3_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-DrV+sPYLs0HhmX5/b7yRT6nLM9Nl6FtQe2KUG+46kiCOKQ+0XzNMO5hmeQtyq0mRf/qlC02rFu6OMsWpIqVsJg==}
+    peerDependencies:
+      react: ^16.8 || ^17.0
+      react-dom: ^16.8 || ^17.0
+    dependencies:
+      '@babel/runtime': 7.16.3
+      '@radix-ui/react-primitive': 0.1.3_react@17.0.2
       '@radix-ui/react-use-layout-effect': 0.1.0_react@17.0.2
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -2968,6 +3025,16 @@ packages:
       react: 17.0.2
     dev: false
 
+  /@radix-ui/react-primitive/0.1.3_react@17.0.2:
+    resolution: {integrity: sha512-fcyADaaAx2jdqEDLsTs6aX50S3L1c9K9CC6XMpJpuXFJCU4n9PGTFDZRtY2gAoXXoRCPIBsklCopSmGb6SsDjQ==}
+    peerDependencies:
+      react: ^16.8 || ^17.0
+    dependencies:
+      '@babel/runtime': 7.16.3
+      '@radix-ui/react-slot': 0.1.2_react@17.0.2
+      react: 17.0.2
+    dev: false
+
   /@radix-ui/react-slot/0.1.1_react@17.0.2:
     resolution: {integrity: sha512-deq3K7cCXQ+tWMZF2GKl3zGMcwVbyQDiMY/UcPI0Q1DDudRG2dWrEwcYbYajEelc07oOxzNyKpaXZLOpNxquuA==}
     peerDependencies:
@@ -2976,6 +3043,41 @@ packages:
       '@babel/runtime': 7.16.3
       '@radix-ui/react-compose-refs': 0.1.0_react@17.0.2
       react: 17.0.2
+    dev: false
+
+  /@radix-ui/react-slot/0.1.2_react@17.0.2:
+    resolution: {integrity: sha512-ADkqfL+agEzEguU3yS26jfB50hRrwf7U4VTwAOZEmi/g+ITcBWe12yM46ueS/UCIMI9Py+gFUaAdxgxafFvY2Q==}
+    peerDependencies:
+      react: ^16.8 || ^17.0
+    dependencies:
+      '@babel/runtime': 7.16.3
+      '@radix-ui/react-compose-refs': 0.1.0_react@17.0.2
+      react: 17.0.2
+    dev: false
+
+  /@radix-ui/react-tooltip/0.1.6_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-0uaRpRmTCQo5yMUkDpv4LEDnaQDoeLXcNNhZonCZdbZBQ7ntvjURIWIigq1/pXZp0UX7oPpFzsXD9jUp8JT0WA==}
+    peerDependencies:
+      react: ^16.8 || ^17.0
+      react-dom: ^16.8 || ^17.0
+    dependencies:
+      '@babel/runtime': 7.16.3
+      '@radix-ui/primitive': 0.1.0
+      '@radix-ui/react-compose-refs': 0.1.0_react@17.0.2
+      '@radix-ui/react-context': 0.1.1_react@17.0.2
+      '@radix-ui/react-id': 0.1.4_react@17.0.2
+      '@radix-ui/react-popper': 0.1.3_react@17.0.2
+      '@radix-ui/react-portal': 0.1.3_react-dom@17.0.2+react@17.0.2
+      '@radix-ui/react-presence': 0.1.1_react@17.0.2
+      '@radix-ui/react-primitive': 0.1.3_react@17.0.2
+      '@radix-ui/react-slot': 0.1.2_react@17.0.2
+      '@radix-ui/react-use-controllable-state': 0.1.0_react@17.0.2
+      '@radix-ui/react-use-escape-keydown': 0.1.0_react@17.0.2
+      '@radix-ui/react-use-previous': 0.1.0_react@17.0.2
+      '@radix-ui/react-use-rect': 0.1.1_react@17.0.2
+      '@radix-ui/react-visually-hidden': 0.1.3_react@17.0.2
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
     dev: false
 
   /@radix-ui/react-use-body-pointer-events/0.1.0_react@17.0.2:
@@ -3026,6 +3128,15 @@ packages:
       react: 17.0.2
     dev: false
 
+  /@radix-ui/react-use-previous/0.1.0_react@17.0.2:
+    resolution: {integrity: sha512-0fxNc33rYnCzDMPSiSnfS8YklnxQo8WqbAQXPAgIaaA1jRu2qFB916PL4qCIW+avcAAqFD38vWhqDqcVmBharA==}
+    peerDependencies:
+      react: ^16.8 || ^17.0
+    dependencies:
+      '@babel/runtime': 7.16.3
+      react: 17.0.2
+    dev: false
+
   /@radix-ui/react-use-rect/0.1.1_react@17.0.2:
     resolution: {integrity: sha512-kHNNXAsP3/PeszEmM/nxBBS9Jbo93sO+xuMTcRfwzXsmxT5gDXQzAiKbZQ0EecCPtJIzqvr7dlaQi/aP1PKYqQ==}
     peerDependencies:
@@ -3042,6 +3153,16 @@ packages:
       react: ^16.8 || ^17.0
     dependencies:
       '@babel/runtime': 7.16.3
+      react: 17.0.2
+    dev: false
+
+  /@radix-ui/react-visually-hidden/0.1.3_react@17.0.2:
+    resolution: {integrity: sha512-dPU6ZR2WQ/W9qv7E1Y8/I8ymqG+8sViU6dQQ6sfr2/8yGr0I4mmI7ywTnqXaE+YS9gHLEZHdQcEqTNESg6YfdQ==}
+    peerDependencies:
+      react: ^16.8 || ^17.0
+    dependencies:
+      '@babel/runtime': 7.16.3
+      '@radix-ui/react-primitive': 0.1.3_react@17.0.2
       react: 17.0.2
     dev: false
 
@@ -15860,7 +15981,7 @@ packages:
     dev: false
 
   file:projects/statemine-asset-creator.tgz:
-    resolution: {integrity: sha512-dTNUTSQKpaVrfWkMYUPYy5FlL1/brLP3WbMxqBvbBR42igItkSLpqOuVMreVtW018QI76T9E4teWWfWI9z36lA==, tarball: file:projects/statemine-asset-creator.tgz}
+    resolution: {integrity: sha512-+ZzamazuSE8OC9RNo0fQIB9CCFlB3Prf5aSNexnCda88mtE6Vv/sf2vLpxpBAdOd9czLws4+5cfZ8/LeyEZing==, tarball: file:projects/statemine-asset-creator.tgz}
     name: '@rush-temp/statemine-asset-creator'
     version: 0.0.0
     dependencies:
@@ -15870,6 +15991,7 @@ packages:
       '@polkadot/types': 6.10.3
       '@radix-ui/react-id': 0.1.1_react@17.0.2
       '@radix-ui/react-popover': 0.1.1_5539cae010396b202b015f3568914e95
+      '@radix-ui/react-tooltip': 0.1.6_react-dom@17.0.2+react@17.0.2
       '@storybook/addon-actions': 6.4.3_5539cae010396b202b015f3568914e95
       '@storybook/addon-essentials': 6.4.3_1aa3aaf4cee5513ad53a84e14dbfc92b
       '@storybook/addon-links': 6.4.3_react-dom@17.0.2+react@17.0.2
