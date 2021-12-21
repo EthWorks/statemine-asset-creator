@@ -14,22 +14,19 @@ export interface PageTemplateProps {
 }
 
 export const PageTemplate = ({ background, children, errorPage, header, title, templateHeader }: PageTemplateProps): JSX.Element => (
-  <>
-    <PageWrapper errorPage={errorPage}>
-      <PageBg>
-        <Image src={background} alt='' />
-      </PageBg>
-      {header && <MainHeader>{header}</MainHeader>}
-      {title || templateHeader
-        ? <PgeTitleWrapper>
-          <Text size='2XL' color='white' bold>{title}</Text>
-          {templateHeader}
-        </PgeTitleWrapper>
-        : null
-      }
-      {children}
-    </PageWrapper>
-  </>
+  <PageWrapper errorPage={errorPage}>
+    <PageBg>
+      <Image src={background} alt='' />
+    </PageBg>
+    {header && <MainHeader>{header}</MainHeader>}
+    {(title || templateHeader) && (
+      <PageTitleWrapper>
+        {title && <Text size='2XL' color='white' bold>{title}</Text>}
+        {templateHeader}
+      </PageTitleWrapper>
+    )}
+    {children}
+  </PageWrapper>
 )
 
 export const PageWrapper = styled.main<Pick<PageTemplateProps, 'errorPage'>>`
@@ -59,7 +56,7 @@ export const PageBg = styled.div`
   }
 `
 
-export const PgeTitleWrapper = styled.div`
+export const PageTitleWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;

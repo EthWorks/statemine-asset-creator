@@ -7,13 +7,13 @@ import background from '../assets/background.svg'
 import errorX from '../assets/error.svg'
 import { ButtonTertiary, PageTemplate, Text } from '../components'
 
-interface errorPageProps {
+interface ErrorPageProps {
   statusCode: number,
   text: string,
   title?: string
 }
 
-const errorPage = ({ statusCode, text, title = 'Ooops...Something went wrong' }: errorPageProps): JSX.Element => {
+const ErrorPage = ({ statusCode, text, title = 'Ooops...Something went wrong' }: ErrorPageProps): JSX.Element => {
   return (
     <PageTemplate background={background} errorPage>
       {statusCode === 404
@@ -21,7 +21,7 @@ const errorPage = ({ statusCode, text, title = 'Ooops...Something went wrong' }:
         : <Image src={errorX} alt={`${statusCode}`} />
       }
       <StyledText size='2XL' color='white' bold>{title}</StyledText>
-      <InfoText size='SM'>{text}</InfoText>
+      {text && <InfoText size='SM'>{text}</InfoText>}
       {statusCode === 404
         ? <Link href='/' passHref><ButtonTertiary>Back to dashboard</ButtonTertiary></Link>
         : <Text size='SM' bold>Try again later</Text>
@@ -30,7 +30,7 @@ const errorPage = ({ statusCode, text, title = 'Ooops...Something went wrong' }:
   )
 }
 
-export default errorPage
+export default ErrorPage
 
 const StyledText = styled(Text)`
   margin: 62px 0 24px;
