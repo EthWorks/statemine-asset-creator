@@ -1,5 +1,5 @@
 import type { Story } from '@storybook/react'
-import type { ModalProps, TransactionStateProps } from './TransactionState'
+import type { TransactionStateProps } from './TransactionState'
 
 import { TransactionStatus } from 'use-substrate'
 
@@ -19,7 +19,7 @@ const Default = {
 
 export default Default
 
-const Template: Story<TransactionStateProps & ModalProps> = (args) =>
+const Template: Story<TransactionStateProps> = (args) =>
   <Card padding='l'>
     <TransactionState {...args} />
   </Card>
@@ -29,5 +29,5 @@ Base.args = {
   status: TransactionStatus.Success,
   title: 'Congratulations!',
   text: 'Your asset have been created.',
-  closeModal: () => { /**/ }
+  onClose: () => { /**/ }
 }

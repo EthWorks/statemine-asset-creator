@@ -53,7 +53,16 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
 
   return (
     <>
-      {stepDetails && <TransactionState status={status} title={stepDetails.title} text={stepDetails.text} name={stepDetails.name} number={stepDetails.number} closeModal={onNext}/>}
+      {stepDetails && (
+        <TransactionState
+          status={status}
+          title={stepDetails.title}
+          text={stepDetails.text}
+          name={stepDetails.name}
+          number={stepDetails.number}
+          onClose={onNext}
+        />
+      )}
       {isContentVisible && (
         <div data-testid='third-step-content'>
           <TransactionInfoBlock>

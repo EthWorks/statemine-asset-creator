@@ -19,10 +19,7 @@ export interface TransactionStateProps {
   status: TransactionStatus | undefined,
   title: string,
   text: string
-}
-
-export interface ModalProps {
-  closeModal: () => void
+  onClose: () => void
 }
 
 const getIcon = (status: TransactionStatus): StaticImageData => {
@@ -39,7 +36,7 @@ const getIcon = (status: TransactionStatus): StaticImageData => {
   }
 }
 
-export const TransactionState = ({ name, number, status, title, text, closeModal }: TransactionStateProps & ModalProps): JSX.Element | null => {
+export const TransactionState = ({ name, number, status, title, text, onClose }: TransactionStateProps): JSX.Element | null => {
   if (!status || status === TransactionStatus.Ready || status === TransactionStatus.AwaitingSign) return null
 
   return (
@@ -62,9 +59,9 @@ export const TransactionState = ({ name, number, status, title, text, closeModal
             View asset in explorer
               <ViewIcon width='20' height='20' />
             </ButtonOutline>
-            <ButtonTertiary onClick={closeModal}>Back to dashboard</ButtonTertiary>
+            <ButtonTertiary onClick={onClose}>Back to dashboard</ButtonTertiary>
           </>
-          : status === TransactionStatus.Error && <ButtonTertiary>Back to dashboard</ButtonTertiary>
+          : status === TransactionStatus.Error && <ButtonTertiary onClick={onClose}>Back to dashboard</ButtonTertiary>
         }
       </ButtonWrapper>
     </TransactionStateWrapper>
