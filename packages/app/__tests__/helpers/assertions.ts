@@ -69,3 +69,7 @@ export const assertTextInAccountSelect = async (accountName: string, dropdownInd
   const accountSelectButton = (await screen.findAllByTestId('open-account-select'))[dropdownIndex]
   await within(accountSelectButton).findByText(accountName)
 }
+
+export const assertModalClosed = () => {
+  expect(screen.queryByTestId('modal')).toBeFalsy()
+}
