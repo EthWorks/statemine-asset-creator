@@ -4,7 +4,7 @@ import type { CookiesBarProps } from './index'
 import { CookiesBar } from './index'
 
 const Default = {
-  title: 'Components/Cookies',
+  title: 'Components/CookiesBar',
   component: CookiesBar,
   parameters: {
     backgrounds: {

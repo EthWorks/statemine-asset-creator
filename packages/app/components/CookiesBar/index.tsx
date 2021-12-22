@@ -10,7 +10,7 @@ export interface CookiesBarProps {
 }
 
 export const CookiesBar = ({ text }: CookiesBarProps): JSX.Element => (
-  <CookiesWrapper>
+  <CookiesBarWrapper>
     <CookiesBarBox>
       <InfoIcon />
       <StyledText color='white'>{text}</StyledText>
@@ -19,10 +19,10 @@ export const CookiesBar = ({ text }: CookiesBarProps): JSX.Element => (
       <ButtonOutline>Decline</ButtonOutline>
       <ButtonPrimary>Approve</ButtonPrimary>
     </CookiesBarBox>
-  </CookiesWrapper>
+  </CookiesBarWrapper>
 )
 
-const CookiesWrapper = styled(Card)`
+const CookiesBarWrapper = styled(Card)`
   position: fixed;
   bottom: 32px;
   left: 50%;
