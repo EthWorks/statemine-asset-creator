@@ -2,7 +2,7 @@ import type { ModalStep } from './types'
 
 import { useCallback, useEffect, useState } from 'react'
 
-import { Chains, TransactionStatus, useActiveAccount } from 'use-substrate'
+import { Chains, TransactionStatus, useActiveAccount, useBalances } from 'use-substrate'
 
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { FeeSelect } from '../FeeSelect'
@@ -20,13 +20,11 @@ interface StepBarProps {
   setStepBarVisible: (arg: boolean) => void
 }
 
-const TOKEN = 'KSM'
-const DECIMALS = 12
-
 export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & StepBarProps): JSX.Element {
   const { tx, status, stepDetails, transactionFee } = useThirdStep()
   const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
   const { activeAccount } = useActiveAccount(Chains.Statemine)
+  const { chainToken, chainDecimals } = useBalances(activeAccount?.address.toString(), Chains.Statemine) || {}
   const { address: ownerAddress } = activeAccount || {}
   const [isContentVisible, setIsContentVisible] = useState<boolean>(true)
 
@@ -94,7 +92,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
             </InfoRow>
             <InfoRow>
               <Label>Statemine fee</Label>
-              <FormatBalance chainDecimals={DECIMALS} token={TOKEN} value={transactionFee}/>
+              <FormatBalance chainDecimals={chainDecimals} token={chainToken} value={transactionFee}/>
             </InfoRow>
           </TransactionInfoBlock>
 

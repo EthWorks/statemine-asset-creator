@@ -4,8 +4,8 @@ import { formatValue } from '../../formaters/formaters'
 
 const DECIMALS_DISPLAYED = 4
 
-export function formatBalance(value: BN | undefined, chainDecimals: number): { integers: string, decimals: string } | undefined {
-  if (!value) {
+export function formatBalance(value: BN | undefined, chainDecimals: number | undefined): { integers: string, decimals: string } | undefined {
+  if (!value || chainDecimals === undefined) {
     return undefined
   }
 

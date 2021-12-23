@@ -30,20 +30,16 @@ export function AccountTile({ account, withFreeBalance, chain }: Props): JSX.Ele
         </AccountTileName>
       </AccountTileCell>
       <AccountTileCellEnd>
-        {balance && (
-          <>
-            <CellRow>
-              <Label>transferable balance</Label>
-              <FormatBalance token={balance.chainToken} chainDecimals={balance.chainDecimals} value={balance.availableBalance}/>
-            </CellRow>
-            {withFreeBalance &&
+        <CellRow>
+          <Label>transferable balance</Label>
+          <FormatBalance token={balance?.chainToken} chainDecimals={balance?.chainDecimals} value={balance?.availableBalance}/>
+        </CellRow>
+        {withFreeBalance &&
               <CellRow>
                 <Label>full account balance</Label>
-                <FormatBalance token={balance.chainToken} chainDecimals={balance.chainDecimals} value={fullBalance}/>
+                <FormatBalance token={balance?.chainToken} chainDecimals={balance?.chainDecimals} value={fullBalance}/>
               </CellRow>
-            }
-          </>
-        )}
+        }
       </AccountTileCellEnd>
     </AccountTileWrapper>
   )

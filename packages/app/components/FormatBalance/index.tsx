@@ -7,8 +7,8 @@ import { formatBalance } from './utils'
 
 interface BalanceValueProps {
   className?: string,
-  chainDecimals: number,
-  token: string,
+  chainDecimals: number | undefined,
+  token: string | undefined,
   value: BN | undefined
 }
 
