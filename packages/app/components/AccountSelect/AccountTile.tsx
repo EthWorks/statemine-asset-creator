@@ -12,13 +12,11 @@ import { Label, Text } from '../typography'
 interface Props {
   account: Account,
   withFreeBalance?: boolean
+  chain: Chains
 }
 
-const TOKEN = 'KSM'
-const DECIMALS = 12
-
-export function AccountTile({ account, withFreeBalance }: Props): JSX.Element {
-  const balance = useBalances(account.address, Chains.Kusama)
+export function AccountTile({ account, withFreeBalance, chain }: Props): JSX.Element {
+  const balance = useBalances(account.address, chain)
 
   const fullBalance = useMemo(() => balance?.freeBalance.add(balance.reservedBalance), [balance])
 
@@ -32,16 +30,20 @@ export function AccountTile({ account, withFreeBalance }: Props): JSX.Element {
         </AccountTileName>
       </AccountTileCell>
       <AccountTileCellEnd>
-        <CellRow>
-          <Label>transferable balance</Label>
-          <FormatBalance token={TOKEN} chainDecimals={DECIMALS} value={balance?.availableBalance}/>
-        </CellRow>
-        {withFreeBalance &&
-          <CellRow>
-            <Label>full account balance</Label>
-            <FormatBalance token={TOKEN} chainDecimals={DECIMALS} value={fullBalance}/>
-          </CellRow>
-        }
+        {balance && (
+          <>
+            <CellRow>
+              <Label>transferable balance</Label>
+              <FormatBalance token={balance.chainToken} chainDecimals={balance.chainDecimals} value={balance.availableBalance}/>
+            </CellRow>
+            {withFreeBalance &&
+              <CellRow>
+                <Label>full account balance</Label>
+                <FormatBalance token={balance.chainToken} chainDecimals={balance.chainDecimals} value={fullBalance}/>
+              </CellRow>
+            }
+          </>
+        )}
       </AccountTileCellEnd>
     </AccountTileWrapper>
   )

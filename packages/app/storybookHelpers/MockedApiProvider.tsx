@@ -18,6 +18,10 @@ export function MockedApiProvider(props: { children: React.ReactNode }): JSX.Ele
             accountNonce: 1
           }])
         }
+      },
+      registry: {
+        chainDecimals: [12],
+        chainTokens: ['TT']
       }
     },
     connectionState: 'connected'

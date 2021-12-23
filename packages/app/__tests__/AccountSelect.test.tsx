@@ -4,6 +4,8 @@ import { fireEvent, render, screen, within } from '@testing-library/react'
 import React, { useState } from 'react'
 import { ThemeProvider } from 'styled-components'
 
+import { Chains } from 'use-substrate'
+
 import { AccountSelect } from '../components'
 import { theme } from '../styles/styleVariables'
 import { assertText, selectAccountFromDropdown } from './helpers'
@@ -33,6 +35,7 @@ function AccountSelectTestComponent({ withFreeBalance, withAccountInput, disable
         withFreeBalance={withFreeBalance}
         withAccountInput={withAccountInput}
         disabled={disabled}
+        chain={Chains.Kusama}
       />
     </ThemeProvider>
   )

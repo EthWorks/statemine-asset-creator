@@ -4,6 +4,8 @@ import type { Props } from './index'
 
 import React from 'react'
 
+import { Chains } from 'use-substrate'
+
 import { mockAccounts } from '../../__tests__/mocks/mockAccounts'
 import { MockedApiProvider } from '../../storybookHelpers/MockedApiProvider'
 import { AccountSelect } from './index'
@@ -28,7 +30,7 @@ const Template: Story<Props> = (args) => {
 
   return (
     <MockedApiProvider>
-      <AccountSelect {...args} currentAccount={currentAccount} setCurrentAccount={setCurrentAccount}/>
+      <AccountSelect {...args} currentAccount={currentAccount} setCurrentAccount={setCurrentAccount} chain={Chains.Kusama}/>
     </MockedApiProvider>
   )
 }
