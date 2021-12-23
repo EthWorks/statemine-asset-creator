@@ -5,8 +5,8 @@ import { useApi } from './useApi'
 import { useObservable } from './useObservable'
 
 interface Balances extends DeriveBalancesAll {
-  chainDecimals: number[] | undefined,
-  chainTokens: string[] | undefined
+  chainDecimals: number,
+  chainToken: string
 }
 
 export type UseBalances = Balances | undefined
@@ -15,14 +15,14 @@ export function useBalances(address: string | undefined, chain: Chains): UseBala
   const { api, connectionState } = useApi(chain)
   const balances = useObservable(address ? api?.derive.balances.all(address) : undefined, [api, connectionState, address])
 
-  const chainDecimals = api?.registry.chainDecimals
-  const chainTokens = api?.registry.chainTokens
+  const chainDecimals = api?.registry.chainDecimals[0]
+  const chainToken = api?.registry.chainTokens[0]
 
-  return balances
+  return (balances && chainDecimals && chainToken)
     ? {
       ...balances,
       chainDecimals,
-      chainTokens
+      chainToken
     }
     : undefined
 }

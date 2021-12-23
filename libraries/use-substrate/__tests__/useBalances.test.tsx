@@ -27,10 +27,10 @@ describe('useBalances hook', () => {
 
   it('returns token and decimals', async () => {
     const { result } = renderResult(ALICE, Chains.Kusama)
-    const { chainTokens, chainDecimals } = result.current || {}
+    const { chainToken, chainDecimals } = result.current || {}
 
-    expect(chainDecimals?.[0]).toEqual(18)
-    expect(chainTokens?.[0]).toEqual('TT')
+    expect(chainDecimals).toEqual(18)
+    expect(chainToken).toEqual('TT')
   })
 
   const renderResult = (address: string | undefined, chain: Chains) => {
