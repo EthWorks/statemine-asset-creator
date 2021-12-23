@@ -79,6 +79,10 @@ export const mockedKusamaApi: UseApi = {
           }))
         })
       }
+    },
+    registry: {
+      chainDecimals: [18],
+      chainTokens: ['TT']
     }
   } as unknown as ApiRx,
   connectionState: 'connected'

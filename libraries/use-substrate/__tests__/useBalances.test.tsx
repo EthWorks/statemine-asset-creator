@@ -2,8 +2,8 @@ import { renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
 
 import { Chains, useBalances } from '../src'
-import { ALICE } from './consts/addresses'
 import { MockedApiProvider } from './mocks/MockedApiProvider'
+import { ALICE } from './consts'
 
 describe('useBalances hook', () => {
   it('returns balances', async () => {
@@ -23,6 +23,14 @@ describe('useBalances hook', () => {
   it('return undefined for null address', async () => {
     const { result } = renderResult(undefined, Chains.Kusama)
     expect(result.current).toEqual(undefined)
+  })
+
+  it('returns token and decimals', async () => {
+    const { result } = renderResult(ALICE, Chains.Kusama)
+    const { chainTokens, chainDecimals } = result.current || {}
+
+    expect(chainDecimals?.[0]).toEqual(18)
+    expect(chainTokens?.[0]).toEqual('TT')
   })
 
   const renderResult = (address: string | undefined, chain: Chains) => {
