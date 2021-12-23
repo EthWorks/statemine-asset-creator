@@ -1,13 +1,13 @@
 import type { Story } from '@storybook/react'
-import type { TotalValueProps } from './index'
+import type { TransactionCostSummaryProps } from './index'
 
 import BN from 'bn.js'
 
-import { TotalValue } from './index'
+import { TransactionCostSummary } from './index'
 
 const Default = {
-  title: 'Components/TotalValue',
-  component: TotalValue,
+  title: 'Components/TransactionCostSummary',
+  component: TransactionCostSummary,
   parameters: {
     layout: 'centered',
     backgrounds: {
@@ -21,8 +21,8 @@ const Default = {
 
 export default Default
 
-const Template: Story<TotalValueProps> = (args) =>
-  <TotalValue {...args}/>
+const Template: Story<TransactionCostSummaryProps> = (args) =>
+  <TransactionCostSummary {...args}/>
 
 export const Base = Template.bind({})
 Base.args = {

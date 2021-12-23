@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { FormatBalance, Label } from '..'
 
-export interface TotalValueProps {
+export interface TransactionCostSummaryProps {
   decimalsAmount: number,
   decimalsFee: number,
   token: string,
@@ -13,8 +13,8 @@ export interface TotalValueProps {
   totalAmountInfo?: string
 }
 
-export const TotalValue = ({ decimalsAmount, decimalsFee, totalAmount, totalFee, token }: TotalValueProps): JSX.Element => (
-  <TotalValueWrapper>
+export const TransactionCostSummary = ({ decimalsAmount, decimalsFee, totalAmount, totalFee, token }: TransactionCostSummaryProps): JSX.Element => (
+  <TransactionCostSummaryWrapper>
     <StyledLabel>Total amount:</StyledLabel>
     <BalanceWrapper>
       <FormatBalance chainDecimals={decimalsAmount} token={token} value={totalAmount} />
@@ -23,10 +23,10 @@ export const TotalValue = ({ decimalsAmount, decimalsFee, totalAmount, totalFee,
     <BalanceWrapper>
       <FormatBalance chainDecimals={decimalsFee} token={token} value={totalFee} />
     </BalanceWrapper>
-  </TotalValueWrapper>
+  </TransactionCostSummaryWrapper>
 )
 
-const TotalValueWrapper = styled.div`
+const TransactionCostSummaryWrapper = styled.div`
   display: grid;
   grid-template-columns: 160px auto;
   grid-column-gap: 40px;
