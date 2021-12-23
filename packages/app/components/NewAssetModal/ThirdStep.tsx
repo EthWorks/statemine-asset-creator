@@ -21,7 +21,7 @@ interface StepBarProps {
 }
 
 export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & StepBarProps): JSX.Element {
-  const { tx, status, stepDetails, transactionFee } = useThirdStep()
+  const { tx, status, stepDetails, transactionFee, createAssetDeposit } = useThirdStep()
   const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
   const { activeAccount } = useActiveAccount(Chains.Statemine)
   const { chainToken, chainDecimals } = useBalances(activeAccount?.address.toString(), Chains.Statemine) || {}
@@ -89,6 +89,10 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
             <InfoRow>
               <Label>Chain</Label>
               <Text size='XS' color='white' bold>Statemine</Text>
+            </InfoRow>
+            <InfoRow>
+              <Label>Deposit</Label>
+              <FormatBalance chainDecimals={DECIMALS} token={TOKEN} value={createAssetDeposit}/>
             </InfoRow>
             <InfoRow>
               <Label>Statemine fee</Label>

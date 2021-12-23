@@ -11,6 +11,7 @@ import { TransactionStatus } from 'use-substrate'
 import { NewAssetModal } from '../components'
 import { TransactionInfoBlockStatus } from '../components/TransactionInfoBlock/TransactionInfoBlock'
 import { BN_ZERO as MOCK_BN_ZERO, useToggle } from '../utils'
+import { mockUseCreateAssetDeposit } from './mocks/mockUseCreateAssetDeposit'
 import {
   assertButtonDisabled,
   assertButtonNotDisabled,
@@ -91,7 +92,8 @@ jest.mock('use-substrate/dist/src/hooks', () => ({
   useAssetsConstants: () => mockUseAssetsConstants,
   useBalances: (account: string) => mockedUseBalances(account),
   useTransaction: () => mockUseTransaction,
-  useActiveAccount: () => mockUseActiveAccount
+  useActiveAccount: () => mockUseActiveAccount,
+  useCreateAssetDeposit: () => mockUseCreateAssetDeposit
 }))
 
 const mockedStringLimit = mockUseAssetsConstants.stringLimit.toNumber()
@@ -359,13 +361,14 @@ describe('New asset modal', () => {
       expect(mockUseApi.api.tx.assets.setTeam).not.toBeCalled()
     })
 
-    describe('content', () => {
-      it('create asset without teleport', async () => {
+    describe('displays content', () => {
+      it('for create asset transaction', async () => {
         renderModal()
         await enterThirdStep()
 
         await assertTransactionInfoBlock(1, 'ready', [
           'ChainStatemine',
+          'Deposit140.0000KSM',
           'Statemine fee0.0300KSM'
         ])
       })
