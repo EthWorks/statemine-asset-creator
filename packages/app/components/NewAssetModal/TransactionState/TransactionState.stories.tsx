@@ -28,5 +28,6 @@ export const Base = Template.bind({})
 Base.args = {
   status: TransactionStatus.Success,
   title: 'Congratulations!',
-  text: 'Your asset have been created.'
+  text: 'Your asset have been created.',
+  onClose: () => { /**/ }
 }

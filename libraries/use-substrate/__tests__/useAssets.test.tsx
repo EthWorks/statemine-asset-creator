@@ -10,8 +10,8 @@ import { from } from 'rxjs'
 import { createType } from 'test-helpers'
 
 import { Chains, useAssets } from '../src'
-import { ALICE_ID, BOB, BOB_ID } from './consts/addresses'
 import { MockedApiProvider, mockedKusamaApi } from './mocks/MockedApiProvider'
+import { ALICE_ID, BOB_ID } from './consts'
 
 describe('Use assets hook', () => {
   it('Returns all available assets', async () => {
@@ -49,7 +49,7 @@ describe('Use assets hook', () => {
   })
 
   it('Returns asset details', () => {
-    const { result } = renderResult({ owner: createType('AccountId', BOB) })
+    const { result } = renderResult({ owner: BOB_ID })
 
     expect(result.current).toHaveLength(2)
 
@@ -60,6 +60,15 @@ describe('Use assets hook', () => {
     expect(name).toEqual('TestToken')
     expect(symbol).toEqual('TT')
     expect(decimals).toEqual(8)
+  })
+
+  it('Converts name and symbol to utf8', async () => {
+    const { result } = renderResult({ customApi })
+
+    const { name, symbol } = (result.current ?? [])[2]
+
+    expect(name).toEqual('Kusama😒')
+    expect(symbol).toEqual('KSM🤪')
   })
 
   const renderResult = ({ owner, customApi }:{owner?: AccountId, customApi?: UseApi}) => {
@@ -87,7 +96,7 @@ const customApi: UseApi = {
             [
               createType('AssetMetadata', { decimals: 8, symbol: 'TT', name: 'TestToken' }),
               createType('AssetMetadata', { decimals: 10, symbol: 'TTx', name: 'TestTokenExtra' }),
-              createType('AssetMetadata', { decimals: 12, symbol: 'KSM', name: 'Kusama' })
+              createType('AssetMetadata', { decimals: 12, symbol: 'KSM🤪', name: 'Kusama😒' })
             ]
           ])
         }

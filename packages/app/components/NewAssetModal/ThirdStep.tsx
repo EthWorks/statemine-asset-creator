@@ -23,7 +23,7 @@ interface StepBarProps {
 const TOKEN = 'KSM'
 const DECIMALS = 12
 
-export function ThirdStep({ onBack, setStepBarVisible }: ModalStep & StepBarProps): JSX.Element {
+export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & StepBarProps): JSX.Element {
   const { tx, status, stepDetails, transactionFee } = useThirdStep()
   const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
   const { activeAccount } = useActiveAccount(Chains.Statemine)
@@ -53,10 +53,19 @@ export function ThirdStep({ onBack, setStepBarVisible }: ModalStep & StepBarProp
 
   return (
     <>
-      {stepDetails && <TransactionState status={status} title={stepDetails.title} text={stepDetails.text} name={stepDetails.name} number={stepDetails.number}/>}
+      {stepDetails && (
+        <TransactionState
+          status={status}
+          title={stepDetails.title}
+          text={stepDetails.text}
+          name={stepDetails.name}
+          number={stepDetails.number}
+          onClose={onNext}
+        />
+      )}
       {isContentVisible && (
         <div data-testid='third-step-content'>
-          <TransactionInfoBlock>
+          <TransactionInfoBlock status='baseInfo'>
             <InfoRow>
               <Label>Asset name</Label>
               <Text size='XS' color='white' bold>{assetName}</Text>
