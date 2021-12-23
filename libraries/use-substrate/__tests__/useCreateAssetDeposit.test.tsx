@@ -7,22 +7,22 @@ import { MockedApiProvider } from './mocks/MockedApiProvider'
 const NAME = 'test token'
 const SYMBOL = 'TT'
 
-describe('useCreateAssetDeposit hook', () => {
-  it('returns deposit for create asset', async () => {
+describe('useCreateAssetDeposit hook returns', () => {
+  it('deposit amount', async () => {
     const { result } = renderResult(Chains.Kusama, NAME, SYMBOL)
     const deposit = result.current
 
     expect(deposit?.toString()).toEqual('320')
   })
 
-  it('returns deposit for create asset', async () => {
+  it('deposit amount for more complex name', async () => {
     const { result } = renderResult(Chains.Kusama, NAME + '👻', SYMBOL)
     const deposit = result.current
 
     expect(deposit?.toString()).toEqual('360')
   })
 
-  it('returns undefined when api is not connected', async () => {
+  it('undefined when api is not connected', async () => {
     const { result } = renderResult(Chains.Statemine, NAME, SYMBOL)
     const deposit = result.current
 
