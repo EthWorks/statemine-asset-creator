@@ -10,7 +10,7 @@ interface UseRequireTeleport {
   teleportAmount: BN
 }
 
-export function useRequireTeleport(owner: string | undefined, transactionFee: BN | undefined, createAssetDeposit: BN | undefined): UseRequireTeleport | undefined {
+export function useTeleport(owner: string | undefined, transactionFee: BN | undefined, createAssetDeposit: BN | undefined): UseRequireTeleport | undefined {
   const { availableBalance } = useBalances(owner, Chains.Statemine) || {}
 
   const { existentialDeposit } = useBalancesConstants(Chains.Statemine) || {}

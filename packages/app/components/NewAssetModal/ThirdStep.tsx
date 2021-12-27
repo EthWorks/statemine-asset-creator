@@ -13,7 +13,7 @@ import { InfoRow, TransactionInfoBlock } from '../TransactionInfoBlock/Transacti
 import { Label, Text } from '../typography'
 import { useNewAssetModal } from './context/useNewAssetModal'
 import { TransactionState } from './TransactionState/TransactionState'
-import { mapToTransactionInfoBlockStatus, useCreateAssetTransaction, useRequireTeleport } from './helpers'
+import { mapToTransactionInfoBlockStatus, useCreateAssetTransaction, useTeleport } from './helpers'
 import { ModalFooter } from './ModalFooter'
 
 interface StepBarProps {
@@ -26,7 +26,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
 
   const { activeAccount } = useActiveAccount(Chains.Statemine)
   const { address: ownerAddress } = activeAccount || {}
-  const { isTeleportRequired, teleportAmount } = useRequireTeleport(ownerAddress?.toString(), transactionFee, createAssetDeposit) || {}
+  const { isTeleportRequired, teleportAmount } = useTeleport(ownerAddress?.toString(), transactionFee, createAssetDeposit) || {}
 
   const [isContentVisible, setIsContentVisible] = useState<boolean>(true)
   const { chainToken, chainDecimals } = useChainToken(Chains.Statemine) || {}
