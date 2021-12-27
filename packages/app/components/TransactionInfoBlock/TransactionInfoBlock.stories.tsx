@@ -14,7 +14,7 @@ const Default = {
   argTypes: {
     status: {
       control: { type: 'select' },
-      options: ['waiting', 'sign', 'done', false]
+      options: ['baseInfo', 'waiting', 'sign', 'done', false]
     }
   }
 }

@@ -2,7 +2,7 @@ import type { ModalStep } from './types'
 
 import { useCallback, useEffect, useState } from 'react'
 
-import { Chains, TransactionStatus, useActiveAccount } from 'use-substrate'
+import { Chains, TransactionStatus, useActiveAccount, useChainToken } from 'use-substrate'
 
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { FeeSelect } from '../FeeSelect'
@@ -20,15 +20,13 @@ interface StepBarProps {
   setStepBarVisible: (arg: boolean) => void
 }
 
-const TOKEN = 'KSM'
-const DECIMALS = 12
-
-export function ThirdStep({ onBack, setStepBarVisible }: ModalStep & StepBarProps): JSX.Element {
-  const { tx, status, stepDetails, transactionFee } = useThirdStep()
+export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & StepBarProps): JSX.Element {
+  const { tx, status, stepDetails, transactionFee, createAssetDeposit } = useThirdStep()
   const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
   const { activeAccount } = useActiveAccount(Chains.Statemine)
   const { address: ownerAddress } = activeAccount || {}
   const [isContentVisible, setIsContentVisible] = useState<boolean>(true)
+  const { chainToken, chainDecimals } = useChainToken(Chains.Statemine) || {}
 
   const setSummaryVisible = useCallback((visible: boolean): void => {
     setIsContentVisible(visible)
@@ -53,10 +51,19 @@ export function ThirdStep({ onBack, setStepBarVisible }: ModalStep & StepBarProp
 
   return (
     <>
-      {stepDetails && <TransactionState status={status} title={stepDetails.title} text={stepDetails.text} name={stepDetails.name} number={stepDetails.number}/>}
+      {stepDetails && (
+        <TransactionState
+          status={status}
+          title={stepDetails.title}
+          text={stepDetails.text}
+          name={stepDetails.name}
+          number={stepDetails.number}
+          onClose={onNext}
+        />
+      )}
       {isContentVisible && (
         <div data-testid='third-step-content'>
-          <TransactionInfoBlock>
+          <TransactionInfoBlock status='baseInfo'>
             <InfoRow>
               <Label>Asset name</Label>
               <Text size='XS' color='white' bold>{assetName}</Text>
@@ -84,8 +91,12 @@ export function ThirdStep({ onBack, setStepBarVisible }: ModalStep & StepBarProp
               <Text size='XS' color='white' bold>Statemine</Text>
             </InfoRow>
             <InfoRow>
+              <Label>Deposit</Label>
+              <FormatBalance chainDecimals={chainDecimals} token={chainToken} value={createAssetDeposit}/>
+            </InfoRow>
+            <InfoRow>
               <Label>Statemine fee</Label>
-              <FormatBalance chainDecimals={DECIMALS} token={TOKEN} value={transactionFee}/>
+              <FormatBalance chainDecimals={chainDecimals} token={chainToken} value={transactionFee}/>
             </InfoRow>
           </TransactionInfoBlock>
 

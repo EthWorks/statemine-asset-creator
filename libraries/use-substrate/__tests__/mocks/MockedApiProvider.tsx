@@ -20,7 +20,10 @@ export const mockedKusamaApi: UseApi = {
     createType: createType,
     consts: {
       assets: {
-        stringLimit: createType('u32', new BN(50))
+        stringLimit: createType('u32', new BN(50)),
+        assetDeposit: createType('u128', new BN(100)),
+        metadataDepositBase: createType('u128', new BN(100)),
+        metadataDepositPerByte: createType('u128', new BN(10))
       }
     },
     derive: {
@@ -79,6 +82,10 @@ export const mockedKusamaApi: UseApi = {
           }))
         })
       }
+    },
+    registry: {
+      chainDecimals: [18],
+      chainTokens: ['TT']
     }
   } as unknown as ApiRx,
   connectionState: 'connected'

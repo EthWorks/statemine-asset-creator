@@ -24,7 +24,8 @@
     "@polkadot/types": "6.10.3",
     "@polkadot/react-identicon": "~0.87.2",
     "swiper": "~7.3.1",
-    "@radix-ui/react-popover": "~0.1.1"
+    "@radix-ui/react-popover": "~0.1.1",
+    "@radix-ui/react-tooltip": "~0.1.4"
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",

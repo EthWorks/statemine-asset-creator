@@ -10,7 +10,8 @@ import {
   mockUseActiveAccount,
   mockUseActiveAccounts,
   mockUseApi,
-  mockUseBalances
+  mockUseBalances,
+  mockUseChainToken
 } from './mocks'
 
 jest.mock('use-substrate/dist/src/hooks', () => ({
@@ -20,7 +21,8 @@ jest.mock('use-substrate/dist/src/hooks', () => ({
   useBalances: () => mockUseBalances,
   useBestNumber: () => mockUseBestNumber,
   useActiveAccount: () => mockUseActiveAccount,
-  useActiveAccounts: () => mockUseActiveAccounts
+  useActiveAccounts: () => mockUseActiveAccounts,
+  useChainToken: () => mockUseChainToken
 }))
 
 describe('Active account bar', () => {

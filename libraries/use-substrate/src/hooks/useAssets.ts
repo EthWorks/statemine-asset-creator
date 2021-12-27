@@ -73,9 +73,9 @@ function convertAssetMetadata(fetchedMeta: PalletAssetsAssetMetadata): AssetMeta
   return {
     deposit: fetchedMeta.deposit.toBn(),
     isFrozen: fetchedMeta.isFrozen.toHuman(),
-    name: fetchedMeta.name.toHuman() as string,
+    name: fetchedMeta.name.toUtf8(),
     decimals: fetchedMeta.decimals.toNumber(),
-    symbol: fetchedMeta.symbol.toHuman() as string
+    symbol: fetchedMeta.symbol.toUtf8()
   }
 }
 

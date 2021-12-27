@@ -5,7 +5,7 @@ import * as Popover from '@radix-ui/react-popover'
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
-import { isAddressValid } from 'use-substrate'
+import { Chains, isAddressValid } from 'use-substrate'
 
 import { useToggle } from '../../utils'
 import { InputInfo } from '../FormElements'
@@ -23,9 +23,10 @@ export interface Props extends InputInfoProps {
   withAccountInput?: boolean,
   disabled?: boolean,
   button?: React.ReactNode,
+  chain: Chains
 }
 
-export function AccountSelect({ accounts, currentAccount, setCurrentAccount, label, withFreeBalance = false, withAccountInput, disabled, button, ...inputInfoProps }: Props): JSX.Element {
+export function AccountSelect({ accounts, currentAccount, setCurrentAccount, label, withFreeBalance = false, withAccountInput, disabled, button, chain, ...inputInfoProps }: Props): JSX.Element {
   const [isOpen, toggleOpen, setOpen] = useToggle()
   const [inputAddressValue, setInputAddressValue] = useState<string>('')
   const [inputAddressError, setInputAddressError] = useState<string>()
@@ -88,7 +89,11 @@ export function AccountSelect({ accounts, currentAccount, setCurrentAccount, lab
                 onClick={_toggleOpen}
               >
                 {currentAccount && !isOpen
-                  ? <AccountTile withFreeBalance={withFreeBalance} account={currentAccount}/>
+                  ? <AccountTile
+                    withFreeBalance={withFreeBalance}
+                    account={currentAccount}
+                    chain={chain}
+                  />
                   : <StyledButtonText color='white' size='SM'>{`Select account${withAccountInput ? ' or paste account address' : ''}`}</StyledButtonText>
                 }
                 {!disabled && <StyledArrow direction='down' width='14' height='9' />}
@@ -106,7 +111,11 @@ export function AccountSelect({ accounts, currentAccount, setCurrentAccount, lab
               onClick={() => _onItemClick(account)}
               key={account.address}
             >
-              <AccountTile withFreeBalance={withFreeBalance} account={account}/>
+              <AccountTile
+                withFreeBalance={withFreeBalance}
+                account={account}
+                chain={chain}
+              />
             </StyledDropdownItem>
           ))}
         </ul>

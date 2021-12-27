@@ -11,12 +11,14 @@ import { TransactionStatus } from 'use-substrate'
 import { NewAssetModal } from '../components'
 import { TransactionInfoBlockStatus } from '../components/TransactionInfoBlock/TransactionInfoBlock'
 import { BN_ZERO as MOCK_BN_ZERO, useToggle } from '../utils'
+import { mockUseCreateAssetDeposit } from './mocks/mockUseCreateAssetDeposit'
 import {
   assertButtonDisabled,
   assertButtonNotDisabled,
   assertInput,
   assertInputError,
   assertInputValue,
+  assertModalClosed,
   assertNoInputError,
   assertText,
   assertTextInAccountSelect,
@@ -37,7 +39,8 @@ import {
   mockUseApi,
   mockUseAssets,
   mockUseAssetsConstants,
-  mockUseBalances
+  mockUseBalances,
+  mockUseChainToken
 } from './mocks'
 
 function TestComponent(): JSX.Element {
@@ -90,7 +93,9 @@ jest.mock('use-substrate/dist/src/hooks', () => ({
   useAssetsConstants: () => mockUseAssetsConstants,
   useBalances: (account: string) => mockedUseBalances(account),
   useTransaction: () => mockUseTransaction,
-  useActiveAccount: () => mockUseActiveAccount
+  useActiveAccount: () => mockUseActiveAccount,
+  useCreateAssetDeposit: () => mockUseCreateAssetDeposit,
+  useChainToken: () => mockUseChainToken
 }))
 
 const mockedStringLimit = mockUseAssetsConstants.stringLimit.toNumber()
@@ -358,13 +363,14 @@ describe('New asset modal', () => {
       expect(mockUseApi.api.tx.assets.setTeam).not.toBeCalled()
     })
 
-    describe('content', () => {
-      it('create asset without teleport', async () => {
+    describe('displays content', () => {
+      it('for create asset transaction', async () => {
         renderModal()
         await enterThirdStep()
 
         await assertTransactionInfoBlock(1, 'ready', [
           'ChainStatemine',
+          'Deposit140.0000KSM',
           'Statemine fee0.0300KSM'
         ])
       })
@@ -382,10 +388,7 @@ describe('New asset modal', () => {
       })
 
       it('AwaitingSign', async () => {
-        mockUseTransaction = {
-          ...mockUseTransaction,
-          status: TransactionStatus.AwaitingSign
-        }
+        setTransactionStatus(TransactionStatus.AwaitingSign)
 
         renderModal()
         await enterThirdStep()
@@ -405,10 +408,7 @@ describe('New asset modal', () => {
 
     describe('hides content and shows pending transaction for ongoing transaction', () => {
       it('InBlock', async () => {
-        mockUseTransaction = {
-          ...mockUseTransaction,
-          status: TransactionStatus.InBlock
-        }
+        setTransactionStatus(TransactionStatus.InBlock)
 
         renderModal()
         await enterThirdStep()
@@ -424,10 +424,7 @@ describe('New asset modal', () => {
       })
 
       it('Success', async () => {
-        mockUseTransaction = {
-          ...mockUseTransaction,
-          status: TransactionStatus.Success
-        }
+        setTransactionStatus(TransactionStatus.Success)
 
         renderModal()
         await enterThirdStep()
@@ -543,6 +540,19 @@ describe('New asset modal', () => {
           expect(modalContent).toHaveTextContent('[assets.InUse]: The asset ID is already taken.')
           assertButtonNotDisabled('Back to dashboard')
         })
+      })
+
+      it('enables to go back to dashboard', async () => {
+        setTransactionStatus(TransactionStatus.Success)
+
+        renderModal()
+        await enterThirdStep()
+
+        clickButton('Back to dashboard')
+        assertModalClosed()
+
+        clickButton('Create new asset')
+        assertFirstStepEmpty()
       })
     })
   })
@@ -684,6 +694,13 @@ interface TestErrorDetails {
   section?: string;
   name?: string;
   docs?: string[];
+}
+
+const setTransactionStatus = (status: TransactionStatus) => {
+  mockUseTransaction = {
+    ...mockUseTransaction,
+    status
+  }
 }
 
 const setErrorDetails = (errorDetails: ErrorDetails[] | undefined) => {
