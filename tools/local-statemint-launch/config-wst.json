@@ -41,7 +41,7 @@
           "wsPort": 9988,
           "port": 31200,
           "name": "alice",
-          "flags": ["--force-authoring", "--", "--execution=wasm"]
+          "flags": ["--", "--execution=wasm"]
         }
       ]
     }
