@@ -1,4 +1,5 @@
 import BN from 'bn.js'
+import { useMemo } from 'react'
 
 import { Chains, useBalances, useBalancesConstants } from 'use-substrate'
 
@@ -9,10 +10,13 @@ export function useRequireTeleport(owner: string | undefined, transactionFee: BN
 
   const { existentialDeposit } = useBalancesConstants(Chains.Statemine) || {}
 
-  if (!transactionFee || !createAssetDeposit || !availableBalance || !existentialDeposit) return undefined
+  return useMemo(() => {
+    if (!transactionFee || !createAssetDeposit || !existentialDeposit || !availableBalance) return undefined
 
-  const teleportAmount = existentialDeposit.add(transactionFee).add(createAssetDeposit)
-  const teleportAmountWithThreshold = teleportAmount?.muln(THRESHOLD)
+    const teleportAmount = existentialDeposit.add(transactionFee).add(createAssetDeposit)
 
-  return teleportAmountWithThreshold.gt(availableBalance)
+    const teleportAmountWithThreshold = teleportAmount.muln(THRESHOLD)
+
+    return teleportAmountWithThreshold.gt(availableBalance)
+  }, [availableBalance, createAssetDeposit, existentialDeposit, transactionFee])
 }
