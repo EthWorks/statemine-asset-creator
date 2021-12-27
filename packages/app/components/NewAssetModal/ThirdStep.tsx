@@ -13,7 +13,7 @@ import { InfoRow, TransactionInfoBlock } from '../TransactionInfoBlock/Transacti
 import { Label, Text } from '../typography'
 import { useNewAssetModal } from './context/useNewAssetModal'
 import { TransactionState } from './TransactionState/TransactionState'
-import { mapToTransactionInfoBlockStatus, useThirdStep } from './helpers'
+import { mapToTransactionInfoBlockStatus, useCreateAssetTransaction, useRequireTeleport } from './helpers'
 import { ModalFooter } from './ModalFooter'
 
 interface StepBarProps {
@@ -21,10 +21,13 @@ interface StepBarProps {
 }
 
 export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & StepBarProps): JSX.Element {
-  const { tx, status, stepDetails, transactionFee, createAssetDeposit } = useThirdStep()
+  const { tx, status, stepDetails, transactionFee, createAssetDeposit } = useCreateAssetTransaction()
   const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
+
   const { activeAccount } = useActiveAccount(Chains.Statemine)
   const { address: ownerAddress } = activeAccount || {}
+  const isTeleportRequired = useRequireTeleport(ownerAddress?.toString(), transactionFee, createAssetDeposit)
+
   const [isContentVisible, setIsContentVisible] = useState<boolean>(true)
   const { chainToken, chainDecimals } = useChainToken(Chains.Statemine) || {}
 
@@ -85,7 +88,16 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
               <Text size='XS' color='white' bold>{assetId}</Text>
             </InfoRow>
           </TransactionInfoBlock>
-          <TransactionInfoBlock name='Asset Creation' number={1} status={mapToTransactionInfoBlockStatus(status)}>
+          {isTeleportRequired && (
+            <TransactionInfoBlock name='Teleport' number={1} status='ready'>
+              <InfoRow>
+                <Label>Chain</Label>
+                <Text size='XS' color='white' bold>Kusama</Text>
+                <Text size='XS' color='white' bold>Statemine</Text>
+              </InfoRow>
+            </TransactionInfoBlock>
+          )}
+          <TransactionInfoBlock name='Asset Creation' number={isTeleportRequired ? 2 : 1} status={mapToTransactionInfoBlockStatus(status)}>
             <InfoRow>
               <Label>Chain</Label>
               <Text size='XS' color='white' bold>Statemine</Text>

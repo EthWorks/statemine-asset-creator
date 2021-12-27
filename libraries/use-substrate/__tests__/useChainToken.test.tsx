@@ -13,7 +13,7 @@ describe('useChainToken hook', () => {
     expect(chainToken).toEqual('TT')
   })
 
-  it('returns undefined api is not connected', async () => {
+  it('returns undefined when api is not connected', async () => {
     const { result } = renderResult(Chains.Statemine)
 
     expect(result.current).toBeUndefined()

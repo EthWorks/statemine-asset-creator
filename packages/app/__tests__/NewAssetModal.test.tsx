@@ -11,7 +11,6 @@ import { TransactionStatus } from 'use-substrate'
 import { NewAssetModal } from '../components'
 import { TransactionInfoBlockStatus } from '../components/TransactionInfoBlock/TransactionInfoBlock'
 import { BN_ZERO as MOCK_BN_ZERO, useToggle } from '../utils'
-import { mockUseCreateAssetDeposit } from './mocks/mockUseCreateAssetDeposit'
 import {
   assertButtonDisabled,
   assertButtonNotDisabled,
@@ -40,7 +39,9 @@ import {
   mockUseAssets,
   mockUseAssetsConstants,
   mockUseBalances,
-  mockUseChainToken
+  mockUseBalancesConstants,
+  mockUseChainToken,
+  mockUseCreateAssetDeposit
 } from './mocks'
 
 function TestComponent(): JSX.Element {
@@ -95,7 +96,8 @@ jest.mock('use-substrate/dist/src/hooks', () => ({
   useTransaction: () => mockUseTransaction,
   useActiveAccount: () => mockUseActiveAccount,
   useCreateAssetDeposit: () => mockUseCreateAssetDeposit,
-  useChainToken: () => mockUseChainToken
+  useChainToken: () => mockUseChainToken,
+  useBalancesConstants: () => mockUseBalancesConstants
 }))
 
 const mockedStringLimit = mockUseAssetsConstants.stringLimit.toNumber()
@@ -103,6 +105,7 @@ const mockedStringLimit = mockUseAssetsConstants.stringLimit.toNumber()
 describe('New asset modal', () => {
   beforeEach(() => {
     mockTransaction.mockClear()
+    setTransactionStatus(TransactionStatus.Ready)
     mockUseApi.api.tx.assets.create.mockClear()
     mockUseApi.api.tx.assets.setMetadata.mockClear()
     mockUseApi.api.tx.assets.setTeam.mockClear()
@@ -354,205 +357,244 @@ describe('New asset modal', () => {
   })
 
   describe('Third step', () => {
-    it('sends transaction on confirm', async () => {
-      renderModal()
-      await createAsset()
+    describe('account has statemine funds', () => {
+      it('sends transaction on confirm', async () => {
+        renderModal()
+        await createAsset()
 
-      expect(mockUseApi.api.tx.assets.create).toBeCalledWith(ASSET_ID, bobAccount.address, MIN_BALANCE)
-      expect(mockUseApi.api.tx.assets.setMetadata).toBeCalledWith(ASSET_ID, ASSET_NAME, ASSET_SYMBOL, ASSET_DECIMALS)
-      expect(mockUseApi.api.tx.assets.setTeam).not.toBeCalled()
+        expect(mockUseApi.api.tx.assets.create).toBeCalledWith(ASSET_ID, bobAccount.address, MIN_BALANCE)
+        expect(mockUseApi.api.tx.assets.setMetadata).toBeCalledWith(ASSET_ID, ASSET_NAME, ASSET_SYMBOL, ASSET_DECIMALS)
+        expect(mockUseApi.api.tx.assets.setTeam).not.toBeCalled()
+      })
+
+      describe('displays content', () => {
+        it('for create asset transaction', async () => {
+          renderModal()
+          await enterThirdStep()
+
+          await assertTransactionInfoBlock(1, 'ready', [
+            'ChainStatemine',
+            'Deposit140.0000KSM',
+            'Statemine fee0.0300KSM'
+          ])
+        })
+      })
+
+      describe('displays content, steps bar and confirm button', () => {
+        it('Ready', async () => {
+          renderModal()
+          await enterThirdStep()
+
+          assertStepsBarVisible()
+          assertContentVisible()
+
+          assertButtonNotDisabled('Confirm')
+        })
+
+        it('AwaitingSign', async () => {
+          setTransactionStatus(TransactionStatus.AwaitingSign)
+
+          renderModal()
+          await enterThirdStep()
+
+          assertStepsBarVisible()
+          assertContentVisible()
+
+          assertButtonDisabled('Confirm')
+          assertButtonDisabled('Back')
+
+          await assertTransactionInfoBlock(1, 'sign', [
+            'ChainStatemine',
+            'Statemine fee0.0300KSM'
+          ])
+        })
+      })
+
+      describe('hides content and shows pending transaction for ongoing transaction', () => {
+        it('InBlock', async () => {
+          setTransactionStatus(TransactionStatus.InBlock)
+
+          renderModal()
+          await enterThirdStep()
+
+          assertStepsBarHidden()
+          assertContentHidden()
+
+          const modalContent = screen.getByTestId('status-step-InBlock')
+          expect(modalContent).toHaveTextContent('Pending transaction 1/1...')
+          expect(modalContent).toHaveTextContent('Transaction #1')
+          expect(modalContent).toHaveTextContent('Asset Creation')
+          expect(modalContent).toHaveTextContent('It takes time to create your asset. In order to do so, we need to create a transaction and wait until blockchain validates it.')
+        })
+
+        it('Success', async () => {
+          setTransactionStatus(TransactionStatus.Success)
+
+          renderModal()
+          await enterThirdStep()
+
+          assertStepsBarHidden()
+          assertContentHidden()
+
+          const modalContent = screen.getByTestId('status-step-Success')
+          expect(modalContent).toHaveTextContent('Congratulations!')
+          expect(modalContent).toHaveTextContent('Your asset have been created.')
+          assertButtonNotDisabled('View asset in explorer')
+          assertButtonNotDisabled('Back to dashboard')
+        })
+
+        describe('Error', () => {
+          it('with error details', async () => {
+            setErrorDetails([
+              errorDetail({ section: 'assets', name: 'BadMetadata', docs: ['Invalid metadata given.'] })
+            ])
+
+            renderModal()
+            await enterThirdStep()
+
+            assertStepsBarHidden()
+            assertContentHidden()
+
+            const modalContent = screen.getByTestId('status-step-Error')
+            expect(modalContent).toHaveTextContent('Something went wrong')
+            expect(modalContent).toHaveTextContent('[assets.BadMetadata]: Invalid metadata given.')
+            assertButtonNotDisabled('Back to dashboard')
+          })
+
+          it('with missing error details', async () => {
+            setErrorDetails(undefined)
+
+            renderModal()
+            await enterThirdStep()
+
+            assertStepsBarHidden()
+            assertContentHidden()
+
+            const modalContent = screen.getByTestId('status-step-Error')
+            expect(modalContent).toHaveTextContent('Something went wrong')
+            expect(modalContent).toHaveTextContent('Unknown error.')
+            assertButtonNotDisabled('Back to dashboard')
+          })
+
+          it('with missing error section', async () => {
+            setErrorDetails([
+              errorDetail({ name: 'BadMetadata', docs: ['Invalid metadata given.'] })
+            ])
+
+            renderModal()
+            await enterThirdStep()
+
+            assertStepsBarHidden()
+            assertContentHidden()
+
+            const modalContent = screen.getByTestId('status-step-Error')
+            expect(modalContent).toHaveTextContent('Something went wrong')
+            expect(modalContent).toHaveTextContent('[BadMetadata]: Invalid metadata given.')
+            assertButtonNotDisabled('Back to dashboard')
+          })
+
+          it('with missing docs', async () => {
+            setErrorDetails([
+              errorDetail({ section: 'assets', name: 'BadMetadata' })
+            ])
+
+            renderModal()
+            await enterThirdStep()
+
+            assertStepsBarHidden()
+            assertContentHidden()
+
+            const modalContent = screen.getByTestId('status-step-Error')
+            expect(modalContent).toHaveTextContent('Something went wrong')
+            expect(modalContent).toHaveTextContent('[assets.BadMetadata]')
+            assertButtonNotDisabled('Back to dashboard')
+          })
+
+          it('with missing error name', async () => {
+            setErrorDetails([
+              errorDetail({ section: 'assets', name: undefined, docs: ['Invalid metadata given.'] })
+            ])
+
+            renderModal()
+            await enterThirdStep()
+
+            assertStepsBarHidden()
+            assertContentHidden()
+
+            const modalContent = screen.getByTestId('status-step-Error')
+            expect(modalContent).toHaveTextContent('Something went wrong')
+            expect(modalContent).toHaveTextContent('[assets]: Invalid metadata given.')
+            assertButtonNotDisabled('Back to dashboard')
+          })
+
+          it('with multiple error details', async () => {
+            setErrorDetails([
+              errorDetail({ section: 'assets', name: 'BadMetadata', docs: ['Invalid metadata given.'] }),
+              errorDetail({ section: 'assets', name: 'InUse', docs: ['The asset ID is already taken.'] })
+            ])
+
+            renderModal()
+            await enterThirdStep()
+
+            assertStepsBarHidden()
+            assertContentHidden()
+
+            const modalContent = screen.getByTestId('status-step-Error')
+            expect(modalContent).toHaveTextContent('Something went wrong')
+            expect(modalContent).toHaveTextContent('[assets.BadMetadata]: Invalid metadata given.')
+            expect(modalContent).toHaveTextContent('[assets.InUse]: The asset ID is already taken.')
+            assertButtonNotDisabled('Back to dashboard')
+          })
+        })
+
+        it('enables to go back to dashboard', async () => {
+          setTransactionStatus(TransactionStatus.Success)
+
+          renderModal()
+          await enterThirdStep()
+
+          clickButton('Back to dashboard')
+          assertModalClosed()
+
+          clickButton('Create new asset')
+          assertFirstStepEmpty()
+        })
+      })
     })
 
-    describe('displays content', () => {
-      it('for create asset transaction', async () => {
-        renderModal()
-        await enterThirdStep()
+    describe('proposes kusama teleport if account has insufficient funds', () => {
+      describe('displays transaction info', () => {
+        it('when statemine account has zero funds', async () => {
+          mockUseBalances.availableBalance = new BN(0)
+          renderModal()
+          await enterThirdStep()
 
-        await assertTransactionInfoBlock(1, 'ready', [
-          'ChainStatemine',
-          'Deposit140.0000KSM',
-          'Statemine fee0.0300KSM'
-        ])
-      })
-    })
-
-    describe('displays content, steps bar and confirm button', () => {
-      it('Ready', async () => {
-        renderModal()
-        await enterThirdStep()
-
-        assertStepsBarVisible()
-        assertContentVisible()
-
-        assertButtonNotDisabled('Confirm')
-      })
-
-      it('AwaitingSign', async () => {
-        setTransactionStatus(TransactionStatus.AwaitingSign)
-
-        renderModal()
-        await enterThirdStep()
-
-        assertStepsBarVisible()
-        assertContentVisible()
-
-        assertButtonDisabled('Confirm')
-        assertButtonDisabled('Back')
-
-        await assertTransactionInfoBlock(1, 'sign', [
-          'ChainStatemine',
-          'Statemine fee0.0300KSM'
-        ])
-      })
-    })
-
-    describe('hides content and shows pending transaction for ongoing transaction', () => {
-      it('InBlock', async () => {
-        setTransactionStatus(TransactionStatus.InBlock)
-
-        renderModal()
-        await enterThirdStep()
-
-        assertStepsBarHidden()
-        assertContentHidden()
-
-        const modalContent = screen.getByTestId('status-step-InBlock')
-        expect(modalContent).toHaveTextContent('Pending transaction 1/1...')
-        expect(modalContent).toHaveTextContent('Transaction #1')
-        expect(modalContent).toHaveTextContent('Asset Creation')
-        expect(modalContent).toHaveTextContent('It takes time to create your asset. In order to do so, we need to create a transaction and wait until blockchain validates it.')
-      })
-
-      it('Success', async () => {
-        setTransactionStatus(TransactionStatus.Success)
-
-        renderModal()
-        await enterThirdStep()
-
-        assertStepsBarHidden()
-        assertContentHidden()
-
-        const modalContent = screen.getByTestId('status-step-Success')
-        expect(modalContent).toHaveTextContent('Congratulations!')
-        expect(modalContent).toHaveTextContent('Your asset have been created.')
-        assertButtonNotDisabled('View asset in explorer')
-        assertButtonNotDisabled('Back to dashboard')
-      })
-      describe('Error', () => {
-        it('with error details', async () => {
-          setErrorDetails([
-            errorDetail({ section: 'assets', name: 'BadMetadata', docs: ['Invalid metadata given.'] })
+          await assertTransactionInfoBlock(1, 'ready', [
+            'ChainKusamaStatemine'
           ])
 
+          await assertTransactionInfoBlock(2, 'ready', [
+            'ChainStatemine',
+            'Deposit140.0000KSM',
+            'Statemine fee0.0300KSM'
+          ])
+        })
+
+        it('when statemine account has less funds than needed', async () => {
+          mockUseBalances.availableBalance = mockUseBalancesConstants.existentialDeposit
           renderModal()
           await enterThirdStep()
 
-          assertStepsBarHidden()
-          assertContentHidden()
-
-          const modalContent = screen.getByTestId('status-step-Error')
-          expect(modalContent).toHaveTextContent('Something went wrong')
-          expect(modalContent).toHaveTextContent('[assets.BadMetadata]: Invalid metadata given.')
-          assertButtonNotDisabled('Back to dashboard')
-        })
-
-        it('with missing error details', async () => {
-          setErrorDetails(undefined)
-
-          renderModal()
-          await enterThirdStep()
-
-          assertStepsBarHidden()
-          assertContentHidden()
-
-          const modalContent = screen.getByTestId('status-step-Error')
-          expect(modalContent).toHaveTextContent('Something went wrong')
-          expect(modalContent).toHaveTextContent('Unknown error.')
-          assertButtonNotDisabled('Back to dashboard')
-        })
-
-        it('with missing error section', async () => {
-          setErrorDetails([
-            errorDetail({ name: 'BadMetadata', docs: ['Invalid metadata given.'] })
+          await assertTransactionInfoBlock(1, 'ready', [
+            'ChainKusamaStatemine'
           ])
 
-          renderModal()
-          await enterThirdStep()
-
-          assertStepsBarHidden()
-          assertContentHidden()
-
-          const modalContent = screen.getByTestId('status-step-Error')
-          expect(modalContent).toHaveTextContent('Something went wrong')
-          expect(modalContent).toHaveTextContent('[BadMetadata]: Invalid metadata given.')
-          assertButtonNotDisabled('Back to dashboard')
-        })
-
-        it('with missing docs', async () => {
-          setErrorDetails([
-            errorDetail({ section: 'assets', name: 'BadMetadata' })
+          await assertTransactionInfoBlock(2, 'ready', [
+            'ChainStatemine',
+            'Deposit140.0000KSM',
+            'Statemine fee0.0300KSM'
           ])
-
-          renderModal()
-          await enterThirdStep()
-
-          assertStepsBarHidden()
-          assertContentHidden()
-
-          const modalContent = screen.getByTestId('status-step-Error')
-          expect(modalContent).toHaveTextContent('Something went wrong')
-          expect(modalContent).toHaveTextContent('[assets.BadMetadata]')
-          assertButtonNotDisabled('Back to dashboard')
         })
-
-        it('with missing error name', async () => {
-          setErrorDetails([
-            errorDetail({ section: 'assets', name: undefined, docs: ['Invalid metadata given.'] })
-          ])
-
-          renderModal()
-          await enterThirdStep()
-
-          assertStepsBarHidden()
-          assertContentHidden()
-
-          const modalContent = screen.getByTestId('status-step-Error')
-          expect(modalContent).toHaveTextContent('Something went wrong')
-          expect(modalContent).toHaveTextContent('[assets]: Invalid metadata given.')
-          assertButtonNotDisabled('Back to dashboard')
-        })
-
-        it('with multiple error details', async () => {
-          setErrorDetails([
-            errorDetail({ section: 'assets', name: 'BadMetadata', docs: ['Invalid metadata given.'] }),
-            errorDetail({ section: 'assets', name: 'InUse', docs: ['The asset ID is already taken.'] })
-          ])
-
-          renderModal()
-          await enterThirdStep()
-
-          assertStepsBarHidden()
-          assertContentHidden()
-
-          const modalContent = screen.getByTestId('status-step-Error')
-          expect(modalContent).toHaveTextContent('Something went wrong')
-          expect(modalContent).toHaveTextContent('[assets.BadMetadata]: Invalid metadata given.')
-          expect(modalContent).toHaveTextContent('[assets.InUse]: The asset ID is already taken.')
-          assertButtonNotDisabled('Back to dashboard')
-        })
-      })
-
-      it('enables to go back to dashboard', async () => {
-        setTransactionStatus(TransactionStatus.Success)
-
-        renderModal()
-        await enterThirdStep()
-
-        clickButton('Back to dashboard')
-        assertModalClosed()
-
-        clickButton('Create new asset')
-        assertFirstStepEmpty()
       })
     })
   })
