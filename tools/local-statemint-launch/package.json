@@ -7,6 +7,9 @@
     "start": "polkadot-launch config-wst.json"
   },
   "dependencies": {
-    "polkadot-launch": "1.8.0"
+    "polkadot-launch": "2.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "~17.0.5"
   }
 }
