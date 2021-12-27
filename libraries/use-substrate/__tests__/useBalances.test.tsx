@@ -2,8 +2,8 @@ import { renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
 
 import { Chains, useBalances } from '../src'
-import { ALICE } from './consts/addresses'
 import { MockedApiProvider } from './mocks/MockedApiProvider'
+import { ALICE } from './consts'
 
 describe('useBalances hook', () => {
   it('returns balances', async () => {
