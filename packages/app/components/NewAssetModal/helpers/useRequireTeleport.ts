@@ -7,7 +7,7 @@ const THRESHOLD = 1.1
 export function useRequireTeleport(owner: string | undefined, transactionFee: BN | undefined, createAssetDeposit: BN | undefined): boolean | undefined {
   const { availableBalance } = useBalances(owner, Chains.Statemine) || {}
 
-  const { existentialDeposit } = useBalancesConstants(Chains.Kusama) || {}
+  const { existentialDeposit } = useBalancesConstants(Chains.Statemine) || {}
 
   if (!transactionFee || !createAssetDeposit || !availableBalance || !existentialDeposit) return undefined
 
