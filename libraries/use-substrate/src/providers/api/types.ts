@@ -1,6 +1,6 @@
 import { ApiRx } from '@polkadot/api'
 
-export type ConnectionState = 'connecting' | 'connected' | 'disconnected'
+export type ConnectionState = 'connecting' | 'connected' | 'disconnected' | 'error'
 
 interface BaseAPI {
   api?: ApiRx
@@ -26,4 +26,10 @@ interface APIDisconnected extends BaseAPI {
   connectionState: 'disconnected'
 }
 
-export type UseApi = APIConnecting | APIConnected | APIDisconnected
+interface APIErrored extends BaseAPI {
+  api: undefined
+  isConnected: false
+  connectionState: 'error'
+}
+
+export type UseApi = APIConnecting | APIConnected | APIDisconnected | APIErrored
