@@ -39,7 +39,8 @@ import {
   mockUseApi,
   mockUseAssets,
   mockUseAssetsConstants,
-  mockUseBalances
+  mockUseBalances,
+  mockUseChainToken
 } from './mocks'
 
 function TestComponent(): JSX.Element {
@@ -93,7 +94,8 @@ jest.mock('use-substrate/dist/src/hooks', () => ({
   useBalances: (account: string) => mockedUseBalances(account),
   useTransaction: () => mockUseTransaction,
   useActiveAccount: () => mockUseActiveAccount,
-  useCreateAssetDeposit: () => mockUseCreateAssetDeposit
+  useCreateAssetDeposit: () => mockUseCreateAssetDeposit,
+  useChainToken: () => mockUseChainToken
 }))
 
 const mockedStringLimit = mockUseAssetsConstants.stringLimit.toNumber()

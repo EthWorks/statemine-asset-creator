@@ -30,7 +30,7 @@ import {
   mockUseActiveAccount,
   mockUseApi,
   mockUseAssets,
-  mockUseBalances
+  mockUseBalances, mockUseChainToken
 } from './mocks'
 
 const mockedSetter = jest.fn()
@@ -61,7 +61,8 @@ jest.mock('use-substrate/dist/src/hooks', () => ({
   useActiveAccount: (chain: Chains) => ({
     ...mockUseActiveAccount,
     activeAccount: mockActiveAccount(chain)
-  })
+  }),
+  useChainToken: () => mockUseChainToken
 }))
 
 describe('Account select modal', () => {

@@ -3,7 +3,7 @@ import type { Account } from 'use-substrate'
 import { useMemo } from 'react'
 import styled from 'styled-components'
 
-import { Chains, useBalances } from 'use-substrate'
+import { Chains, useBalances, useChainToken } from 'use-substrate'
 
 import { Avatar } from '../Avatar'
 import { FormatBalance } from '../FormatBalance'
@@ -11,14 +11,13 @@ import { Label, Text } from '../typography'
 
 interface Props {
   account: Account,
+  chain: Chains,
   withFreeBalance?: boolean
 }
 
-const TOKEN = 'KSM'
-const DECIMALS = 12
-
-export function AccountTile({ account, withFreeBalance }: Props): JSX.Element {
-  const balance = useBalances(account.address, Chains.Kusama)
+export function AccountTile({ account, withFreeBalance, chain }: Props): JSX.Element {
+  const balance = useBalances(account.address, chain)
+  const { chainDecimals, chainToken } = useChainToken(chain) || {}
 
   const fullBalance = useMemo(() => balance?.freeBalance.add(balance.reservedBalance), [balance])
 
@@ -34,14 +33,14 @@ export function AccountTile({ account, withFreeBalance }: Props): JSX.Element {
       <AccountTileCellEnd>
         <CellRow>
           <Label>transferable balance</Label>
-          <FormatBalance token={TOKEN} chainDecimals={DECIMALS} value={balance?.availableBalance}/>
+          <FormatBalance token={chainToken} chainDecimals={chainDecimals} value={balance?.availableBalance}/>
         </CellRow>
-        {withFreeBalance &&
+        {withFreeBalance && (
           <CellRow>
             <Label>full account balance</Label>
-            <FormatBalance token={TOKEN} chainDecimals={DECIMALS} value={fullBalance}/>
+            <FormatBalance token={chainToken} chainDecimals={chainDecimals} value={fullBalance}/>
           </CellRow>
-        }
+        )}
       </AccountTileCellEnd>
     </AccountTileWrapper>
   )

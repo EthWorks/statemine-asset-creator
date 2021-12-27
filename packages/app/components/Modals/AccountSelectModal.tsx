@@ -96,6 +96,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
         currentAccount={statemineAccount}
         setCurrentAccount={setStatemineAccount}
         tip={statemineAccountInfo}
+        chain={Chains.Statemine}
       />
       {!isKusamaAccountSelectVisible && (
         <Centered>
@@ -117,6 +118,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
             setCurrentAccount={setKusamaAccount}
             tip={kusamaAccountInfo}
             button={hideKusamaSelectButton}
+            chain={Chains.Kusama}
           />
         </>
       )}

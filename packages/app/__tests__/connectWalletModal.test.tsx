@@ -19,6 +19,7 @@ import {
   mockUseApi,
   mockUseAssets,
   mockUseBalances,
+  mockUseChainToken,
   mockWeb3Enable
 } from './mocks'
 
@@ -29,7 +30,8 @@ jest.mock('use-substrate/dist/src/hooks', () => ({
   useBalances: () => mockUseBalances,
   useBestNumber: () => mockUseBestNumber,
   useActiveAccounts: () => mockUseActiveAccounts,
-  useActiveAccount: () => mockUseActiveAccount
+  useActiveAccount: () => mockUseActiveAccount,
+  useChainToken: () => mockUseChainToken
 }))
 
 describe('Connect wallet modal', () => {

@@ -45,6 +45,7 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
         currentAccount={account}
         setCurrentAccount={() => { /**/ }}
         disabled
+        chain={Chains.Statemine}
       />
       <AccountSelect
         label='Admin account'
@@ -53,6 +54,7 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
         setCurrentAccount={setAdmin}
         withAccountInput
         button={useAdminEverywhereButton}
+        chain={Chains.Statemine}
       />
       <AccountSelect
         label='Issuer account'
@@ -60,6 +62,7 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
         currentAccount={issuer}
         setCurrentAccount={setIssuer}
         withAccountInput
+        chain={Chains.Statemine}
       />
       <AccountSelect
         label='Freezer account'
@@ -67,6 +70,7 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
         currentAccount={freezer}
         setCurrentAccount={setFreezer}
         withAccountInput
+        chain={Chains.Statemine}
       />
       {insufficientFundsAdmins.length > 0 && (
         <Info
