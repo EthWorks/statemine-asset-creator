@@ -13,11 +13,9 @@ import {
   mockUseChainToken
 } from './mocks'
 
-const mockedApi = mockUseApi
-
 jest.mock('use-substrate/dist/src/hooks', () => ({
   useAccounts: () => mockUseAccounts,
-  useApi: () => mockedApi,
+  useApi: () => mockUseApi,
   useAssets: () => mockUseAssets,
   useBalances: () => mockUseBalances,
   useBestNumber: () => mockUseBestNumber,
@@ -29,7 +27,7 @@ jest.mock('use-substrate/dist/src/hooks', () => ({
 describe('error', () => {
   describe('renders 500 error page for', () => {
     it('disconnected api state', async () => {
-      mockedApi.connectionState = 'disconnected'
+      mockUseApi.connectionState = 'disconnected'
       renderWithTheme(<Home/>)
 
       await assertText('Ooops...Something went wrong')
@@ -37,7 +35,7 @@ describe('error', () => {
     })
 
     it('error api state', async () => {
-      mockedApi.connectionState = 'error'
+      mockUseApi.connectionState = 'error'
       renderWithTheme(<Home/>)
 
       await assertText('Ooops...Something went wrong')
