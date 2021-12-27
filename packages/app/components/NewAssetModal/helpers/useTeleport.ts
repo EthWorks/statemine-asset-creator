@@ -3,8 +3,6 @@ import { useMemo } from 'react'
 
 import { Chains, useBalances, useBalancesConstants } from 'use-substrate'
 
-const THRESHOLD = 1.1
-
 interface UseRequireTeleport {
   isTeleportRequired: boolean,
   teleportAmount: BN
@@ -20,11 +18,9 @@ export function useTeleport(owner: string | undefined, transactionFee: BN | unde
 
     const teleportAmount = existentialDeposit.add(transactionFee).add(createAssetDeposit)
 
-    const teleportAmountWithThreshold = teleportAmount.muln(THRESHOLD)
-
     return {
-      isTeleportRequired: teleportAmountWithThreshold.gt(availableBalance),
-      teleportAmount: teleportAmountWithThreshold
+      isTeleportRequired: teleportAmount.gt(availableBalance),
+      teleportAmount
     }
   }, [availableBalance, createAssetDeposit, existentialDeposit, transactionFee])
 }
