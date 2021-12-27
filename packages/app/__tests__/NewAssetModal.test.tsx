@@ -11,7 +11,6 @@ import { TransactionStatus } from 'use-substrate'
 import { NewAssetModal } from '../components'
 import { TransactionInfoBlockStatus } from '../components/TransactionInfoBlock/TransactionInfoBlock'
 import { BN_ZERO as MOCK_BN_ZERO, useToggle } from '../utils'
-import { mockUseCreateAssetDeposit } from './mocks/mockUseCreateAssetDeposit'
 import {
   assertButtonDisabled,
   assertButtonNotDisabled,
@@ -40,7 +39,9 @@ import {
   mockUseAssets,
   mockUseAssetsConstants,
   mockUseBalances,
-  mockUseChainToken
+  mockUseBalancesConstants,
+  mockUseChainToken,
+  mockUseCreateAssetDeposit
 } from './mocks'
 
 function TestComponent(): JSX.Element {
@@ -95,7 +96,8 @@ jest.mock('use-substrate/dist/src/hooks', () => ({
   useTransaction: () => mockUseTransaction,
   useActiveAccount: () => mockUseActiveAccount,
   useCreateAssetDeposit: () => mockUseCreateAssetDeposit,
-  useChainToken: () => mockUseChainToken
+  useChainToken: () => mockUseChainToken,
+  useBalancesConstants: () => mockUseBalancesConstants
 }))
 
 const mockedStringLimit = mockUseAssetsConstants.stringLimit.toNumber()
@@ -560,24 +562,39 @@ describe('New asset modal', () => {
       })
     })
 
-    describe('kusama teleport', () => {
-      beforeEach(() => {
-        mockUseBalances.availableBalance = new BN(0)
-      })
+    describe('proposes kusama teleport if account has insufficient funds', () => {
+      describe('displays transaction info', () => {
+        it('when statemine account has zero funds', async () => {
+          mockUseBalances.availableBalance = new BN(0)
+          renderModal()
+          await enterThirdStep()
 
-      it('displays content', async () => {
-        renderModal()
-        await enterThirdStep()
+          await assertTransactionInfoBlock(1, 'ready', [
+            'ChainKusamaStatemine'
+          ])
 
-        await assertTransactionInfoBlock(1, 'ready', [
-          'ChainKusamaStatemine'
-        ])
+          await assertTransactionInfoBlock(2, 'ready', [
+            'ChainStatemine',
+            'Deposit140.0000KSM',
+            'Statemine fee0.0300KSM'
+          ])
+        })
 
-        await assertTransactionInfoBlock(2, 'ready', [
-          'ChainStatemine',
-          'Deposit140.0000KSM',
-          'Statemine fee0.0300KSM'
-        ])
+        it('when statemine account has less funds than needed', async () => {
+          mockUseBalances.availableBalance = mockUseBalancesConstants.existentialDeposit
+          renderModal()
+          await enterThirdStep()
+
+          await assertTransactionInfoBlock(1, 'ready', [
+            'ChainKusamaStatemine'
+          ])
+
+          await assertTransactionInfoBlock(2, 'ready', [
+            'ChainStatemine',
+            'Deposit140.0000KSM',
+            'Statemine fee0.0300KSM'
+          ])
+        })
       })
     })
   })

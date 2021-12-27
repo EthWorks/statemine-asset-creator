@@ -16,7 +16,7 @@ interface UseThirdStep {
   createAssetDeposit: BN | undefined
 }
 
-export function useThirdStep(): UseThirdStep {
+export function useCreateAssetTransaction(): UseThirdStep {
   const { admin, issuer, freezer, assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
   const { api } = useApi(Chains.Statemine)
   const { activeAccount } = useActiveAccount(Chains.Statemine)
