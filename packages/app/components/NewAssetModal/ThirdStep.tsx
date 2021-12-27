@@ -2,8 +2,9 @@ import type { ModalStep } from './types'
 
 import { useCallback, useEffect, useState } from 'react'
 
-import { Chains, TransactionStatus, useActiveAccount, useChainToken } from 'use-substrate'
+import { Chains, TransactionStatus, useActiveAccount, useBalances, useChainToken } from 'use-substrate'
 
+import { BN_ZERO } from '../../utils'
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { FeeSelect } from '../FeeSelect'
 import { FormatBalance } from '../FormatBalance'
@@ -27,6 +28,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
   const { address: ownerAddress } = activeAccount || {}
   const [isContentVisible, setIsContentVisible] = useState<boolean>(true)
   const { chainToken, chainDecimals } = useChainToken(Chains.Statemine) || {}
+  const { availableBalance } = useBalances(ownerAddress?.toString(), Chains.Statemine) || {}
 
   const setSummaryVisible = useCallback((visible: boolean): void => {
     setIsContentVisible(visible)
@@ -48,6 +50,8 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
   }
 
   const areButtonsDisabled = status !== TransactionStatus.Ready
+
+  const requireTeleport = availableBalance?.eq(BN_ZERO)
 
   return (
     <>
@@ -85,7 +89,16 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
               <Text size='XS' color='white' bold>{assetId}</Text>
             </InfoRow>
           </TransactionInfoBlock>
-          <TransactionInfoBlock name='Asset Creation' number={1} status={mapToTransactionInfoBlockStatus(status)}>
+          {requireTeleport && (
+            <TransactionInfoBlock name='Teleport' number={1} status='ready'>
+              <InfoRow>
+                <Label>Chain</Label>
+                <Text size='XS' color='white' bold>Kusama</Text>
+                <Text size='XS' color='white' bold>Statemine</Text>
+              </InfoRow>
+            </TransactionInfoBlock>
+          )}
+          <TransactionInfoBlock name='Asset Creation' number={requireTeleport ? 2 : 1} status={mapToTransactionInfoBlockStatus(status)}>
             <InfoRow>
               <Label>Chain</Label>
               <Text size='XS' color='white' bold>Statemine</Text>
