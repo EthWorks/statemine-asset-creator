@@ -5,7 +5,12 @@ import { Chains, useBalances, useBalancesConstants } from 'use-substrate'
 
 const THRESHOLD = 1.1
 
-export function useRequireTeleport(owner: string | undefined, transactionFee: BN | undefined, createAssetDeposit: BN | undefined): boolean | undefined {
+interface UseRequireTeleport {
+  isTeleportRequired: boolean,
+  teleportAmount: BN
+}
+
+export function useRequireTeleport(owner: string | undefined, transactionFee: BN | undefined, createAssetDeposit: BN | undefined): UseRequireTeleport | undefined {
   const { availableBalance } = useBalances(owner, Chains.Statemine) || {}
 
   const { existentialDeposit } = useBalancesConstants(Chains.Statemine) || {}
@@ -17,6 +22,9 @@ export function useRequireTeleport(owner: string | undefined, transactionFee: BN
 
     const teleportAmountWithThreshold = teleportAmount.muln(THRESHOLD)
 
-    return teleportAmountWithThreshold.gt(availableBalance)
+    return {
+      isTeleportRequired: teleportAmountWithThreshold.gt(availableBalance),
+      teleportAmount: teleportAmountWithThreshold
+    }
   }, [availableBalance, createAssetDeposit, existentialDeposit, transactionFee])
 }

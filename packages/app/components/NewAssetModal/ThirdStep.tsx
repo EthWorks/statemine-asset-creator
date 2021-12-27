@@ -26,7 +26,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
 
   const { activeAccount } = useActiveAccount(Chains.Statemine)
   const { address: ownerAddress } = activeAccount || {}
-  const isTeleportRequired = useRequireTeleport(ownerAddress?.toString(), transactionFee, createAssetDeposit)
+  const { isTeleportRequired, teleportAmount } = useRequireTeleport(ownerAddress?.toString(), transactionFee, createAssetDeposit) || {}
 
   const [isContentVisible, setIsContentVisible] = useState<boolean>(true)
   const { chainToken, chainDecimals } = useChainToken(Chains.Statemine) || {}
@@ -94,6 +94,10 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
                 <Label>Chain</Label>
                 <Text size='XS' color='white' bold>Kusama</Text>
                 <Text size='XS' color='white' bold>Statemine</Text>
+              </InfoRow>
+              <InfoRow>
+                <Label>Teleport amount</Label>
+                <FormatBalance chainDecimals={chainDecimals} token={chainToken} value={teleportAmount}/>
               </InfoRow>
             </TransactionInfoBlock>
           )}
