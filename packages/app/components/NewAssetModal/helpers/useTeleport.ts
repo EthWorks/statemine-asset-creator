@@ -3,7 +3,12 @@ import { useMemo } from 'react'
 
 import { Chains, useBalances, useBalancesConstants } from 'use-substrate'
 
-export function useRequireTeleport(owner: string | undefined, transactionFee: BN | undefined, createAssetDeposit: BN | undefined): boolean | undefined {
+interface UseRequireTeleport {
+  isTeleportRequired: boolean,
+  teleportAmount: BN
+}
+
+export function useTeleport(owner: string | undefined, transactionFee: BN | undefined, createAssetDeposit: BN | undefined): UseRequireTeleport | undefined {
   const { availableBalance } = useBalances(owner, Chains.Statemine) || {}
 
   const { existentialDeposit } = useBalancesConstants(Chains.Statemine) || {}
@@ -13,6 +18,9 @@ export function useRequireTeleport(owner: string | undefined, transactionFee: BN
 
     const teleportAmount = existentialDeposit.add(transactionFee).add(createAssetDeposit)
 
-    return teleportAmount.gt(availableBalance)
+    return {
+      isTeleportRequired: teleportAmount.gt(availableBalance),
+      teleportAmount
+    }
   }, [availableBalance, createAssetDeposit, existentialDeposit, transactionFee])
 }
