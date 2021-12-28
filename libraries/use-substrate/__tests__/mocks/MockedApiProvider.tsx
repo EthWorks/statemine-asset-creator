@@ -1,7 +1,7 @@
 import type { ObservableInput } from 'rxjs'
 import type { ApiRx } from '@polkadot/api'
 import type { DeriveBalancesAll, DeriveBalancesAllAccountData } from '@polkadot/api-derive/types'
-import type { BlockNumber } from '@polkadot/types/interfaces'
+import type { BlockNumber, ParaId } from '@polkadot/types/interfaces'
 import type { PalletAssetsAssetMetadata } from '@polkadot/types/lookup'
 import type { FetchedAssets, UseApi } from '../../src'
 
@@ -56,6 +56,9 @@ export const mockedKusamaApi: UseApi = {
       }
     },
     query: {
+      parachainInfo: {
+        parachainId: () => from<ObservableInput<ParaId>>([createType('ParaId', new BN('12'))])
+      },
       assets: {
         metadata: {
           multi: () => from<ObservableInput<PalletAssetsAssetMetadata[]>>([
