@@ -24,6 +24,9 @@ export const mockedKusamaApi: UseApi = {
         assetDeposit: createType('u128', new BN(100)),
         metadataDepositBase: createType('u128', new BN(100)),
         metadataDepositPerByte: createType('u128', new BN(10))
+      },
+      balances: {
+        existentialDeposit: createType('u128', new BN(120))
       }
     },
     derive: {
