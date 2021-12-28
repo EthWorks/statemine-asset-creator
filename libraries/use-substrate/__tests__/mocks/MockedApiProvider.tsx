@@ -120,3 +120,16 @@ export function MockedApiProvider({ children, customApi }: { children: React.Rea
     </ApiContext.Provider>
   )
 }
+
+export const mockedRelayChainApi: UseApi = {
+  ...mockedKusamaApi,
+  api: {
+    ...mockedKusamaApi.api,
+    query: {
+      ...mockedKusamaApi.api?.query,
+      parachainInfo: undefined
+    }
+  } as unknown as ApiRx,
+  isConnected: true,
+  connectionState: 'connected'
+}

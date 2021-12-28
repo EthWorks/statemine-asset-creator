@@ -1,9 +1,8 @@
-import { ApiRx } from '@polkadot/api'
 import { renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
 
 import { Chains, UseApi, useParaId } from '../src'
-import { MockedApiProvider, mockedKusamaApi } from './mocks/MockedApiProvider'
+import { MockedApiProvider, mockedRelayChainApi } from './mocks/MockedApiProvider'
 
 describe('useParaId hook', () => {
   it('returns undefined when api is not connected', async () => {
@@ -19,7 +18,7 @@ describe('useParaId hook', () => {
   })
 
   it('return undefined for relay chain', async () => {
-    const { result } = renderResult(Chains.Kusama, relayChainApi)
+    const { result } = renderResult(Chains.Kusama, mockedRelayChainApi)
 
     expect(result.current).toBeUndefined()
   })
@@ -34,16 +33,3 @@ describe('useParaId hook', () => {
     return renderHook((chain) => useParaId(chain), { wrapper, initialProps: chain })
   }
 })
-
-const relayChainApi: UseApi = {
-  ...mockedKusamaApi,
-  api: {
-    ...mockedKusamaApi.api,
-    query: {
-      ...mockedKusamaApi.api?.query,
-      parachainInfo: undefined
-    }
-  } as unknown as ApiRx,
-  isConnected: true,
-  connectionState: 'connected'
-}
