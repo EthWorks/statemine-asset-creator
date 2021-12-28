@@ -18,7 +18,7 @@ const Error: NextPage<ErrorPageProps> = ({ statusCode, text }) => {
   return (
     <PageTemplate background={background} errorPage>
       {statusCode === 404
-        ? <Image src={error404} alt='Page nto found' />
+        ? <Image src={error404} alt='Page not found' />
         : <Image src={errorX} alt='Internal server error' />
       }
       <StyledText size='2XL' color='white' bold>Ooops...Something went wrong</StyledText>
