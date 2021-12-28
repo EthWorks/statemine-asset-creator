@@ -5,6 +5,7 @@ import type { BlockNumber, ParaId } from '@polkadot/types/interfaces'
 import type { PalletAssetsAssetMetadata } from '@polkadot/types/lookup'
 import type { FetchedAssets, UseApi } from '../../src'
 
+import { ISubmittableResult } from '@polkadot/types/types'
 import BN from 'bn.js'
 import React from 'react'
 import { from, of } from 'rxjs'
@@ -87,6 +88,15 @@ export const mockedKusamaApi: UseApi = {
             partialFee: new BN(3)
           }))
         })
+      },
+      xcmPallet: {
+        teleportAssets: Object.assign(jest.fn().mockReturnValue({
+          paymentInfo: () => of(createType('RuntimeDispatchInfo', {
+            weight: 6,
+            partialFee: new BN(3000)
+          })),
+          signAndSend: () => from<ObservableInput<ISubmittableResult>>([])
+        }), { meta: { args: [{ type: { toString: () => 'FunctionArgumentMetadataV14' } }] } })
       }
     },
     registry: {
