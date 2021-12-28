@@ -4,7 +4,7 @@ import Head from 'next/head'
 import { useEffect } from 'react'
 import styled from 'styled-components'
 
-import { Chains, useAccounts, useActiveAccount, useAssets } from 'use-substrate'
+import { Chains, useAccounts, useActiveAccount, useApi, useAssets } from 'use-substrate'
 
 import background from '../assets/background.svg'
 import {
@@ -20,6 +20,7 @@ import {
   Text
 } from '../components'
 import { extensionActivated, useAsync, useToggle } from '../utils'
+import Error from './_error'
 
 const Home: NextPage = () => {
   const { activeAccount } = useActiveAccount(Chains.Statemine)
@@ -29,6 +30,9 @@ const Home: NextPage = () => {
   const [isNewAssetModalOpen, toggleNewAssetModalOpen] = useToggle()
   const [isConnectWalletModalOpen, toggleConnectWalletModalOpen, setConnectWalletModalOpen] = useToggle(!extensionActivated())
   const [isAccountSelectModalOpen, toggleSelectAccountModalOpen, setSelectAccountModalOpen] = useToggle()
+
+  const { connectionState: statemineConnectionState } = useApi(Chains.Statemine)
+  const { connectionState: kusamaConnectionState } = useApi(Chains.Kusama)
 
   useEffect(() => {
     setSelectAccountModalOpen(extensionActivated() && !address)
@@ -46,6 +50,11 @@ const Home: NextPage = () => {
   }
 
   useAsync(enableWeb3, [web3Enable])
+
+  if (kusamaConnectionState === 'error' || statemineConnectionState === 'error' ||
+      kusamaConnectionState === 'disconnected' || statemineConnectionState === 'disconnected') {
+    return <Error statusCode={500}/>
+  }
 
   return (
     <>

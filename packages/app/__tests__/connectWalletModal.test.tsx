@@ -3,7 +3,6 @@ import React from 'react'
 
 import Home from '../pages'
 import { POLKADOT_EXTENSION_LINK } from '../utils'
-import { mockUseBestNumber } from './mocks/mockUseBestNumber'
 import {
   assertLinkByText,
   assertLocalStorage,
@@ -19,6 +18,7 @@ import {
   mockUseApi,
   mockUseAssets,
   mockUseBalances,
+  mockUseBestNumber,
   mockUseChainToken,
   mockWeb3Enable
 } from './mocks'

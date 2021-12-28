@@ -13,6 +13,7 @@ export const useChainApi = (chainUrl: string): UseApi => {
   }, [])
 
   useEffect(() => {
+    api.on('error', () => setConnectionState('error'))
     api.isReady.subscribe(() => {
       setConnectionState('connected')
 
@@ -21,7 +22,7 @@ export const useChainApi = (chainUrl: string): UseApi => {
     })
   }, [api])
 
-  if (connectionState === 'connecting') {
+  if (connectionState === 'connecting' || connectionState === 'error') {
     return { connectionState, isConnected: false, api: undefined }
   }
 

@@ -18,5 +18,6 @@ export const mockUseApi = {
         batchAll: noop
       }
     }
-  }
+  },
+  connectionState: 'connected'
 }
