@@ -6,7 +6,7 @@ import { useMemo } from 'react'
 import { Chains, TransactionStatus, useActiveAccount, useApi, useCreateAssetDeposit, useTransaction } from 'use-substrate'
 
 import { useNewAssetModal } from '../context/useNewAssetModal'
-import { getTransactionModalDetails } from './getTransactionModalDetails'
+import { getCreateAssetTransactionModalDetails } from './getTransactionModalDetails'
 
 interface UseThirdStep {
   tx: (() => Promise<void>) | undefined,
@@ -37,7 +37,7 @@ export function useCreateAssetTransaction(): UseThirdStep {
     : [], [admin, issuer, freezer, api, assetDecimals, assetId, assetName, assetSymbol, minBalance])
 
   const { tx, status, errorDetails, paymentInfo } = useTransaction(api?.tx.utility.batchAll, [txs], ownerAddress?.toString()) || {}
-  const stepDetails = useMemo(() => getTransactionModalDetails(status, errorDetails), [status, errorDetails])
+  const stepDetails = useMemo(() => getCreateAssetTransactionModalDetails(status, errorDetails), [status, errorDetails])
 
   return {
     tx,
