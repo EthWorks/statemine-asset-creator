@@ -1,8 +1,9 @@
 import type { ObservableInput } from 'rxjs'
 import type { ApiRx } from '@polkadot/api'
 import type { DeriveBalancesAll, DeriveBalancesAllAccountData } from '@polkadot/api-derive/types'
-import type { BlockNumber } from '@polkadot/types/interfaces'
+import type { BlockNumber, ParaId } from '@polkadot/types/interfaces'
 import type { PalletAssetsAssetMetadata } from '@polkadot/types/lookup'
+import type { ISubmittableResult } from '@polkadot/types/types'
 import type { FetchedAssets, UseApi } from '../../src'
 
 import BN from 'bn.js'
@@ -56,6 +57,9 @@ export const mockedKusamaApi: UseApi = {
       }
     },
     query: {
+      parachainInfo: {
+        parachainId: () => from<ObservableInput<ParaId>>([createType('ParaId', new BN('12'))])
+      },
       assets: {
         metadata: {
           multi: () => from<ObservableInput<PalletAssetsAssetMetadata[]>>([
@@ -84,6 +88,15 @@ export const mockedKusamaApi: UseApi = {
             partialFee: new BN(3)
           }))
         })
+      },
+      xcmPallet: {
+        teleportAssets: jest.fn().mockReturnValue({
+          paymentInfo: () => of(createType('RuntimeDispatchInfo', {
+            weight: 6,
+            partialFee: new BN(3000)
+          })),
+          signAndSend: () => from<ObservableInput<ISubmittableResult>>([])
+        })
       }
     },
     registry: {
@@ -106,4 +119,17 @@ export function MockedApiProvider({ children, customApi }: { children: React.Rea
       {children}
     </ApiContext.Provider>
   )
+}
+
+export const mockedRelayChainApi: UseApi = {
+  ...mockedKusamaApi,
+  api: {
+    ...mockedKusamaApi.api,
+    query: {
+      ...mockedKusamaApi.api?.query,
+      parachainInfo: undefined
+    }
+  } as unknown as ApiRx,
+  isConnected: true,
+  connectionState: 'connected'
 }
