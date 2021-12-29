@@ -1,7 +1,9 @@
+import type { UseApi } from '../src'
+
 import { renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
 
-import { Chains, UseApi, useParaId } from '../src'
+import { Chains, useParaId } from '../src'
 import { MockedApiProvider, mockedRelayChainApi } from './mocks/MockedApiProvider'
 
 describe('useParaId hook', () => {

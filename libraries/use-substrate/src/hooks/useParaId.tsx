@@ -1,5 +1,5 @@
-import { ParaId } from '@polkadot/types/interfaces'
-import { Observable } from 'rxjs'
+import type { Observable } from 'rxjs'
+import type { ParaId } from '@polkadot/types/interfaces'
 
 import { Chains, useApi, useObservable } from '../index'
 
