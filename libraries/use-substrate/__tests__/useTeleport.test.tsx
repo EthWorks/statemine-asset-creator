@@ -28,10 +28,10 @@ describe('useTeleport hook calls teleport method from', () => {
     renderResult(SENDER, RECIPIENT, AMOUNT)
 
     expect(mockedKusamaApi.api?.tx.xcmPallet.teleportAssets).toBeCalledWith(
-      { X1: 'Parent' },
-      { X1: { AccountId32: { id: (BOB_ID as AccountId).toHex(), network: 'Any' } } },
-      [{ ConcreteFungible: { amount: AMOUNT, id: { X1: 'Parent' } } }],
-      4000000000
+      { V1: { parents: 1, interior: 'Here' } },
+      { V1: { parents: 0, interior: { X1: { AccountId32: { id: (BOB_ID as AccountId).toHex(), network: 'Any' } } } } },
+      { V1: [{ id: { Concrete: { parents: 0, interior: 'Here' } }, fun: { Fungible: AMOUNT } }] },
+      0
     )
   })
 
@@ -39,10 +39,10 @@ describe('useTeleport hook calls teleport method from', () => {
     renderResult(SENDER, RECIPIENT, AMOUNT, mockedRelayChainApi)
 
     expect(mockedKusamaApi.api?.tx.xcmPallet.teleportAssets).toBeCalledWith(
-      { X1: { ParaChain: createType('u32', new BN(12)) } },
-      { X1: { AccountId32: { id: (BOB_ID as AccountId).toHex(), network: 'Any' } } },
-      [{ ConcreteFungible: { amount: AMOUNT } }],
-      4000000000
+      { V1: { parents: 0, interior: { X1: { Parachain: createType('u32', new BN(12)) } } } },
+      { V1: { parents: 0, interior: { X1: { AccountId32: { id: (BOB_ID as AccountId).toHex(), network: 'Any' } } } } },
+      { V1: [{ id: { Concrete: { parents: 0, interior: 'Here' } }, fun: { Fungible: AMOUNT } }] },
+      0
     )
   })
 
