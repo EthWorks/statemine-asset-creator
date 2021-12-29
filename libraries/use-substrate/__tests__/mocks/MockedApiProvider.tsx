@@ -90,13 +90,13 @@ export const mockedKusamaApi: UseApi = {
         })
       },
       xcmPallet: {
-        teleportAssets: Object.assign(jest.fn().mockReturnValue({
+        teleportAssets: jest.fn().mockReturnValue({
           paymentInfo: () => of(createType('RuntimeDispatchInfo', {
             weight: 6,
             partialFee: new BN(3000)
           })),
           signAndSend: () => from<ObservableInput<ISubmittableResult>>([])
-        }), { meta: { args: [{ type: { toString: () => 'FunctionArgumentMetadataV14' } }] } })
+        })
       }
     },
     registry: {
