@@ -22,6 +22,11 @@ const Template: Story<InfoProps> = (args) =>
 
 export const Base = Template.bind({})
 Base.args = {
-  type: 'info',
+  text: 'Example text'
+}
+
+export const Warning = Template.bind({})
+Warning.args = {
+  type: 'warning',
   text: 'Example text'
 }

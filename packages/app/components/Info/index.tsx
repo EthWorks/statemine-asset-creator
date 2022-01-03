@@ -2,16 +2,16 @@ import type { FC } from 'react'
 
 import styled from 'styled-components'
 
-import { InfoIcon } from '../icons/InfoIcon'
+import { InfoIcon } from '../icons'
 import { Text } from '../typography'
 
 export interface InfoProps {
-  type: 'info' | 'warning',
+  type?: 'info' | 'warning',
   text: string
 }
 
-export const Info: FC<InfoProps> = ({ text, type }) => (
-  <InfoWrapper type={type} data-testid='infobox'>
+export const Info: FC<InfoProps> = ({ text, type = 'info' }) => (
+  <InfoWrapper type={type} data-testid={`infobox-${type}`}>
     <div>
       <InfoIcon />
       <Text size='SM'>{type}</Text>

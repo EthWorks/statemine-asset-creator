@@ -73,3 +73,9 @@ export const assertTextInAccountSelect = async (accountName: string, dropdownInd
 export const assertModalClosed = () => {
   expect(screen.queryByTestId('modal')).toBeFalsy()
 }
+
+export async function assertInfobox(text: string, type: 'info' | 'warning' = 'info') {
+  const infobox = await screen.findByTestId(`infobox-${type}`)
+
+  expect(infobox).toHaveTextContent(text)
+}

@@ -1,12 +1,12 @@
 import type { RenderResult } from '@testing-library/react'
 import type { RuntimeDispatchInfo } from '@polkadot/types/interfaces'
-import type { ErrorDetails, UseTransaction } from 'use-substrate'
+import type { ErrorDetails, UseActiveAccount, UseTransaction } from 'use-substrate'
 
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import BN from 'bn.js'
 import React from 'react'
 
-import { TransactionStatus } from 'use-substrate'
+import { Chains, TransactionStatus } from 'use-substrate'
 
 import { NewAssetModal } from '../components'
 import { TransactionInfoBlockStatus } from '../components/TransactionInfoBlock/TransactionInfoBlock'
@@ -14,6 +14,7 @@ import { BN_ZERO as MOCK_BN_ZERO, useToggle } from '../utils'
 import {
   assertButtonDisabled,
   assertButtonNotDisabled,
+  assertInfobox,
   assertInput,
   assertInputError,
   assertInputValue,
@@ -89,6 +90,8 @@ const mockedUseBalances = (address: string) => {
   }
 }
 
+let mockActiveAccount: (chain?: Chains) => UseActiveAccount = () => mockUseActiveAccount
+
 jest.mock('use-substrate/dist/src/hooks', () => ({
   useAccounts: () => mockUseAccounts,
   useApi: () => mockUseApi,
@@ -96,7 +99,7 @@ jest.mock('use-substrate/dist/src/hooks', () => ({
   useAssetsConstants: () => mockUseAssetsConstants,
   useBalances: (account: string) => mockedUseBalances(account),
   useTransaction: () => mockUseTransaction,
-  useActiveAccount: () => mockUseActiveAccount,
+  useActiveAccount: (chain: Chains) => mockActiveAccount(chain),
   useCreateAssetDeposit: () => mockUseCreateAssetDeposit,
   useChainToken: () => mockUseChainToken,
   useBalancesConstants: () => mockUseBalancesConstants,
@@ -277,9 +280,7 @@ describe('New asset modal', () => {
         await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
         await assertTextInAccountSelect('BOB', FREEZER_DROPDOWN_INDEX)
 
-        const infobox = await screen.findByTestId('infobox')
-
-        expect(infobox).toHaveTextContent('Insufficient funds on the Admin account to create assets.')
+        await assertInfobox('Insufficient funds on the Admin account to create assets.')
       })
 
       it('for two accounts', async () => {
@@ -290,9 +291,7 @@ describe('New asset modal', () => {
         await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
         await assertTextInAccountSelect('BOB', FREEZER_DROPDOWN_INDEX)
 
-        const infobox = await screen.findByTestId('infobox')
-
-        expect(infobox).toHaveTextContent('Insufficient funds on the Admin and Issuer accounts to create assets.')
+        await assertInfobox('Insufficient funds on the Admin and Issuer accounts to create assets.')
       })
 
       it('for three accounts', async () => {
@@ -303,9 +302,7 @@ describe('New asset modal', () => {
         await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
         await assertTextInAccountSelect('ALICE', FREEZER_DROPDOWN_INDEX)
 
-        const infobox = await screen.findByTestId('infobox')
-
-        expect(infobox).toHaveTextContent('Insufficient funds on the Admin, Issuer and Freezer accounts to create assets.')
+        await assertInfobox('Insufficient funds on the Admin, Issuer and Freezer accounts to create assets.')
       })
     })
 
@@ -566,6 +563,34 @@ describe('New asset modal', () => {
     })
 
     describe('proposes kusama teleport if account has insufficient funds', () => {
+      describe('displays', () => {
+        it('info about teleport execution', async () => {
+          mockUseBalances.availableBalance = new BN(0)
+
+          renderModal()
+          await enterThirdStep()
+
+          await assertInfobox('Insufficient funds on the owner account to create the asset. Teleport transaction from selected Kusama account will be executed')
+        })
+
+        it('warning about missing kusama account', async () => {
+          mockUseBalances.availableBalance = new BN(0)
+          mockActiveAccount = (chain: Chains | undefined) => {
+            switch (chain) {
+              case Chains.Kusama:
+                return { activeAccount: undefined, setActiveAccount: () => { /**/ } }
+              default:
+                return mockUseActiveAccount
+            }
+          }
+
+          renderModal()
+          await enterThirdStep()
+
+          await assertInfobox('Insufficient funds on the owner account to create the asset. Cannot execute teleport transaction due to not selected Kusama account. Select Kusama account', 'warning')
+        })
+      })
+
       describe('displays transaction info', () => {
         it('when statemine account has zero funds', async () => {
           mockUseBalances.availableBalance = new BN(0)

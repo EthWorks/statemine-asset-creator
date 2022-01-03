@@ -8,6 +8,7 @@ import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { FeeSelect } from '../FeeSelect'
 import { FormatBalance } from '../FormatBalance'
 import { ArrowLeft, ArrowRight } from '../icons'
+import { Info } from '../Info'
 import { Loader } from '../Loader'
 import { InfoRow, TransactionInfoBlock } from '../TransactionInfoBlock/TransactionInfoBlock'
 import { Label, Text } from '../typography'
@@ -29,6 +30,7 @@ function wasTransactionSent(transaction: TransactionStatus | undefined, ignoreSu
 export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & StepBarProps): JSX.Element {
   const { tx, status: createAssetTransactionStatus, stepDetails: createAssetStepDetails, transactionFee, createAssetDeposit } = useCreateAssetTransaction()
   const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
+  const { activeAccount: kusamaActiveAccount } = useActiveAccount(Chains.Kusama)
 
   const { activeAccount } = useActiveAccount(Chains.Statemine)
   const { address: ownerAddress } = activeAccount || {}
@@ -63,6 +65,19 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
   const areButtonsDisabled = createAssetTransactionStatus !== TransactionStatus.Ready ||
        teleport.status === TransactionStatus.InBlock
 
+  const requiredTeleportInfo = (
+    <Info
+      text='Insufficient funds on the owner account to create the asset. Teleport transaction from selected Kusama account will be executed'
+    />
+  )
+
+  const noKusamaAccountWarning = (
+    <Info
+      text='Insufficient funds on the owner account to create the asset. Cannot execute teleport transaction due to not selected Kusama account. Select Kusama account'
+      type='warning'
+    />
+  )
+
   return (
     <>
       {createAssetStepDetails && (
@@ -87,6 +102,10 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
       )}
       {isContentVisible && (
         <div data-testid='third-step-content'>
+          {displayTeleportContent && kusamaActiveAccount
+            ? requiredTeleportInfo
+            : noKusamaAccountWarning
+          }
           <TransactionInfoBlock status='baseInfo'>
             <InfoRow>
               <Label>Asset name</Label>
