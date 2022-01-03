@@ -55,11 +55,11 @@ function TestComponent(): JSX.Element {
   )
 }
 
-const FEE = '30000000000'
+const FEE = new BN('30000000000')
 const mockTransaction = jest.fn()
-let mockUseTransaction: UseTransaction = { tx: mockTransaction, paymentInfo: { partialFee: new BN(FEE) } as RuntimeDispatchInfo, status: TransactionStatus.Ready }
+let mockUseTransaction: UseTransaction = { tx: mockTransaction, paymentInfo: { partialFee: FEE } as RuntimeDispatchInfo, status: TransactionStatus.Ready }
 const mockTeleport = jest.fn()
-let mockUseTeleport: UseTransaction = { tx: mockTeleport, paymentInfo: { partialFee: new BN(FEE) } as RuntimeDispatchInfo, status: TransactionStatus.Ready }
+let mockUseTeleport: UseTransaction = { tx: mockTeleport, paymentInfo: { partialFee: FEE } as RuntimeDispatchInfo, status: TransactionStatus.Ready }
 const ASSET_ID = '7'
 const MIN_BALANCE = '300'
 const ASSET_NAME = 'kusama'
@@ -602,7 +602,8 @@ describe('New asset modal', () => {
         })
 
         it('after successful teleport', async () => {
-          mockUseBalances.availableBalance = mockUseBalancesConstants.existentialDeposit
+          const expectedTeleportAmount = mockUseBalancesConstants.existentialDeposit.add(FEE).add(mockUseCreateAssetDeposit)
+          mockUseBalances.availableBalance = expectedTeleportAmount.addn(1)
           setTeleportTransactionStatus(TransactionStatus.Success)
 
           renderModal()
