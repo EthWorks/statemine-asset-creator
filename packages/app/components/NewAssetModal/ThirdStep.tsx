@@ -116,8 +116,6 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
             </InfoRow>
           </TransactionInfoBlock>
 
-          <FeeSelect account={ownerAddress.toString()}/>
-
           <ModalFooter contentPosition='between'>
             <ButtonOutline onClick={onBack} disabled={areButtonsDisabled}>
               <ArrowLeft />
