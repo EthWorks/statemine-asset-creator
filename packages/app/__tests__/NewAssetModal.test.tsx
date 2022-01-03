@@ -250,7 +250,7 @@ describe('New asset modal', () => {
         it('shows error and disables next button when exceeded decimals limit', async () => {
           typeInInput('Asset decimals', (DECIMALS_LIMIT + 1).toString())
 
-          await assertInputError('Asset decimals', 'The given value is too large')
+          await assertInputError('Asset decimals', 'Value too large')
           assertButtonDisabled('Next')
         })
       })
@@ -260,7 +260,7 @@ describe('New asset modal', () => {
       renderModal()
       await openModal()
 
-      await assertInputHint('Asset decimals', `Max allowed via the UI is set to ${DECIMALS_LIMIT}`)
+      await assertInputHint('Asset decimals', `Max allowed value is ${DECIMALS_LIMIT}`)
     })
   })
 

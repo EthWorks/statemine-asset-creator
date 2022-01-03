@@ -60,7 +60,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
     }
 
     if (+assetDecimals > DECIMALS_LIMIT) {
-      setAssetDecimalsError('The given value is too large')
+      setAssetDecimalsError('Value too large')
     }
   }, [assetId, assetName, assetSymbol, clearErrors, setAssetNameError, setAssetSymbolError, setAssetIdError, stringLimit, isAssetIdUnique, assetDecimals, setAssetDecimalsError])
 
@@ -102,7 +102,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
         label="Asset decimals"
         id="asset-decimals"
         inputType='NATURAL'
-        hint={`Max allowed via the UI is set to ${DECIMALS_LIMIT}`}
+        hint={`Max allowed value is ${DECIMALS_LIMIT}`}
       />
       <NumericInput
         error={assetIdError}
