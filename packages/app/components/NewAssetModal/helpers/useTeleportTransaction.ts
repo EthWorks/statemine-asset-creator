@@ -39,10 +39,10 @@ export function useTeleportTransaction(owner: AccountId | undefined, transaction
     }
   }, [availableBalance, createAssetDeposit, existentialDeposit, transactionFee]) || {}
 
-  const SENDER: TeleportInput = { account: kusamaActiveAccount?.address, chain: Chains.Kusama }
-  const RECIPIENT: TeleportInput = { account: owner, chain: Chains.Statemine }
+  const sender: TeleportInput = { account: kusamaActiveAccount?.address, chain: Chains.Kusama }
+  const recipient: TeleportInput = { account: owner, chain: Chains.Statemine }
 
-  const teleport = useTeleport(SENDER, RECIPIENT, teleportAmount ?? BN_ZERO)
+  const teleport = useTeleport(sender, recipient, teleportAmount ?? BN_ZERO)
   const stepDetails = useMemo(() => getTeleportTransactionModalDetails(teleport?.status, teleport?.errorDetails), [teleport])
 
   const displayTeleportContent = useMemo(() => {
