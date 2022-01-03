@@ -259,7 +259,7 @@ describe('New asset modal', () => {
       renderModal()
       await openModal()
 
-      await assertInputHint('Asset decimals', `Max allowed via the UI is set to ${DECIMALS_LIMIT}.`)
+      await assertInputHint('Asset decimals', `Max allowed via the UI is set to ${DECIMALS_LIMIT}`)
     })
   })
 
