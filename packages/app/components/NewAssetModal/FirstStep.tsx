@@ -15,7 +15,7 @@ import { ArrowRight } from '../icons'
 import { useNewAssetModal } from './context/useNewAssetModal'
 import { ModalFooter } from './ModalFooter'
 
-export const DECIMALS_LIMIT = 20
+export const DECIMALS_LIMIT = 255
 
 export function FirstStep({ onNext }: ModalStep): JSX.Element {
   const {
