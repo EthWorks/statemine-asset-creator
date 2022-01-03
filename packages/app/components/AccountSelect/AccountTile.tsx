@@ -103,7 +103,7 @@ const StyledLabel = styled(Label)`
   display: flex;
   align-items: center;
   
-  button {
+  div {
     margin-left: 8px;
   }
 `
