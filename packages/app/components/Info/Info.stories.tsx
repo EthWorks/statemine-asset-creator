@@ -30,3 +30,13 @@ Warning.args = {
   type: 'warning',
   text: 'Example text'
 }
+
+export const WarningWithAction = Template.bind({})
+WarningWithAction.args = {
+  type: 'warning',
+  text: 'Example text',
+  action: {
+    name: 'Click here',
+    onClick: () => console.log('Clicked!')
+  }
+}

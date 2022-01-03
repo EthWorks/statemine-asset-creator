@@ -79,3 +79,9 @@ export async function assertInfobox(text: string, type: 'info' | 'warning' = 'in
 
   expect(infobox).toHaveTextContent(text)
 }
+
+export function assertNoInfobox(type: 'info' | 'warning' = 'info') {
+  const infobox = screen.queryByTestId(`infobox-${type}`)
+
+  expect(infobox).toBeNull()
+}

@@ -1,6 +1,7 @@
 import type { ModalStep } from './types'
 
 import { useCallback, useEffect, useState } from 'react'
+import styled from 'styled-components'
 
 import { Chains, TransactionStatus, useActiveAccount, useChainToken } from 'use-substrate'
 
@@ -17,7 +18,8 @@ import { TransactionState } from './TransactionState/TransactionState'
 import { mapToTransactionInfoBlockStatus, useCreateAssetTransaction, useTeleportTransaction } from './helpers'
 import { ModalFooter } from './ModalFooter'
 
-interface StepBarProps {
+interface Props {
+  openAccountSelectModal: () => void,
   setStepBarVisible: (arg: boolean) => void
 }
 
@@ -27,7 +29,7 @@ function wasTransactionSent(transaction: TransactionStatus | undefined, ignoreSu
       (!ignoreSuccess && transaction === TransactionStatus.Success)
 }
 
-export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & StepBarProps): JSX.Element {
+export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelectModal }: ModalStep & Props): JSX.Element {
   const { tx, status: createAssetTransactionStatus, stepDetails: createAssetStepDetails, transactionFee, createAssetDeposit } = useCreateAssetTransaction()
   const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
   const { activeAccount: kusamaActiveAccount } = useActiveAccount(Chains.Kusama)
@@ -66,15 +68,19 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
        teleport.status === TransactionStatus.InBlock
 
   const requiredTeleportInfo = (
-    <Info
+    <StyledInfo
       text='Insufficient funds on the owner account to create the asset. Teleport transaction from selected Kusama account will be executed'
     />
   )
 
   const noKusamaAccountWarning = (
-    <Info
-      text='Insufficient funds on the owner account to create the asset. Cannot execute teleport transaction due to not selected Kusama account. Select Kusama account'
+    <StyledInfo
+      text='Insufficient funds on the owner account to create the asset. Cannot execute teleport transaction due to not selected Kusama account.'
       type='warning'
+      action={{
+        name: 'Select Kusama account',
+        onClick: openAccountSelectModal
+      }}
     />
   )
 
@@ -102,9 +108,9 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
       )}
       {isContentVisible && (
         <div data-testid='third-step-content'>
-          {displayTeleportContent && kusamaActiveAccount
+          {displayTeleportContent && teleport.status === TransactionStatus.Ready && (kusamaActiveAccount
             ? requiredTeleportInfo
-            : noKusamaAccountWarning
+            : noKusamaAccountWarning)
           }
           <TransactionInfoBlock status='baseInfo'>
             <InfoRow>
@@ -173,3 +179,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
     </>
   )
 }
+
+const StyledInfo = styled(Info)`
+  margin-bottom: 16px;
+`

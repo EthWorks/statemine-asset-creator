@@ -6,6 +6,7 @@ export interface ModalStep {
 export interface NewAssetModalProps {
   closeModal: () => void
   isOpen: boolean,
+  openAccountSelectModal: () => void
 }
 
 export interface StaticImageData {

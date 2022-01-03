@@ -19,6 +19,7 @@ import {
   assertInputError,
   assertInputValue,
   assertModalClosed,
+  assertNoInfobox,
   assertNoInputError,
   assertText,
   assertTextInAccountSelect,
@@ -45,18 +46,24 @@ import {
   mockUseCreateAssetDeposit
 } from './mocks'
 
+const openAccountSelectModal = jest.fn()
+
 function TestComponent(): JSX.Element {
   const [isOpen, toggleOpen] = useToggle()
 
   return (
     <>
       {!isOpen && <button onClick={toggleOpen}>Create new asset</button>}
-      <NewAssetModal isOpen={isOpen} closeModal={toggleOpen}/>
+      <NewAssetModal
+        isOpen={isOpen}
+        closeModal={toggleOpen}
+        openAccountSelectModal={openAccountSelectModal}
+      />
     </>
   )
 }
-
 const FEE = new BN('30000000000')
+const EXPECTED_TELEPORT_AMOUNT = mockUseBalancesConstants.existentialDeposit.add(FEE).add(mockUseCreateAssetDeposit)
 const mockTransaction = jest.fn()
 let mockUseTransaction: UseTransaction = { tx: mockTransaction, paymentInfo: { partialFee: FEE } as RuntimeDispatchInfo, status: TransactionStatus.Ready }
 const mockTeleport = jest.fn()
@@ -573,7 +580,7 @@ describe('New asset modal', () => {
           await assertInfobox('Insufficient funds on the owner account to create the asset. Teleport transaction from selected Kusama account will be executed')
         })
 
-        it('warning about missing kusama account', async () => {
+        it('warning about missing kusama account with a button', async () => {
           mockUseBalances.availableBalance = new BN(0)
           mockActiveAccount = (chain: Chains | undefined) => {
             switch (chain) {
@@ -587,12 +594,29 @@ describe('New asset modal', () => {
           renderModal()
           await enterThirdStep()
 
-          await assertInfobox('Insufficient funds on the owner account to create the asset. Cannot execute teleport transaction due to not selected Kusama account. Select Kusama account', 'warning')
+          await assertInfobox('Insufficient funds on the owner account to create the asset. Cannot execute teleport transaction due to not selected Kusama account.Select Kusama account', 'warning')
+          await findAndClickButton('Select Kusama account')
+
+          assertCreateAssetModalClosed()
+
+          expect(openAccountSelectModal).toBeCalledTimes(1)
+        })
+
+        it('hides info after teleport transaction', async () => {
+          mockUseBalances.availableBalance = EXPECTED_TELEPORT_AMOUNT.addn(1)
+          setTeleportTransactionStatus(TransactionStatus.Success)
+
+          renderModal()
+          await enterThirdStep()
+
+          await assertNoInfobox()
+          await assertNoInfobox('warning')
         })
       })
 
       describe('displays transaction info', () => {
         it('when statemine account has zero funds', async () => {
+          setTeleportTransactionStatus(TransactionStatus.Ready)
           mockUseBalances.availableBalance = new BN(0)
           renderModal()
           await enterThirdStep()
@@ -627,8 +651,7 @@ describe('New asset modal', () => {
         })
 
         it('after successful teleport', async () => {
-          const expectedTeleportAmount = mockUseBalancesConstants.existentialDeposit.add(FEE).add(mockUseCreateAssetDeposit)
-          mockUseBalances.availableBalance = expectedTeleportAmount.addn(1)
+          mockUseBalances.availableBalance = EXPECTED_TELEPORT_AMOUNT.addn(1)
           setTeleportTransactionStatus(TransactionStatus.Success)
 
           renderModal()
@@ -864,4 +887,9 @@ const assertTransactionInfoBlock = async (transactionNumber: number, status: Tra
   const transactionInfoBlock = await screen.findByTestId(`transaction-info-block-${transactionNumber}-${status}`)
 
   content.forEach(text => expect(transactionInfoBlock).toHaveTextContent(text))
+}
+
+function assertCreateAssetModalClosed() {
+  const modalHeaders = screen.queryByText('Create asset')
+  expect(modalHeaders).toBeNull()
 }
