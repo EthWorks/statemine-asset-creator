@@ -1,5 +1,5 @@
 import type { AccountId } from '@polkadot/types/interfaces'
-import type { TeleportInput, UseTeleport } from 'use-substrate'
+import type { TeleportInput } from 'use-substrate'
 
 import BN from 'bn.js'
 import { useMemo } from 'react'
@@ -14,13 +14,12 @@ import {
 } from 'use-substrate'
 
 import { BN_ZERO } from '../../../utils'
-import { getTeleportTransactionModalDetails, StepDetails } from './getTransactionModalDetails'
+import { Transaction } from '../types'
+import { getTeleportTransactionModalDetails } from './getTransactionModalDetails'
 
-interface UseRequireTeleport {
+interface UseRequireTeleport extends Transaction {
   displayTeleportContent: boolean,
   teleportAmount: BN,
-  teleport: UseTeleport,
-  stepDetails: StepDetails
 }
 
 export function useTeleportTransaction(owner: AccountId | undefined, transactionFee: BN | undefined, createAssetDeposit: BN | undefined): UseRequireTeleport | undefined {
@@ -42,18 +41,18 @@ export function useTeleportTransaction(owner: AccountId | undefined, transaction
   const sender: TeleportInput = { account: kusamaActiveAccount?.address, chain: Chains.Kusama }
   const recipient: TeleportInput = { account: owner, chain: Chains.Statemine }
 
-  const teleport = useTeleport(sender, recipient, teleportAmount ?? BN_ZERO)
-  const stepDetails = useMemo(() => getTeleportTransactionModalDetails(teleport?.status, teleport?.errorDetails), [teleport])
+  const transaction = useTeleport(sender, recipient, teleportAmount ?? BN_ZERO)
+  const stepDetails = useMemo(() => getTeleportTransactionModalDetails(transaction?.status, transaction?.errorDetails), [transaction])
 
   const displayTeleportContent = useMemo(() => {
-    return teleport?.status !== TransactionStatus.Ready || (teleport.status === TransactionStatus.Ready && isTeleportRequired)
-  }, [isTeleportRequired, teleport?.status])
+    return transaction?.status !== TransactionStatus.Ready || (transaction.status === TransactionStatus.Ready && isTeleportRequired)
+  }, [isTeleportRequired, transaction?.status])
 
-  return displayTeleportContent !== undefined && teleportAmount && teleport
+  return displayTeleportContent !== undefined && teleportAmount && transaction
     ? {
       displayTeleportContent,
       teleportAmount,
-      teleport,
+      transaction,
       stepDetails
     }
     : undefined

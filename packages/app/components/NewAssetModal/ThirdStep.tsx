@@ -27,12 +27,13 @@ function wasTransactionSent(transaction: TransactionStatus | undefined, ignoreSu
 }
 
 export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & StepBarProps): JSX.Element {
-  const { tx, status: createAssetTransactionStatus, stepDetails: createAssetStepDetails, transactionFee, createAssetDeposit } = useCreateAssetTransaction()
+  const { transaction: createAssetTransaction, stepDetails: createAssetStepDetails, createAssetDeposit } = useCreateAssetTransaction() || {}
   const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
 
+  const transactionFee = createAssetTransaction?.paymentInfo?.partialFee
   const { activeAccount } = useActiveAccount(Chains.Statemine)
   const { address: ownerAddress } = activeAccount || {}
-  const { displayTeleportContent, teleportAmount, teleport, stepDetails: teleportStepDetails } = useTeleportTransaction(ownerAddress, transactionFee, createAssetDeposit) || {}
+  const { displayTeleportContent, teleportAmount, transaction: teleportTransaction, stepDetails: teleportStepDetails } = useTeleportTransaction(ownerAddress, transactionFee, createAssetDeposit) || {}
 
   const [isContentVisible, setIsContentVisible] = useState<boolean>(true)
   const { chainToken, chainDecimals } = useChainToken(Chains.Statemine) || {}
@@ -43,31 +44,31 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
   }, [setStepBarVisible])
 
   useEffect(() => {
-    if (wasTransactionSent(createAssetTransactionStatus) || wasTransactionSent(teleport?.status, true)) {
+    if (wasTransactionSent(createAssetTransaction?.status) || wasTransactionSent(teleportTransaction?.status, true)) {
       setSummaryVisible(false)
     } else {
       setSummaryVisible(true)
     }
-  }, [setSummaryVisible, createAssetTransactionStatus, teleport?.status])
+  }, [setSummaryVisible, createAssetTransaction?.status, teleportTransaction?.status])
 
-  if (!ownerAddress || !tx || !createAssetTransactionStatus || !teleport) return <Loader/>
+  if (!ownerAddress || !createAssetTransaction || !teleportTransaction) return <Loader/>
 
   const _onSubmit = async (): Promise<void> => {
-    if (displayTeleportContent && teleport.status === TransactionStatus.Ready) {
-      await teleport.tx()
+    if (displayTeleportContent && teleportTransaction.status === TransactionStatus.Ready) {
+      await teleportTransaction.tx()
     } else {
-      await tx()
+      await createAssetTransaction.tx()
     }
   }
 
-  const areButtonsDisabled = createAssetTransactionStatus !== TransactionStatus.Ready ||
-       teleport.status === TransactionStatus.InBlock
+  const areButtonsDisabled = createAssetTransaction.status !== TransactionStatus.Ready ||
+       teleportTransaction.status === TransactionStatus.InBlock
 
   return (
     <>
       {createAssetStepDetails && (
         <TransactionState
-          status={createAssetTransactionStatus}
+          status={createAssetTransaction.status}
           title={createAssetStepDetails.title}
           text={createAssetStepDetails.text}
           name={createAssetStepDetails.name}
@@ -77,7 +78,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
       )}
       {teleportStepDetails && (
         <TransactionState
-          status={teleport.status}
+          status={teleportTransaction.status}
           title={teleportStepDetails.title}
           text={teleportStepDetails.text}
           name={teleportStepDetails.name}
@@ -110,7 +111,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
             </InfoRow>
           </TransactionInfoBlock>
           {displayTeleportContent && (
-            <TransactionInfoBlock name='Teleport' number={1} status={mapToTransactionInfoBlockStatus(teleport.status)}>
+            <TransactionInfoBlock name='Teleport' number={1} status={mapToTransactionInfoBlockStatus(teleportTransaction.status)}>
               <InfoRow>
                 <Label>Chain</Label>
                 <Text size='XS' color='white' bold>Kusama</Text>
@@ -122,7 +123,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
               </InfoRow>
             </TransactionInfoBlock>
           )}
-          <TransactionInfoBlock name='Asset Creation' number={displayTeleportContent ? 2 : 1} status={mapToTransactionInfoBlockStatus(createAssetTransactionStatus)}>
+          <TransactionInfoBlock name='Asset Creation' number={displayTeleportContent ? 2 : 1} status={mapToTransactionInfoBlockStatus(createAssetTransaction.status)}>
             <InfoRow>
               <Label>Chain</Label>
               <Text size='XS' color='white' bold>Statemine</Text>
