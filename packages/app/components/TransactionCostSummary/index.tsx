@@ -1,6 +1,7 @@
 import BN from 'bn.js'
 import styled from 'styled-components'
 
+import { TooltipBox } from '../Tooltip'
 import { FormatBalance, Label } from '..'
 
 export interface TransactionCostSummaryProps {
@@ -18,10 +19,12 @@ export const TransactionCostSummary = ({ decimalsAmount, decimalsFee, totalAmoun
     <StyledLabel>Total amount:</StyledLabel>
     <BalanceWrapper>
       <FormatBalance chainDecimals={decimalsAmount} token={token} value={totalAmount} />
+      <TooltipBox text='Total amount tooltip info' />
     </BalanceWrapper>
     <StyledLabel>Transaction fee:</StyledLabel>
     <BalanceWrapper>
       <FormatBalance chainDecimals={decimalsFee} token={token} value={totalFee} />
+      <TooltipBox text='Transaction fee tooltip info' />
     </BalanceWrapper>
   </TransactionCostSummaryWrapper>
 )
