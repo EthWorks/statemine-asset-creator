@@ -9,6 +9,7 @@ import React from 'react'
 import { TransactionStatus } from 'use-substrate'
 
 import { NewAssetModal } from '../components'
+import { DECIMALS_LIMIT } from '../components/NewAssetModal/FirstStep'
 import { TransactionInfoBlockStatus } from '../components/TransactionInfoBlock/TransactionInfoBlock'
 import { BN_ZERO as MOCK_BN_ZERO, useToggle } from '../utils'
 import {
@@ -16,6 +17,7 @@ import {
   assertButtonNotDisabled,
   assertInput,
   assertInputError,
+  assertInputHint,
   assertInputValue,
   assertModalClosed,
   assertNoInputError,
@@ -247,7 +249,21 @@ describe('New asset modal', () => {
 
           assertInputValue('Asset decimals', '15')
         })
+
+        it('shows error and disables next button when exceeded decimals limit', async () => {
+          typeInInput('Asset decimals', (DECIMALS_LIMIT + 1).toString())
+
+          await assertInputError('Asset decimals', 'Value too large')
+          assertButtonDisabled('Next')
+        })
       })
+    })
+
+    it('shows hint on asset decimals input', async () => {
+      renderModal()
+      await openModal()
+
+      await assertInputHint('Asset decimals', `Max allowed value is ${DECIMALS_LIMIT}`)
     })
   })
 

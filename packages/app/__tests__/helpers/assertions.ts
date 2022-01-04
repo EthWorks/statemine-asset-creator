@@ -73,3 +73,9 @@ export const assertTextInAccountSelect = async (accountName: string, dropdownInd
 export const assertModalClosed = () => {
   expect(screen.queryByTestId('modal')).toBeFalsy()
 }
+
+export async function assertInputHint(inputName: string, hint: string) {
+  const input = await screen.findByLabelText(inputName)
+
+  expect(input.nextSibling).toHaveTextContent(hint)
+}
