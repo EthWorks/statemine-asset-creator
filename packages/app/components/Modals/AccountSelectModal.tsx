@@ -27,7 +27,8 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
     setAccount: setKusamaAccount,
     accountInfo: kusamaAccountInfo,
     setAccountInfo: setKusamaAccountInfo,
-    hasFreeBalance: hasKusamaFreeBalance
+    hasFreeBalance: hasKusamaFreeBalance,
+    clearData: clearKusamaData
   } = useAccountSelect(accounts, Chains.Kusama)
 
   const {
@@ -35,7 +36,8 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
     setAccount: setStatemineAccount,
     accountInfo: statemineAccountInfo,
     setAccountInfo: setStatemineAccountInfo,
-    hasFreeBalance: hasStatemineFreeBalance
+    hasFreeBalance: hasStatemineFreeBalance,
+    clearData: clearStatemineData
   } = useAccountSelect(accounts, Chains.Statemine)
 
   useEffect(() => {
@@ -65,6 +67,13 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
     closeModal()
   }
 
+  const _onClose = (): void => {
+    clearKusamaData()
+    clearStatemineData()
+    setKusamaAccountSelectVisible(false)
+    closeModal()
+  }
+
   const _onKusamaSelectHide = (): void => {
     setKusamaAccount(undefined)
     setKusamaAccountSelectVisible(false)
@@ -79,7 +88,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
       title='Connect accounts'
       padding='m'
       isOpen={isOpen}
-      onClose={closeModal}
+      onClose={_onClose}
     >
       <TextStyle size='SM'>
         Asset creation and transfers happen on the <b>Statemine</b> parachain. You <b>need an account with a balance on Statemine</b> for fees and deposits. However, you can also use a fresh & empty account, and send funds from your Kusama account.

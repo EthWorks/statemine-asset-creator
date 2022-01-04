@@ -9,8 +9,8 @@ import { Chains } from 'use-substrate'
 import Home from '../pages'
 import { theme } from '../styles/styleVariables'
 import { BN_ZERO as MOCK_BN_ZERO } from '../utils'
-import { mockUseBestNumber } from './mocks/mockUseBestNumber'
 import {
+  assertModalClosed,
   assertNoText,
   assertText,
   assertTextInAccountSelect,
@@ -30,7 +30,9 @@ import {
   mockUseActiveAccount,
   mockUseApi,
   mockUseAssets,
-  mockUseBalances, mockUseChainToken
+  mockUseBalances,
+  mockUseBestNumber,
+  mockUseChainToken
 } from './mocks'
 
 const mockedSetter = jest.fn()
@@ -202,6 +204,28 @@ describe('Account select modal', () => {
 
       await assertNumberOfSelectAccountDropdowns(1)
     })
+  })
+
+  it('clears not applied changes on modal close', async () => {
+    mockedUseAccounts.allAccounts = [aliceAccount, charlieAccount]
+    mockStatemineActiveAccount = aliceActiveAccount
+    renderWithTheme(<Home/>)
+
+    await openAccountSelectModal()
+    await assertNumberOfSelectAccountDropdowns(1)
+
+    await findAndClickButton('Add Kusama account')
+    await assertNumberOfSelectAccountDropdowns(2)
+    await selectAccountFromDropdown(0, 1)
+
+    await findAndClickButton('X')
+    assertModalClosed()
+    await openAccountSelectModal()
+
+    await assertNumberOfSelectAccountDropdowns(1)
+
+    await findAndClickButton('Add Kusama account')
+    await assertTextInAccountSelect('Select account', 1)
   })
 
   afterEach(() => {
