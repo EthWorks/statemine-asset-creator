@@ -683,62 +683,6 @@ describe('New asset modal', () => {
             'Statemine fee0.0300KSM'
           ])
         })
-
-        it('after successful teleport', async () => {
-          const expectedTeleportAmount = mockUseBalancesConstants.existentialDeposit.add(FEE).add(mockUseCreateAssetDeposit)
-          mockUseBalances.availableBalance = expectedTeleportAmount.addn(1)
-          setTeleportTransactionStatus(TransactionStatus.Success)
-
-          renderModal()
-          await enterThirdStep()
-
-          await assertTransactionInfoBlock(1, 'done', [])
-
-          await assertTransactionInfoBlock(2, 'ready', [
-            'ChainStatemine',
-            'Deposit140.0000KSM',
-            'Statemine fee0.0300KSM'
-          ])
-        })
-      })
-
-      describe('executes teleport transaction', () => {
-        beforeAll(() => {
-          mockUseBalances.availableBalance = new BN(0)
-        })
-
-        it('hides content and shows pending transaction modal for ongoing transaction', async () => {
-          setTeleportTransactionStatus(TransactionStatus.InBlock)
-
-          renderModal()
-          await enterThirdStep()
-
-          assertStepsBarHidden()
-          assertContentHidden()
-
-          const modalContent = screen.getByTestId('status-step-InBlock')
-          expect(modalContent).toHaveTextContent('Pending transaction 1/2...')
-          expect(modalContent).toHaveTextContent('Transaction #1')
-          expect(modalContent).toHaveTextContent('Teleport')
-          expect(modalContent).toHaveTextContent('It takes time to teleport. In order to do so, we need to create a transaction and wait until blockchain validates it.')
-        })
-
-        it('hides content and shows error modal when transaction was rejected', async () => {
-          setTeleportErrorDetails([
-            errorDetail({ section: 'Unknown', name: 'Subscription error', docs: undefined })
-          ])
-
-          renderModal()
-          await enterThirdStep()
-
-          assertStepsBarHidden()
-          assertContentHidden()
-
-          const modalContent = screen.getByTestId('status-step-Error')
-          expect(modalContent).toHaveTextContent('Something went wrong')
-          expect(modalContent).toHaveTextContent('[Unknown.Subscription error]')
-          assertButtonNotDisabled('Back to dashboard')
-        })
       })
 
       describe('executes teleport transaction', () => {

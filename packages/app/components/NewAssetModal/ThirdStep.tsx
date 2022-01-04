@@ -29,13 +29,12 @@ enum ThirdStepState {
   AwaitingSign = 'AwaitingSign',
 }
 
-interface StepBarProps {
 interface Props {
   openAccountSelectModal: () => void,
   setStepBarVisible: (arg: boolean) => void
 }
 
-export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & StepBarProps): JSX.Element {
+export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelectModal }: ModalStep & Props): JSX.Element {
   const [state, setState] = useState<ThirdStepState>(ThirdStepState.Loading)
   const { transaction: createAssetTransaction, stepDetails: createAssetStepDetails, createAssetDeposit } = useCreateAssetTransaction() || {}
   const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
@@ -146,7 +145,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
       )}
       {!isContentHidden && (
         <div data-testid='third-step-content'>
-          {displayTeleportContent && teleport.status === TransactionStatus.Ready && (kusamaActiveAccount
+          {state === ThirdStepState.TeleportReady && (kusamaActiveAccount
             ? requiredTeleportInfo
             : noKusamaAccountWarning)
           }
