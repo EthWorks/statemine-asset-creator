@@ -1,9 +1,7 @@
 import type { ErrorDetails } from 'use-substrate'
-import type { TransactionStateProps } from '../TransactionState/TransactionState'
+import type { StepDetails } from '../types'
 
 import { TransactionStatus } from 'use-substrate'
-
-export type StepDetails = Omit<TransactionStateProps, 'status' | 'onClose'> | undefined
 
 const DEFAULT_ERROR_MESSAGE = 'Unknown error.'
 

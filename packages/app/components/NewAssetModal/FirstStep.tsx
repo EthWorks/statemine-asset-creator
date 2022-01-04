@@ -15,11 +15,13 @@ import { ArrowRight } from '../icons'
 import { useNewAssetModal } from './context/useNewAssetModal'
 import { ModalFooter } from './ModalFooter'
 
+export const DECIMALS_LIMIT = 255
+
 export function FirstStep({ onNext }: ModalStep): JSX.Element {
   const {
     assetName, setAssetName, assetNameError, setAssetNameError, assetId, assetIdError, setAssetIdError, assetSymbol,
     assetSymbolError, setAssetSymbolError, setAssetId, setAssetSymbol, setAssetDecimals, minBalance, setMinBalance,
-    assetDecimals, stringLimit
+    assetDecimals, stringLimit, setAssetDecimalsError, assetDecimalsError
   } = useNewAssetModal()
   const existingAssets = useAssets(Chains.Statemine)
 
@@ -27,10 +29,11 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
     setAssetNameError(undefined)
     setAssetSymbolError(undefined)
     setAssetIdError(undefined)
-  }, [setAssetNameError, setAssetSymbolError, setAssetIdError])
+    setAssetDecimalsError(undefined)
+  }, [setAssetNameError, setAssetSymbolError, setAssetIdError, setAssetDecimalsError])
 
   const isFilled = !!assetName && !!assetSymbol && !!assetId && !!assetDecimals && !!minBalance
-  const isValid = !assetNameError && !assetSymbolError && !assetIdError
+  const isValid = !assetNameError && !assetSymbolError && !assetIdError && !assetDecimalsError
   const isDisabled = !isFilled || !isValid
 
   const isAssetIdUnique = useCallback(() => !existingAssets?.find(({ id }: Asset) => id.toString() === assetId), [existingAssets, assetId])
@@ -55,7 +58,11 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
     if (assetId && !isAssetIdUnique()) {
       setAssetIdError('Value cannot match an already-existing asset id.')
     }
-  }, [assetId, assetName, assetSymbol, clearErrors, setAssetNameError, setAssetSymbolError, setAssetIdError, stringLimit, isAssetIdUnique])
+
+    if (+assetDecimals > DECIMALS_LIMIT) {
+      setAssetDecimalsError('Value too large')
+    }
+  }, [assetId, assetName, assetSymbol, clearErrors, setAssetNameError, setAssetSymbolError, setAssetIdError, stringLimit, isAssetIdUnique, assetDecimals, setAssetDecimalsError])
 
   const _onNext = useCallback((e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -89,11 +96,13 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
         id="asset-symbol"
       />
       <NumericInput
+        error={assetDecimalsError}
         value={assetDecimals}
         onChange={setAssetDecimals}
         label="Asset decimals"
         id="asset-decimals"
         inputType='NATURAL'
+        hint={`Max allowed value is ${DECIMALS_LIMIT}`}
       />
       <NumericInput
         error={assetIdError}

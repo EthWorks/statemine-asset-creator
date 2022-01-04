@@ -19,6 +19,7 @@ export function NewAssetModal({ isOpen, closeModal, openAccountSelectModal }: Ne
 
   const _onClose = (): void => {
     _moveToStep(1)
+    setStepBarVisible(true)
     closeModal()
   }
 
