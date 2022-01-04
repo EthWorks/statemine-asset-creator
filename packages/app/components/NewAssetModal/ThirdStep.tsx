@@ -8,6 +8,7 @@ import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { FeeSelect } from '../FeeSelect'
 import { FormatBalance } from '../FormatBalance'
 import { ArrowLeft, ArrowRight } from '../icons'
+import { Identifier } from '../Identifier'
 import { Loader } from '../Loader'
 import { InfoRow, TransactionInfoBlock } from '../TransactionInfoBlock/TransactionInfoBlock'
 import { Label, Text } from '../typography'
@@ -92,8 +93,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
             <TransactionInfoBlock name='Teleport' number={1} status='ready'>
               <InfoRow>
                 <Label>Chain</Label>
-                <Text size='XS' color='white' bold>Kusama</Text>
-                <Text size='XS' color='white' bold>Statemine</Text>
+                <Identifier chainFrom='Kusama' chainTo='Statemine' />
               </InfoRow>
               <InfoRow>
                 <Label>Teleport amount</Label>
@@ -104,7 +104,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
           <TransactionInfoBlock name='Asset Creation' number={isTeleportRequired ? 2 : 1} status={mapToTransactionInfoBlockStatus(status)}>
             <InfoRow>
               <Label>Chain</Label>
-              <Text size='XS' color='white' bold>Statemine</Text>
+              <Identifier chainFrom='Statemine' />
             </InfoRow>
             <InfoRow>
               <Label>Deposit</Label>
