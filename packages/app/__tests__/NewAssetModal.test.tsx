@@ -57,9 +57,11 @@ function TestComponent(): JSX.Element {
   )
 }
 
-const FEE = '30000000000'
+const FEE = new BN('30000000000')
 const mockTransaction = jest.fn()
-let mockUseTransaction: UseTransaction = { tx: mockTransaction, paymentInfo: { partialFee: new BN(FEE) } as RuntimeDispatchInfo, status: TransactionStatus.Ready }
+let mockUseTransaction: UseTransaction = { tx: mockTransaction, paymentInfo: { partialFee: FEE } as RuntimeDispatchInfo, status: TransactionStatus.Ready }
+const mockTeleport = jest.fn()
+let mockUseTeleport: UseTransaction = { tx: mockTeleport, paymentInfo: { partialFee: FEE } as RuntimeDispatchInfo, status: TransactionStatus.Ready }
 const ASSET_ID = '7'
 const MIN_BALANCE = '300'
 const ASSET_NAME = 'kusama'
@@ -99,7 +101,8 @@ jest.mock('use-substrate/dist/src/hooks', () => ({
   useActiveAccount: () => mockUseActiveAccount,
   useCreateAssetDeposit: () => mockUseCreateAssetDeposit,
   useChainToken: () => mockUseChainToken,
-  useBalancesConstants: () => mockUseBalancesConstants
+  useBalancesConstants: () => mockUseBalancesConstants,
+  useTeleport: () => mockUseTeleport
 }))
 
 const mockedStringLimit = mockUseAssetsConstants.stringLimit.toNumber()
@@ -107,7 +110,7 @@ const mockedStringLimit = mockUseAssetsConstants.stringLimit.toNumber()
 describe('New asset modal', () => {
   beforeEach(() => {
     mockTransaction.mockClear()
-    setTransactionStatus(TransactionStatus.Ready)
+    setCreateAssetTransactionStatus(TransactionStatus.Ready)
     mockUseApi.api.tx.assets.create.mockClear()
     mockUseApi.api.tx.assets.setMetadata.mockClear()
     mockUseApi.api.tx.assets.setTeam.mockClear()
@@ -408,13 +411,15 @@ describe('New asset modal', () => {
         })
 
         it('AwaitingSign', async () => {
-          setTransactionStatus(TransactionStatus.AwaitingSign)
+          setCreateAssetTransactionStatus(TransactionStatus.AwaitingSign)
 
           renderModal()
           await enterThirdStep()
 
           assertStepsBarVisible()
           assertContentVisible()
+
+          await findAndClickButton('Confirm')
 
           assertButtonDisabled('Confirm')
           assertButtonDisabled('Back')
@@ -428,7 +433,7 @@ describe('New asset modal', () => {
 
       describe('hides content and shows pending transaction for ongoing transaction', () => {
         it('InBlock', async () => {
-          setTransactionStatus(TransactionStatus.InBlock)
+          setCreateAssetTransactionStatus(TransactionStatus.InBlock)
 
           renderModal()
           await enterThirdStep()
@@ -444,7 +449,7 @@ describe('New asset modal', () => {
         })
 
         it('Success', async () => {
-          setTransactionStatus(TransactionStatus.Success)
+          setCreateAssetTransactionStatus(TransactionStatus.Success)
 
           renderModal()
           await enterThirdStep()
@@ -564,7 +569,7 @@ describe('New asset modal', () => {
         })
 
         it('enables to go back to dashboard', async () => {
-          setTransactionStatus(TransactionStatus.Success)
+          setCreateAssetTransactionStatus(TransactionStatus.Success)
 
           renderModal()
           await enterThirdStep()
@@ -612,6 +617,62 @@ describe('New asset modal', () => {
             'Deposit140.0000KSM',
             'Statemine fee0.0300KSM'
           ])
+        })
+
+        it('after successful teleport', async () => {
+          const expectedTeleportAmount = mockUseBalancesConstants.existentialDeposit.add(FEE).add(mockUseCreateAssetDeposit)
+          mockUseBalances.availableBalance = expectedTeleportAmount.addn(1)
+          setTeleportTransactionStatus(TransactionStatus.Success)
+
+          renderModal()
+          await enterThirdStep()
+
+          await assertTransactionInfoBlock(1, 'done', [])
+
+          await assertTransactionInfoBlock(2, 'ready', [
+            'ChainStatemine',
+            'Deposit140.0000KSM',
+            'Statemine fee0.0300KSM'
+          ])
+        })
+      })
+
+      describe('executes teleport transaction', () => {
+        beforeAll(() => {
+          mockUseBalances.availableBalance = new BN(0)
+        })
+
+        it('hides content and shows pending transaction modal for ongoing transaction', async () => {
+          setTeleportTransactionStatus(TransactionStatus.InBlock)
+
+          renderModal()
+          await enterThirdStep()
+
+          assertStepsBarHidden()
+          assertContentHidden()
+
+          const modalContent = screen.getByTestId('status-step-InBlock')
+          expect(modalContent).toHaveTextContent('Pending transaction 1/2...')
+          expect(modalContent).toHaveTextContent('Transaction #1')
+          expect(modalContent).toHaveTextContent('Teleport')
+          expect(modalContent).toHaveTextContent('It takes time to teleport. In order to do so, we need to create a transaction and wait until blockchain validates it.')
+        })
+
+        it('hides content and shows error modal when transaction was rejected', async () => {
+          setTeleportErrorDetails([
+            errorDetail({ section: 'Unknown', name: 'Subscription error', docs: undefined })
+          ])
+
+          renderModal()
+          await enterThirdStep()
+
+          assertStepsBarHidden()
+          assertContentHidden()
+
+          const modalContent = screen.getByTestId('status-step-Error')
+          expect(modalContent).toHaveTextContent('Something went wrong')
+          expect(modalContent).toHaveTextContent('[Unknown.Subscription error]')
+          assertButtonNotDisabled('Back to dashboard')
         })
       })
     })
@@ -756,9 +817,16 @@ interface TestErrorDetails {
   docs?: string[];
 }
 
-const setTransactionStatus = (status: TransactionStatus) => {
+const setCreateAssetTransactionStatus = (status: TransactionStatus) => {
   mockUseTransaction = {
     ...mockUseTransaction,
+    status
+  }
+}
+
+const setTeleportTransactionStatus = (status: TransactionStatus) => {
+  mockUseTeleport = {
+    ...mockUseTeleport,
     status
   }
 }
@@ -766,6 +834,14 @@ const setTransactionStatus = (status: TransactionStatus) => {
 const setErrorDetails = (errorDetails: ErrorDetails[] | undefined) => {
   mockUseTransaction = {
     ...mockUseTransaction,
+    status: TransactionStatus.Error,
+    errorDetails
+  }
+}
+
+const setTeleportErrorDetails = (errorDetails: ErrorDetails[] | undefined) => {
+  mockUseTeleport = {
+    ...mockUseTeleport,
     status: TransactionStatus.Error,
     errorDetails
   }

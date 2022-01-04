@@ -19,6 +19,7 @@ export function NewAssetModal({ isOpen, closeModal }: NewAssetModalProps): JSX.E
 
   const _onClose = (): void => {
     _moveToStep(1)
+    setStepBarVisible(true)
     closeModal()
   }
 

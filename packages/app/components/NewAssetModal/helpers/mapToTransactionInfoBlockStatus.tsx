@@ -6,6 +6,8 @@ export function mapToTransactionInfoBlockStatus(status: TransactionStatus): Tran
   switch (status) {
     case TransactionStatus.AwaitingSign:
       return 'sign'
+    case TransactionStatus.Success:
+      return 'done'
     default:
       return 'ready'
   }
