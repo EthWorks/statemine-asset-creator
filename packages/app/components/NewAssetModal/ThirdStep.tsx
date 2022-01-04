@@ -1,8 +1,8 @@
 import type { ModalStep } from './types'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { Chains, TransactionStatus, useActiveAccount, useChainToken } from 'use-substrate'
+import { Chains, useActiveAccount, useChainToken } from 'use-substrate'
 
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { FeeSelect } from '../FeeSelect'
@@ -16,17 +16,23 @@ import { TransactionState } from './TransactionState/TransactionState'
 import { mapToTransactionInfoBlockStatus, useCreateAssetTransaction, useTeleportTransaction } from './helpers'
 import { ModalFooter } from './ModalFooter'
 
+enum ThirdStepState {
+  Loading = 'Loading',
+  TeleportReady = 'TeleportReady',
+  InProgress = 'InProgress',
+  TeleportDone = 'TeleportDone',
+  CreateAssetReady = 'CreateAssetReady',
+  Success = 'Success',
+  Error = 'Error',
+  AwaitingSign = 'AwaitingSign',
+}
+
 interface StepBarProps {
   setStepBarVisible: (arg: boolean) => void
 }
 
-function wasTransactionSent(transaction: TransactionStatus | undefined, ignoreSuccess?: boolean): boolean {
-  return transaction === TransactionStatus.Error ||
-      transaction === TransactionStatus.InBlock ||
-      (!ignoreSuccess && transaction === TransactionStatus.Success)
-}
-
 export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & StepBarProps): JSX.Element {
+  const [state, setState] = useState<ThirdStepState>(ThirdStepState.Loading)
   const { transaction: createAssetTransaction, stepDetails: createAssetStepDetails, createAssetDeposit } = useCreateAssetTransaction() || {}
   const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
 
@@ -35,34 +41,64 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
   const { address: ownerAddress } = activeAccount || {}
   const { displayTeleportContent, teleportAmount, transaction: teleportTransaction, stepDetails: teleportStepDetails } = useTeleportTransaction(ownerAddress, transactionFee, createAssetDeposit) || {}
 
-  const [isContentVisible, setIsContentVisible] = useState<boolean>(true)
   const { chainToken, chainDecimals } = useChainToken(Chains.Statemine) || {}
+  const isContentHidden = state === 'Success' || state === 'Error' || state === 'InProgress'
 
-  const setSummaryVisible = useCallback((visible: boolean): void => {
-    setIsContentVisible(visible)
-    setStepBarVisible(visible)
-  }, [setStepBarVisible])
+  const areButtonsDisabled = state === 'AwaitingSign'
 
   useEffect(() => {
-    if (wasTransactionSent(createAssetTransaction?.status) || wasTransactionSent(teleportTransaction?.status, true)) {
-      setSummaryVisible(false)
-    } else {
-      setSummaryVisible(true)
+    if (state === ThirdStepState.Loading && createAssetTransaction && teleportTransaction) {
+      if (displayTeleportContent) {
+        setState(ThirdStepState.TeleportReady)
+      } else {
+        setState(ThirdStepState.CreateAssetReady)
+      }
     }
-  }, [setSummaryVisible, createAssetTransaction?.status, teleportTransaction?.status])
+  }, [createAssetTransaction, displayTeleportContent, teleportTransaction])
 
-  if (!ownerAddress || !createAssetTransaction || !teleportTransaction) return <Loader/>
+  useEffect(() => {
+    if (teleportTransaction?.status === 'Success') {
+      setState(ThirdStepState.TeleportDone)
+    }
+
+    if (teleportTransaction?.status === 'Error') {
+      setState(ThirdStepState.Error)
+      setStepBarVisible(false)
+    }
+
+    if (teleportTransaction?.status === 'InBlock') {
+      setStepBarVisible(false)
+      setState(ThirdStepState.InProgress)
+    }
+  }, [setStepBarVisible, teleportTransaction?.status])
+
+  useEffect(() => {
+    if (createAssetTransaction?.status === 'Success') {
+      setState(ThirdStepState.Success)
+      setStepBarVisible(false)
+    }
+
+    if (createAssetTransaction?.status === 'Error') {
+      setState(ThirdStepState.Error)
+      setStepBarVisible(false)
+    }
+
+    if (createAssetTransaction?.status === 'InBlock') {
+      setStepBarVisible(false)
+      setState(ThirdStepState.InProgress)
+    }
+  }, [createAssetTransaction?.status, setStepBarVisible])
+
+  if (state === ThirdStepState.Loading || !ownerAddress || !createAssetTransaction || !teleportTransaction) return <Loader/>
 
   const _onSubmit = async (): Promise<void> => {
-    if (displayTeleportContent && teleportTransaction.status === TransactionStatus.Ready) {
+    setState(ThirdStepState.AwaitingSign)
+    if (state === ThirdStepState.TeleportReady) {
       await teleportTransaction.tx()
     } else {
       await createAssetTransaction.tx()
     }
   }
-
-  const areButtonsDisabled = createAssetTransaction.status !== TransactionStatus.Ready ||
-       teleportTransaction.status === TransactionStatus.InBlock
 
   return (
     <>
@@ -86,7 +122,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
           onClose={onNext}
         />
       )}
-      {isContentVisible && (
+      {!isContentHidden && (
         <div data-testid='third-step-content'>
           <TransactionInfoBlock status='baseInfo'>
             <InfoRow>

@@ -419,6 +419,8 @@ describe('New asset modal', () => {
           assertStepsBarVisible()
           assertContentVisible()
 
+          await findAndClickButton('Confirm')
+
           assertButtonDisabled('Confirm')
           assertButtonDisabled('Back')
 
