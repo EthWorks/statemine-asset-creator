@@ -157,12 +157,12 @@ describe('New asset modal', () => {
       fillFirstStep()
       await findAndClickButton('Next')
       await screen.findByText('Admin account')
-      assertSteps(['past', 'active', 'unvisited', 'unvisited'])
+      assertSteps(['past', 'active', 'unvisited'])
 
       await findAndClickButton('Back')
 
       assertFirstStepFilled()
-      assertSteps(['active', 'unvisited', 'unvisited', 'unvisited'])
+      assertSteps(['active', 'unvisited', 'unvisited'])
     })
 
     describe('step bar', () => {
@@ -170,12 +170,12 @@ describe('New asset modal', () => {
         renderModal()
 
         await openModal()
-        assertSteps(['active', 'unvisited', 'unvisited', 'unvisited'])
+        assertSteps(['active', 'unvisited', 'unvisited'])
 
         fillFirstStep()
         clickButton('Next')
 
-        assertSteps(['past', 'active', 'unvisited', 'unvisited'])
+        assertSteps(['past', 'active', 'unvisited'])
       })
     })
   })
