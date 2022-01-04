@@ -7,6 +7,7 @@ import { Chains, useBalances, useChainToken } from 'use-substrate'
 
 import { Avatar } from '../Avatar'
 import { FormatBalance } from '../FormatBalance'
+import { TooltipBox } from '../Tooltip'
 import { Label, Text } from '../typography'
 
 interface Props {
@@ -15,7 +16,7 @@ interface Props {
   withFreeBalance?: boolean
 }
 
-export function AccountTile({ account, withFreeBalance, chain }: Props): JSX.Element {
+export function AccountTile({ account, chain, withFreeBalance }: Props): JSX.Element {
   const balance = useBalances(account.address, chain)
   const { chainDecimals, chainToken } = useChainToken(chain) || {}
 
@@ -32,7 +33,10 @@ export function AccountTile({ account, withFreeBalance, chain }: Props): JSX.Ele
       </AccountTileCell>
       <AccountTileCellEnd>
         <CellRow>
-          <Label>transferable balance</Label>
+          <StyledLabel>
+            transferable balance
+            <TooltipBox text='Your account needs to have some funds to stay active and have Existential Deposit' />
+          </StyledLabel>
           <FormatBalance token={chainToken} chainDecimals={chainDecimals} value={balance?.availableBalance}/>
         </CellRow>
         {withFreeBalance && (
@@ -88,4 +92,13 @@ const TextAddress = styled(Text)`
   overflow: hidden;
   max-width: 210px;
   text-overflow: ellipsis;
+`
+
+const StyledLabel = styled(Label)`
+  display: flex;
+  align-items: center;
+  
+  div {
+    margin-left: 8px;
+  }
 `
