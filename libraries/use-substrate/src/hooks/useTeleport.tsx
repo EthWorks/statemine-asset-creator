@@ -12,7 +12,7 @@ import { useTransaction } from './useTransaction'
 export type UseTeleport = UseTransaction
 
 export interface TeleportInput {
-  account: AccountId,
+  account: AccountId | undefined,
   chain: Chains
 }
 

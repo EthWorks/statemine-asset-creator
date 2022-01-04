@@ -1,22 +1,17 @@
-import type { StepDetails } from './getTransactionModalDetails'
-
 import BN from 'bn.js'
 import { useMemo } from 'react'
 
-import { Chains, TransactionStatus, useActiveAccount, useApi, useCreateAssetDeposit, useTransaction } from 'use-substrate'
+import { Chains, useActiveAccount, useApi, useCreateAssetDeposit, useTransaction } from 'use-substrate'
 
 import { useNewAssetModal } from '../context/useNewAssetModal'
-import { getTransactionModalDetails } from './getTransactionModalDetails'
+import { Transaction } from '../types'
+import { getCreateAssetTransactionModalDetails } from './getTransactionModalDetails'
 
-interface UseThirdStep {
-  tx: (() => Promise<void>) | undefined,
-  status: TransactionStatus | undefined,
-  stepDetails: StepDetails
-  transactionFee: BN | undefined,
-  createAssetDeposit: BN | undefined
+interface UseCreateAssetTransaction extends Transaction {
+  createAssetDeposit: BN
 }
 
-export function useCreateAssetTransaction(): UseThirdStep {
+export function useCreateAssetTransaction(): UseCreateAssetTransaction | undefined {
   const { admin, issuer, freezer, assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
   const { api } = useApi(Chains.Statemine)
   const { activeAccount } = useActiveAccount(Chains.Statemine)
@@ -36,14 +31,15 @@ export function useCreateAssetTransaction(): UseThirdStep {
       ]
     : [], [admin, issuer, freezer, api, assetDecimals, assetId, assetName, assetSymbol, minBalance])
 
-  const { tx, status, errorDetails, paymentInfo } = useTransaction(api?.tx.utility.batchAll, [txs], ownerAddress?.toString()) || {}
-  const stepDetails = useMemo(() => getTransactionModalDetails(status, errorDetails), [status, errorDetails])
+  const transaction = useTransaction(api?.tx.utility.batchAll, [txs], ownerAddress?.toString())
+  const { status, errorDetails, paymentInfo } = transaction || {}
+  const stepDetails = useMemo(() => getCreateAssetTransactionModalDetails(status, errorDetails), [status, errorDetails])
 
-  return {
-    tx,
-    stepDetails,
-    status,
-    transactionFee: paymentInfo?.partialFee,
-    createAssetDeposit
-  }
+  return transaction && paymentInfo && createAssetDeposit
+    ? {
+      stepDetails,
+      transaction,
+      createAssetDeposit
+    }
+    : undefined
 }

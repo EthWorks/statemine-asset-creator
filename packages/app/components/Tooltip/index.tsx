@@ -11,8 +11,10 @@ export interface TooltipBoxProps {
 export const TooltipBox = ({ text }: TooltipBoxProps): JSX.Element => (
   <Tooltip.Provider>
     <Tooltip.Root delayDuration={200}>
-      <TooltipBtn>
-        <TooltipIcon />
+      <TooltipBtn asChild>
+        <div>
+          <TooltipIcon />
+        </div>
       </TooltipBtn>
       <Dropdown>
         <Text size='XXS' color='white'>{text}</Text>
