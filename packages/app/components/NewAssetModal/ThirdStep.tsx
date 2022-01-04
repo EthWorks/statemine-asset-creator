@@ -5,7 +5,6 @@ import { useCallback, useEffect, useState } from 'react'
 import { Chains, TransactionStatus, useActiveAccount, useChainToken } from 'use-substrate'
 
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
-import { FeeSelect } from '../FeeSelect'
 import { FormatBalance } from '../FormatBalance'
 import { ArrowLeft, ArrowRight } from '../icons'
 import { Loader } from '../Loader'
