@@ -615,8 +615,6 @@ describe('New asset modal', () => {
           await assertInfobox('Insufficient funds on the owner account to create the asset. Cannot execute teleport transaction due to not selected Kusama account.Select Kusama account', 'warning')
           await findAndClickButton('Select Kusama account')
 
-          assertCreateAssetModalClosed()
-
           expect(openAccountSelectModal).toBeCalledTimes(1)
         })
 
@@ -905,9 +903,4 @@ const assertTransactionInfoBlock = async (transactionNumber: number, status: Tra
   const transactionInfoBlock = await screen.findByTestId(`transaction-info-block-${transactionNumber}-${status}`)
 
   content.forEach(text => expect(transactionInfoBlock).toHaveTextContent(text))
-}
-
-function assertCreateAssetModalClosed() {
-  const modalHeaders = screen.queryByText('Create asset')
-  expect(modalHeaders).toBeNull()
 }

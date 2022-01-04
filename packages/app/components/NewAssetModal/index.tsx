@@ -23,11 +23,6 @@ export function NewAssetModal({ isOpen, closeModal, openAccountSelectModal }: Ne
     closeModal()
   }
 
-  const _onOpenAccountSelectModal = (): void => {
-    openAccountSelectModal()
-    _onClose()
-  }
-
   const renderStep: () => JSX.Element = () => {
     switch (activeStep) {
       case 1: {
@@ -41,7 +36,7 @@ export function NewAssetModal({ isOpen, closeModal, openAccountSelectModal }: Ne
           onNext={_onClose}
           onBack={() => _moveToStep(2)}
           setStepBarVisible={setStepBarVisible}
-          openAccountSelectModal={_onOpenAccountSelectModal}
+          openAccountSelectModal={openAccountSelectModal}
         />
       }
     }
