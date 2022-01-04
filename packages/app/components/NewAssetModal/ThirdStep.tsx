@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react'
 import { Chains, useActiveAccount, useChainToken } from 'use-substrate'
 
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
-import { FeeSelect } from '../FeeSelect'
 import { FormatBalance } from '../FormatBalance'
 import { ArrowLeft, ArrowRight } from '../icons'
 import { Loader } from '../Loader'
@@ -173,8 +172,6 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
               <FormatBalance chainDecimals={chainDecimals} token={chainToken} value={transactionFee}/>
             </InfoRow>
           </TransactionInfoBlock>
-
-          <FeeSelect account={ownerAddress.toString()}/>
 
           <ModalFooter contentPosition='between'>
             <ButtonOutline onClick={onBack} disabled={areButtonsDisabled}>

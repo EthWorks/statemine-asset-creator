@@ -93,12 +93,6 @@ const Home: NextPage = () => {
             </StyledCard>
           </PageBox>
         }
-        <PageBox size='large' title='In your wallet'>
-          <StyledCard padding='m'>
-            <StyledCardTitle size="SM" color="white">You don’t have any assets in your wallet</StyledCardTitle>
-            <Text size="SM">Balance of your Statemine Assets will show here</Text>
-          </StyledCard>
-        </PageBox>
 
         <NewAssetModal isOpen={isNewAssetModalOpen} closeModal={toggleNewAssetModalOpen}/>
         <ConnectWalletModal
