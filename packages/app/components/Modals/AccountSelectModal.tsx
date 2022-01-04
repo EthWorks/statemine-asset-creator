@@ -83,6 +83,8 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
 
   if (accounts.extensionStatus === 'Loading') return <Loader />
 
+  const displayKusamaSelect = isKusamaAccountSelectVisible || !!kusamaAccount
+
   return (
     <Modal
       title='Connect accounts'
@@ -107,12 +109,12 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
         tip={statemineAccountInfo}
         chain={Chains.Statemine}
       />
-      {!isKusamaAccountSelectVisible && (
+      {!displayKusamaSelect && (
         <Centered>
           <ButtonTertiary onClick={toggleKusamaAccountSelectVisible}>Add Kusama account</ButtonTertiary>
         </Centered>
       )}
-      {(isKusamaAccountSelectVisible || !!kusamaAccount) && (
+      {displayKusamaSelect && (
         <>
           <SectionTitleStyle>
             <ImageWrapper>

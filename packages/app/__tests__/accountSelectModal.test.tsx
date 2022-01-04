@@ -228,6 +228,18 @@ describe('Account select modal', () => {
     await assertTextInAccountSelect('Select account', 1)
   })
 
+  it('hides "Add kusama account" button on app load if it was already set', async () => {
+    mockedUseAccounts.allAccounts = [aliceAccount, charlieAccount]
+    mockStatemineActiveAccount = aliceActiveAccount
+    mockKusamaActiveAccount = charlieActiveAccount
+
+    renderWithTheme(<Home/>)
+
+    await openAccountSelectModal()
+    await assertNumberOfSelectAccountDropdowns(2)
+    assertNoText('Add Kusama account')
+  })
+
   afterEach(() => {
     mockedUseAccounts.allAccounts = [aliceAccount, bobAccount]
     mockStatemineActiveAccount = undefined
