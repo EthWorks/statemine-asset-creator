@@ -31,27 +31,25 @@ export const Modal = ({ children, className, padding, size, title, titleCenterPo
 
   return (
     <ModalView data-testid='modal'>
-      <ModalBg data-testid='modal-close-button' onClick={_onClose}/>
-      <HeaderOverModal>{headerOverModal}</HeaderOverModal>
-      <ModalCard className={className} size={size} padding={padding}>
-        <ModalHeader title={title} onClose={_onClose} titleCenterPosition={titleCenterPosition}/>
-        {children}
-      </ModalCard>
+      <ModalContent>
+        <ModalBg data-testid='modal-close-button' onClick={_onClose}/>
+        <HeaderOverModal>{headerOverModal}</HeaderOverModal>
+        <ModalCard className={className} size={size} padding={padding}>
+          <ModalHeader title={title} onClose={_onClose} titleCenterPosition={titleCenterPosition}/>
+          {children}
+        </ModalCard>
+      </ModalContent>
     </ModalView>
   )
 }
 
 const ModalView = styled.div`
   overflow-y: auto;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   width: 100%;
-  min-height: 100%;
-  padding: 100px 0 50px;
+  height: 100vh;
   backdrop-filter: blur(1.5px);
   z-index: 99;
 `
@@ -81,4 +79,14 @@ const HeaderOverModal = styled.header`
   position: relative;
   margin: -36px 0 44px;
   z-index: 1;
+`
+
+const ModalContent = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100px 0 50px;
+  width: 100%;
+  min-height: 100%;
 `
