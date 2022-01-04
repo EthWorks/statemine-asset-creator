@@ -16,12 +16,7 @@ interface Props {
   withFreeBalance?: boolean
 }
 
-export function AccountTile(
-  {
-    account,
-    chain,
-    withFreeBalance
-  }: Props): JSX.Element {
+export function AccountTile({ account, chain, withFreeBalance }: Props): JSX.Element {
   const balance = useBalances(account.address, chain)
   const { chainDecimals, chainToken } = useChainToken(chain) || {}
 
