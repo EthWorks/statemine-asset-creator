@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components'
 
-import { SettingsIcon, TransferIcon, ViewIcon } from '../icons'
+import { ViewIcon } from '../icons'
 
 interface AssetsCardMenuProps {
   isOpen: boolean
@@ -11,20 +11,8 @@ export const AssetsCardMenu = ({ isOpen }:AssetsCardMenuProps):JSX.Element => (
     <CardMenu>
       <li>
         <MenuLink href="">
-          <TransferIcon width='20' height='20' />
-          Transfer assets
-        </MenuLink>
-      </li>
-      <li>
-        <MenuLink href="">
           <ViewIcon width='20' height='20' />
           View in explorer
-        </MenuLink>
-      </li>
-      <li>
-        <MenuLink href="">
-          <SettingsIcon width='20' height='20' />
-          Manage
         </MenuLink>
       </li>
     </CardMenu>
@@ -68,11 +56,6 @@ const CardMenu = styled.ul`
     
     & + li {
       margin-top: 12px;
-    }
-    
-    &:last-child {
-      padding-top: 12px;
-      border-top: 1px solid ${({ theme }) => theme.colors.gray[600]};
     }
   }
 `
