@@ -1,23 +1,24 @@
 import Image from 'next/image'
 import styled from 'styled-components'
 
+import { Chains } from 'use-substrate'
+
 import arrow from '../../assets/arrow-right.svg'
 import { chainLogoPicker } from '../../formaters/chainLogoPicker'
-import { ChainName } from '../../globalTypes'
 import { Text } from '../typography'
 
 export interface ChainIdentifierProps {
-  chainFrom: ChainName,
-  chainTo?: ChainName
+  chainMain: Chains,
+  chainTo?: Chains
 }
 
-export const ChainIdentifier = ({ chainFrom, chainTo }: ChainIdentifierProps): JSX.Element => (
+export const ChainIdentifier = ({ chainMain, chainTo }: ChainIdentifierProps): JSX.Element => (
   <IdentifierWrapper>
     <IdentifierItem>
       <ImageWrapper>
-        <Image width='25' height='25' src={chainLogoPicker(chainFrom)} alt={chainFrom} />
+        <Image width='25' height='25' src={chainLogoPicker(chainMain)} alt={chainMain} />
       </ImageWrapper>
-      <Text color='white' bold size='XS'>{chainFrom}</Text>
+      <StyledText color='white' bold size='XS'>{chainMain}</StyledText>
     </IdentifierItem>
     {chainTo && (
       <>
@@ -28,7 +29,7 @@ export const ChainIdentifier = ({ chainFrom, chainTo }: ChainIdentifierProps): J
           <ImageWrapper>
             <Image width='25' height='25' src={chainLogoPicker(chainTo)} alt={chainTo} />
           </ImageWrapper>
-          <Text color='white' bold size='XS'>{chainTo}</Text>
+          <StyledText color='white' bold size='XS'>{chainTo}</StyledText>
         </IdentifierItem>
       </>
     )}
@@ -51,4 +52,8 @@ const ImageWrapper = styled.div`
 
 const ArrowWrapper = styled.div`
   margin: 0 10px;
+`
+
+const StyledText = styled(Text)`
+  text-transform: capitalize;
 `

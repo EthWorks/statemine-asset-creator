@@ -175,7 +175,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelect
             <TransactionInfoBlock name='Teleport' number={1} status={mapToTransactionInfoBlockStatus(teleportTransaction.status)}>
               <InfoRow>
                 <Label>Chain</Label>
-                <ChainIdentifier chainFrom='Kusama' chainTo='Statemine' />
+                <ChainIdentifier chainMain={Chains.Kusama} chainTo={Chains.Statemine} />
               </InfoRow>
               <InfoRow>
                 <Label>Teleport amount</Label>
@@ -186,7 +186,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelect
           <TransactionInfoBlock name='Asset Creation' number={displayTeleportContent ? 2 : 1} status={mapToTransactionInfoBlockStatus(createAssetTransaction.status)}>
             <InfoRow>
               <Label>Chain</Label>
-              <ChainIdentifier chainFrom='Statemine' />
+              <ChainIdentifier chainMain={Chains.Statemine} />
             </InfoRow>
             <InfoRow>
               <Label>Deposit</Label>

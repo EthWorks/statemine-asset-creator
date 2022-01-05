@@ -32,4 +32,4 @@ const Template: Story<ChainIdentifierProps> = (args) =>
   <ChainIdentifier {...args} />
 
 export const Base = Template.bind({})
-Base.args = { chainFrom: 'Statemine' }
+Base.args = { chainMain: 'Statemine' }
