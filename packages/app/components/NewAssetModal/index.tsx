@@ -9,7 +9,7 @@ import { FirstStep } from './FirstStep'
 import { SecondStep } from './SecondStep'
 import { ThirdStep } from './ThirdStep'
 
-export function NewAssetModal({ isOpen, closeModal }: NewAssetModalProps): JSX.Element {
+export function NewAssetModal({ isOpen, closeModal, openAccountSelectModal }: NewAssetModalProps): JSX.Element {
   const [activeStep, setActiveStep] = useState<number>(1)
   const [stepBarVisible, setStepBarVisible] = useState<boolean>(true)
 
@@ -32,7 +32,12 @@ export function NewAssetModal({ isOpen, closeModal }: NewAssetModalProps): JSX.E
         return <SecondStep onNext={() => _moveToStep(3)} onBack={() => _moveToStep(1)}/>
       }
       default: {
-        return <ThirdStep onNext={_onClose} onBack={() => _moveToStep(2)} setStepBarVisible={setStepBarVisible}/>
+        return <ThirdStep
+          onNext={_onClose}
+          onBack={() => _moveToStep(2)}
+          setStepBarVisible={setStepBarVisible}
+          openAccountSelectModal={openAccountSelectModal}
+        />
       }
     }
   }

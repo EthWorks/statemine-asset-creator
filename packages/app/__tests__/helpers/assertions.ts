@@ -74,6 +74,18 @@ export const assertModalClosed = () => {
   expect(screen.queryByTestId('modal')).toBeFalsy()
 }
 
+export async function assertInfobox(text: string, type: 'info' | 'warning' = 'info') {
+  const infobox = await screen.findByTestId(`infobox-${type}`)
+
+  expect(infobox).toHaveTextContent(text)
+}
+
+export function assertNoInfobox(type: 'info' | 'warning' = 'info') {
+  const infobox = screen.queryByTestId(`infobox-${type}`)
+
+  expect(infobox).toBeNull()
+}
+
 export async function assertInputHint(inputName: string, hint: string) {
   const input = await screen.findByLabelText(inputName)
 

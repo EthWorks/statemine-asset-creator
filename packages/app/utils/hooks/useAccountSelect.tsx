@@ -12,6 +12,7 @@ interface UseAccountSelect {
   accountInfo?: string;
   setAccountInfo: (accountInfo: string | undefined) => void;
   hasFreeBalance?: boolean;
+  clearData: () => void
 }
 
 export function useAccountSelect(accounts: UseAccounts, chain: Chains): UseAccountSelect {
@@ -27,5 +28,13 @@ export function useAccountSelect(accounts: UseAccounts, chain: Chains): UseAccou
     setAccount(activeAccount)
   }, [accounts.allAccounts, activeAccountId])
 
-  return { account, setAccount, accountInfo, setAccountInfo, hasFreeBalance }
+  const clearData = (): void => {
+    setAccount(
+      activeAccountId
+        ? { address: activeAccountId.address.toString(), name: activeAccountId.name }
+        : undefined
+    )
+  }
+
+  return { account, setAccount, accountInfo, setAccountInfo, hasFreeBalance, clearData }
 }

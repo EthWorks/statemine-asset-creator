@@ -1,5 +1,6 @@
 import type { ModalStep } from './types'
 
+import styled from 'styled-components'
 import { useEffect, useMemo, useState } from 'react'
 
 import { Chains, useActiveAccount, useChainToken } from 'use-substrate'
@@ -7,6 +8,7 @@ import { Chains, useActiveAccount, useChainToken } from 'use-substrate'
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { FormatBalance } from '../FormatBalance'
 import { ArrowLeft, ArrowRight } from '../icons'
+import { Info } from '../Info'
 import { Loader } from '../Loader'
 import { InfoRow, TransactionInfoBlock } from '../TransactionInfoBlock/TransactionInfoBlock'
 import { Label, Text } from '../typography'
@@ -26,14 +28,16 @@ enum ThirdStepState {
   AwaitingSign = 'AwaitingSign',
 }
 
-interface StepBarProps {
+interface Props {
+  openAccountSelectModal: () => void,
   setStepBarVisible: (arg: boolean) => void
 }
 
-export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & StepBarProps): JSX.Element {
+export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelectModal }: ModalStep & Props): JSX.Element {
   const [state, setState] = useState<ThirdStepState>(ThirdStepState.Loading)
   const { transaction: createAssetTransaction, stepDetails: createAssetStepDetails, createAssetDeposit } = useCreateAssetTransaction() || {}
   const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
+  const { activeAccount: kusamaActiveAccount } = useActiveAccount(Chains.Kusama)
 
   const transactionFee = createAssetTransaction?.paymentInfo?.partialFee
   const { activeAccount } = useActiveAccount(Chains.Statemine)
@@ -103,6 +107,23 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
     }
   }
 
+  const requiredTeleportInfo = (
+    <StyledInfo
+      text='Insufficient funds on the owner account to create the asset. Teleport transaction from selected Kusama account will be executed'
+    />
+  )
+
+  const noKusamaAccountWarning = (
+    <StyledInfo
+      text='Insufficient funds on the owner account to create the asset. Cannot execute teleport transaction due to not selected Kusama account.'
+      type='warning'
+      action={{
+        name: 'Select Kusama account',
+        onClick: openAccountSelectModal
+      }}
+    />
+  )
+
   return (
     <>
       {createAssetStepDetails && (
@@ -127,6 +148,10 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
       )}
       {!isContentHidden && (
         <div data-testid='third-step-content'>
+          {state === ThirdStepState.TeleportReady && (kusamaActiveAccount
+            ? requiredTeleportInfo
+            : noKusamaAccountWarning)
+          }
           <TransactionInfoBlock status='baseInfo'>
             <InfoRow>
               <Label>Asset name</Label>
@@ -192,3 +217,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
     </>
   )
 }
+
+const StyledInfo = styled(Info)`
+  margin-bottom: 16px;
+`

@@ -74,7 +74,6 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
       />
       {insufficientFundsAdmins.length > 0 && (
         <Info
-          type='info'
           text={`Insufficient funds on the ${listedAdmins} account${insufficientFundsAdmins.length > 1 ? 's' : ''} to create assets.`}
         />
       )}

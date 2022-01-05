@@ -2,21 +2,32 @@ import type { FC } from 'react'
 
 import styled from 'styled-components'
 
-import { InfoIcon } from '../icons/InfoIcon'
+import { ButtonTertiary } from '../button/Button'
+import { InfoIcon } from '../icons'
 import { Text } from '../typography'
 
 export interface InfoProps {
-  type: 'info' | 'warning',
-  text: string
+  type?: 'info' | 'warning',
+  text: string,
+  className?: string,
+  action?: {
+    name: string,
+    onClick: () => void
+  }
 }
 
-export const Info: FC<InfoProps> = ({ text, type }) => (
-  <InfoWrapper type={type} data-testid='infobox'>
+export const Info: FC<InfoProps> = ({ text, type = 'info', className, action }) => (
+  <InfoWrapper className={className} type={type} data-testid={`infobox-${type}`}>
     <div>
       <InfoIcon />
       <Text size='SM'>{type}</Text>
     </div>
     <Text size='SM' color='white'>{text}</Text>
+    {action && (
+      <ButtonTertiary onClick={action.onClick}>
+        {action.name}
+      </ButtonTertiary>
+    )}
   </InfoWrapper>
 )
 
@@ -52,5 +63,9 @@ const InfoWrapper = styled.div<Pick<InfoProps, 'type'>>`
       stroke: ${({ type }) => type === 'warning' ? ({ theme }) => theme.colors.redDark : ({ theme }) => theme.colors.indigo};
       margin-right: 11px;
     }
+  }
+  
+  button {
+    margin: 8px auto 0;
   }
 `
