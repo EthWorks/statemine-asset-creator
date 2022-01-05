@@ -5,8 +5,7 @@ import { TooltipBox } from '../Tooltip'
 import { FormatBalance, Label } from '..'
 
 export interface TransactionCostSummaryProps {
-  decimalsAmount: number,
-  decimalsFee: number,
+  decimals: number,
   token: string,
   totalAmount: BN,
   totalFee: BN,
@@ -14,16 +13,16 @@ export interface TransactionCostSummaryProps {
   totalAmountInfo?: string
 }
 
-export const TransactionCostSummary = ({ decimalsAmount, decimalsFee, totalAmount, totalFee, token }: TransactionCostSummaryProps): JSX.Element => (
-  <TransactionCostSummaryWrapper>
+export const TransactionCostSummary = ({ decimals, totalAmount, totalFee, token }: TransactionCostSummaryProps): JSX.Element => (
+  <TransactionCostSummaryWrapper data-testid='transaction-cost-summary'>
     <StyledLabel>Total amount:</StyledLabel>
     <BalanceWrapper>
-      <FormatBalance chainDecimals={decimalsAmount} token={token} value={totalAmount} />
+      <FormatBalance chainDecimals={decimals} token={token} value={totalAmount} />
       <TooltipBox text='Total amount tooltip info' />
     </BalanceWrapper>
     <StyledLabel>Transaction fee:</StyledLabel>
     <BalanceWrapper>
-      <FormatBalance chainDecimals={decimalsFee} token={token} value={totalFee} />
+      <FormatBalance chainDecimals={decimals} token={token} value={totalFee} />
       <TooltipBox text='Transaction fee tooltip info' />
     </BalanceWrapper>
   </TransactionCostSummaryWrapper>
