@@ -1,7 +1,7 @@
 import type { ModalStep } from './types'
 
-import styled from 'styled-components'
 import { useEffect, useMemo, useState } from 'react'
+import styled from 'styled-components'
 
 import { Chains, useActiveAccount, useChainToken } from 'use-substrate'
 
