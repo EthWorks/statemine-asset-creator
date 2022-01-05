@@ -5,7 +5,7 @@ import { useActiveAccounts } from './useActiveAccounts'
 
 export type ActiveAccount = { address: AccountId, name?: string };
 
-interface UseActiveAccount {
+export interface UseActiveAccount {
   activeAccount: ActiveAccount | undefined,
   setActiveAccount: (account: ActiveAccount) => void
 }

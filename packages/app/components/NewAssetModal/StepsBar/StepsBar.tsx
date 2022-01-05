@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import { Step } from './Step'
 
-const NAVIGATION_STEPS = ['General info', 'Accounts', 'Mint', 'Summary']
+const NAVIGATION_STEPS = ['General info', 'Accounts', 'Summary']
 
 export interface StepsBarProps {
   optional?: boolean,

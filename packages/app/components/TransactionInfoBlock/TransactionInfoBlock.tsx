@@ -36,7 +36,7 @@ export const TransactionInfoBlock = ({ children, name, number, status = 'ready' 
     {status !== 'done' &&
       <ContentWrapper>
         <InfoContainer>{children}</InfoContainer>
-        {status === 'baseInfo' && <CoinWrapper><Image src={Coin} width='120' height='120' /></CoinWrapper>}
+        {status === 'baseInfo' && <CoinWrapper><Image src={Coin} width='120' height='120' alt='' /></CoinWrapper>}
       </ContentWrapper>
     }
   </BlockWrapper>

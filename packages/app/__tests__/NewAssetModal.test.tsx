@@ -1,23 +1,27 @@
 import type { RenderResult } from '@testing-library/react'
 import type { RuntimeDispatchInfo } from '@polkadot/types/interfaces'
-import type { ErrorDetails, UseTransaction } from 'use-substrate'
+import type { ErrorDetails, UseActiveAccount, UseTransaction } from 'use-substrate'
 
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import BN from 'bn.js'
 import React from 'react'
 
-import { TransactionStatus } from 'use-substrate'
+import { Chains, TransactionStatus } from 'use-substrate'
 
 import { NewAssetModal } from '../components'
+import { DECIMALS_LIMIT } from '../components/NewAssetModal/FirstStep'
 import { TransactionInfoBlockStatus } from '../components/TransactionInfoBlock/TransactionInfoBlock'
 import { BN_ZERO as MOCK_BN_ZERO, useToggle } from '../utils'
 import {
   assertButtonDisabled,
   assertButtonNotDisabled,
+  assertInfobox,
   assertInput,
   assertInputError,
+  assertInputHint,
   assertInputValue,
   assertModalClosed,
+  assertNoInfobox,
   assertNoInputError,
   assertText,
   assertTextInAccountSelect,
@@ -44,20 +48,28 @@ import {
   mockUseCreateAssetDeposit
 } from './mocks'
 
+const openAccountSelectModal = jest.fn()
+
 function TestComponent(): JSX.Element {
   const [isOpen, toggleOpen] = useToggle()
 
   return (
     <>
       {!isOpen && <button onClick={toggleOpen}>Create new asset</button>}
-      <NewAssetModal isOpen={isOpen} closeModal={toggleOpen}/>
+      <NewAssetModal
+        isOpen={isOpen}
+        closeModal={toggleOpen}
+        openAccountSelectModal={openAccountSelectModal}
+      />
     </>
   )
 }
-
-const FEE = '30000000000'
+const FEE = new BN('30000000000')
+const EXPECTED_TELEPORT_AMOUNT = mockUseBalancesConstants.existentialDeposit.add(FEE).add(mockUseCreateAssetDeposit)
 const mockTransaction = jest.fn()
-let mockUseTransaction: UseTransaction = { tx: mockTransaction, paymentInfo: { partialFee: new BN(FEE) } as RuntimeDispatchInfo, status: TransactionStatus.Ready }
+let mockUseTransaction: UseTransaction = { tx: mockTransaction, paymentInfo: { partialFee: FEE } as RuntimeDispatchInfo, status: TransactionStatus.Ready }
+const mockTeleport = jest.fn()
+let mockUseTeleport: UseTransaction = { tx: mockTeleport, paymentInfo: { partialFee: FEE } as RuntimeDispatchInfo, status: TransactionStatus.Ready }
 const ASSET_ID = '7'
 const MIN_BALANCE = '300'
 const ASSET_NAME = 'kusama'
@@ -87,6 +99,8 @@ const mockedUseBalances = (address: string) => {
   }
 }
 
+let mockActiveAccount: (chain?: Chains) => UseActiveAccount = () => mockUseActiveAccount
+
 jest.mock('use-substrate/dist/src/hooks', () => ({
   useAccounts: () => mockUseAccounts,
   useApi: () => mockUseApi,
@@ -94,10 +108,11 @@ jest.mock('use-substrate/dist/src/hooks', () => ({
   useAssetsConstants: () => mockUseAssetsConstants,
   useBalances: (account: string) => mockedUseBalances(account),
   useTransaction: () => mockUseTransaction,
-  useActiveAccount: () => mockUseActiveAccount,
+  useActiveAccount: (chain: Chains) => mockActiveAccount(chain),
   useCreateAssetDeposit: () => mockUseCreateAssetDeposit,
   useChainToken: () => mockUseChainToken,
-  useBalancesConstants: () => mockUseBalancesConstants
+  useBalancesConstants: () => mockUseBalancesConstants,
+  useTeleport: () => mockUseTeleport
 }))
 
 const mockedStringLimit = mockUseAssetsConstants.stringLimit.toNumber()
@@ -105,7 +120,7 @@ const mockedStringLimit = mockUseAssetsConstants.stringLimit.toNumber()
 describe('New asset modal', () => {
   beforeEach(() => {
     mockTransaction.mockClear()
-    setTransactionStatus(TransactionStatus.Ready)
+    setCreateAssetTransactionStatus(TransactionStatus.Ready)
     mockUseApi.api.tx.assets.create.mockClear()
     mockUseApi.api.tx.assets.setMetadata.mockClear()
     mockUseApi.api.tx.assets.setTeam.mockClear()
@@ -152,12 +167,12 @@ describe('New asset modal', () => {
       fillFirstStep()
       await findAndClickButton('Next')
       await screen.findByText('Admin account')
-      assertSteps(['past', 'active', 'unvisited', 'unvisited'])
+      assertSteps(['past', 'active', 'unvisited'])
 
       await findAndClickButton('Back')
 
       assertFirstStepFilled()
-      assertSteps(['active', 'unvisited', 'unvisited', 'unvisited'])
+      assertSteps(['active', 'unvisited', 'unvisited'])
     })
 
     describe('step bar', () => {
@@ -165,12 +180,12 @@ describe('New asset modal', () => {
         renderModal()
 
         await openModal()
-        assertSteps(['active', 'unvisited', 'unvisited', 'unvisited'])
+        assertSteps(['active', 'unvisited', 'unvisited'])
 
         fillFirstStep()
         clickButton('Next')
 
-        assertSteps(['past', 'active', 'unvisited', 'unvisited'])
+        assertSteps(['past', 'active', 'unvisited'])
       })
     })
   })
@@ -244,7 +259,21 @@ describe('New asset modal', () => {
 
           assertInputValue('Asset decimals', '15')
         })
+
+        it('shows error and disables next button when exceeded decimals limit', async () => {
+          typeInInput('Asset decimals', (DECIMALS_LIMIT + 1).toString())
+
+          await assertInputError('Asset decimals', 'Value too large')
+          assertButtonDisabled('Next')
+        })
       })
+    })
+
+    it('shows hint on asset decimals input', async () => {
+      renderModal()
+      await openModal()
+
+      await assertInputHint('Asset decimals', `Max allowed value is ${DECIMALS_LIMIT}`)
     })
   })
 
@@ -274,9 +303,7 @@ describe('New asset modal', () => {
         await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
         await assertTextInAccountSelect('BOB', FREEZER_DROPDOWN_INDEX)
 
-        const infobox = await screen.findByTestId('infobox')
-
-        expect(infobox).toHaveTextContent('Insufficient funds on the Admin account to create assets.')
+        await assertInfobox('Insufficient funds on the Admin account to create assets.')
       })
 
       it('for two accounts', async () => {
@@ -287,9 +314,7 @@ describe('New asset modal', () => {
         await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
         await assertTextInAccountSelect('BOB', FREEZER_DROPDOWN_INDEX)
 
-        const infobox = await screen.findByTestId('infobox')
-
-        expect(infobox).toHaveTextContent('Insufficient funds on the Admin and Issuer accounts to create assets.')
+        await assertInfobox('Insufficient funds on the Admin and Issuer accounts to create assets.')
       })
 
       it('for three accounts', async () => {
@@ -300,9 +325,7 @@ describe('New asset modal', () => {
         await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
         await assertTextInAccountSelect('ALICE', FREEZER_DROPDOWN_INDEX)
 
-        const infobox = await screen.findByTestId('infobox')
-
-        expect(infobox).toHaveTextContent('Insufficient funds on the Admin, Issuer and Freezer accounts to create assets.')
+        await assertInfobox('Insufficient funds on the Admin, Issuer and Freezer accounts to create assets.')
       })
     })
 
@@ -392,13 +415,15 @@ describe('New asset modal', () => {
         })
 
         it('AwaitingSign', async () => {
-          setTransactionStatus(TransactionStatus.AwaitingSign)
+          setCreateAssetTransactionStatus(TransactionStatus.AwaitingSign)
 
           renderModal()
           await enterThirdStep()
 
           assertStepsBarVisible()
           assertContentVisible()
+
+          await findAndClickButton('Confirm')
 
           assertButtonDisabled('Confirm')
           assertButtonDisabled('Back')
@@ -412,7 +437,7 @@ describe('New asset modal', () => {
 
       describe('hides content and shows pending transaction for ongoing transaction', () => {
         it('InBlock', async () => {
-          setTransactionStatus(TransactionStatus.InBlock)
+          setCreateAssetTransactionStatus(TransactionStatus.InBlock)
 
           renderModal()
           await enterThirdStep()
@@ -428,7 +453,7 @@ describe('New asset modal', () => {
         })
 
         it('Success', async () => {
-          setTransactionStatus(TransactionStatus.Success)
+          setCreateAssetTransactionStatus(TransactionStatus.Success)
 
           renderModal()
           await enterThirdStep()
@@ -548,7 +573,7 @@ describe('New asset modal', () => {
         })
 
         it('enables to go back to dashboard', async () => {
-          setTransactionStatus(TransactionStatus.Success)
+          setCreateAssetTransactionStatus(TransactionStatus.Success)
 
           renderModal()
           await enterThirdStep()
@@ -563,8 +588,51 @@ describe('New asset modal', () => {
     })
 
     describe('proposes kusama teleport if account has insufficient funds', () => {
+      describe('displays', () => {
+        it('info about teleport execution', async () => {
+          mockUseBalances.availableBalance = new BN(0)
+
+          renderModal()
+          await enterThirdStep()
+
+          await assertInfobox('Insufficient funds on the owner account to create the asset. Teleport transaction from selected Kusama account will be executed')
+        })
+
+        it('warning about missing kusama account with a button', async () => {
+          mockUseBalances.availableBalance = new BN(0)
+          mockActiveAccount = (chain: Chains | undefined) => {
+            switch (chain) {
+              case Chains.Kusama:
+                return { activeAccount: undefined, setActiveAccount: () => { /**/ } }
+              default:
+                return mockUseActiveAccount
+            }
+          }
+
+          renderModal()
+          await enterThirdStep()
+
+          await assertInfobox('Insufficient funds on the owner account to create the asset. Cannot execute teleport transaction due to not selected Kusama account.Select Kusama account', 'warning')
+          await findAndClickButton('Select Kusama account')
+
+          expect(openAccountSelectModal).toBeCalledTimes(1)
+        })
+
+        it('hides info after teleport transaction', async () => {
+          mockUseBalances.availableBalance = EXPECTED_TELEPORT_AMOUNT.addn(1)
+          setTeleportTransactionStatus(TransactionStatus.Success)
+
+          renderModal()
+          await enterThirdStep()
+
+          await assertNoInfobox()
+          await assertNoInfobox('warning')
+        })
+      })
+
       describe('displays transaction info', () => {
         it('when statemine account has zero funds', async () => {
+          setTeleportTransactionStatus(TransactionStatus.Ready)
           mockUseBalances.availableBalance = new BN(0)
           renderModal()
           await enterThirdStep()
@@ -596,6 +664,61 @@ describe('New asset modal', () => {
             'Deposit140.0000KSM',
             'Statemine fee0.0300KSM'
           ])
+        })
+
+        it('after successful teleport', async () => {
+          mockUseBalances.availableBalance = EXPECTED_TELEPORT_AMOUNT.addn(1)
+          setTeleportTransactionStatus(TransactionStatus.Success)
+
+          renderModal()
+          await enterThirdStep()
+
+          await assertTransactionInfoBlock(1, 'done', [])
+
+          await assertTransactionInfoBlock(2, 'ready', [
+            'ChainStatemine',
+            'Deposit140.0000KSM',
+            'Statemine fee0.0300KSM'
+          ])
+        })
+      })
+
+      describe('executes teleport transaction', () => {
+        beforeAll(() => {
+          mockUseBalances.availableBalance = new BN(0)
+        })
+
+        it('hides content and shows pending transaction modal for ongoing transaction', async () => {
+          setTeleportTransactionStatus(TransactionStatus.InBlock)
+
+          renderModal()
+          await enterThirdStep()
+
+          assertStepsBarHidden()
+          assertContentHidden()
+
+          const modalContent = screen.getByTestId('status-step-InBlock')
+          expect(modalContent).toHaveTextContent('Pending transaction 1/2...')
+          expect(modalContent).toHaveTextContent('Transaction #1')
+          expect(modalContent).toHaveTextContent('Teleport')
+          expect(modalContent).toHaveTextContent('It takes time to teleport. In order to do so, we need to create a transaction and wait until blockchain validates it.')
+        })
+
+        it('hides content and shows error modal when transaction was rejected', async () => {
+          setTeleportErrorDetails([
+            errorDetail({ section: 'Unknown', name: 'Subscription error', docs: undefined })
+          ])
+
+          renderModal()
+          await enterThirdStep()
+
+          assertStepsBarHidden()
+          assertContentHidden()
+
+          const modalContent = screen.getByTestId('status-step-Error')
+          expect(modalContent).toHaveTextContent('Something went wrong')
+          expect(modalContent).toHaveTextContent('[Unknown.Subscription error]')
+          assertButtonNotDisabled('Back to dashboard')
         })
       })
     })
@@ -740,9 +863,16 @@ interface TestErrorDetails {
   docs?: string[];
 }
 
-const setTransactionStatus = (status: TransactionStatus) => {
+const setCreateAssetTransactionStatus = (status: TransactionStatus) => {
   mockUseTransaction = {
     ...mockUseTransaction,
+    status
+  }
+}
+
+const setTeleportTransactionStatus = (status: TransactionStatus) => {
+  mockUseTeleport = {
+    ...mockUseTeleport,
     status
   }
 }
@@ -750,6 +880,14 @@ const setTransactionStatus = (status: TransactionStatus) => {
 const setErrorDetails = (errorDetails: ErrorDetails[] | undefined) => {
   mockUseTransaction = {
     ...mockUseTransaction,
+    status: TransactionStatus.Error,
+    errorDetails
+  }
+}
+
+const setTeleportErrorDetails = (errorDetails: ErrorDetails[] | undefined) => {
+  mockUseTeleport = {
+    ...mockUseTeleport,
     status: TransactionStatus.Error,
     errorDetails
   }

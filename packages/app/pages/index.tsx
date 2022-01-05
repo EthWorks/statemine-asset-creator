@@ -29,18 +29,18 @@ const Home: NextPage = () => {
   const assets = useAssets(Chains.Statemine, { owner: address })
   const [isNewAssetModalOpen, toggleNewAssetModalOpen] = useToggle()
   const [isConnectWalletModalOpen, toggleConnectWalletModalOpen, setConnectWalletModalOpen] = useToggle(!extensionActivated())
-  const [isAccountSelectModalOpen, toggleSelectAccountModalOpen, setSelectAccountModalOpen] = useToggle()
+  const [isAccountSelectModalOpen, toggleAccountSelectModalOpen, setAccountSelectModalOpen] = useToggle()
 
   const { connectionState: statemineConnectionState } = useApi(Chains.Statemine)
   const { connectionState: kusamaConnectionState } = useApi(Chains.Kusama)
 
   useEffect(() => {
-    setSelectAccountModalOpen(extensionActivated() && !address)
-  }, [address, setSelectAccountModalOpen])
+    setAccountSelectModalOpen(extensionActivated() && !address)
+  }, [address, setAccountSelectModalOpen])
 
   const onExtensionActivated = (): void => {
     setConnectWalletModalOpen(false)
-    setSelectAccountModalOpen(true)
+    setAccountSelectModalOpen(true)
   }
 
   async function enableWeb3(): Promise<boolean | void> {
@@ -69,7 +69,7 @@ const Home: NextPage = () => {
         header={
           <div data-testid='page-header'>
             {address
-              ? <ActiveAccountBar onClick={toggleSelectAccountModalOpen}/>
+              ? <ActiveAccountBar onClick={toggleAccountSelectModalOpen}/>
               : <ButtonPrimary onClick={toggleConnectWalletModalOpen}>Connect</ButtonPrimary>
             }
           </div>
@@ -93,20 +93,18 @@ const Home: NextPage = () => {
             </StyledCard>
           </PageBox>
         }
-        <PageBox size='large' title='In your wallet'>
-          <StyledCard padding='m'>
-            <StyledCardTitle size="SM" color="white">You don’t have any assets in your wallet</StyledCardTitle>
-            <Text size="SM">Balance of your Statemine Assets will show here</Text>
-          </StyledCard>
-        </PageBox>
 
-        <NewAssetModal isOpen={isNewAssetModalOpen} closeModal={toggleNewAssetModalOpen}/>
+        <NewAssetModal
+          isOpen={isNewAssetModalOpen}
+          closeModal={toggleNewAssetModalOpen}
+          openAccountSelectModal={toggleAccountSelectModalOpen}
+        />
         <ConnectWalletModal
           isOpen={isConnectWalletModalOpen}
           closeModal={toggleConnectWalletModalOpen}
           onExtensionActivated={onExtensionActivated}
         />
-        <AccountSelectModal isOpen={isAccountSelectModalOpen} closeModal={toggleSelectAccountModalOpen}/>
+        <AccountSelectModal isOpen={isAccountSelectModalOpen} closeModal={toggleAccountSelectModalOpen}/>
       </PageTemplate>
     </>
   )

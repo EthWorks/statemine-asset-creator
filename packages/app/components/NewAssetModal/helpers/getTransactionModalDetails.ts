@@ -1,13 +1,11 @@
 import type { ErrorDetails } from 'use-substrate'
-import type { TransactionStateProps } from '../TransactionState/TransactionState'
+import type { StepDetails } from '../types'
 
 import { TransactionStatus } from 'use-substrate'
 
-export type StepDetails = Omit<TransactionStateProps, 'status' | 'onClose'> | undefined
-
 const DEFAULT_ERROR_MESSAGE = 'Unknown error.'
 
-export function getTransactionModalDetails(status: TransactionStatus | undefined, errorDetails: ErrorDetails[] | undefined
+export function getCreateAssetTransactionModalDetails(status: TransactionStatus | undefined, errorDetails: ErrorDetails[] | undefined
 ): StepDetails {
   switch (status) {
     case (TransactionStatus.InBlock):
@@ -23,6 +21,28 @@ export function getTransactionModalDetails(status: TransactionStatus | undefined
         number: undefined,
         title: 'Congratulations!',
         text: 'Your asset have been created.'
+      }
+    case (TransactionStatus.Error):
+      return {
+        name: undefined,
+        number: undefined,
+        title: 'Something went wrong',
+        text: errorDetails ? formatErrorDetails(errorDetails) : DEFAULT_ERROR_MESSAGE
+      }
+    default:
+      return undefined
+  }
+}
+
+export function getTeleportTransactionModalDetails(status: TransactionStatus | undefined, errorDetails: ErrorDetails[] | undefined
+): StepDetails {
+  switch (status) {
+    case (TransactionStatus.InBlock):
+      return {
+        name: 'Teleport',
+        number: 1,
+        title: 'Pending transaction 1/2...',
+        text: 'It takes time to teleport. In order to do so, we need to create a transaction and wait until blockchain validates it.'
       }
     case (TransactionStatus.Error):
       return {
