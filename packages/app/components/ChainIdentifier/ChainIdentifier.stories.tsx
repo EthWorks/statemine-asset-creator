@@ -2,6 +2,8 @@ import type { ChainIdentifierProps } from '.'
 
 import { Story } from '@storybook/react'
 
+import { Chains } from 'use-substrate'
+
 import { ChainIdentifier } from '.'
 
 const Default = {
@@ -32,4 +34,4 @@ const Template: Story<ChainIdentifierProps> = (args) =>
   <ChainIdentifier {...args} />
 
 export const Base = Template.bind({})
-Base.args = { chainMain: 'Statemine' }
+Base.args = { chainMain: Chains.Statemine }
