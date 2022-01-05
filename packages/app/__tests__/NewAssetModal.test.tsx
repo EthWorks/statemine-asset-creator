@@ -11,7 +11,7 @@ import { Chains, TransactionStatus } from 'use-substrate'
 import { NewAssetModal } from '../components'
 import { DECIMALS_LIMIT } from '../components/NewAssetModal/FirstStep'
 import { TransactionInfoBlockStatus } from '../components/TransactionInfoBlock/TransactionInfoBlock'
-import { BN_ZERO as MOCK_BN_ZERO, useToggle } from '../utils'
+import { BN_ZERO as MOCK_BN_ZERO, STATESCAN_LINK, useToggle } from '../utils'
 import {
   assertButtonDisabled,
   assertButtonNotDisabled,
@@ -21,6 +21,7 @@ import {
   assertInputHint,
   assertInputValue,
   assertModalClosed,
+  assertNewTabOpened,
   assertNoInfobox,
   assertNoInputError,
   assertText,
@@ -721,6 +722,19 @@ describe('New asset modal', () => {
           assertButtonNotDisabled('Back to dashboard')
         })
       })
+    })
+
+    it('after asset creation opens asset\'s statescan page in new tab', async () => {
+      setCreateAssetTransactionStatus(TransactionStatus.Success)
+
+      renderModal()
+      await enterThirdStep()
+
+      assertStepsBarHidden()
+      assertContentHidden()
+
+      await findAndClickButton('View asset in explorer')
+      assertNewTabOpened(STATESCAN_LINK + ASSET_ID)
     })
   })
 })

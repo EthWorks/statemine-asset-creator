@@ -9,6 +9,7 @@ import { TransactionStatus } from 'use-substrate'
 import pending from '../../../assets/coin.gif'
 import complete from '../../../assets/complet.svg'
 import fail from '../../../assets/fail.svg'
+import { STATESCAN_LINK } from '../../../utils'
 import { ButtonOutline, ButtonTertiary } from '../../button/Button'
 import { ViewIcon } from '../../icons'
 import { Text } from '../../typography'
@@ -19,7 +20,8 @@ export interface TransactionStateProps {
   status: TransactionStatus | undefined,
   title: string,
   text: string
-  onClose: () => void
+  onClose: () => void,
+  assetId?: string
 }
 
 const getIcon = (status: TransactionStatus): StaticImageData => {
@@ -36,8 +38,16 @@ const getIcon = (status: TransactionStatus): StaticImageData => {
   }
 }
 
-export const TransactionState = ({ name, number, status, title, text, onClose }: TransactionStateProps): JSX.Element | null => {
+export const TransactionState = ({ name, number, status, title, text, onClose, assetId }: TransactionStateProps): JSX.Element | null => {
   if (!status || status === TransactionStatus.Ready || status === TransactionStatus.AwaitingSign) return null
+
+  const _onClick = (): void => {
+    window.open(
+      STATESCAN_LINK + assetId,
+      '_blank',
+      'noopener,noreferrer'
+    )
+  }
 
   return (
     <TransactionStateWrapper data-testid={`status-step-${status}`}>
@@ -55,7 +65,7 @@ export const TransactionState = ({ name, number, status, title, text, onClose }:
       <ButtonWrapper>
         {status === TransactionStatus.Success
           ? <>
-            <ButtonOutline>
+            <ButtonOutline onClick={_onClick}>
             View asset in explorer
               <ViewIcon width='20' height='20' />
             </ButtonOutline>
