@@ -18,7 +18,7 @@ export interface StaticImageData {
   placeholder?: string
 }
 
-export type StepDetails = Omit<TransactionStateProps, 'status' | 'onClose'> | undefined
+export type StepDetails = Omit<TransactionStateProps, 'status' | 'onClose' | 'number'> | undefined
 
 export interface Transaction {
   transaction: UseTransaction,

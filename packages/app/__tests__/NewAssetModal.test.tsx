@@ -675,6 +675,23 @@ describe('New asset modal', () => {
           assertButtonNotDisabled('Back to dashboard')
         })
       })
+
+      it('after teleport executes create asset transaction with correct data', async () => {
+        setTeleportTransactionStatus(TransactionStatus.Success)
+        setCreateAssetTransactionStatus(TransactionStatus.InBlock)
+
+        renderModal()
+        await enterThirdStep()
+
+        assertStepsBarHidden()
+        assertContentHidden()
+
+        const modalContent = screen.getByTestId('status-step-InBlock')
+        expect(modalContent).toHaveTextContent('Pending transaction 2/2...')
+        expect(modalContent).toHaveTextContent('Transaction #2')
+        expect(modalContent).toHaveTextContent('Asset Creation')
+        expect(modalContent).toHaveTextContent('It takes time to create your asset. In order to do so, we need to create a transaction and wait until blockchain validates it.')
+      })
     })
   })
 })

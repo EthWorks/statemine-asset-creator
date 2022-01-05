@@ -99,15 +99,19 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
     }
   }
 
+  const createAssetTransactionNumber = displayTeleportContent ? 2 : 1
+  const createAssetTransactionTitle = createAssetStepDetails?.title.replace(/{txNumber}/g, createAssetTransactionNumber.toString()) ?? ''
+  const teleportTransactionNumber = 1
+
   return (
     <>
       {createAssetStepDetails && (
         <TransactionState
           status={createAssetTransaction.status}
-          title={createAssetStepDetails.title}
+          title={createAssetTransactionTitle}
           text={createAssetStepDetails.text}
           name={createAssetStepDetails.name}
-          number={createAssetStepDetails.number}
+          number={createAssetTransactionNumber}
           onClose={onNext}
         />
       )}
@@ -117,7 +121,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
           title={teleportStepDetails.title}
           text={teleportStepDetails.text}
           name={teleportStepDetails.name}
-          number={teleportStepDetails.number}
+          number={1}
           onClose={onNext}
         />
       )}
@@ -146,7 +150,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
             </InfoRow>
           </TransactionInfoBlock>
           {displayTeleportContent && (
-            <TransactionInfoBlock name='Teleport' number={1} status={mapToTransactionInfoBlockStatus(teleportTransaction.status)}>
+            <TransactionInfoBlock name='Teleport' number={teleportTransactionNumber} status={mapToTransactionInfoBlockStatus(teleportTransaction.status)}>
               <InfoRow>
                 <Label>Chain</Label>
                 <Text size='XS' color='white' bold>Kusama</Text>
@@ -158,7 +162,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
               </InfoRow>
             </TransactionInfoBlock>
           )}
-          <TransactionInfoBlock name='Asset Creation' number={displayTeleportContent ? 2 : 1} status={mapToTransactionInfoBlockStatus(createAssetTransaction.status)}>
+          <TransactionInfoBlock name='Asset Creation' number={createAssetTransactionNumber} status={mapToTransactionInfoBlockStatus(createAssetTransaction.status)}>
             <InfoRow>
               <Label>Chain</Label>
               <Text size='XS' color='white' bold>Statemine</Text>
