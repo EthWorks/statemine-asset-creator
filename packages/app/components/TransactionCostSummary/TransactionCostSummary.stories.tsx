@@ -26,7 +26,8 @@ const Template: Story<TransactionCostSummaryProps> = (args) =>
 
 export const Base = Template.bind({})
 Base.args = {
-  decimals: 5,
+  decimalsAmount: 6,
+  decimalsFee: 5,
   totalAmount: new BN('12367891'),
   totalFee: new BN('00654298'),
   token: 'KSM'
