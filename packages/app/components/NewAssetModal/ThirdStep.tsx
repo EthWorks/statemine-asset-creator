@@ -5,10 +5,10 @@ import { useCallback, useEffect, useState } from 'react'
 import { Chains, TransactionStatus, useActiveAccount, useChainToken } from 'use-substrate'
 
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
+import { ChainIdentifier } from '../ChainIdentifier'
 import { FeeSelect } from '../FeeSelect'
 import { FormatBalance } from '../FormatBalance'
 import { ArrowLeft, ArrowRight } from '../icons'
-import { Identifier } from '../Identifier'
 import { Loader } from '../Loader'
 import { InfoRow, TransactionInfoBlock } from '../TransactionInfoBlock/TransactionInfoBlock'
 import { Label, Text } from '../typography'
@@ -93,7 +93,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
             <TransactionInfoBlock name='Teleport' number={1} status='ready'>
               <InfoRow>
                 <Label>Chain</Label>
-                <Identifier chainFrom='Kusama' chainTo='Statemine' />
+                <ChainIdentifier chainFrom='Kusama' chainTo='Statemine' />
               </InfoRow>
               <InfoRow>
                 <Label>Teleport amount</Label>
@@ -104,7 +104,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
           <TransactionInfoBlock name='Asset Creation' number={isTeleportRequired ? 2 : 1} status={mapToTransactionInfoBlockStatus(status)}>
             <InfoRow>
               <Label>Chain</Label>
-              <Identifier chainFrom='Statemine' />
+              <ChainIdentifier chainFrom='Statemine' />
             </InfoRow>
             <InfoRow>
               <Label>Deposit</Label>

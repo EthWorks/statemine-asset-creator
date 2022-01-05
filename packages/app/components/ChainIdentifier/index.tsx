@@ -6,12 +6,12 @@ import { chainLogoPicker } from '../../formaters/chainLogoPicker'
 import { ChainName } from '../../globalTypes'
 import { Text } from '../typography'
 
-export interface IdentifierProps {
+export interface ChainIdentifierProps {
   chainFrom: ChainName,
   chainTo?: ChainName
 }
 
-export const Identifier = ({ chainFrom, chainTo }: IdentifierProps): JSX.Element => (
+export const ChainIdentifier = ({ chainFrom, chainTo }: ChainIdentifierProps): JSX.Element => (
   <IdentifierWrapper>
     <IdentifierItem>
       <ImageWrapper>

@@ -1,18 +1,18 @@
-import type { IdentifierProps } from '.'
+import type { ChainIdentifierProps } from '.'
 
 import { Story } from '@storybook/react'
 
-import { Identifier } from '.'
+import { ChainIdentifier } from '.'
 
 const Default = {
-  title: 'Components/Identifier',
-  component: Identifier,
+  title: 'Components/ChainIdentifier',
+  component: ChainIdentifier,
   parameters: {
     layout: 'centered',
     backgrounds: {
       default: 'trueGray',
       values: [
-        { name: 'trueGray', value: 'rgba(0,0,0)' }
+        { name: 'trueGray', value: '#000000' }
       ]
     }
   },
@@ -28,8 +28,8 @@ const Default = {
 
 export default Default
 
-const Template: Story<IdentifierProps> = (args) =>
-  <Identifier {...args} />
+const Template: Story<ChainIdentifierProps> = (args) =>
+  <ChainIdentifier {...args} />
 
 export const Base = Template.bind({})
-Base.args = {}
+Base.args = { chainFrom: 'Statemine' }
