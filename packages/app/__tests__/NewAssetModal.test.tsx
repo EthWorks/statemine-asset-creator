@@ -676,7 +676,7 @@ describe('New asset modal', () => {
         })
       })
 
-      it('after teleport executes create asset transaction with correct data', async () => {
+      it('after teleport executes asset transaction with updated content', async () => {
         setTeleportTransactionStatus(TransactionStatus.Success)
         setCreateAssetTransactionStatus(TransactionStatus.InBlock)
 
