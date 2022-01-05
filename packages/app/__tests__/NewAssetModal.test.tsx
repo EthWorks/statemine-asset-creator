@@ -644,7 +644,8 @@ describe('New asset modal', () => {
 
           await assertTransactionInfoBlock(1, 'ready', [
             'ChainKusamaStatemine',
-            'Teleport amount140.0310KSM'
+            'Teleport amount140.0310KSM',
+            'Kusama fee0.0300KSM'
           ])
 
           await assertTransactionInfoBlock(2, 'ready', [
@@ -661,7 +662,8 @@ describe('New asset modal', () => {
 
           await assertTransactionInfoBlock(1, 'ready', [
             'ChainKusamaStatemine',
-            'Teleport amount140.0310KSM'
+            'Teleport amount140.0310KSM',
+            'Kusama fee0.0300KSM'
           ])
 
           await assertTransactionInfoBlock(2, 'ready', [

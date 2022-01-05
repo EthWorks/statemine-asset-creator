@@ -187,6 +187,10 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelect
                 <Label>Teleport amount</Label>
                 <FormatBalance chainDecimals={chainDecimals} token={chainToken} value={teleportAmount}/>
               </InfoRow>
+              <InfoRow>
+                <Label>Kusama fee</Label>
+                <FormatBalance chainDecimals={chainDecimals} token={chainToken} value={teleportTransaction.paymentInfo?.partialFee}/>
+              </InfoRow>
             </TransactionInfoBlock>
           )}
           <TransactionInfoBlock name='Asset Creation' number={displayTeleportContent ? 2 : 1} status={mapToTransactionInfoBlockStatus(createAssetTransaction.status)}>
