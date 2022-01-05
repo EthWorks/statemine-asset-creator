@@ -101,7 +101,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
 
   const createAssetTransactionNumber = displayTeleportContent ? 2 : 1
   const createAssetTransactionTitle = createAssetStepDetails?.title.replace(/{txNumber}/g, createAssetTransactionNumber.toString()) ?? ''
-  const teleportTransactionNumber = 1
+  const TELEPORT_TRANSACTION_NUMBER = 1
 
   return (
     <>
@@ -121,7 +121,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
           title={teleportStepDetails.title}
           text={teleportStepDetails.text}
           name={teleportStepDetails.name}
-          number={1}
+          number={TELEPORT_TRANSACTION_NUMBER}
           onClose={onNext}
         />
       )}
@@ -150,7 +150,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
             </InfoRow>
           </TransactionInfoBlock>
           {displayTeleportContent && (
-            <TransactionInfoBlock name='Teleport' number={teleportTransactionNumber} status={mapToTransactionInfoBlockStatus(teleportTransaction.status)}>
+            <TransactionInfoBlock name='Teleport' number={TELEPORT_TRANSACTION_NUMBER} status={mapToTransactionInfoBlockStatus(teleportTransaction.status)}>
               <InfoRow>
                 <Label>Chain</Label>
                 <Text size='XS' color='white' bold>Kusama</Text>
