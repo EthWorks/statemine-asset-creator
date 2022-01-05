@@ -1,6 +1,6 @@
 import type { ModalStep } from './types'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { Chains, useActiveAccount, useChainToken } from 'use-substrate'
 
@@ -88,6 +88,10 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
     }
   }, [createAssetTransaction?.status, setStepBarVisible])
 
+  const createAssetTransactionNumber = displayTeleportContent ? 2 : 1
+  const createAssetTransactionTitle = useMemo(() => createAssetStepDetails?.title.replace(/{txNumber}/g, createAssetTransactionNumber.toString()), [createAssetStepDetails?.title, createAssetTransactionNumber])
+  const TELEPORT_TRANSACTION_NUMBER = 1
+
   if (state === ThirdStepState.Loading || !ownerAddress || !createAssetTransaction || !teleportTransaction) return <Loader/>
 
   const _onSubmit = async (): Promise<void> => {
@@ -99,16 +103,12 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible }: ModalStep & Ste
     }
   }
 
-  const createAssetTransactionNumber = displayTeleportContent ? 2 : 1
-  const createAssetTransactionTitle = createAssetStepDetails?.title.replace(/{txNumber}/g, createAssetTransactionNumber.toString()) ?? ''
-  const TELEPORT_TRANSACTION_NUMBER = 1
-
   return (
     <>
       {createAssetStepDetails && (
         <TransactionState
           status={createAssetTransaction.status}
-          title={createAssetTransactionTitle}
+          title={createAssetTransactionTitle ?? ''}
           text={createAssetStepDetails.text}
           name={createAssetStepDetails.name}
           number={createAssetTransactionNumber}
