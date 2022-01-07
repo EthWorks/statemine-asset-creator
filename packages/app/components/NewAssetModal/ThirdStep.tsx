@@ -136,6 +136,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelect
           name={createAssetStepDetails.name}
           number={createAssetStepDetails.number}
           onClose={onNext}
+          assetId={assetId}
         />
       )}
       {teleportStepDetails && (
