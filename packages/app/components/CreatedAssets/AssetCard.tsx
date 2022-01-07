@@ -36,7 +36,10 @@ export const AssetCard: FC<AssetCardProps> = ({ asset }) => {
           <StyledButtonSquare onClick={toggleOpen}>
             <Dot />
           </StyledButtonSquare>
-          <AssetsCardMenu isOpen={isOpen} />
+          <AssetsCardMenu
+            assetId={asset.id}
+            isOpen={isOpen}
+          />
         </CardMenuContainer>
       </CardHeader>
       <CardContent>
