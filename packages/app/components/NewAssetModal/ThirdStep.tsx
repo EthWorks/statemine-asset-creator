@@ -1,6 +1,6 @@
 import type { ModalStep } from './types'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 
 import { Chains, useActiveAccount, useChainToken } from 'use-substrate'
@@ -10,6 +10,7 @@ import { FormatBalance } from '../FormatBalance'
 import { ArrowLeft, ArrowRight } from '../icons'
 import { Info } from '../Info'
 import { Loader } from '../Loader'
+import { TransactionCostSummary } from '../TransactionCostSummary'
 import { InfoRow, TransactionInfoBlock } from '../TransactionInfoBlock/TransactionInfoBlock'
 import { Label, Text } from '../typography'
 import { useNewAssetModal } from './context/useNewAssetModal'
@@ -91,6 +92,11 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelect
       setState(ThirdStepState.InProgress)
     }
   }, [createAssetTransaction?.status, setStepBarVisible])
+
+  const totalFee = useMemo(() => displayTeleportContent && teleportTransaction && teleportTransaction.paymentInfo
+    ? createAssetTransaction?.paymentInfo?.partialFee.add(teleportTransaction.paymentInfo?.partialFee)
+    : createAssetTransaction?.paymentInfo?.partialFee,
+  [createAssetTransaction?.paymentInfo?.partialFee, displayTeleportContent, teleportTransaction])
 
   if (state === ThirdStepState.Loading || !ownerAddress || !createAssetTransaction || !teleportTransaction) return <Loader/>
 
@@ -182,6 +188,10 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelect
                 <Label>Teleport amount</Label>
                 <FormatBalance chainDecimals={chainDecimals} token={chainToken} value={teleportAmount}/>
               </InfoRow>
+              <InfoRow>
+                <Label>Kusama fee</Label>
+                <FormatBalance chainDecimals={chainDecimals} token={chainToken} value={teleportTransaction.paymentInfo?.partialFee}/>
+              </InfoRow>
             </TransactionInfoBlock>
           )}
           <TransactionInfoBlock name='Asset Creation' number={displayTeleportContent ? 2 : 1} status={mapToTransactionInfoBlockStatus(createAssetTransaction.status)}>
@@ -198,7 +208,14 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelect
               <FormatBalance chainDecimals={chainDecimals} token={chainToken} value={transactionFee}/>
             </InfoRow>
           </TransactionInfoBlock>
-
+          {chainDecimals && chainToken && totalFee && teleportAmount && (
+            <TransactionCostSummary
+              decimals={chainDecimals}
+              token={chainToken}
+              totalAmount={teleportAmount.add(totalFee)}
+              totalFee={totalFee}
+            />
+          )}
           <ModalFooter contentPosition='between'>
             <ButtonOutline onClick={onBack} disabled={areButtonsDisabled}>
               <ArrowLeft />

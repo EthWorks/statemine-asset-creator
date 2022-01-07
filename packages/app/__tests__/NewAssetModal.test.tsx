@@ -381,6 +381,11 @@ describe('New asset modal', () => {
   })
 
   describe('Third step', () => {
+    beforeEach(() => {
+      setTeleportTransactionStatus(TransactionStatus.Ready)
+      setCreateAssetTransactionStatus(TransactionStatus.Ready)
+    })
+
     describe('account has statemine funds', () => {
       it('sends transaction on confirm', async () => {
         renderModal()
@@ -640,7 +645,8 @@ describe('New asset modal', () => {
 
           await assertTransactionInfoBlock(1, 'ready', [
             'ChainKusamaStatemine',
-            'Teleport amount140.0310KSM'
+            'Teleport amount140.0310KSM',
+            'Kusama fee0.0300KSM'
           ])
 
           await assertTransactionInfoBlock(2, 'ready', [
@@ -657,7 +663,8 @@ describe('New asset modal', () => {
 
           await assertTransactionInfoBlock(1, 'ready', [
             'ChainKusamaStatemine',
-            'Teleport amount140.0310KSM'
+            'Teleport amount140.0310KSM',
+            'Kusama fee0.0300KSM'
           ])
 
           await assertTransactionInfoBlock(2, 'ready', [
@@ -721,6 +728,30 @@ describe('New asset modal', () => {
           expect(modalContent).toHaveTextContent('[Unknown.Subscription error]')
           assertButtonNotDisabled('Back to dashboard')
         })
+      })
+    })
+
+    describe('displays summary', () => {
+      it('for create asset transaction', async () => {
+        mockUseBalances.availableBalance = EXPECTED_TELEPORT_AMOUNT.addn(1)
+
+        renderModal()
+        await enterThirdStep()
+
+        const summary = screen.getByTestId('transaction-cost-summary')
+        expect(summary).toHaveTextContent('Total amount:140.0610KSM')
+        expect(summary).toHaveTextContent('Transaction fee:0.0300KSM')
+      })
+
+      it('for teleport and create asset transactions', async () => {
+        mockUseBalances.availableBalance = new BN(0)
+
+        renderModal()
+        await enterThirdStep()
+
+        const summary = screen.getByTestId('transaction-cost-summary')
+        expect(summary).toHaveTextContent('Total amount:140.0910KSM')
+        expect(summary).toHaveTextContent('Transaction fee:0.0600KSM')
       })
     })
 
