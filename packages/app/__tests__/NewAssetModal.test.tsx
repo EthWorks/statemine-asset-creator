@@ -402,7 +402,7 @@ describe('New asset modal', () => {
           await enterThirdStep()
 
           await assertTransactionInfoBlock(1, 'ready', [
-            'ChainStatemine',
+            'Chainstatemine',
             'Deposit140.0000KSM',
             'Statemine fee0.0300KSM'
           ])
@@ -435,7 +435,7 @@ describe('New asset modal', () => {
           assertButtonDisabled('Back')
 
           await assertTransactionInfoBlock(1, 'sign', [
-            'ChainStatemine',
+            'Chainstatemine',
             'Statemine fee0.0300KSM'
           ])
         })
@@ -644,13 +644,13 @@ describe('New asset modal', () => {
           await enterThirdStep()
 
           await assertTransactionInfoBlock(1, 'ready', [
-            'ChainKusamaStatemine',
+            'Chainkusamastatemine',
             'Teleport amount140.0310KSM',
             'Kusama fee0.0300KSM'
           ])
 
           await assertTransactionInfoBlock(2, 'ready', [
-            'ChainStatemine',
+            'Chainstatemine',
             'Deposit140.0000KSM',
             'Statemine fee0.0300KSM'
           ])
@@ -662,13 +662,13 @@ describe('New asset modal', () => {
           await enterThirdStep()
 
           await assertTransactionInfoBlock(1, 'ready', [
-            'ChainKusamaStatemine',
+            'Chainkusamastatemine',
             'Teleport amount140.0310KSM',
             'Kusama fee0.0300KSM'
           ])
 
           await assertTransactionInfoBlock(2, 'ready', [
-            'ChainStatemine',
+            'Chainstatemine',
             'Deposit140.0000KSM',
             'Statemine fee0.0300KSM'
           ])
@@ -684,7 +684,7 @@ describe('New asset modal', () => {
           await assertTransactionInfoBlock(1, 'done', [])
 
           await assertTransactionInfoBlock(2, 'ready', [
-            'ChainStatemine',
+            'Chainstatemine',
             'Deposit140.0000KSM',
             'Statemine fee0.0300KSM'
           ])

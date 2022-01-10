@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { Chains, useActiveAccount, useChainToken } from 'use-substrate'
 
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
+import { ChainIdentifier } from '../ChainIdentifier'
 import { FormatBalance } from '../FormatBalance'
 import { ArrowLeft, ArrowRight } from '../icons'
 import { Info } from '../Info'
@@ -185,8 +186,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelect
             <TransactionInfoBlock name='Teleport' number={TELEPORT_TRANSACTION_NUMBER} status={mapToTransactionInfoBlockStatus(teleportTransaction.status)}>
               <InfoRow>
                 <Label>Chain</Label>
-                <Text size='XS' color='white' bold>Kusama</Text>
-                <Text size='XS' color='white' bold>Statemine</Text>
+                <ChainIdentifier chainMain={Chains.Kusama} chainTo={Chains.Statemine} />
               </InfoRow>
               <InfoRow>
                 <Label>Teleport amount</Label>
@@ -201,7 +201,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelect
           <TransactionInfoBlock name='Asset Creation' number={createAssetTransactionNumber} status={mapToTransactionInfoBlockStatus(createAssetTransaction.status)}>
             <InfoRow>
               <Label>Chain</Label>
-              <Text size='XS' color='white' bold>Statemine</Text>
+              <ChainIdentifier chainMain={Chains.Statemine} />
             </InfoRow>
             <InfoRow>
               <Label>Deposit</Label>

@@ -191,6 +191,8 @@ const CoinWrapper = styled.div`
 
 export const InfoRow = styled.div`
   display: grid;
-  grid-template-columns: 100px 1fr;
+  grid-template-columns: 110px 1fr;
   grid-column-gap: 40px;
+  align-items: center;
+  min-height: 25px;
 `
