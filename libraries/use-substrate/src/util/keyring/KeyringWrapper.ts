@@ -2,6 +2,8 @@ import type { Keyring } from '@polkadot/ui-keyring'
 
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types'
 
+import { DEFAULT_SS58_FORMAT } from '../../consts'
+
 export class KeyringWrapper {
   public keyring: Keyring
 
@@ -33,6 +35,6 @@ export class KeyringWrapper {
   }
 
   loadAccounts = (injectedAccounts: InjectedAccountWithMeta[]): void => {
-    this.keyring.loadAll({ isDevelopment: false }, injectedAccounts)
+    this.keyring.loadAll({ isDevelopment: false, ss58Format: DEFAULT_SS58_FORMAT }, injectedAccounts)
   }
 }

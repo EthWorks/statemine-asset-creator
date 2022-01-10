@@ -8,7 +8,7 @@ import dynamic from 'next/dynamic'
 import React from 'react'
 import { ThemeProvider } from 'styled-components'
 
-import { Chains } from 'use-substrate'
+import { Chains, DEFAULT_SS58_FORMAT } from 'use-substrate'
 
 import { envConfig } from '../config/envConfig'
 import { APPLICATION_NAME } from '../globalConstants'
@@ -22,8 +22,8 @@ const AppProvider = dynamic<AppProviderProps>(
 
 const config: Config = {
   chains: [
-    { name: Chains.Kusama, url: envConfig.kusamaUrl },
-    { name: Chains.Statemine, url: envConfig.statemineUrl }
+    { name: Chains.Kusama, url: envConfig.kusamaUrl, ss58Format: DEFAULT_SS58_FORMAT },
+    { name: Chains.Statemine, url: envConfig.statemineUrl, ss58Format: DEFAULT_SS58_FORMAT }
   ],
   appName: APPLICATION_NAME
 }
