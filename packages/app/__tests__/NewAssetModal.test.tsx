@@ -11,7 +11,7 @@ import { Chains, TransactionStatus } from 'use-substrate'
 import { NewAssetModal } from '../components'
 import { DECIMALS_LIMIT } from '../components/NewAssetModal/FirstStep'
 import { TransactionInfoBlockStatus } from '../components/TransactionInfoBlock/TransactionInfoBlock'
-import { BN_ZERO as MOCK_BN_ZERO, useToggle } from '../utils'
+import { BN_ZERO as MOCK_BN_ZERO, STATESCAN_LINK, useToggle } from '../utils'
 import {
   assertButtonDisabled,
   assertButtonNotDisabled,
@@ -21,6 +21,7 @@ import {
   assertInputHint,
   assertInputValue,
   assertModalClosed,
+  assertNewTabOpened,
   assertNoInfobox,
   assertNoInputError,
   assertText,
@@ -380,6 +381,11 @@ describe('New asset modal', () => {
   })
 
   describe('Third step', () => {
+    beforeEach(() => {
+      setTeleportTransactionStatus(TransactionStatus.Ready)
+      setCreateAssetTransactionStatus(TransactionStatus.Ready)
+    })
+
     describe('account has statemine funds', () => {
       it('sends transaction on confirm', async () => {
         renderModal()
@@ -638,8 +644,9 @@ describe('New asset modal', () => {
           await enterThirdStep()
 
           await assertTransactionInfoBlock(1, 'ready', [
-            'Chainkusamastatemine',
-            'Teleport amount140.0310KSM'
+            'ChainKusamaStatemine',
+            'Teleport amount140.0310KSM',
+            'Kusama fee0.0300KSM'
           ])
 
           await assertTransactionInfoBlock(2, 'ready', [
@@ -655,8 +662,9 @@ describe('New asset modal', () => {
           await enterThirdStep()
 
           await assertTransactionInfoBlock(1, 'ready', [
-            'Chainkusamastatemine',
-            'Teleport amount140.0310KSM'
+            'ChainKusamaStatemine',
+            'Teleport amount140.0310KSM',
+            'Kusama fee0.0300KSM'
           ])
 
           await assertTransactionInfoBlock(2, 'ready', [
@@ -721,6 +729,60 @@ describe('New asset modal', () => {
           assertButtonNotDisabled('Back to dashboard')
         })
       })
+
+      it('after teleport executes asset transaction with updated content', async () => {
+        setTeleportTransactionStatus(TransactionStatus.Success)
+        setCreateAssetTransactionStatus(TransactionStatus.InBlock)
+
+        renderModal()
+        await enterThirdStep()
+
+        assertStepsBarHidden()
+        assertContentHidden()
+
+        const modalContent = screen.getByTestId('status-step-InBlock')
+        expect(modalContent).toHaveTextContent('Pending transaction 2/2...')
+        expect(modalContent).toHaveTextContent('Transaction #2')
+        expect(modalContent).toHaveTextContent('Asset Creation')
+        expect(modalContent).toHaveTextContent('It takes time to create your asset. In order to do so, we need to create a transaction and wait until blockchain validates it.')
+      })
+    })
+
+    describe('displays summary', () => {
+      it('for create asset transaction', async () => {
+        mockUseBalances.availableBalance = EXPECTED_TELEPORT_AMOUNT.addn(1)
+
+        renderModal()
+        await enterThirdStep()
+
+        const summary = screen.getByTestId('transaction-cost-summary')
+        expect(summary).toHaveTextContent('Total amount:140.0610KSM')
+        expect(summary).toHaveTextContent('Transaction fee:0.0300KSM')
+      })
+
+      it('for teleport and create asset transactions', async () => {
+        mockUseBalances.availableBalance = new BN(0)
+
+        renderModal()
+        await enterThirdStep()
+
+        const summary = screen.getByTestId('transaction-cost-summary')
+        expect(summary).toHaveTextContent('Total amount:140.0910KSM')
+        expect(summary).toHaveTextContent('Transaction fee:0.0600KSM')
+      })
+    })
+
+    it('after asset creation opens asset\'s statescan page in new tab', async () => {
+      setCreateAssetTransactionStatus(TransactionStatus.Success)
+
+      renderModal()
+      await enterThirdStep()
+
+      assertStepsBarHidden()
+      assertContentHidden()
+
+      await findAndClickButton('View asset in explorer')
+      assertNewTabOpened(STATESCAN_LINK + ASSET_ID)
     })
   })
 })
