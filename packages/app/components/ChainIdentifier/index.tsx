@@ -15,9 +15,7 @@ export interface ChainIdentifierProps {
 export const ChainIdentifier = ({ chainMain, chainTo }: ChainIdentifierProps): JSX.Element => (
   <IdentifierWrapper>
     <IdentifierItem>
-      <ImageWrapper>
-        <Image width='25' height='25' src={chainLogoPicker(chainMain)} alt={chainMain} />
-      </ImageWrapper>
+      <Image width='25' height='25' src={chainLogoPicker(chainMain)} alt={chainMain} />
       <StyledText color='white' bold size='XS'>{chainMain}</StyledText>
     </IdentifierItem>
     {chainTo && (
@@ -26,9 +24,7 @@ export const ChainIdentifier = ({ chainMain, chainTo }: ChainIdentifierProps): J
           <Image width='20' height='20' src={arrow} alt='' />
         </ArrowWrapper>
         <IdentifierItem>
-          <ImageWrapper>
-            <Image width='25' height='25' src={chainLogoPicker(chainTo)} alt={chainTo} />
-          </ImageWrapper>
+          <Image width='25' height='25' src={chainLogoPicker(chainTo)} alt={chainTo} />
           <StyledText color='white' bold size='XS'>{chainTo}</StyledText>
         </IdentifierItem>
       </>
@@ -46,14 +42,11 @@ const IdentifierItem = styled.div`
   align-items: center;
 `
 
-const ImageWrapper = styled.div`
-  margin-right: 8px;
-`
-
 const ArrowWrapper = styled.div`
   margin: 0 10px;
 `
 
 const StyledText = styled(Text)`
   text-transform: capitalize;
+  margin-left: 8px;
 `

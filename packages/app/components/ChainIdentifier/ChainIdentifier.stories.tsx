@@ -12,14 +12,14 @@ const Default = {
   parameters: {
     layout: 'centered',
     backgrounds: {
-      default: 'trueGray',
+      default: 'black',
       values: [
-        { name: 'trueGray', value: '#000000' }
+        { name: 'black', value: '#000000' }
       ]
     }
   },
   argTypes: {
-    chainFrom: {
+    chainMain: {
       control: { type: 'select' }
     },
     chainTo: {
