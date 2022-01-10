@@ -50,7 +50,8 @@ const ActiveAccountWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 90px;
   grid-column-gap: 8px;
-  padding: 8px;
+  height: 44px;
+  padding: 0 8px;
   border-radius: ${({ theme }) => theme.borderRadius.m};
   background-color: ${({ theme }) => theme.colors.gray[800]};
 `

@@ -19,6 +19,7 @@ import {
   PageTemplate,
   Text
 } from '../components'
+import { ChainSwitcher } from '../components/ChainSwitcher'
 import { extensionActivated, useAsync, useToggle } from '../utils'
 import Error from './_error'
 
@@ -67,12 +68,15 @@ const Home: NextPage = () => {
         title="Dashboard"
         templateHeader={address && assets?.length ? <ButtonPrimary onClick={toggleNewAssetModalOpen}>Create new asset</ButtonPrimary> : null}
         header={
-          <div data-testid='page-header'>
-            {address
-              ? <ActiveAccountBar onClick={toggleAccountSelectModalOpen}/>
-              : <ButtonPrimary onClick={toggleConnectWalletModalOpen}>Connect</ButtonPrimary>
-            }
-          </div>
+          <>
+            {address && <ChainSwitcher />}
+            <HeaderRightPanel data-testid='page-header'>
+              {address
+                ? <ActiveAccountBar onClick={toggleAccountSelectModalOpen}/>
+                : <ButtonPrimary onClick={toggleConnectWalletModalOpen}>Connect</ButtonPrimary>
+              }
+            </HeaderRightPanel>
+          </>
         }
       >
         {address && assets?.length
@@ -127,4 +131,8 @@ const StyledCardTitle = styled(Text)`
 
 const StyledButton = styled(ButtonPrimary)`
   margin-top: 16px;
+`
+
+const HeaderRightPanel = styled.div`
+  margin-left: auto;
 `
