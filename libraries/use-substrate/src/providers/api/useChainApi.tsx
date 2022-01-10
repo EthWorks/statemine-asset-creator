@@ -22,7 +22,7 @@ export const useChainApi = (chainUrl: string, options?: Options): UseApi => {
     const apiInstance = api.isReady.subscribe(() => {
       setConnectionState('connected')
       if (options?.ss58Format !== undefined) {
-        const ss58Format = options.ss58Format ? registry.createType('u32', options.ss58Format) : api.registry.chainSS58
+        const ss58Format = registry.createType('u32', options.ss58Format)
         registry.setChainProperties(registry.createType('ChainProperties', { ss58Format }))
       }
     })
