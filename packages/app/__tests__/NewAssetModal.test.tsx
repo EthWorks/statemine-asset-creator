@@ -644,7 +644,7 @@ describe('New asset modal', () => {
           await enterThirdStep()
 
           await assertTransactionInfoBlock(1, 'ready', [
-            'ChainKusamaStatemine',
+            'Chainkusamastatemine',
             'Teleport amount140.0310KSM',
             'Kusama fee0.0300KSM'
           ])
@@ -662,7 +662,7 @@ describe('New asset modal', () => {
           await enterThirdStep()
 
           await assertTransactionInfoBlock(1, 'ready', [
-            'ChainKusamaStatemine',
+            'Chainkusamastatemine',
             'Teleport amount140.0310KSM',
             'Kusama fee0.0300KSM'
           ])
