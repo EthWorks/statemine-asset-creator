@@ -5,8 +5,7 @@ import styled from 'styled-components'
 
 import { Chains } from 'use-substrate'
 
-import kusama from '../../assets/img/kusama.svg'
-import polkadot from '../../assets/img/polkadot.svg'
+import { chainLogoPicker } from '../../formaters/chainLogoPicker'
 import { Arrow } from '../icons'
 import { Text } from '../typography'
 
@@ -29,7 +28,7 @@ export const ChainSwitcher = (): JSX.Element => {
         <Select isPolkadot={currentChain === Chains.Polkadot} >
           <StyledArrow direction='down' width='10' height='6' />
           <SelectItem>
-            <Image width='25' height='25' src={kusama} alt={currentChain} />
+            <Image width='25' height='25' src={chainLogoPicker(currentChain)} alt={currentChain} />
             <div>
               {currentChain === Chains.Polkadot
                 ? <StyledText size='XXS' color='white'>Network</StyledText>
@@ -42,14 +41,14 @@ export const ChainSwitcher = (): JSX.Element => {
         <Popover.Anchor />
         <SelectDropdown>
           <SelectItem onClick={() => _onSelectItemClick(Chains.Polkadot)}>
-            <Image width='25' height='25' src={polkadot} alt='polkadot' />
+            <Image width='25' height='25' src={chainLogoPicker(Chains.Polkadot)} alt='polkadot' />
             <div>
               <Text size='XXS'>Network</Text>
               <StyledText size='XS' color='white'>Polkadot</StyledText>
             </div>
           </SelectItem>
           <SelectItem onClick={() => _onSelectItemClick(Chains.Kusama)}>
-            <Image width='25' height='25' src={kusama} alt='kusama' />
+            <Image width='25' height='25' src={chainLogoPicker(Chains.Kusama)} alt='kusama' />
             <div>
               <Text size='XXS'>Network</Text>
               <StyledText size='XS' color='white'>Kusama</StyledText>
@@ -95,6 +94,7 @@ const SelectDropdown = styled(Popover.Content)`
   width: 133px;
   border-radius: 8px;
   background-color: ${({ theme }) => theme.colors.black};
+  transform: translateY(4px);
   
   ${SelectItem} {
     &:hover {
