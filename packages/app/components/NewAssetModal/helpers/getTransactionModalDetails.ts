@@ -11,21 +11,18 @@ export function getCreateAssetTransactionModalDetails(status: TransactionStatus 
     case (TransactionStatus.InBlock):
       return {
         name: 'Asset Creation',
-        number: 1,
-        title: 'Pending transaction 1/1...',
+        title: 'Pending transaction {txNumber}/{txNumber}...',
         text: 'It takes time to create your asset. In order to do so, we need to create a transaction and wait until blockchain validates it.'
       }
     case (TransactionStatus.Success):
       return {
         name: undefined,
-        number: undefined,
         title: 'Congratulations!',
         text: 'Your asset have been created.'
       }
     case (TransactionStatus.Error):
       return {
         name: undefined,
-        number: undefined,
         title: 'Something went wrong',
         text: errorDetails ? formatErrorDetails(errorDetails) : DEFAULT_ERROR_MESSAGE
       }
@@ -40,14 +37,12 @@ export function getTeleportTransactionModalDetails(status: TransactionStatus | u
     case (TransactionStatus.InBlock):
       return {
         name: 'Teleport',
-        number: 1,
         title: 'Pending transaction 1/2...',
         text: 'It takes time to teleport. In order to do so, we need to create a transaction and wait until blockchain validates it.'
       }
     case (TransactionStatus.Error):
       return {
         name: undefined,
-        number: undefined,
         title: 'Something went wrong',
         text: errorDetails ? formatErrorDetails(errorDetails) : DEFAULT_ERROR_MESSAGE
       }

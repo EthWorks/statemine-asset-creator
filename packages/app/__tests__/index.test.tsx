@@ -6,7 +6,6 @@ import React from 'react'
 import { Chains as mockChains } from 'use-substrate'
 
 import Home from '../pages/index'
-import { mockUseBestNumber } from './mocks/mockUseBestNumber'
 import { assertText, clickButton, renderWithTheme, setLocalStorage } from './helpers'
 import {
   bobAccountId,
@@ -18,6 +17,7 @@ import {
   mockUseAssets,
   mockUseAssetsConstants,
   mockUseBalances,
+  mockUseBestNumber,
   mockWeb3Enable,
   shortenedAliceAddress,
   shortenedBobAddress,
@@ -128,6 +128,16 @@ describe('Home', () => {
         const secondAssetAdmin = within(secondAssetCard).getByTestId('role-admin-issuer-freezer')
         within(secondAssetAdmin).getByText('admin, issuer, freezer')
         within(secondAssetAdmin).getByText(shortenedBobAddress)
+      })
+
+      it('opens asset\'s statescan page', async () => {
+        renderWithTheme(<Home/>)
+
+        const assetCard = await screen.findByTestId('asset-card-9')
+
+        const statescanLink = await within(assetCard).findByText('View in explorer')
+        expect(statescanLink).toHaveAttribute('href', 'https://statemine.statescan.io/asset/9')
+        expect(statescanLink).toHaveAttribute('target', '_blank')
       })
     })
   })
