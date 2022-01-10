@@ -10,7 +10,16 @@ import { Arrow } from '../icons'
 import { Text } from '../typography'
 
 interface SelectProps {
-  isPolkadot: boolean
+  chain: Chains
+}
+
+const _pickColor = (chain: Chains): string => {
+  switch (chain) {
+    case Chains.Polkadot:
+      return '#E6007A'
+    default:
+      return '#000000'
+  }
 }
 
 export const ChainSwitcher = (): JSX.Element => {
@@ -25,7 +34,7 @@ export const ChainSwitcher = (): JSX.Element => {
   return (
     <Popover.Root onOpenChange={setOpen} open={isOpen}>
       <SelectWrapper>
-        <Select isPolkadot={currentChain === Chains.Polkadot} >
+        <Select chain={currentChain} >
           <StyledArrow direction='down' width='10' height='6' />
           <SelectItem>
             <Image width='25' height='25' src={chainLogoPicker(currentChain)} alt={currentChain} />
@@ -74,7 +83,7 @@ const Select = styled(Popover.Trigger)<SelectProps>`
   padding: 0;
   border: none;
   border-radius: 8px;
-  background-color: ${({ theme, isPolkadot }) => isPolkadot ? theme.colors.pinkLight : theme.colors.black};
+  background-color: ${({ chain }) => _pickColor(chain)};
   color: white;
 `
 
