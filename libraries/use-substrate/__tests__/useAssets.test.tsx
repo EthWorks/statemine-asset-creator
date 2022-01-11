@@ -7,6 +7,7 @@ import { ApiRx } from '@polkadot/api'
 import { renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
 import { from } from 'rxjs'
+
 import { createType } from 'test-helpers'
 
 import { Chains, useAssets } from '../src'

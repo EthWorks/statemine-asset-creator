@@ -9,6 +9,7 @@ import type { FetchedAssets, UseApi } from '../../src'
 import BN from 'bn.js'
 import React from 'react'
 import { from, of } from 'rxjs'
+
 import { createType } from 'test-helpers'
 
 import { ApiContext } from '../../src'

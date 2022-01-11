@@ -12,7 +12,8 @@ module.exports = {
         "standard"
     ],
     "globals": {
-        "JSX": true
+        "JSX": true,
+        "NodeJS": true
     },
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -62,7 +63,7 @@ module.exports = {
                 ['^\u0000'], // all side-effects (0 at start)
                 ['\u0000$', '^@polkadot.*\u0000$','^use-substrate.*\u0000$','^\\..*\u0000$'], // types (0 at end)
                 ['^[^/\\.]'], // non-use-substrate
-                ['^use-substrate'], // use-substrate
+                ['^use-substrate', '^test-helpers'], // use-substrate
                 ['^\\.\\.(?!/?$)', '^\\.\\./?$', '^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'] // local (. last)
             ]
         }],
