@@ -1,11 +1,23 @@
 import { ApiPromise, WsProvider } from '@polkadot/api'
+import { fetch } from '@polkadot/x-fetch'
+
+interface DnsResponse {
+  Answer?: { name: string }[];
+  Question: { name: string }[];
+}
 
 export async function assertChainEndpoint(endpoint: string): Promise<void> {
   let provider: WsProvider | null = null
   let api: ApiPromise | null = null
   let timerId: NodeJS.Timeout | null = null
 
+  const [,, host] = endpoint.split('/')
+  const response = await fetch(`https://dns.google/resolve?name=${host}`)
+  const json = await response.json() as DnsResponse
+
   try {
+    assert(json.Answer, `No DNS entry for ${host}`)
+
     provider = new WsProvider(endpoint, false)
     api = new ApiPromise({
       provider,
@@ -55,6 +67,8 @@ export async function assertChainEndpoint(endpoint: string): Promise<void> {
   }
 }
 
-export function isError(value: unknown): value is Error {
-  return value instanceof Error
+function assert(condition: unknown, message: string): asserts condition {
+  if (!condition) {
+    throw new Error(message)
+  }
 }
