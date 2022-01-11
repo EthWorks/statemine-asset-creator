@@ -1,8 +1,7 @@
 name: Nightly tests run
 on:
-  pull_request:
-    branches:
-      - main
+  schedule:
+    - cron: '1 5 * * *'
 jobs:
   alltests:
     runs-on: self-hosted
