@@ -16,6 +16,6 @@ describe('--NIGHTLY--checks endpoints', () => {
       } catch (e) {
         throw new Error(JSON.stringify(e))
       }
-    })
+    }, 8000)
   )
 })
