@@ -8,7 +8,7 @@ const chains: Chains[] = [
   Chains.Statemint
 ]
 
-describe('checks endpoints', () => {
+describe('--NIGHTLY--checks endpoints', () => {
   chains.forEach((chain) =>
     it(`${chain} @ ${defaultChainUrls[chain]}`, async () => {
       try {
