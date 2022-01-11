@@ -1,13 +1,11 @@
 import * as Popover from '@radix-ui/react-popover'
-import Image from 'next/image'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import { Chains } from 'use-substrate'
 
-import { chainLogoPicker } from '../../formaters/chainLogoPicker'
 import { Arrow } from '../icons'
-import { Text } from '../typography'
+import { ChainSelectItem } from './ChainSelectItem'
 
 interface SelectProps {
   chain: Chains
@@ -33,46 +31,17 @@ export const ChainSwitcher = (): JSX.Element => {
 
   return (
     <Popover.Root onOpenChange={setOpen} open={isOpen}>
-      <SelectWrapper>
-        <Select chain={currentChain} >
-          <StyledArrow direction='down' width='10' height='6' />
-          <SelectItem>
-            <Image width='25' height='25' src={chainLogoPicker(currentChain)} alt={currentChain} />
-            <div>
-              {currentChain === Chains.Polkadot
-                ? <StyledText size='XXS' color='white'>Network</StyledText>
-                : <StyledText size='XXS'>Network</StyledText>
-              }
-              <StyledText size='XS' color='white'>{currentChain}</StyledText>
-            </div>
-          </SelectItem>
-        </Select>
-        <Popover.Anchor />
-        <SelectDropdown>
-          <SelectItem onClick={() => _onSelectItemClick(Chains.Polkadot)}>
-            <Image width='25' height='25' src={chainLogoPicker(Chains.Polkadot)} alt='polkadot' />
-            <div>
-              <Text size='XXS'>Network</Text>
-              <StyledText size='XS' color='white'>Polkadot</StyledText>
-            </div>
-          </SelectItem>
-          <SelectItem onClick={() => _onSelectItemClick(Chains.Kusama)}>
-            <Image width='25' height='25' src={chainLogoPicker(Chains.Kusama)} alt='kusama' />
-            <div>
-              <Text size='XXS'>Network</Text>
-              <StyledText size='XS' color='white'>Kusama</StyledText>
-            </div>
-          </SelectItem>
-        </SelectDropdown>
-      </SelectWrapper>
+      <Select chain={currentChain} >
+        <StyledArrow direction='down' width='10' height='6' />
+        <ChainSelectItem chain={currentChain} />
+      </Select>
+      <SelectDropdown>
+        <ChainSelectItem chain={Chains.Polkadot} onClick={() => _onSelectItemClick(Chains.Polkadot)} />
+        <ChainSelectItem chain={Chains.Kusama} onClick={() => _onSelectItemClick(Chains.Kusama)} />
+      </SelectDropdown>
     </Popover.Root>
   )
 }
-
-const SelectWrapper = styled.div`
-  position: relative;
-  width: fit-content;
-`
 
 const Select = styled(Popover.Trigger)<SelectProps>`
   position: relative;
@@ -87,17 +56,6 @@ const Select = styled(Popover.Trigger)<SelectProps>`
   color: white;
 `
 
-const SelectItem = styled.div`
-  display: grid;
-  grid-template-columns: 25px auto;
-  grid-column-gap: 4px;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  padding: 8px;
-  cursor: pointer;
-`
-
 const SelectDropdown = styled(Popover.Content)`
   overflow: hidden;
   width: 133px;
@@ -105,16 +63,11 @@ const SelectDropdown = styled(Popover.Content)`
   background-color: ${({ theme }) => theme.colors.black};
   transform: translateY(4px);
   
-  ${SelectItem} {
+  div {
     &:hover {
       background-color: ${({ theme }) => theme.colors.gray[900]};
     }
   }
-`
-
-const StyledText = styled(Text)`
-  text-transform: capitalize;
-  text-align: left;
 `
 
 const StyledArrow = styled(Arrow)`

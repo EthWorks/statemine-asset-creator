@@ -12,14 +12,13 @@ import {
   ActiveAccountBar,
   ButtonPrimary,
   Card,
-  ConnectWalletModal,
+  ChainSwitcher, ConnectWalletModal,
   CreatedAssets,
   NewAssetModal,
   PageBox,
   PageTemplate,
   Text
 } from '../components'
-import { ChainSwitcher } from '../components/ChainSwitcher'
 import { extensionActivated, useAsync, useToggle } from '../utils'
 import Error from './_error'
 
