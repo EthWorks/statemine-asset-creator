@@ -1,4 +1,4 @@
-import type { Account, UseAccounts } from 'use-substrate'
+import type { Account } from 'use-substrate'
 
 import { useCallback, useEffect, useState } from 'react'
 
@@ -15,7 +15,7 @@ interface UseAccountSelect {
   clearData: () => void
 }
 
-export function useAccountSelect(accounts: UseAccounts, chain: Chains): UseAccountSelect {
+export function useAccountSelect(chain: Chains): UseAccountSelect {
   const [account, setAccount] = useState<Account>()
   const { activeAccount } = useActiveAccount(chain)
   const [accountInfo, setAccountInfo] = useState<string>()
