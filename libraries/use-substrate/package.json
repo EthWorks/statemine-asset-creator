@@ -26,7 +26,8 @@
     "@polkadot/types": "6.10.3",
     "@polkadot/types-support": "~6.10.2",
     "@polkadot/keyring": "~8.0.5",
-    "@polkadot/util": "~8.0.5"
+    "@polkadot/util": "~8.0.5",
+    "@polkadot/util-crypto": "~8.3.1"
   },
   "devDependencies": {
     "test-helpers": "~0.1.0",
