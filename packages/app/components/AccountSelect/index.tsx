@@ -96,7 +96,7 @@ export function AccountSelect({ accounts, currentAccount, setCurrentAccount, lab
                   />
                   : <StyledButtonText color='white' size='SM'>{`Select account${withAccountInput ? ' or paste account address' : ''}`}</StyledButtonText>
                 }
-                {!disabled && <StyledArrow direction='down' width='14' height='9' />}
+                {!disabled && <StyledArrow direction={isOpen ? 'up' : 'down'} width='14' height='9' />}
               </StyledButton>
             )
           }
@@ -142,12 +142,6 @@ const StyledButton = styled(Popover.Trigger)`
   background-color: ${({ theme }) => theme.colors.gray[800]};
   color: ${({ theme }) => theme.colors.gray[400]};
   cursor: pointer;
-  
-  &[data-state=open] {
-    ${StyledArrow} {
-      transform: translateY(-50%) rotate(180deg);
-    }
-  }
   
   &:active,
   &:focus-visible,

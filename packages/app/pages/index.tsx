@@ -12,6 +12,7 @@ import {
   ActiveAccountBar,
   ButtonPrimary,
   Card,
+  ChainSwitcher,
   ConnectWalletModal,
   CreatedAssets,
   NewAssetModal,
@@ -67,12 +68,15 @@ const Home: NextPage = () => {
         title="Dashboard"
         templateHeader={address && assets?.length ? <ButtonPrimary onClick={toggleNewAssetModalOpen}>Create new asset</ButtonPrimary> : null}
         header={
-          <div data-testid='page-header'>
-            {address
-              ? <ActiveAccountBar onClick={toggleAccountSelectModalOpen}/>
-              : <ButtonPrimary onClick={toggleConnectWalletModalOpen}>Connect</ButtonPrimary>
-            }
-          </div>
+          <>
+            <ChainSwitcher/>
+            <div data-testid='page-header'>
+              {address
+                ? <ActiveAccountBar onClick={toggleAccountSelectModalOpen}/>
+                : <ButtonPrimary onClick={toggleConnectWalletModalOpen}>Connect</ButtonPrimary>
+              }
+            </div>
+          </>
         }
       >
         {address && assets?.length

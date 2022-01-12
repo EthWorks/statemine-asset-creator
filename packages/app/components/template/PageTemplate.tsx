@@ -66,7 +66,7 @@ export const PageTitleWrapper = styled.div`
 
 const MainHeader = styled.header`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   min-height: 80px;
   width: 100%;
   margin-bottom: 34px;
