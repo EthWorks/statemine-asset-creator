@@ -1,6 +1,6 @@
 import type { Account, UseAccounts } from 'use-substrate'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { Chains, useActiveAccount, useBalances } from 'use-substrate'
 
@@ -17,24 +17,22 @@ interface UseAccountSelect {
 
 export function useAccountSelect(accounts: UseAccounts, chain: Chains): UseAccountSelect {
   const [account, setAccount] = useState<Account>()
-  const { activeAccount: activeAccountId } = useActiveAccount(chain)
+  const { activeAccount } = useActiveAccount(chain)
   const [accountInfo, setAccountInfo] = useState<string>()
   const { freeBalance } = useBalances(account?.address, chain) || {}
   const hasFreeBalance = freeBalance?.gt(BN_ZERO)
 
-  useEffect(() => {
-    const activeAccount = accounts.allAccounts.find((account) => account.address === activeAccountId?.address.toString())
-
-    setAccount(activeAccount)
-  }, [accounts.allAccounts, activeAccountId])
-
-  const clearData = (): void => {
+  const setCurrentActiveAccount = useCallback((): void => {
     setAccount(
-      activeAccountId
-        ? { address: activeAccountId.address.toString(), name: activeAccountId.name }
+      activeAccount
+        ? { address: activeAccount.address.toString(), name: activeAccount.name }
         : undefined
     )
-  }
+  }, [activeAccount])
 
-  return { account, setAccount, accountInfo, setAccountInfo, hasFreeBalance, clearData }
+  useEffect(() => {
+    setCurrentActiveAccount()
+  }, [setCurrentActiveAccount])
+
+  return { account, setAccount, accountInfo, setAccountInfo, hasFreeBalance, clearData: setCurrentActiveAccount }
 }
