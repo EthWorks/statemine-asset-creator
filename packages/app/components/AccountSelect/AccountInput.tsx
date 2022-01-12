@@ -32,7 +32,7 @@ export const AccountInput: FC<Props> = ({ onChange, value, toggleOpen, isOpen, e
         onKeyDown={_handleEnterDown}
         error={error}
       />
-      <StyledArrow onClick={toggleOpen} direction="down" width="14" height="9"/>
+      <StyledArrow onClick={toggleOpen} direction={isOpen ? 'up' : 'down'} width="14" height="9"/>
     </AccountInputWrapper>
   )
 }
