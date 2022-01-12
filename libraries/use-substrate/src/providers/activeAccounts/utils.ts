@@ -40,11 +40,9 @@ export function filterAccountsPresentInExtension(localStorageAccounts: ActiveAcc
 
 export function writeToLocalStorage(updatedActiveAccounts: ActiveAccountsInput): void {
   const result: ActiveAccountsInput = {}
-  ;(Object.keys(updatedActiveAccounts) as Chains[]).forEach((chain) => {
-    const activeAccount = updatedActiveAccounts[chain]
-
-    if (activeAccount !== undefined) {
-      result[chain] = { address: encodeAddress(activeAccount.address), name: activeAccount.name }
+  ;(Object.entries(updatedActiveAccounts)).forEach(([chain, account]) => {
+    if (account !== undefined) {
+      result[chain as Chains] = { address: encodeAddress(account.address), name: account.name }
     }
   })
 
