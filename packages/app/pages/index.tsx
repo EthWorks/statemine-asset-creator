@@ -69,13 +69,13 @@ const Home: NextPage = () => {
         templateHeader={address && assets?.length ? <ButtonPrimary onClick={toggleNewAssetModalOpen}>Create new asset</ButtonPrimary> : null}
         header={
           <>
-            {address && <ChainSwitcher />}
-            <HeaderRightPanel data-testid='page-header'>
+            <ChainSwitcher/>
+            <div data-testid='page-header'>
               {address
                 ? <ActiveAccountBar onClick={toggleAccountSelectModalOpen}/>
                 : <ButtonPrimary onClick={toggleConnectWalletModalOpen}>Connect</ButtonPrimary>
               }
-            </HeaderRightPanel>
+            </div>
           </>
         }
       >
@@ -131,8 +131,4 @@ const StyledCardTitle = styled(Text)`
 
 const StyledButton = styled(ButtonPrimary)`
   margin-top: 16px;
-`
-
-const HeaderRightPanel = styled.div`
-  margin-left: auto;
 `
