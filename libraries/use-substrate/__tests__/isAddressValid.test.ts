@@ -1,9 +1,9 @@
 import BN from 'bn.js'
+
 import { createType } from 'test-helpers'
 
-import { Chains } from '../src'
-import { isAddressValid } from '../src/util/checks'
-import { ALICE, ALICE_ID, BOB, BOB_ID } from './consts/addresses'
+import { Chains, isAddressValid } from '../src'
+import { ALICE, ALICE_ID, BOB, BOB_ID } from './consts'
 
 describe('isAddressValid returns', () => {
   it('true for a valid address string', async () => {

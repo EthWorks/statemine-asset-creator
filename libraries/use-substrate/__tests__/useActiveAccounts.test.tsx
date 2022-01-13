@@ -1,6 +1,7 @@
 import { ApiRx } from '@polkadot/api'
 import { act, renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
+
 import { kusamaCreateType } from 'test-helpers'
 
 import { ActiveAccountProvider, Chains, useActiveAccounts } from '../src'

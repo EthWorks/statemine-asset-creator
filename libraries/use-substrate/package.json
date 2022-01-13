@@ -6,7 +6,8 @@
     "build": "rm -rf dist && tsc",
     "lint": "eslint '{src,__tests__}/**/*.{ts,tsx}'",
     "lint:fix": "eslint '{src,__tests__}/**/*.{ts,tsx}' --fix",
-    "test": "jest"
+    "test": "jest",
+    "test:all": "jest"
   },
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
