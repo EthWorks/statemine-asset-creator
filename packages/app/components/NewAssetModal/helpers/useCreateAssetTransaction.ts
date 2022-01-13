@@ -1,8 +1,9 @@
 import BN from 'bn.js'
 import { useMemo } from 'react'
 
-import { Chains, useActiveAccount, useApi, useCreateAssetDeposit, useTransaction } from 'use-substrate'
+import { useActiveAccount, useApi, useCreateAssetDeposit, useTransaction } from 'use-substrate'
 
+import { useAppChains } from '../../../utils'
 import { useNewAssetModal } from '../context/useNewAssetModal'
 import { Transaction } from '../types'
 import { getCreateAssetTransactionModalDetails } from './getTransactionModalDetails'
@@ -12,11 +13,12 @@ interface UseCreateAssetTransaction extends Transaction {
 }
 
 export function useCreateAssetTransaction(): UseCreateAssetTransaction | undefined {
+  const { parachain } = useAppChains()
   const { admin, issuer, freezer, assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
-  const { api } = useApi(Chains.Statemine)
-  const { activeAccount } = useActiveAccount(Chains.Statemine)
+  const { api } = useApi(parachain)
+  const { activeAccount } = useActiveAccount(parachain)
   const { address: ownerAddress } = activeAccount || {}
-  const createAssetDeposit = useCreateAssetDeposit(Chains.Statemine, assetName, assetSymbol)
+  const createAssetDeposit = useCreateAssetDeposit(parachain, assetName, assetSymbol)
 
   const txs = useMemo(() => admin && issuer && freezer
     ? admin.address === issuer.address && admin.address === freezer.address

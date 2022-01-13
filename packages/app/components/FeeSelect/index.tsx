@@ -4,8 +4,9 @@ import * as Popover from '@radix-ui/react-popover'
 import { useState } from 'react'
 import styled from 'styled-components'
 
-import { Chains, useBalances } from 'use-substrate'
+import { useBalances } from 'use-substrate'
 
+import { useAppChains } from '../../utils'
 import { Arrow } from '../icons'
 import { FeeRow } from './FeeRow'
 
@@ -23,8 +24,9 @@ const DECIMALS = 10
 const TOKEN = 'KSM'
 
 export const FeeSelect = ({ account }: FeeSelectProps): JSX.Element => {
+  const { parachain } = useAppChains()
   const [isOpen, setOpen] = useState(false)
-  const { availableBalance } = useBalances(account, Chains.Statemine) || {}
+  const { availableBalance } = useBalances(account, parachain) || {}
   const selectItems: FeeSelectItem[] = [{ balance: availableBalance, token: TOKEN, decimals: DECIMALS }]
   const [currentFeeIndex, setCurrentFeeIndex] = useState<number>(0)
 

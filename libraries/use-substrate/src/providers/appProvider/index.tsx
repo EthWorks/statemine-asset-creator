@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { Chains } from '../../consts'
 import { useApi, useConfig } from '../../hooks'
 import { AccountsContextProvider } from '../accounts'
 import { ActiveAccountProvider } from '../activeAccounts'
@@ -7,35 +8,41 @@ import { ApiContextProvider } from '../api'
 import { Config, ConfigProvider } from '../config'
 
 export interface AppProviderProps {
-  config: Config
+  config: Config,
+  apiChain?: Chains
 }
 
-export const AppProvider: React.FC<AppProviderProps> = ({ config, children }): JSX.Element => {
+export const AppProvider: React.FC<AppProviderProps> = ({ config, children, apiChain }): JSX.Element => {
   return (
     <ConfigProvider config={config}>
-      <AppWithConfig>{children}</AppWithConfig>
+      <AppWithConfig activeChain={apiChain}>{children}</AppWithConfig>
     </ConfigProvider>
   )
 }
 
-const AppWithConfig: React.FC = ({ children }) => {
+interface Props {
+  activeChain?: Chains
+}
+
+const AppWithConfig: React.FC<Props> = ({ children, activeChain }) => {
   const { chains } = useConfig()
 
   return (
     <ApiContextProvider chains={chains}>
-      <AccountsProvider>
+      <AccountsProvider activeChain={activeChain}>
         {children}
       </AccountsProvider>
     </ApiContextProvider>
   )
 }
 
-const AccountsProvider: React.FC = ({ children }) => {
+const AccountsProvider: React.FC<Props> = ({ children, activeChain }) => {
   const { chains, appName } = useConfig()
-  const { api } = useApi(chains[0].name)
+  const { api } = useApi(activeChain ?? chains[0].name)
+  const ss58Format = api?.registry.chainSS58
 
   return (
-    <AccountsContextProvider appName={appName}>
+    <AccountsContextProvider appName={appName} ss58Format={ss58Format}>
       <ActiveAccountProvider api={api}>
         {children}
       </ActiveAccountProvider>

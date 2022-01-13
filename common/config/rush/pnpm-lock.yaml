@@ -16,6 +16,7 @@ specifiers:
   '@polkadot/types-support': ~6.10.2
   '@polkadot/ui-keyring': ~0.87.3
   '@polkadot/util': ~8.0.5
+  '@polkadot/util-crypto': 8.0.5
   '@radix-ui/react-id': ~0.1.1
   '@radix-ui/react-popover': ~0.1.1
   '@radix-ui/react-tooltip': ~0.1.4
@@ -90,6 +91,7 @@ dependencies:
   '@polkadot/types-support': 6.10.3
   '@polkadot/ui-keyring': 0.87.3
   '@polkadot/util': 8.0.5
+  '@polkadot/util-crypto': 8.0.5
   '@radix-ui/react-id': 0.1.1_react@17.0.2
   '@radix-ui/react-popover': 0.1.1_5539cae010396b202b015f3568914e95
   '@radix-ui/react-tooltip': 0.1.6_react-dom@17.0.2+react@17.0.2
@@ -1553,6 +1555,13 @@ packages:
 
   /@babel/runtime/7.16.3:
     resolution: {integrity: sha512-WBwekcqacdY2e9AF/Q7WLFUWmdJGJTkbjqTjoMDgXkVZ3ZRUvOPsLb5KdwISoQVsbP+DQzVZW4Zhci0DvpbNTQ==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      regenerator-runtime: 0.13.9
+    dev: false
+
+  /@babel/runtime/7.16.7:
+    resolution: {integrity: sha512-9E9FJowqAsytyOY6LG+1KuueckRL+aQW+mKvXRXnuFGyRAyepJPmEo9vgMfXUA6O9u3IeEdv9MAkppFcaQwogQ==}
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.13.9
@@ -3033,11 +3042,28 @@ packages:
       node-fetch: 2.6.6
     dev: false
 
+  /@polkadot/x-fetch/8.3.1:
+    resolution: {integrity: sha512-tWE9BLR+aVPdZM7QGudlS4VBoXQRS2W9EMlCOOuGTOHHg/Ks2acI6g5r511YBfJhhviJ/8posqryY3EuHU+zNA==}
+    engines: {node: '>=14.0.0'}
+    dependencies:
+      '@babel/runtime': 7.16.7
+      '@polkadot/x-global': 8.3.1
+      '@types/node-fetch': 2.5.12
+      node-fetch: 2.6.6
+    dev: false
+
   /@polkadot/x-global/8.0.5:
     resolution: {integrity: sha512-xnJL76/pN9boTe8baPh8ta2IzLDnZ1YOtBnl82qNwIYAXm2Gr2YTxVWZgx8HYZbjNg6BVieTxluOEtJgfshN+g==}
     engines: {node: '>=14.0.0'}
     dependencies:
       '@babel/runtime': 7.16.3
+    dev: false
+
+  /@polkadot/x-global/8.3.1:
+    resolution: {integrity: sha512-bqqbF484jLqe4naPn7rtQJKgWRFtmg0UWIQ5U8qxh4IKZMPAfbMgVtv8+haH8Xf6pjurfSIOIjowySvc8UArVQ==}
+    engines: {node: '>=14.0.0'}
+    dependencies:
+      '@babel/runtime': 7.16.7
     dev: false
 
   /@polkadot/x-randomvalues/8.0.5:
@@ -17945,12 +17971,13 @@ packages:
     dev: false
 
   file:projects/test-helpers.tgz:
-    resolution: {integrity: sha512-zenqmEWoZ8DCmvXLnWzv4dPAmqIuLJt1rMzWM/he9K7sDeN4KadHkClcezolwivhOWcDztBesX942RIg7SQDyw==, tarball: file:projects/test-helpers.tgz}
+    resolution: {integrity: sha512-g5wHaEYRrj/sBXbUixN9z9c/eAKrdsYEYC+lMk8evTolQiIVKAhJvCmnSr3AKyLCuEd9nacq70u8hV5N+Tnjaw==, tarball: file:projects/test-helpers.tgz}
     name: '@rush-temp/test-helpers'
     version: 0.0.0
     dependencies:
       '@polkadot/api': 6.10.3
       '@polkadot/types': 6.10.3
+      '@polkadot/x-fetch': 8.3.1
       '@rushstack/eslint-patch': 1.0.9
       eslint: 7.32.0
       typescript: 4.5.2
@@ -17959,7 +17986,7 @@ packages:
     dev: false
 
   file:projects/use-substrate.tgz:
-    resolution: {integrity: sha512-xkSmouOjzjTG2aw4/MVamr6lyrx7HGpCtIDwwq4QORSHclStngry2rh/Ktwp9OCaB7oAoezQClccYsJOfR2c2Q==, tarball: file:projects/use-substrate.tgz}
+    resolution: {integrity: sha512-UzNzsI3FjlKQkXIKKs33LjbDRdoUoEiiRanIsESGAaPsrJiMNB7l4iGdN84CEQDu0dXF/DrHUAYHnNaKAQZcig==, tarball: file:projects/use-substrate.tgz}
     name: '@rush-temp/use-substrate'
     version: 0.0.0
     dependencies:
@@ -17977,6 +18004,7 @@ packages:
       '@polkadot/types-support': 6.10.3
       '@polkadot/ui-keyring': 0.87.3
       '@polkadot/util': 8.0.5
+      '@polkadot/util-crypto': 8.0.5
       '@rushstack/eslint-patch': 1.0.9
       '@testing-library/jest-dom': 5.15.1
       '@testing-library/react': 12.1.2_react-dom@17.0.2+react@17.0.2

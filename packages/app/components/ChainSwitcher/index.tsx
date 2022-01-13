@@ -4,15 +4,17 @@ import styled from 'styled-components'
 
 import { Chains } from 'use-substrate'
 
+import { useAppChains } from '../../utils'
 import { Arrow } from '../icons'
 import { ChainSelectItem } from './ChainSelectItem'
 
 export const ChainSwitcher = (): JSX.Element => {
   const [isOpen, setOpen] = useState(false)
-  const [currentChain, setCurrentChain] = useState(Chains.Kusama)
+  const { relayChain, setParachain, setRelayChain } = useAppChains()
 
-  const _onSelectItemClick = (chain: Chains): void => {
-    setCurrentChain(chain)
+  const _onSelectItemClick = (relayChain: Chains, parachain: Chains): void => {
+    setRelayChain(relayChain)
+    setParachain(parachain)
     setOpen(false)
   }
 
@@ -20,11 +22,11 @@ export const ChainSwitcher = (): JSX.Element => {
     <Popover.Root onOpenChange={setOpen} open={isOpen}>
       <Select>
         <StyledArrow direction={isOpen ? 'up' : 'down'} width='10' height='6'/>
-        <ChainSelectItem chain={currentChain} isTrigger/>
+        <ChainSelectItem chain={relayChain} isTrigger/>
       </Select>
       <SelectDropdown>
-        <ChainSelectItem chain={Chains.Polkadot} onClick={() => _onSelectItemClick(Chains.Polkadot)}/>
-        <ChainSelectItem chain={Chains.Kusama} onClick={() => _onSelectItemClick(Chains.Kusama)}/>
+        <ChainSelectItem chain={Chains.Polkadot} onClick={() => _onSelectItemClick(Chains.Polkadot, Chains.Statemint)}/>
+        <ChainSelectItem chain={Chains.Kusama} onClick={() => _onSelectItemClick(Chains.Kusama, Chains.Statemine)}/>
       </SelectDropdown>
     </Popover.Root>
   )

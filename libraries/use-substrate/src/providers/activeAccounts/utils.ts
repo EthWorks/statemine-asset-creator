@@ -2,13 +2,14 @@ import type { ApiRx } from '@polkadot/api'
 import type { Account } from '../accounts'
 import type { ActiveAccounts, ActiveAccountsInput } from './types'
 
+import { addressEq, encodeAddress } from '@polkadot/util-crypto'
+
 import { Chains } from '../../consts'
 import { isString } from '../../util/checks'
 
 export function convertAddressesToAccountIds(initialAccounts: ActiveAccountsInput, api?: ApiRx): ActiveAccounts {
   const activeAccounts: ActiveAccounts = {}
   if (!api) return activeAccounts
-
   // eslint-disable-next-line array-callback-return
   Object.entries(initialAccounts).map(([chain, account]) => {
     if (account) {
@@ -28,10 +29,21 @@ export function filterAccountsPresentInExtension(localStorageAccounts: ActiveAcc
   Object.entries(localStorageAccounts).map(([chain, account]) => {
     if (account) {
       const { address, name } = account
-      const matchedExtensionAccount = extensionAccounts.find(extensionAccount => extensionAccount.address === address.toString())
+      const matchedExtensionAccount = extensionAccounts.find(extensionAccount => addressEq(extensionAccount.address, address))
       accountsPresentInExtension[chain as Chains] = matchedExtensionAccount ? { address, name } : undefined
     }
   })
 
   return accountsPresentInExtension
+}
+
+export function writeToLocalStorage(updatedActiveAccounts: ActiveAccountsInput): void {
+  const result: ActiveAccountsInput = {}
+  ;(Object.entries(updatedActiveAccounts)).forEach(([chain, account]) => {
+    if (account !== undefined) {
+      result[chain as Chains] = { address: encodeAddress(account.address), name: account.name }
+    }
+  })
+
+  localStorage.setItem('activeAccounts', JSON.stringify(result))
 }

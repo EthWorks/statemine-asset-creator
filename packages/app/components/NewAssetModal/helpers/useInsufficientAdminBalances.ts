@@ -3,7 +3,9 @@ import type { Account } from 'use-substrate'
 
 import BN from 'bn.js'
 
-import { Chains, useBalances, useChainToken } from 'use-substrate'
+import { useBalances, useChainToken } from 'use-substrate'
+
+import { useAppChains } from '../../../utils'
 
 type AdminAccount = 'Admin' | 'Issuer' | 'Freezer'
 
@@ -11,10 +13,11 @@ type AdminAccount = 'Admin' | 'Issuer' | 'Freezer'
 const EXPECTED_BALANCE = 0.3
 
 export function useInsufficientAdminBalances(admin: Account | undefined, issuer: Account | undefined, freezer: Account | undefined): AdminAccount[] {
-  const { availableBalance: adminsAvailableBalance } = useBalances(admin?.address, Chains.Statemine) || {}
-  const { availableBalance: issuersAvailableBalance } = useBalances(issuer?.address, Chains.Statemine) || {}
-  const { availableBalance: freezersAvailableBalance } = useBalances(freezer?.address, Chains.Statemine) || {}
-  const { chainDecimals } = useChainToken(Chains.Statemine) || {}
+  const { parachain } = useAppChains()
+  const { availableBalance: adminsAvailableBalance } = useBalances(admin?.address, parachain) || {}
+  const { availableBalance: issuersAvailableBalance } = useBalances(issuer?.address, parachain) || {}
+  const { availableBalance: freezersAvailableBalance } = useBalances(freezer?.address, parachain) || {}
+  const { chainDecimals } = useChainToken(parachain) || {}
 
   if (chainDecimals === undefined) return []
 

@@ -29,6 +29,14 @@
     },
     {
       "commandKind": "bulk",
+      "name": "test:all",
+      "summary": "Run all tests in each project",
+      "enableParallelism": true,
+      "ignoreMissingScript": true,
+      "allowWarningsInSuccessfulBuild": true
+    },
+    {
+      "commandKind": "bulk",
       "name": "lint",
       "summary": "Run linter in each project",
       "enableParallelism": true,
