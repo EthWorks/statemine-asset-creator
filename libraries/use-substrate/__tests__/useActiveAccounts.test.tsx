@@ -1,4 +1,5 @@
 import { ApiRx } from '@polkadot/api'
+import { encodeAddress } from '@polkadot/keyring'
 import { act, renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
 
@@ -7,14 +8,18 @@ import { kusamaCreateType } from 'test-helpers'
 import { ActiveAccountProvider, Chains, useActiveAccounts } from '../src'
 import { mockedKusamaApi } from './mocks/MockedApiProvider'
 import {
-  ALICE_ACTIVE_ACCOUNT_WITHOUT_NAME,
+  ALICE_ACTIVE_ACCOUNT_WITHOUT_NAME, BOB,
   BOB_ACCOUNT_WITHOUT_NAME,
   BOB_ACTIVE_ACCOUNT,
   BOB_ACTIVE_ACCOUNT_KUSAMA_FORMAT,
   BOB_ACTIVE_ACCOUNT_WITHOUT_NAME
 } from './consts'
 
-jest.mock('../src/hooks/useAccounts')
+const mockUseAccounts = { allAccounts: [{ name: 'bob', address: BOB }] }
+
+jest.mock('../src/hooks/useAccounts', () => ({
+  useAccounts: () => mockUseAccounts
+}))
 
 describe('use active accounts', () => {
   beforeEach(() => {
@@ -105,6 +110,36 @@ describe('use active accounts', () => {
       expect(JSON.parse(activeAccounts || '{}')[Chains.Kusama]).toEqual(BOB_ACCOUNT_WITHOUT_NAME)
     })
 
+    it('can add new active accounts', async () => {
+      const { result, rerender } = renderActiveAccounts()
+
+      const { setActiveAccounts } = result.current
+      act(() => setActiveAccounts({
+        [Chains.Kusama]: BOB_ACTIVE_ACCOUNT_WITHOUT_NAME,
+        [Chains.Statemine]: ALICE_ACTIVE_ACCOUNT_WITHOUT_NAME
+      }))
+
+      rerender()
+
+      const { setActiveAccounts: setter, activeAccounts } = result.current
+
+      expect(activeAccounts[Chains.Kusama]).toEqual(BOB_ACTIVE_ACCOUNT_WITHOUT_NAME)
+      expect(activeAccounts[Chains.Statemine]).toEqual(ALICE_ACTIVE_ACCOUNT_WITHOUT_NAME)
+      expect(activeAccounts[Chains.Polkadot]).toEqual(undefined)
+
+      act(() => setter({
+        [Chains.Polkadot]: BOB_ACTIVE_ACCOUNT_WITHOUT_NAME
+      }))
+
+      rerender()
+
+      const { activeAccounts: accounts } = result.current
+
+      expect(accounts[Chains.Kusama]).toEqual(BOB_ACTIVE_ACCOUNT_WITHOUT_NAME)
+      expect(accounts[Chains.Statemine]).toEqual(ALICE_ACTIVE_ACCOUNT_WITHOUT_NAME)
+      expect(accounts[Chains.Polkadot]).toEqual(BOB_ACTIVE_ACCOUNT_WITHOUT_NAME)
+    })
+
     describe('on load reads localStorage and sets state to', () => {
       it('undefined when activeAccounts are not set in localStorage', async () => {
         const { result } = renderActiveAccounts()
@@ -127,6 +162,21 @@ describe('use active accounts', () => {
       })
 
       it('activeAccounts set in localStorage in chain specific accountId format', async () => {
+        act(() => {
+          localStorage.setItem('activeAccounts', JSON.stringify({ kusama: BOB_ACCOUNT_WITHOUT_NAME }))
+        })
+
+        const { result } = renderActiveAccounts(mockCustomKusamaApi)
+
+        const { activeAccounts } = result.current
+
+        const kusamaActiveAccount = activeAccounts[Chains.Kusama]
+        expect(kusamaActiveAccount).toEqual(BOB_ACTIVE_ACCOUNT_KUSAMA_FORMAT)
+      })
+
+      it('activeAccounts set in localStorage in generic substrate format', async () => {
+        mockUseAccounts.allAccounts = [{ name: 'bob', address: encodeAddress(BOB, 2) }]
+
         act(() => {
           localStorage.setItem('activeAccounts', JSON.stringify({ kusama: BOB_ACCOUNT_WITHOUT_NAME }))
         })

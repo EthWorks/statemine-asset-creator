@@ -2,11 +2,11 @@ import Image from 'next/image'
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
-import { Chains, useAccounts, useActiveAccounts } from 'use-substrate'
+import { useAccounts, useActiveAccounts } from 'use-substrate'
 
 import KusamaLogo from '../../assets/img/kusama.svg'
 import StatemineLogo from '../../assets/img/statemine.svg'
-import { useAccountSelect, useToggle } from '../../utils'
+import { useAccountSelect, useAppChains, useToggle } from '../../utils'
 import { AccountSelect } from '../AccountSelect'
 import { Arrow } from '../icons'
 import { ButtonPrimary, ButtonTertiary, CloseButton, Loader, Modal, Text, Title } from '../index'
@@ -18,72 +18,73 @@ interface Props {
 }
 
 export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
+  const { relayChain, parachain } = useAppChains()
   const accounts = useAccounts()
   const { setActiveAccounts } = useActiveAccounts()
-  const [isKusamaAccountSelectVisible, toggleKusamaAccountSelectVisible, setKusamaAccountSelectVisible] = useToggle()
+  const [isRelayChainAccountSelectVisible, toggleRelayChainAccountSelectVisible, setRelayChainAccountSelectVisible] = useToggle()
 
   const {
-    account: kusamaAccount,
-    setAccount: setKusamaAccount,
-    accountInfo: kusamaAccountInfo,
-    setAccountInfo: setKusamaAccountInfo,
-    hasFreeBalance: hasKusamaFreeBalance,
-    clearData: clearKusamaData
-  } = useAccountSelect(Chains.Kusama)
+    account: relayChainAccount,
+    setAccount: setRelayChainAccount,
+    accountInfo: relayChainAccountInfo,
+    setAccountInfo: setRelayChainAccountInfo,
+    hasFreeBalance: hasRelayChainFreeBalance,
+    clearData: clearRelayChainData
+  } = useAccountSelect(relayChain)
 
   const {
-    account: statemineAccount,
-    setAccount: setStatemineAccount,
-    accountInfo: statemineAccountInfo,
-    setAccountInfo: setStatemineAccountInfo,
-    hasFreeBalance: hasStatemineFreeBalance,
-    clearData: clearStatemineData
-  } = useAccountSelect(Chains.Statemine)
+    account: parachainAccount,
+    setAccount: setParachainAccount,
+    accountInfo: parachainAccountInfo,
+    setAccountInfo: setParachainAccountInfo,
+    hasFreeBalance: hasParaChainFreeBalance,
+    clearData: clearParaChainData
+  } = useAccountSelect(parachain)
 
   useEffect(() => {
-    setStatemineAccountInfo(undefined)
-    setKusamaAccountInfo(undefined)
+    setParachainAccountInfo(undefined)
+    setRelayChainAccountInfo(undefined)
 
-    if (!hasStatemineFreeBalance && !isKusamaAccountSelectVisible) {
-      setStatemineAccountInfo('This account has insufficient funds, consider adding Kusama account.')
+    if (!hasParaChainFreeBalance && !isRelayChainAccountSelectVisible) {
+      setParachainAccountInfo('This account has insufficient funds, consider adding Kusama account.')
 
       return
     }
 
-    if (isKusamaAccountSelectVisible) {
-      setStatemineAccountInfo('Funds will be transferred to this Statemine account from your Kusama account.')
+    if (isRelayChainAccountSelectVisible) {
+      setParachainAccountInfo('Funds will be transferred to this Statemine account from your Kusama account.')
     }
 
-    if (isKusamaAccountSelectVisible && !hasKusamaFreeBalance) {
-      setKusamaAccountInfo('This account has no funds')
+    if (isRelayChainAccountSelectVisible && !hasRelayChainFreeBalance) {
+      setRelayChainAccountInfo('This account has no funds')
     }
-  }, [hasStatemineFreeBalance, isKusamaAccountSelectVisible, hasKusamaFreeBalance, setStatemineAccountInfo, setKusamaAccountInfo])
+  }, [hasParaChainFreeBalance, isRelayChainAccountSelectVisible, hasRelayChainFreeBalance, setParachainAccountInfo, setRelayChainAccountInfo])
 
   const _onClick = async (): Promise<void> => {
     setActiveAccounts({
-      [Chains.Kusama]: kusamaAccount,
-      [Chains.Statemine]: statemineAccount
+      [relayChain]: relayChainAccount,
+      [parachain]: parachainAccount
     })
     closeModal()
   }
 
   const _onClose = (): void => {
-    clearKusamaData()
-    clearStatemineData()
-    setKusamaAccountSelectVisible(false)
+    clearRelayChainData()
+    clearParaChainData()
+    setRelayChainAccountSelectVisible(false)
     closeModal()
   }
 
-  const _onKusamaSelectHide = (): void => {
-    setKusamaAccount(undefined)
-    setKusamaAccountSelectVisible(false)
+  const _onRelayChainSelectHide = (): void => {
+    setRelayChainAccount(undefined)
+    setRelayChainAccountSelectVisible(false)
   }
 
-  const hideKusamaSelectButton = <StyledCloseButton data-testid='close-account-select' onClick={_onKusamaSelectHide}/>
+  const hideKusamaSelectButton = <StyledCloseButton data-testid='close-account-select' onClick={_onRelayChainSelectHide}/>
 
   if (accounts.extensionStatus === 'Loading') return <Loader />
 
-  const displayKusamaSelect = isKusamaAccountSelectVisible || !!kusamaAccount
+  const displayKusamaSelect = isRelayChainAccountSelectVisible || !!relayChainAccount
 
   return (
     <Modal
@@ -104,14 +105,14 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
       <AccountSelect
         label='Choose account'
         accounts={accounts.allAccounts}
-        currentAccount={statemineAccount}
-        setCurrentAccount={setStatemineAccount}
-        tip={statemineAccountInfo}
-        chain={Chains.Statemine}
+        currentAccount={parachainAccount}
+        setCurrentAccount={setParachainAccount}
+        tip={parachainAccountInfo}
+        chain={parachain}
       />
       {!displayKusamaSelect && (
         <Centered>
-          <ButtonTertiary onClick={toggleKusamaAccountSelectVisible}>Add Kusama account</ButtonTertiary>
+          <ButtonTertiary onClick={toggleRelayChainAccountSelectVisible}>Add Kusama account</ButtonTertiary>
         </Centered>
       )}
       {displayKusamaSelect && (
@@ -125,11 +126,11 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
           <AccountSelect
             label='Choose account'
             accounts={accounts.allAccounts}
-            currentAccount={kusamaAccount}
-            setCurrentAccount={setKusamaAccount}
-            tip={kusamaAccountInfo}
+            currentAccount={relayChainAccount}
+            setCurrentAccount={setRelayChainAccount}
+            tip={relayChainAccountInfo}
             button={hideKusamaSelectButton}
-            chain={Chains.Kusama}
+            chain={relayChain}
           />
         </>
       )}

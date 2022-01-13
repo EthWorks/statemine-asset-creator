@@ -14,6 +14,7 @@ import { envConfig } from '../config/envConfig'
 import { APPLICATION_NAME } from '../globalConstants'
 import GlobalStyle from '../styles/globalStyle'
 import { theme } from '../styles/styleVariables'
+import { AppChainsProvider, useAppChains } from '../utils'
 
 const AppProvider = dynamic<AppProviderProps>(
   () => import('use-substrate').then((module) => module.AppProvider),
@@ -23,20 +24,32 @@ const AppProvider = dynamic<AppProviderProps>(
 const config: Config = {
   chains: [
     { name: Chains.Kusama, url: envConfig.kusamaUrl },
-    { name: Chains.Statemine, url: envConfig.statemineUrl }
+    { name: Chains.Statemine, url: envConfig.statemineUrl },
+    { name: Chains.Polkadot, url: envConfig.polkadotUrl },
+    { name: Chains.Statemint, url: envConfig.statemintUrl }
   ],
   appName: APPLICATION_NAME
+}
+
+function AppWithSelectedChain({ Component, pageProps }: Pick<AppProps, 'Component' | 'pageProps'>): JSX.Element {
+  const { relayChain } = useAppChains()
+
+  return (
+    <AppProvider config={config} apiChain={relayChain}>
+      <GlobalStyle />
+      <ThemeProvider theme={theme}>
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </AppProvider>
+  )
 }
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
     <IdProvider>
-      <AppProvider config={config}>
-        <GlobalStyle />
-        <ThemeProvider theme={theme}>
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </AppProvider>
+      <AppChainsProvider>
+        <AppWithSelectedChain Component={Component} pageProps={pageProps}/>
+      </AppChainsProvider>
     </IdProvider>
   )
 }

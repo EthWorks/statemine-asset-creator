@@ -5,7 +5,7 @@ import React, { ReactNode } from 'react'
 
 import { AccountsContextProvider, useAccounts } from '../src'
 import { mockExtensionDapp } from './mocks/mockExtensionDapp'
-import { ALICE } from './consts'
+import { ALICE, BOB, BOB_ACTIVE_ACCOUNT_KUSAMA_FORMAT } from './consts'
 
 describe('useAccountsHook', () => {
   beforeAll(() => {
@@ -67,6 +67,32 @@ describe('useAccountsHook', () => {
     expect(error).toBeUndefined()
   })
 
+  it('returns for accounts in keyring in different ss58Format', async () => {
+    jest.doMock('@polkadot/extension-dapp', () => ({
+      ...mockExtensionDapp,
+      web3Accounts: async () => [{ address: BOB, meta: { source: '', name: 'BOB' } }]
+    }))
+
+    const { result, waitForNextUpdate } = renderAccounts(2)
+
+    await waitForNextUpdate()
+
+    act(() => {
+      jest.runOnlyPendingTimers()
+    })
+
+    await result.current.web3Enable()
+
+    act(() => {
+      jest.runOnlyPendingTimers()
+    })
+
+    const { allAccounts } = result.current
+
+    expect(allAccounts).toHaveLength(1)
+    expect(allAccounts[0]).toEqual({ address: BOB_ACTIVE_ACCOUNT_KUSAMA_FORMAT.address.toString(), name: 'BOB' })
+  })
+
   describe('extension status', () => {
     it('initial state', async () => {
       const { result, waitForNextUpdate } = renderAccounts()
@@ -107,9 +133,9 @@ describe('useAccountsHook', () => {
     window.injectedWeb3 = undefined
   })
 
-  const renderAccounts = () => {
+  const renderAccounts = (ss58Format?: number) => {
     const wrapper = ({ children }: { children: ReactNode }) => (
-      <AccountsContextProvider appName='Statemine asset creator'>
+      <AccountsContextProvider appName='Statemine asset creator' ss58Format={ss58Format}>
         {children}
       </AccountsContextProvider>
     )

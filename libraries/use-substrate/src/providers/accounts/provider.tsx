@@ -9,12 +9,13 @@ import { checkRepeatedlyIfExtensionLoaded, getInjectedAccounts, mapObservableToA
 
 export interface AccountsContextProviderProps {
   appName: string,
-  children: ReactNode
+  children: ReactNode,
+  ss58Format?: number
 }
 
 const emptyAccounts: UseAccounts = { hasAccounts: false, allAccounts: [], web3Enable: async () => { /**/ }, extensionStatus: 'Loading' }
 
-export const AccountsContextProvider = ({ appName, children }: AccountsContextProviderProps): JSX.Element => {
+export const AccountsContextProvider = ({ appName, children, ss58Format }: AccountsContextProviderProps): JSX.Element => {
   const [extensionStatus, setExtensionStatus] = useState<ExtensionStatus>('Loading')
   const [keyringWrapper, setKeyringWrapper] = useState<KeyringWrapper | undefined>(undefined)
 
@@ -60,7 +61,7 @@ export const AccountsContextProvider = ({ appName, children }: AccountsContextPr
     return <AccountsContext.Provider value={emptyAccounts}>{children}</AccountsContext.Provider>
   }
 
-  const allAccounts = mapObservableToAccounts(observableAccounts)
+  const allAccounts = mapObservableToAccounts(observableAccounts, ss58Format)
   const contextValue: UseAccounts = { allAccounts, hasAccounts: allAccounts.length !== 0, web3Enable, extensionStatus }
 
   if (extensionStatus === 'Unavailable') {
