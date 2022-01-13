@@ -241,7 +241,7 @@ describe('Account select modal', () => {
     assertNoText('Add Kusama account')
   })
 
-  it('changes chain names', async () => {
+  it('updates displayed chain names on active api change', async () => {
     mockStatemineActiveAccount = aliceActiveAccount
     mockKusamaActiveAccount = charlieActiveAccount
 

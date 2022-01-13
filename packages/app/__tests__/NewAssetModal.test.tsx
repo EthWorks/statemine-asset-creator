@@ -822,7 +822,7 @@ describe('New asset modal', () => {
       assertNewTabOpened(STATESCAN_LINK + ASSET_ID)
     })
 
-    it('changes chain names', async () => {
+    it('updates displayed chain names on active api change', async () => {
       setTeleportTransactionStatus(TransactionStatus.Ready)
       mockUseBalances.availableBalance = new BN(0)
       renderModal()
