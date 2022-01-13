@@ -1,4 +1,5 @@
 import { ApiRx } from '@polkadot/api'
+import { encodeAddress } from '@polkadot/keyring'
 import { act, renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
 
@@ -7,14 +8,18 @@ import { kusamaCreateType } from 'test-helpers'
 import { ActiveAccountProvider, Chains, useActiveAccounts } from '../src'
 import { mockedKusamaApi } from './mocks/MockedApiProvider'
 import {
-  ALICE_ACTIVE_ACCOUNT_WITHOUT_NAME,
+  ALICE_ACTIVE_ACCOUNT_WITHOUT_NAME, BOB,
   BOB_ACCOUNT_WITHOUT_NAME,
   BOB_ACTIVE_ACCOUNT,
   BOB_ACTIVE_ACCOUNT_KUSAMA_FORMAT,
   BOB_ACTIVE_ACCOUNT_WITHOUT_NAME
 } from './consts'
 
-jest.mock('../src/hooks/useAccounts')
+const mockUseAccounts = { allAccounts: [{ name: 'bob', address: BOB }] }
+
+jest.mock('../src/hooks/useAccounts', () => ({
+  useAccounts: () => mockUseAccounts
+}))
 
 describe('use active accounts', () => {
   beforeEach(() => {
@@ -157,6 +162,21 @@ describe('use active accounts', () => {
       })
 
       it('activeAccounts set in localStorage in chain specific accountId format', async () => {
+        act(() => {
+          localStorage.setItem('activeAccounts', JSON.stringify({ kusama: BOB_ACCOUNT_WITHOUT_NAME }))
+        })
+
+        const { result } = renderActiveAccounts(mockCustomKusamaApi)
+
+        const { activeAccounts } = result.current
+
+        const kusamaActiveAccount = activeAccounts[Chains.Kusama]
+        expect(kusamaActiveAccount).toEqual(BOB_ACTIVE_ACCOUNT_KUSAMA_FORMAT)
+      })
+
+      it('activeAccounts set in localStorage in generic substrate format', async () => {
+        mockUseAccounts.allAccounts = [{ name: 'bob', address: encodeAddress(BOB, 2) }]
+
         act(() => {
           localStorage.setItem('activeAccounts', JSON.stringify({ kusama: BOB_ACCOUNT_WITHOUT_NAME }))
         })

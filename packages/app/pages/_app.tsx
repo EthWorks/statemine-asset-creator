@@ -14,7 +14,7 @@ import { envConfig } from '../config/envConfig'
 import { APPLICATION_NAME } from '../globalConstants'
 import GlobalStyle from '../styles/globalStyle'
 import { theme } from '../styles/styleVariables'
-import { AppChainsProvider } from '../utils'
+import { AppChainsProvider, useAppChains } from '../utils'
 
 const AppProvider = dynamic<AppProviderProps>(
   () => import('use-substrate').then((module) => module.AppProvider),
@@ -31,17 +31,25 @@ const config: Config = {
   appName: APPLICATION_NAME
 }
 
+function AppWithSelectedChain({ Component, pageProps }: Pick<AppProps, 'Component' | 'pageProps'>): JSX.Element {
+  const { relayChain } = useAppChains()
+
+  return (
+    <AppProvider config={config} apiChain={relayChain}>
+      <GlobalStyle />
+      <ThemeProvider theme={theme}>
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </AppProvider>
+  )
+}
+
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
     <IdProvider>
-      <AppProvider config={config}>
-        <AppChainsProvider>
-          <GlobalStyle />
-          <ThemeProvider theme={theme}>
-            <Component {...pageProps} />
-          </ThemeProvider>
-        </AppChainsProvider>
-      </AppProvider>
+      <AppChainsProvider>
+        <AppWithSelectedChain Component={Component} pageProps={pageProps}/>
+      </AppChainsProvider>
     </IdProvider>
   )
 }
