@@ -339,7 +339,7 @@ describe('New asset modal', () => {
         })
 
         it('is displayed for an account with less funds than threshold', async () => {
-          mockUseBalances.availableBalance = new BN(2.8 * Math.pow(10, mockUseChainToken.chainDecimals))
+          mockUseBalances.availableBalance = new BN(0.28 * Math.pow(10, mockUseChainToken.chainDecimals))
 
           renderModal()
           await enterSecondStep()
@@ -350,14 +350,14 @@ describe('New asset modal', () => {
         })
 
         it('is hidden for an account with more funds than threshold', async () => {
-          mockUseBalances.availableBalance = new BN(3.1 * Math.pow(10, mockUseChainToken.chainDecimals))
+          mockUseBalances.availableBalance = new BN(0.31 * Math.pow(10, mockUseChainToken.chainDecimals))
 
           renderModal()
           await enterSecondStep()
 
           await assertText('Owner account')
 
-          await assertNoInfobox()
+          assertNoInfobox()
         })
 
         afterAll(() => {

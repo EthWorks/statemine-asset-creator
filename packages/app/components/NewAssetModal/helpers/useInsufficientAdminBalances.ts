@@ -18,7 +18,7 @@ export function useInsufficientAdminBalances(admin: Account | undefined, issuer:
 
   if (chainDecimals === undefined) return []
 
-  const singleToken = new BN(10).pow(new BN(chainDecimals + 1))
+  const singleToken = new BN(10).pow(new BN(chainDecimals))
   const adminBalances: [Balance | undefined, AdminAccount][] = [[adminsAvailableBalance, 'Admin'], [issuersAvailableBalance, 'Issuer'], [freezersAvailableBalance, 'Freezer']]
 
   return adminBalances.flatMap(([balance, role]) => {
