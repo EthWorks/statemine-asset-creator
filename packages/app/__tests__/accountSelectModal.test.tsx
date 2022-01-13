@@ -93,7 +93,7 @@ describe('Account select modal', () => {
     await findAndClickButton('Add Kusama account')
 
     assertNumberOfSelectAccountDropdowns(2)
-    await assertNoText('Add Kusama account')
+    assertNoText('Add Kusama account')
   })
 
   it('can set statemine and kusama account', async () => {
@@ -113,11 +113,11 @@ describe('Account select modal', () => {
     renderWithTheme(<Home/>)
     await findAndClickButton('Add Kusama account')
 
-    await assertNumberOfSelectAccountDropdowns(2)
+    assertNumberOfSelectAccountDropdowns(2)
 
     await closeKusamaAccountDropdown()
 
-    await assertNumberOfSelectAccountDropdowns(1)
+    assertNumberOfSelectAccountDropdowns(1)
   })
 
   it('shows info about insufficient funds', async () => {
@@ -130,7 +130,7 @@ describe('Account select modal', () => {
     renderWithTheme(<Home/>)
     await findAndClickButton('Add Kusama account')
 
-    await assertNoText('This account has insufficient funds, consider adding Kusama account.')
+    assertNoText('This account has insufficient funds, consider adding Kusama account.')
     await assertText('Funds will be transferred to this Statemine account from your Kusama account.')
   })
 
@@ -202,7 +202,7 @@ describe('Account select modal', () => {
       renderWithTheme(<Home/>)
       await openAccountSelectModal()
 
-      await assertNumberOfSelectAccountDropdowns(1)
+      assertNumberOfSelectAccountDropdowns(1)
     })
   })
 
@@ -212,17 +212,17 @@ describe('Account select modal', () => {
     renderWithTheme(<Home/>)
 
     await openAccountSelectModal()
-    await assertNumberOfSelectAccountDropdowns(1)
+    assertNumberOfSelectAccountDropdowns(1)
 
     await findAndClickButton('Add Kusama account')
-    await assertNumberOfSelectAccountDropdowns(2)
+    assertNumberOfSelectAccountDropdowns(2)
     await selectAccountFromDropdown(0, 1)
 
     await findAndClickButton('X')
     assertModalClosed()
     await openAccountSelectModal()
 
-    await assertNumberOfSelectAccountDropdowns(1)
+    assertNumberOfSelectAccountDropdowns(1)
 
     await findAndClickButton('Add Kusama account')
     await assertTextInAccountSelect('Select account', 1)
@@ -236,7 +236,7 @@ describe('Account select modal', () => {
     renderWithTheme(<Home/>)
 
     await openAccountSelectModal()
-    await assertNumberOfSelectAccountDropdowns(2)
+    assertNumberOfSelectAccountDropdowns(2)
     assertNoText('Add Kusama account')
   })
 
