@@ -15,30 +15,30 @@ export interface AppProviderProps {
 export const AppProvider: React.FC<AppProviderProps> = ({ config, children, apiChain }): JSX.Element => {
   return (
     <ConfigProvider config={config}>
-      <AppWithConfig apiChain={apiChain}>{children}</AppWithConfig>
+      <AppWithConfig activeChain={apiChain}>{children}</AppWithConfig>
     </ConfigProvider>
   )
 }
 
-interface ProviderProps {
-  apiChain?: Chains
+interface Props {
+  activeChain?: Chains
 }
 
-const AppWithConfig: React.FC<ProviderProps> = ({ children, apiChain }) => {
+const AppWithConfig: React.FC<Props> = ({ children, activeChain }) => {
   const { chains } = useConfig()
 
   return (
     <ApiContextProvider chains={chains}>
-      <AccountsProvider apiChain={apiChain}>
+      <AccountsProvider activeChain={activeChain}>
         {children}
       </AccountsProvider>
     </ApiContextProvider>
   )
 }
 
-const AccountsProvider: React.FC<ProviderProps> = ({ children, apiChain }) => {
+const AccountsProvider: React.FC<Props> = ({ children, activeChain }) => {
   const { chains, appName } = useConfig()
-  const { api } = useApi(apiChain ?? chains[0].name)
+  const { api } = useApi(activeChain ?? chains[0].name)
   const ss58Format = api?.registry.chainSS58
 
   return (
