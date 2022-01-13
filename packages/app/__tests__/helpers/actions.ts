@@ -60,3 +60,9 @@ export async function clickByText(text: string) {
 
   fireEvent.click(useEverywhereLink)
 }
+
+export async function switchApiToPolkadot() {
+  const switcher = await screen.findByRole('button', { name: 'Network kusama' })
+  userEvent.click(switcher)
+  userEvent.click(await screen.findByText('polkadot'))
+}

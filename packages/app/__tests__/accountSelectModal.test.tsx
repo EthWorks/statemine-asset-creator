@@ -1,7 +1,6 @@
 import type { ActiveAccount } from 'use-substrate'
 
 import { act, fireEvent, screen, within } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 import { ThemeProvider } from 'styled-components'
 
@@ -18,7 +17,8 @@ import {
   findAndClickButton,
   renderWithTheme,
   selectAccountFromDropdown,
-  setLocalStorage
+  setLocalStorage,
+  switchApiToPolkadot
 } from './helpers'
 import {
   aliceAccount,
@@ -246,10 +246,7 @@ describe('Account select modal', () => {
     mockKusamaActiveAccount = charlieActiveAccount
 
     renderWithTheme(<AppChainsProvider><Home/></AppChainsProvider>)
-
-    const switcher = await screen.findByRole('button', { name: 'Network kusama' })
-    userEvent.click(switcher)
-    userEvent.click(await screen.findByText('polkadot'))
+    await switchApiToPolkadot()
 
     await openAccountSelectModal()
     const modal = await screen.findByTestId('modal')
