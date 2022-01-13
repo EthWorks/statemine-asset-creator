@@ -288,45 +288,81 @@ describe('New asset modal', () => {
       await assertTextInAccountSelect('BOB', OWNER_DROPDOWN_INDEX)
     })
 
-    describe('shows insufficient funds info', () => {
-      beforeEach(async () => {
-        renderModal()
-        await enterSecondStep()
+    describe('insufficient funds infobox', () => {
+      describe('shows for', () => {
+        beforeEach(async () => {
+          renderModal()
+          await enterSecondStep()
 
-        await assertText('Owner account')
+          await assertText('Owner account')
+        })
+
+        it('one account', async () => {
+          await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+          await assertTextInAccountSelect('ALICE', ADMIN_DROPDOWN_INDEX)
+          await selectAccountFromDropdown(ISSUER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
+          await assertTextInAccountSelect('BOB', ISSUER_DROPDOWN_INDEX)
+          await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
+          await assertTextInAccountSelect('BOB', FREEZER_DROPDOWN_INDEX)
+
+          await assertInfobox('Insufficient funds on the Admin account to create assets.')
+        })
+
+        it('two accounts', async () => {
+          await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+          await assertTextInAccountSelect('ALICE', ADMIN_DROPDOWN_INDEX)
+          await selectAccountFromDropdown(ISSUER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+          await assertTextInAccountSelect('ALICE', ISSUER_DROPDOWN_INDEX)
+          await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
+          await assertTextInAccountSelect('BOB', FREEZER_DROPDOWN_INDEX)
+
+          await assertInfobox('Insufficient funds on the Admin and Issuer accounts to create assets.')
+        })
+
+        it('three accounts', async () => {
+          await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+          await assertTextInAccountSelect('ALICE', ADMIN_DROPDOWN_INDEX)
+          await selectAccountFromDropdown(ISSUER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+          await assertTextInAccountSelect('ALICE', ISSUER_DROPDOWN_INDEX)
+          await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
+          await assertTextInAccountSelect('ALICE', FREEZER_DROPDOWN_INDEX)
+
+          await assertInfobox('Insufficient funds on the Admin, Issuer and Freezer accounts to create assets.')
+        })
       })
 
-      it('for one account', async () => {
-        await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
-        await assertTextInAccountSelect('ALICE', ADMIN_DROPDOWN_INDEX)
-        await selectAccountFromDropdown(ISSUER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
-        await assertTextInAccountSelect('BOB', ISSUER_DROPDOWN_INDEX)
-        await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
-        await assertTextInAccountSelect('BOB', FREEZER_DROPDOWN_INDEX)
+      describe('triggers for 0.3 Unit threshold', () => {
+        let defaultAvailableBalance: BN
 
-        await assertInfobox('Insufficient funds on the Admin account to create assets.')
-      })
+        beforeAll(() => {
+          defaultAvailableBalance = mockUseBalances.availableBalance
+        })
 
-      it('for two accounts', async () => {
-        await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
-        await assertTextInAccountSelect('ALICE', ADMIN_DROPDOWN_INDEX)
-        await selectAccountFromDropdown(ISSUER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
-        await assertTextInAccountSelect('ALICE', ISSUER_DROPDOWN_INDEX)
-        await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
-        await assertTextInAccountSelect('BOB', FREEZER_DROPDOWN_INDEX)
+        it('is displayed for an account with less funds than threshold', async () => {
+          mockUseBalances.availableBalance = new BN(2.8 * Math.pow(10, mockUseChainToken.chainDecimals))
 
-        await assertInfobox('Insufficient funds on the Admin and Issuer accounts to create assets.')
-      })
+          renderModal()
+          await enterSecondStep()
 
-      it('for three accounts', async () => {
-        await selectAccountFromDropdown(ADMIN_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
-        await assertTextInAccountSelect('ALICE', ADMIN_DROPDOWN_INDEX)
-        await selectAccountFromDropdown(ISSUER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
-        await assertTextInAccountSelect('ALICE', ISSUER_DROPDOWN_INDEX)
-        await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
-        await assertTextInAccountSelect('ALICE', FREEZER_DROPDOWN_INDEX)
+          await assertText('Owner account')
 
-        await assertInfobox('Insufficient funds on the Admin, Issuer and Freezer accounts to create assets.')
+          await assertInfobox('Insufficient funds on the Admin, Issuer and Freezer accounts to create assets.')
+        })
+
+        it('is hidden for an account with more funds than threshold', async () => {
+          mockUseBalances.availableBalance = new BN(3.1 * Math.pow(10, mockUseChainToken.chainDecimals))
+
+          renderModal()
+          await enterSecondStep()
+
+          await assertText('Owner account')
+
+          await assertNoInfobox()
+        })
+
+        afterAll(() => {
+          mockUseBalances.availableBalance = defaultAvailableBalance
+        })
       })
     })
 
