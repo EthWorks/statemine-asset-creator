@@ -18,7 +18,7 @@ interface Props {
 }
 
 export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
-  const { relayChain, paraChain } = useAppChains()
+  const { relayChain, parachain } = useAppChains()
   const accounts = useAccounts()
   const { setActiveAccounts } = useActiveAccounts()
   const [isRelayChainAccountSelectVisible, toggleRelayChainAccountSelectVisible, setRelayChainAccountSelectVisible] = useToggle()
@@ -33,37 +33,37 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
   } = useAccountSelect(relayChain)
 
   const {
-    account: paraChainAccount,
-    setAccount: setParaChainAccount,
-    accountInfo: paraChainAccountInfo,
-    setAccountInfo: setParaChainAccountInfo,
+    account: parachainAccount,
+    setAccount: setParachainAccount,
+    accountInfo: parachainAccountInfo,
+    setAccountInfo: setParachainAccountInfo,
     hasFreeBalance: hasParaChainFreeBalance,
     clearData: clearParaChainData
-  } = useAccountSelect(paraChain)
+  } = useAccountSelect(parachain)
 
   useEffect(() => {
-    setParaChainAccountInfo(undefined)
+    setParachainAccountInfo(undefined)
     setRelayChainAccountInfo(undefined)
 
     if (!hasParaChainFreeBalance && !isRelayChainAccountSelectVisible) {
-      setParaChainAccountInfo('This account has insufficient funds, consider adding Kusama account.')
+      setParachainAccountInfo('This account has insufficient funds, consider adding Kusama account.')
 
       return
     }
 
     if (isRelayChainAccountSelectVisible) {
-      setParaChainAccountInfo('Funds will be transferred to this Statemine account from your Kusama account.')
+      setParachainAccountInfo('Funds will be transferred to this Statemine account from your Kusama account.')
     }
 
     if (isRelayChainAccountSelectVisible && !hasRelayChainFreeBalance) {
       setRelayChainAccountInfo('This account has no funds')
     }
-  }, [hasParaChainFreeBalance, isRelayChainAccountSelectVisible, hasRelayChainFreeBalance, setParaChainAccountInfo, setRelayChainAccountInfo])
+  }, [hasParaChainFreeBalance, isRelayChainAccountSelectVisible, hasRelayChainFreeBalance, setParachainAccountInfo, setRelayChainAccountInfo])
 
   const _onClick = async (): Promise<void> => {
     setActiveAccounts({
       [relayChain]: relayChainAccount,
-      [paraChain]: paraChainAccount
+      [parachain]: parachainAccount
     })
     closeModal()
   }
@@ -105,10 +105,10 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
       <AccountSelect
         label='Choose account'
         accounts={accounts.allAccounts}
-        currentAccount={paraChainAccount}
-        setCurrentAccount={setParaChainAccount}
-        tip={paraChainAccountInfo}
-        chain={paraChain}
+        currentAccount={parachainAccount}
+        setCurrentAccount={setParachainAccount}
+        tip={parachainAccountInfo}
+        chain={parachain}
       />
       {!displayKusamaSelect && (
         <Centered>

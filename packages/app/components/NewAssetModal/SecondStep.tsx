@@ -17,14 +17,14 @@ import { printItems, useInsufficientAdminBalances } from './helpers'
 import { ModalFooter } from './ModalFooter'
 
 export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
-  const { paraChain } = useAppChains()
+  const { parachain } = useAppChains()
   const _onNext = useCallback((e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     onNext()
   }, [onNext])
 
   const { admin, setAdmin, issuer, setIssuer, freezer, setFreezer } = useNewAssetModal()
-  const { activeAccount } = useActiveAccount(paraChain)
+  const { activeAccount } = useActiveAccount(parachain)
   const account = convertActiveAccountToAccount(activeAccount)
 
   const accounts = useAccounts()
@@ -46,7 +46,7 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
         currentAccount={account}
         setCurrentAccount={() => { /**/ }}
         disabled
-        chain={paraChain}
+        chain={parachain}
       />
       <AccountSelect
         label='Admin account'
@@ -55,7 +55,7 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
         setCurrentAccount={setAdmin}
         withAccountInput
         button={useAdminEverywhereButton}
-        chain={paraChain}
+        chain={parachain}
       />
       <AccountSelect
         label='Issuer account'
@@ -63,7 +63,7 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
         currentAccount={issuer}
         setCurrentAccount={setIssuer}
         withAccountInput
-        chain={paraChain}
+        chain={parachain}
       />
       <AccountSelect
         label='Freezer account'
@@ -71,7 +71,7 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
         currentAccount={freezer}
         setCurrentAccount={setFreezer}
         withAccountInput
-        chain={paraChain}
+        chain={parachain}
       />
       {insufficientFundsAdmins.length > 0 && (
         <Info

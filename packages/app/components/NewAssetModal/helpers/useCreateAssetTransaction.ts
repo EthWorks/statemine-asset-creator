@@ -13,12 +13,12 @@ interface UseCreateAssetTransaction extends Transaction {
 }
 
 export function useCreateAssetTransaction(): UseCreateAssetTransaction | undefined {
-  const { paraChain } = useAppChains()
+  const { parachain } = useAppChains()
   const { admin, issuer, freezer, assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
-  const { api } = useApi(paraChain)
-  const { activeAccount } = useActiveAccount(paraChain)
+  const { api } = useApi(parachain)
+  const { activeAccount } = useActiveAccount(parachain)
   const { address: ownerAddress } = activeAccount || {}
-  const createAssetDeposit = useCreateAssetDeposit(paraChain, assetName, assetSymbol)
+  const createAssetDeposit = useCreateAssetDeposit(parachain, assetName, assetSymbol)
 
   const txs = useMemo(() => admin && issuer && freezer
     ? admin.address === issuer.address && admin.address === freezer.address

@@ -19,13 +19,13 @@ import { ModalFooter } from './ModalFooter'
 export const DECIMALS_LIMIT = 255
 
 export function FirstStep({ onNext }: ModalStep): JSX.Element {
-  const { paraChain } = useAppChains()
+  const { parachain } = useAppChains()
   const {
     assetName, setAssetName, assetNameError, setAssetNameError, assetId, assetIdError, setAssetIdError, assetSymbol,
     assetSymbolError, setAssetSymbolError, setAssetId, setAssetSymbol, setAssetDecimals, minBalance, setMinBalance,
     assetDecimals, stringLimit, setAssetDecimalsError, assetDecimalsError
   } = useNewAssetModal()
-  const existingAssets = useAssets(paraChain)
+  const existingAssets = useAssets(parachain)
 
   const clearErrors = useCallback(() => {
     setAssetNameError(undefined)

@@ -13,10 +13,10 @@ type AdminAccount = 'Admin' | 'Issuer' | 'Freezer'
 const EXPECTED_BALANCE = new BN('1000000000')
 
 export function useInsufficientAdminBalances(admin: Account | undefined, issuer: Account | undefined, freezer: Account | undefined): AdminAccount[] {
-  const { paraChain } = useAppChains()
-  const { availableBalance: adminsAvailableBalance } = useBalances(admin?.address, paraChain) || {}
-  const { availableBalance: issuersAvailableBalance } = useBalances(issuer?.address, paraChain) || {}
-  const { availableBalance: freezersAvailableBalance } = useBalances(freezer?.address, paraChain) || {}
+  const { parachain } = useAppChains()
+  const { availableBalance: adminsAvailableBalance } = useBalances(admin?.address, parachain) || {}
+  const { availableBalance: issuersAvailableBalance } = useBalances(issuer?.address, parachain) || {}
+  const { availableBalance: freezersAvailableBalance } = useBalances(freezer?.address, parachain) || {}
 
   const adminBalances: [Balance | undefined, AdminAccount][] = [[adminsAvailableBalance, 'Admin'], [issuersAvailableBalance, 'Issuer'], [freezersAvailableBalance, 'Freezer']]
 

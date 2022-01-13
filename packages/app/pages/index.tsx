@@ -24,16 +24,16 @@ import { extensionActivated, useAppChains, useAsync, useToggle } from '../utils'
 import Error from './_error'
 
 const Home: NextPage = () => {
-  const { relayChain, paraChain } = useAppChains()
-  const { activeAccount } = useActiveAccount(paraChain)
+  const { relayChain, parachain } = useAppChains()
+  const { activeAccount } = useActiveAccount(parachain)
   const { address } = activeAccount || {}
   const { web3Enable } = useAccounts()
-  const assets = useAssets(paraChain, { owner: address })
+  const assets = useAssets(parachain, { owner: address })
   const [isNewAssetModalOpen, toggleNewAssetModalOpen] = useToggle()
   const [isConnectWalletModalOpen, toggleConnectWalletModalOpen, setConnectWalletModalOpen] = useToggle(!extensionActivated())
   const [isAccountSelectModalOpen, toggleAccountSelectModalOpen, setAccountSelectModalOpen] = useToggle()
 
-  const { connectionState: paraChainConnectionState } = useApi(paraChain)
+  const { connectionState: parachainConnectionState } = useApi(parachain)
   const { connectionState: relayChainConnectionState } = useApi(relayChain)
 
   useEffect(() => {
@@ -53,8 +53,8 @@ const Home: NextPage = () => {
 
   useAsync(enableWeb3, [web3Enable])
 
-  if (relayChainConnectionState === 'error' || paraChainConnectionState === 'error' ||
-      relayChainConnectionState === 'disconnected' || paraChainConnectionState === 'disconnected') {
+  if (relayChainConnectionState === 'error' || parachainConnectionState === 'error' ||
+      relayChainConnectionState === 'disconnected' || parachainConnectionState === 'disconnected') {
     return <Error statusCode={500}/>
   }
 

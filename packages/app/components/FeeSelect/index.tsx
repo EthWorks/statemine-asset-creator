@@ -24,9 +24,9 @@ const DECIMALS = 10
 const TOKEN = 'KSM'
 
 export const FeeSelect = ({ account }: FeeSelectProps): JSX.Element => {
-  const { paraChain } = useAppChains()
+  const { parachain } = useAppChains()
   const [isOpen, setOpen] = useState(false)
-  const { availableBalance } = useBalances(account, paraChain) || {}
+  const { availableBalance } = useBalances(account, parachain) || {}
   const selectItems: FeeSelectItem[] = [{ balance: availableBalance, token: TOKEN, decimals: DECIMALS }]
   const [currentFeeIndex, setCurrentFeeIndex] = useState<number>(0)
 

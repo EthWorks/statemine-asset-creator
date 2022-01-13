@@ -10,11 +10,11 @@ import { ChainSelectItem } from './ChainSelectItem'
 
 export const ChainSwitcher = (): JSX.Element => {
   const [isOpen, setOpen] = useState(false)
-  const { relayChain, setParaChain, setRelayChain } = useAppChains()
+  const { relayChain, setParachain, setRelayChain } = useAppChains()
 
-  const _onSelectItemClick = (relayChain: Chains, paraChain: Chains): void => {
+  const _onSelectItemClick = (relayChain: Chains, parachain: Chains): void => {
     setRelayChain(relayChain)
-    setParaChain(paraChain)
+    setParachain(parachain)
     setOpen(false)
   }
 

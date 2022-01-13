@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const ActiveAccountBar: FC<Props> = ({ onClick }) => {
-  const { relayChain, paraChain } = useAppChains()
+  const { relayChain, parachain } = useAppChains()
 
   return (
     <ActiveAccountWrapper data-testid="active-account-bar">
@@ -24,8 +24,8 @@ export const ActiveAccountBar: FC<Props> = ({ onClick }) => {
         logo={kusamaLogo}
       />
       <ActiveAccount
-        key={paraChain}
-        chain={paraChain}
+        key={parachain}
+        chain={parachain}
         logo={statemineLogo}
       />
       <EditButton onClick={onClick}>

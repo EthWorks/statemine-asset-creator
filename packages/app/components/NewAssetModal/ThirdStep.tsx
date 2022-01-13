@@ -37,18 +37,18 @@ interface Props {
 }
 
 export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelectModal }: ModalStep & Props): JSX.Element {
-  const { paraChain, relayChain } = useAppChains()
+  const { parachain, relayChain } = useAppChains()
   const [state, setState] = useState<ThirdStepState>(ThirdStepState.Loading)
   const { transaction: createAssetTransaction, stepDetails: createAssetStepDetails, createAssetDeposit } = useCreateAssetTransaction() || {}
   const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
   const { activeAccount: kusamaActiveAccount } = useActiveAccount(relayChain)
 
   const transactionFee = createAssetTransaction?.paymentInfo?.partialFee
-  const { activeAccount } = useActiveAccount(paraChain)
+  const { activeAccount } = useActiveAccount(parachain)
   const { address: ownerAddress } = activeAccount || {}
   const { displayTeleportContent, teleportAmount, transaction: teleportTransaction, stepDetails: teleportStepDetails } = useTeleportTransaction(ownerAddress, transactionFee, createAssetDeposit) || {}
 
-  const { chainToken, chainDecimals } = useChainToken(paraChain) || {}
+  const { chainToken, chainDecimals } = useChainToken(parachain) || {}
   const isContentHidden = state === 'Success' || state === 'Error' || state === 'InProgress'
 
   const areButtonsDisabled = state === 'AwaitingSign'
@@ -188,7 +188,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelect
             <TransactionInfoBlock name='Teleport' number={TELEPORT_TRANSACTION_NUMBER} status={mapToTransactionInfoBlockStatus(teleportTransaction.status)}>
               <InfoRow>
                 <Label>Chain</Label>
-                <ChainIdentifier chainMain={relayChain} chainTo={paraChain} />
+                <ChainIdentifier chainMain={relayChain} chainTo={parachain} />
               </InfoRow>
               <InfoRow>
                 <Label>Teleport amount</Label>
@@ -203,7 +203,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelect
           <TransactionInfoBlock name='Asset Creation' number={createAssetTransactionNumber} status={mapToTransactionInfoBlockStatus(createAssetTransaction.status)}>
             <InfoRow>
               <Label>Chain</Label>
-              <ChainIdentifier chainMain={paraChain} />
+              <ChainIdentifier chainMain={parachain} />
             </InfoRow>
             <InfoRow>
               <Label>Deposit</Label>

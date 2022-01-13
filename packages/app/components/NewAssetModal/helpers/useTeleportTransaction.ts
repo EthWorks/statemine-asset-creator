@@ -16,10 +16,10 @@ interface UseRequireTeleport extends Transaction {
 }
 
 export function useTeleportTransaction(owner: AccountId | undefined, transactionFee: BN | undefined, createAssetDeposit: BN | undefined): UseRequireTeleport | undefined {
-  const { paraChain, relayChain } = useAppChains()
-  const { availableBalance } = useBalances(owner?.toString(), paraChain) || {}
+  const { parachain, relayChain } = useAppChains()
+  const { availableBalance } = useBalances(owner?.toString(), parachain) || {}
   const { activeAccount: kusamaActiveAccount } = useActiveAccount(relayChain)
-  const { existentialDeposit } = useBalancesConstants(paraChain) || {}
+  const { existentialDeposit } = useBalancesConstants(parachain) || {}
 
   const { isTeleportRequired, teleportAmount } = useMemo(() => {
     if (!transactionFee || !createAssetDeposit || !existentialDeposit || !availableBalance) return undefined
@@ -33,7 +33,7 @@ export function useTeleportTransaction(owner: AccountId | undefined, transaction
   }, [availableBalance, createAssetDeposit, existentialDeposit, transactionFee]) || {}
 
   const sender: TeleportInput = { account: kusamaActiveAccount?.address, chain: relayChain }
-  const recipient: TeleportInput = { account: owner, chain: paraChain }
+  const recipient: TeleportInput = { account: owner, chain: parachain }
 
   const transaction = useTeleport(sender, recipient, teleportAmount ?? BN_ZERO)
   const stepDetails = useMemo(() => getTeleportTransactionModalDetails(transaction?.status, transaction?.errorDetails), [transaction])
