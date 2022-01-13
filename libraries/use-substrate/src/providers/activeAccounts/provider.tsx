@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react'
 import { useAccounts } from '../../hooks'
 import { localStorageExists } from '../../util/checks'
 import { ActiveAccountsContext } from './context'
-import { convertAddressesToAccountIds, filterAccountsPresentInExtension } from './utils'
+import { convertAddressesToAccountIds, filterAccountsPresentInExtension, writeToLocalStorage } from './utils'
 
 export const ActiveAccountProvider: FC<ActiveAccountProviderProps> = ({ children, api }) => {
   const extensionAccounts = useAccounts()
@@ -30,7 +30,7 @@ export const ActiveAccountProvider: FC<ActiveAccountProviderProps> = ({ children
   const _setActiveAccounts = (newActiveAccounts: ActiveAccountsInput): void => {
     if (localStorageExists()) {
       const updatedActiveAccounts = { ...activeAccounts, ...newActiveAccounts }
-      localStorage.setItem('activeAccounts', JSON.stringify(updatedActiveAccounts))
+      writeToLocalStorage(updatedActiveAccounts)
     }
 
     const accountsWithAccountIds = convertAddressesToAccountIds(newActiveAccounts, api)

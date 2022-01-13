@@ -2,6 +2,8 @@ import type { ApiRx } from '@polkadot/api'
 import type { Account } from '../accounts'
 import type { ActiveAccounts, ActiveAccountsInput } from './types'
 
+import { encodeAddress } from '@polkadot/util-crypto'
+
 import { Chains } from '../../consts'
 import { isString } from '../../util/checks'
 
@@ -34,4 +36,15 @@ export function filterAccountsPresentInExtension(localStorageAccounts: ActiveAcc
   })
 
   return accountsPresentInExtension
+}
+
+export function writeToLocalStorage(updatedActiveAccounts: ActiveAccountsInput): void {
+  const result: ActiveAccountsInput = {}
+  ;(Object.entries(updatedActiveAccounts)).forEach(([chain, account]) => {
+    if (account !== undefined) {
+      result[chain as Chains] = { address: encodeAddress(account.address), name: account.name }
+    }
+  })
+
+  localStorage.setItem('activeAccounts', JSON.stringify(result))
 }

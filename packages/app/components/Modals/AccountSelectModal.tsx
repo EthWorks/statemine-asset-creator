@@ -29,7 +29,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
     setAccountInfo: setKusamaAccountInfo,
     hasFreeBalance: hasKusamaFreeBalance,
     clearData: clearKusamaData
-  } = useAccountSelect(accounts, Chains.Kusama)
+  } = useAccountSelect(Chains.Kusama)
 
   const {
     account: statemineAccount,
@@ -38,7 +38,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
     setAccountInfo: setStatemineAccountInfo,
     hasFreeBalance: hasStatemineFreeBalance,
     clearData: clearStatemineData
-  } = useAccountSelect(accounts, Chains.Statemine)
+  } = useAccountSelect(Chains.Statemine)
 
   useEffect(() => {
     setStatemineAccountInfo(undefined)

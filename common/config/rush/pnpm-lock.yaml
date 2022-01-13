@@ -16,6 +16,7 @@ specifiers:
   '@polkadot/types-support': ~6.10.2
   '@polkadot/ui-keyring': ~0.87.3
   '@polkadot/util': ~8.0.5
+  '@polkadot/util-crypto': 8.0.5
   '@radix-ui/react-id': ~0.1.1
   '@radix-ui/react-popover': ~0.1.1
   '@radix-ui/react-tooltip': ~0.1.4
@@ -90,6 +91,7 @@ dependencies:
   '@polkadot/types-support': 6.10.3
   '@polkadot/ui-keyring': 0.87.3
   '@polkadot/util': 8.0.5
+  '@polkadot/util-crypto': 8.0.5
   '@radix-ui/react-id': 0.1.1_react@17.0.2
   '@radix-ui/react-popover': 0.1.1_5539cae010396b202b015f3568914e95
   '@radix-ui/react-tooltip': 0.1.6_react-dom@17.0.2+react@17.0.2
@@ -17984,7 +17986,7 @@ packages:
     dev: false
 
   file:projects/use-substrate.tgz:
-    resolution: {integrity: sha512-xkSmouOjzjTG2aw4/MVamr6lyrx7HGpCtIDwwq4QORSHclStngry2rh/Ktwp9OCaB7oAoezQClccYsJOfR2c2Q==, tarball: file:projects/use-substrate.tgz}
+    resolution: {integrity: sha512-UzNzsI3FjlKQkXIKKs33LjbDRdoUoEiiRanIsESGAaPsrJiMNB7l4iGdN84CEQDu0dXF/DrHUAYHnNaKAQZcig==, tarball: file:projects/use-substrate.tgz}
     name: '@rush-temp/use-substrate'
     version: 0.0.0
     dependencies:
@@ -18002,6 +18004,7 @@ packages:
       '@polkadot/types-support': 6.10.3
       '@polkadot/ui-keyring': 0.87.3
       '@polkadot/util': 8.0.5
+      '@polkadot/util-crypto': 8.0.5
       '@rushstack/eslint-patch': 1.0.9
       '@testing-library/jest-dom': 5.15.1
       '@testing-library/react': 12.1.2_react-dom@17.0.2+react@17.0.2
