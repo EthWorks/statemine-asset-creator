@@ -18,6 +18,7 @@ import {
   mockUseAssetsConstants,
   mockUseBalances,
   mockUseBestNumber,
+  mockUseChainToken,
   mockWeb3Enable,
   shortenedAliceAddress,
   shortenedBobAddress,
@@ -33,6 +34,7 @@ jest.mock('use-substrate/dist/src/hooks', () => ({
   useAssetsConstants: () => mockUseAssetsConstants,
   useBestNumber: () => mockUseBestNumber,
   useBalances: () => mockUseBalances,
+  useChainToken: () => mockUseChainToken,
   useActiveAccounts: () => ({
     ...mockUseActiveAccounts,
     activeAccounts: { [mockChains.Kusama]: mockActiveAccount, [mockChains.Statemine]: mockActiveAccount }

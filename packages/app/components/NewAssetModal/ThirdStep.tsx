@@ -3,8 +3,9 @@ import type { ModalStep } from './types'
 import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 
-import { Chains, useActiveAccount, useChainToken } from 'use-substrate'
+import { useActiveAccount, useChainToken } from 'use-substrate'
 
+import { useAppChains } from '../../utils'
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { ChainIdentifier } from '../ChainIdentifier'
 import { FormatBalance } from '../FormatBalance'
@@ -36,17 +37,18 @@ interface Props {
 }
 
 export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelectModal }: ModalStep & Props): JSX.Element {
+  const { paraChain, relayChain } = useAppChains()
   const [state, setState] = useState<ThirdStepState>(ThirdStepState.Loading)
   const { transaction: createAssetTransaction, stepDetails: createAssetStepDetails, createAssetDeposit } = useCreateAssetTransaction() || {}
   const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
-  const { activeAccount: kusamaActiveAccount } = useActiveAccount(Chains.Kusama)
+  const { activeAccount: kusamaActiveAccount } = useActiveAccount(relayChain)
 
   const transactionFee = createAssetTransaction?.paymentInfo?.partialFee
-  const { activeAccount } = useActiveAccount(Chains.Statemine)
+  const { activeAccount } = useActiveAccount(paraChain)
   const { address: ownerAddress } = activeAccount || {}
   const { displayTeleportContent, teleportAmount, transaction: teleportTransaction, stepDetails: teleportStepDetails } = useTeleportTransaction(ownerAddress, transactionFee, createAssetDeposit) || {}
 
-  const { chainToken, chainDecimals } = useChainToken(Chains.Statemine) || {}
+  const { chainToken, chainDecimals } = useChainToken(paraChain) || {}
   const isContentHidden = state === 'Success' || state === 'Error' || state === 'InProgress'
 
   const areButtonsDisabled = state === 'AwaitingSign'
@@ -186,7 +188,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelect
             <TransactionInfoBlock name='Teleport' number={TELEPORT_TRANSACTION_NUMBER} status={mapToTransactionInfoBlockStatus(teleportTransaction.status)}>
               <InfoRow>
                 <Label>Chain</Label>
-                <ChainIdentifier chainMain={Chains.Kusama} chainTo={Chains.Statemine} />
+                <ChainIdentifier chainMain={relayChain} chainTo={paraChain} />
               </InfoRow>
               <InfoRow>
                 <Label>Teleport amount</Label>
@@ -201,7 +203,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelect
           <TransactionInfoBlock name='Asset Creation' number={createAssetTransactionNumber} status={mapToTransactionInfoBlockStatus(createAssetTransaction.status)}>
             <InfoRow>
               <Label>Chain</Label>
-              <ChainIdentifier chainMain={Chains.Statemine} />
+              <ChainIdentifier chainMain={paraChain} />
             </InfoRow>
             <InfoRow>
               <Label>Deposit</Label>

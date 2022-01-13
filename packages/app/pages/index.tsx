@@ -4,7 +4,7 @@ import Head from 'next/head'
 import { useEffect } from 'react'
 import styled from 'styled-components'
 
-import { Chains, useAccounts, useActiveAccount, useApi, useAssets } from 'use-substrate'
+import { useAccounts, useActiveAccount, useApi, useAssets } from 'use-substrate'
 
 import background from '../assets/background.svg'
 import {
@@ -20,20 +20,21 @@ import {
   PageTemplate,
   Text
 } from '../components'
-import { extensionActivated, useAsync, useToggle } from '../utils'
+import { extensionActivated, useAppChains, useAsync, useToggle } from '../utils'
 import Error from './_error'
 
 const Home: NextPage = () => {
-  const { activeAccount } = useActiveAccount(Chains.Statemine)
+  const { relayChain, paraChain } = useAppChains()
+  const { activeAccount } = useActiveAccount(paraChain)
   const { address } = activeAccount || {}
   const { web3Enable } = useAccounts()
-  const assets = useAssets(Chains.Statemine, { owner: address })
+  const assets = useAssets(paraChain, { owner: address })
   const [isNewAssetModalOpen, toggleNewAssetModalOpen] = useToggle()
   const [isConnectWalletModalOpen, toggleConnectWalletModalOpen, setConnectWalletModalOpen] = useToggle(!extensionActivated())
   const [isAccountSelectModalOpen, toggleAccountSelectModalOpen, setAccountSelectModalOpen] = useToggle()
 
-  const { connectionState: statemineConnectionState } = useApi(Chains.Statemine)
-  const { connectionState: kusamaConnectionState } = useApi(Chains.Kusama)
+  const { connectionState: paraChainConnectionState } = useApi(paraChain)
+  const { connectionState: relayChainConnectionState } = useApi(relayChain)
 
   useEffect(() => {
     setAccountSelectModalOpen(extensionActivated() && !address)
@@ -52,8 +53,8 @@ const Home: NextPage = () => {
 
   useAsync(enableWeb3, [web3Enable])
 
-  if (kusamaConnectionState === 'error' || statemineConnectionState === 'error' ||
-      kusamaConnectionState === 'disconnected' || statemineConnectionState === 'disconnected') {
+  if (relayChainConnectionState === 'error' || paraChainConnectionState === 'error' ||
+      relayChainConnectionState === 'disconnected' || paraChainConnectionState === 'disconnected') {
     return <Error statusCode={500}/>
   }
 

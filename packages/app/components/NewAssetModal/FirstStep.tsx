@@ -6,9 +6,10 @@ import Image from 'next/image'
 import { useCallback, useEffect } from 'react'
 import styled from 'styled-components'
 
-import { Chains, useAssets } from 'use-substrate'
+import { useAssets } from 'use-substrate'
 
 import Coin from '../../assets/coin.gif'
+import { useAppChains } from '../../utils'
 import { ButtonPrimary } from '../button/Button'
 import { NumericInput, TextInput } from '../FormElements'
 import { ArrowRight } from '../icons'
@@ -18,12 +19,13 @@ import { ModalFooter } from './ModalFooter'
 export const DECIMALS_LIMIT = 255
 
 export function FirstStep({ onNext }: ModalStep): JSX.Element {
+  const { paraChain } = useAppChains()
   const {
     assetName, setAssetName, assetNameError, setAssetNameError, assetId, assetIdError, setAssetIdError, assetSymbol,
     assetSymbolError, setAssetSymbolError, setAssetId, setAssetSymbol, setAssetDecimals, minBalance, setMinBalance,
     assetDecimals, stringLimit, setAssetDecimalsError, assetDecimalsError
   } = useNewAssetModal()
-  const existingAssets = useAssets(Chains.Statemine)
+  const existingAssets = useAssets(paraChain)
 
   const clearErrors = useCallback(() => {
     setAssetNameError(undefined)

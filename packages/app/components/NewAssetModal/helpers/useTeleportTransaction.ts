@@ -4,16 +4,9 @@ import type { TeleportInput } from 'use-substrate'
 import BN from 'bn.js'
 import { useMemo } from 'react'
 
-import {
-  Chains,
-  TransactionStatus,
-  useActiveAccount,
-  useBalances,
-  useBalancesConstants,
-  useTeleport
-} from 'use-substrate'
+import { TransactionStatus, useActiveAccount, useBalances, useBalancesConstants, useTeleport } from 'use-substrate'
 
-import { BN_ZERO } from '../../../utils'
+import { BN_ZERO, useAppChains } from '../../../utils'
 import { Transaction } from '../types'
 import { getTeleportTransactionModalDetails } from './getTransactionModalDetails'
 
@@ -23,9 +16,10 @@ interface UseRequireTeleport extends Transaction {
 }
 
 export function useTeleportTransaction(owner: AccountId | undefined, transactionFee: BN | undefined, createAssetDeposit: BN | undefined): UseRequireTeleport | undefined {
-  const { availableBalance } = useBalances(owner?.toString(), Chains.Statemine) || {}
-  const { activeAccount: kusamaActiveAccount } = useActiveAccount(Chains.Kusama)
-  const { existentialDeposit } = useBalancesConstants(Chains.Statemine) || {}
+  const { paraChain, relayChain } = useAppChains()
+  const { availableBalance } = useBalances(owner?.toString(), paraChain) || {}
+  const { activeAccount: kusamaActiveAccount } = useActiveAccount(relayChain)
+  const { existentialDeposit } = useBalancesConstants(paraChain) || {}
 
   const { isTeleportRequired, teleportAmount } = useMemo(() => {
     if (!transactionFee || !createAssetDeposit || !existentialDeposit || !availableBalance) return undefined
@@ -38,8 +32,8 @@ export function useTeleportTransaction(owner: AccountId | undefined, transaction
     }
   }, [availableBalance, createAssetDeposit, existentialDeposit, transactionFee]) || {}
 
-  const sender: TeleportInput = { account: kusamaActiveAccount?.address, chain: Chains.Kusama }
-  const recipient: TeleportInput = { account: owner, chain: Chains.Statemine }
+  const sender: TeleportInput = { account: kusamaActiveAccount?.address, chain: relayChain }
+  const recipient: TeleportInput = { account: owner, chain: paraChain }
 
   const transaction = useTeleport(sender, recipient, teleportAmount ?? BN_ZERO)
   const stepDetails = useMemo(() => getTeleportTransactionModalDetails(transaction?.status, transaction?.errorDetails), [transaction])

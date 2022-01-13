@@ -2,7 +2,7 @@ import Image from 'next/image'
 import { FC } from 'react'
 import styled from 'styled-components'
 
-import { Chains, useActiveAccount, useBalances, useBestNumber } from 'use-substrate'
+import { Chains, useActiveAccount, useBalances, useBestNumber, useChainToken } from 'use-substrate'
 
 import { shortAddress } from '../../formaters/formaters'
 import { FormatBalance } from '../FormatBalance'
@@ -16,6 +16,7 @@ interface ActiveAccountProps {
 
 export const ActiveAccount: FC<ActiveAccountProps> = ({ chain, logo }) => {
   const { activeAccount } = useActiveAccount(chain)
+  const { chainToken, chainDecimals } = useChainToken(chain) || {}
   const { freeBalance: chainFreeBalance } = useBalances(activeAccount?.address.toString(), chain) || {}
   const chainBlockNumber = useBestNumber(chain)
 
@@ -30,7 +31,7 @@ export const ActiveAccount: FC<ActiveAccountProps> = ({ chain, logo }) => {
         <div>
           <InfoWrapper>
             <ActiveAccountText size='XS'>{chain},</ActiveAccountText>
-            <StyledFormatBalance token={'KSM'} chainDecimals={12} value={chainFreeBalance}/>
+            <StyledFormatBalance token={chainToken} chainDecimals={chainDecimals} value={chainFreeBalance}/>
           </InfoWrapper>
           <InfoWrapper>
             <ActiveAccountText size='XXS'>Current block</ActiveAccountText>

@@ -4,9 +4,9 @@ import type { ModalStep } from './types'
 import { useCallback } from 'react'
 import styled from 'styled-components'
 
-import { Chains, useAccounts, useActiveAccount } from 'use-substrate'
+import { useAccounts, useActiveAccount } from 'use-substrate'
 
-import { convertActiveAccountToAccount } from '../../utils'
+import { convertActiveAccountToAccount, useAppChains } from '../../utils'
 import { AccountSelect } from '../AccountSelect'
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { ArrowLeft, ArrowRight } from '../icons'
@@ -17,13 +17,14 @@ import { printItems, useInsufficientAdminBalances } from './helpers'
 import { ModalFooter } from './ModalFooter'
 
 export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
+  const { paraChain } = useAppChains()
   const _onNext = useCallback((e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     onNext()
   }, [onNext])
 
   const { admin, setAdmin, issuer, setIssuer, freezer, setFreezer } = useNewAssetModal()
-  const { activeAccount } = useActiveAccount(Chains.Statemine)
+  const { activeAccount } = useActiveAccount(paraChain)
   const account = convertActiveAccountToAccount(activeAccount)
 
   const accounts = useAccounts()
@@ -45,7 +46,7 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
         currentAccount={account}
         setCurrentAccount={() => { /**/ }}
         disabled
-        chain={Chains.Statemine}
+        chain={paraChain}
       />
       <AccountSelect
         label='Admin account'
@@ -54,7 +55,7 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
         setCurrentAccount={setAdmin}
         withAccountInput
         button={useAdminEverywhereButton}
-        chain={Chains.Statemine}
+        chain={paraChain}
       />
       <AccountSelect
         label='Issuer account'
@@ -62,7 +63,7 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
         currentAccount={issuer}
         setCurrentAccount={setIssuer}
         withAccountInput
-        chain={Chains.Statemine}
+        chain={paraChain}
       />
       <AccountSelect
         label='Freezer account'
@@ -70,7 +71,7 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
         currentAccount={freezer}
         setCurrentAccount={setFreezer}
         withAccountInput
-        chain={Chains.Statemine}
+        chain={paraChain}
       />
       {insufficientFundsAdmins.length > 0 && (
         <Info

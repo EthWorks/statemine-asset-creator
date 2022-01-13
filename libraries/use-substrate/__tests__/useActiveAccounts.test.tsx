@@ -105,6 +105,36 @@ describe('use active accounts', () => {
       expect(JSON.parse(activeAccounts || '{}')[Chains.Kusama]).toEqual(BOB_ACCOUNT_WITHOUT_NAME)
     })
 
+    it('can add new active accounts', async () => {
+      const { result, rerender } = renderActiveAccounts()
+
+      const { setActiveAccounts } = result.current
+      act(() => setActiveAccounts({
+        [Chains.Kusama]: BOB_ACTIVE_ACCOUNT_WITHOUT_NAME,
+        [Chains.Statemine]: ALICE_ACTIVE_ACCOUNT_WITHOUT_NAME
+      }))
+
+      rerender()
+
+      const { setActiveAccounts: setter, activeAccounts } = result.current
+
+      expect(activeAccounts[Chains.Kusama]).toEqual(BOB_ACTIVE_ACCOUNT_WITHOUT_NAME)
+      expect(activeAccounts[Chains.Statemine]).toEqual(ALICE_ACTIVE_ACCOUNT_WITHOUT_NAME)
+      expect(activeAccounts[Chains.Polkadot]).toEqual(undefined)
+
+      act(() => setter({
+        [Chains.Polkadot]: BOB_ACTIVE_ACCOUNT_WITHOUT_NAME
+      }))
+
+      rerender()
+
+      const { activeAccounts: accounts } = result.current
+
+      expect(accounts[Chains.Kusama]).toEqual(BOB_ACTIVE_ACCOUNT_WITHOUT_NAME)
+      expect(accounts[Chains.Statemine]).toEqual(ALICE_ACTIVE_ACCOUNT_WITHOUT_NAME)
+      expect(accounts[Chains.Polkadot]).toEqual(BOB_ACTIVE_ACCOUNT_WITHOUT_NAME)
+    })
+
     describe('on load reads localStorage and sets state to', () => {
       it('undefined when activeAccounts are not set in localStorage', async () => {
         const { result } = renderActiveAccounts()
