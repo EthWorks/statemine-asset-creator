@@ -4,7 +4,7 @@ import type { Asset } from 'use-substrate'
 import { useMemo, useRef } from 'react'
 import styled from 'styled-components'
 
-import { cutString } from '../../formaters/formaters'
+import { cutString } from '../../formatters'
 import { drawColor, useOutsideClick, useToggle } from '../../utils'
 import { ButtonSquare } from '../button/Button'
 import { Card } from '../Card'

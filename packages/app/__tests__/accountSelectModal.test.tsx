@@ -8,7 +8,7 @@ import { Chains } from 'use-substrate'
 
 import Home from '../pages'
 import { theme } from '../styles/styleVariables'
-import { BN_ZERO as MOCK_BN_ZERO } from '../utils'
+import { AppChainsProvider, BN_ZERO as MOCK_BN_ZERO } from '../utils'
 import {
   assertModalClosed,
   assertNoText,
@@ -17,7 +17,8 @@ import {
   findAndClickButton,
   renderWithTheme,
   selectAccountFromDropdown,
-  setLocalStorage
+  setLocalStorage,
+  switchApiToPolkadot
 } from './helpers'
 import {
   aliceAccount,
@@ -238,6 +239,24 @@ describe('Account select modal', () => {
     await openAccountSelectModal()
     assertNumberOfSelectAccountDropdowns(2)
     assertNoText('Add Kusama account')
+  })
+
+  it('updates displayed chain names on active api change', async () => {
+    mockStatemineActiveAccount = aliceActiveAccount
+    mockKusamaActiveAccount = charlieActiveAccount
+
+    renderWithTheme(<AppChainsProvider><Home/></AppChainsProvider>)
+    await switchApiToPolkadot()
+
+    await openAccountSelectModal()
+    const modal = await screen.findByTestId('modal')
+
+    expect(modal).toHaveTextContent('Statemint account')
+    expect(modal).not.toHaveTextContent('Statemine account')
+    expect(modal).toHaveTextContent('Polkadot account')
+    expect(modal).not.toHaveTextContent('Kusama account')
+    expect(modal).toHaveTextContent('Asset creation and transfers happen on the Statemint parachain. You need an account with a balance on Statemint for fees and deposits. However, you can also use a fresh & empty account, and send funds from your Polkadot account.')
+    expect(modal).toHaveTextContent('This account has insufficient funds, consider adding Polkadot account.')
   })
 
   afterEach(() => {
