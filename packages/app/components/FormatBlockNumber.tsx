@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 import type { BlockNumber } from '@polkadot/types/interfaces'
 
-import { formatValue } from '../formaters/formaters'
+import { formatValue } from '../formatters'
 import { Text } from './typography'
 
 interface Props {

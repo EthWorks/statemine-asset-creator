@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { Chains } from 'use-substrate'
 
 import arrow from '../../assets/arrow-right.svg'
-import { chainLogoPicker } from '../../formaters/chainLogoPicker'
+import { chainLogoPicker } from '../../formatters'
 import { Text } from '../typography'
 
 export interface ChainIdentifierProps {
