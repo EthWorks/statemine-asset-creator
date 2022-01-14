@@ -25,7 +25,7 @@ import Error from './_error'
 
 const Home: NextPage = () => {
   const { relayChain, parachain } = useAppChains()
-  const { activeAccount } = useActiveAccount(parachain)
+  const { activeAccount, isLoaded } = useActiveAccount(parachain)
   const { address } = activeAccount || {}
   const { web3Enable } = useAccounts()
   const assets = useAssets(parachain, { owner: address })
@@ -40,8 +40,10 @@ const Home: NextPage = () => {
       !assets
 
   useEffect(() => {
-    setAccountSelectModalOpen(extensionActivated() && !address)
-  }, [address, setAccountSelectModalOpen])
+    if (isLoaded && extensionActivated()) {
+      setAccountSelectModalOpen(!address)
+    }
+  }, [address, isLoaded, setAccountSelectModalOpen])
 
   const onExtensionActivated = (): void => {
     setConnectWalletModalOpen(false)

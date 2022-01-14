@@ -15,7 +15,7 @@ import {
   BOB_ACTIVE_ACCOUNT_WITHOUT_NAME
 } from './consts'
 
-const mockUseAccounts = { allAccounts: [{ name: 'bob', address: BOB }] }
+const mockUseAccounts = { allAccounts: [{ name: 'bob', address: BOB }], extensionStatus: 'Loaded' }
 
 jest.mock('../src/hooks/useAccounts', () => ({
   useAccounts: () => mockUseAccounts
@@ -200,6 +200,24 @@ describe('use active accounts', () => {
       const { activeAccounts } = result.current
 
       expect(activeAccounts && activeAccounts[Chains.Kusama]).toEqual(BOB_ACTIVE_ACCOUNT)
+    })
+  })
+
+  describe('isLoaded status has', () => {
+    it('"false" value for not loaded extension', async () => {
+      mockUseAccounts.extensionStatus = 'Available'
+      const { result } = renderActiveAccounts()
+
+      const { isLoaded } = result.current
+      expect(isLoaded).toEqual(false)
+    })
+
+    it('"true" value for loaded extension', async () => {
+      mockUseAccounts.extensionStatus = 'Loaded'
+      const { result } = renderActiveAccounts()
+
+      const { isLoaded } = result.current
+      expect(isLoaded).toEqual(true)
     })
   })
 

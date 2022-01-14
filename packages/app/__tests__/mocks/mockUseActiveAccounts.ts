@@ -5,5 +5,6 @@ import { bobActiveAccount } from './mockAccounts'
 
 export const mockUseActiveAccounts = {
   activeAccounts: { [Chains.Kusama]: bobActiveAccount, [Chains.Statemine]: bobActiveAccount },
-  setActiveAccounts: noop
+  setActiveAccounts: noop,
+  isLoaded: true
 }

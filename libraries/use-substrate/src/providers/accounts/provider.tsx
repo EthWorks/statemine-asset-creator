@@ -24,12 +24,11 @@ export const AccountsContextProvider = ({ appName, children, ss58Format }: Accou
     setKeyringWrapper(new KeyringWrapper(keyring))
   }, [])
 
-  useEffect(
-    checkRepeatedlyIfExtensionLoaded(
-      () => setExtensionStatus('Available'),
-      () => setExtensionStatus('Unavailable')
-    ),
-    []
+  useEffect(() => checkRepeatedlyIfExtensionLoaded(
+    () => setExtensionStatus('Available'),
+    () => setExtensionStatus('Unavailable')
+  ),
+  []
   )
 
   const web3Enable: () => Promise<void> = useCallback(async () => {
@@ -46,6 +45,8 @@ export const AccountsContextProvider = ({ appName, children, ss58Format }: Accou
     if (!keyringWrapper.isLoaded()) {
       keyringWrapper.loadAccounts(injectedAccounts)
     }
+
+    setExtensionStatus('Loaded')
 
     const { web3AccountsSubscribe } = await import('@polkadot/extension-dapp')
 
