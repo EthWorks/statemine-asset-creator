@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { Chains, useActiveAccount, useBalances, useBestNumber, useChainToken } from 'use-substrate'
 
-import { shortAddress } from '../../formaters/formaters'
+import { shortAddress } from '../../formatters'
 import { FormatBalance } from '../FormatBalance'
 import { FormatBlockNumber } from '../FormatBlockNumber'
 import { Text } from '../typography'

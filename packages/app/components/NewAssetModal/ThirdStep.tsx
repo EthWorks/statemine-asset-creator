@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 import { useActiveAccount, useChainToken } from 'use-substrate'
 
-import { useAppChains } from '../../utils'
+import { useAppChains, useCapitalizedChains } from '../../utils'
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { ChainIdentifier } from '../ChainIdentifier'
 import { FormatBalance } from '../FormatBalance'
@@ -38,10 +38,11 @@ interface Props {
 
 export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelectModal }: ModalStep & Props): JSX.Element {
   const { parachain, relayChain } = useAppChains()
+  const [capitalizedRelayChain, capitalizedParachain] = useCapitalizedChains([relayChain, parachain])
   const [state, setState] = useState<ThirdStepState>(ThirdStepState.Loading)
   const { transaction: createAssetTransaction, stepDetails: createAssetStepDetails, createAssetDeposit } = useCreateAssetTransaction() || {}
   const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
-  const { activeAccount: kusamaActiveAccount } = useActiveAccount(relayChain)
+  const { activeAccount: relayChainActiveAccount } = useActiveAccount(relayChain)
 
   const transactionFee = createAssetTransaction?.paymentInfo?.partialFee
   const { activeAccount } = useActiveAccount(parachain)
@@ -118,16 +119,16 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelect
 
   const requiredTeleportInfo = (
     <StyledInfo
-      text='Insufficient funds on the owner account to create the asset. Teleport transaction from selected Kusama account will be executed'
+      text={`Insufficient funds on the owner account to create the asset. Teleport transaction from selected ${capitalizedRelayChain} account will be executed`}
     />
   )
 
   const noKusamaAccountWarning = (
     <StyledInfo
-      text='Insufficient funds on the owner account to create the asset. Cannot execute teleport transaction due to not selected Kusama account.'
+      text={`Insufficient funds on the owner account to create the asset. Cannot execute teleport transaction due to not selected ${capitalizedRelayChain} account.`}
       type='warning'
       action={{
-        name: 'Select Kusama account',
+        name: `Select ${capitalizedRelayChain} account`,
         onClick: openAccountSelectModal
       }}
     />
@@ -158,7 +159,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelect
       )}
       {!isContentHidden && (
         <div data-testid='third-step-content'>
-          {state === ThirdStepState.TeleportReady && (kusamaActiveAccount
+          {state === ThirdStepState.TeleportReady && (relayChainActiveAccount
             ? requiredTeleportInfo
             : noKusamaAccountWarning)
           }
@@ -195,7 +196,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelect
                 <FormatBalance chainDecimals={chainDecimals} token={chainToken} value={teleportAmount}/>
               </InfoRow>
               <InfoRow>
-                <Label>Kusama fee</Label>
+                <Label>{capitalizedRelayChain} fee</Label>
                 <FormatBalance chainDecimals={chainDecimals} token={chainToken} value={teleportTransaction.paymentInfo?.partialFee}/>
               </InfoRow>
             </TransactionInfoBlock>
@@ -210,7 +211,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelect
               <FormatBalance chainDecimals={chainDecimals} token={chainToken} value={createAssetDeposit}/>
             </InfoRow>
             <InfoRow>
-              <Label>Statemine fee</Label>
+              <Label>{capitalizedParachain} fee</Label>
               <FormatBalance chainDecimals={chainDecimals} token={chainToken} value={transactionFee}/>
             </InfoRow>
           </TransactionInfoBlock>

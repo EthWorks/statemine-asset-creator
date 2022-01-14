@@ -3,7 +3,7 @@ import type { Role } from './types'
 
 import styled from 'styled-components'
 
-import { shortAddress } from '../../formaters/formaters'
+import { shortAddress } from '../../formatters'
 import { Avatar } from '../Avatar'
 import { Text } from '../typography'
 

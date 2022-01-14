@@ -8,10 +8,10 @@ import React from 'react'
 
 import { Chains, TransactionStatus } from 'use-substrate'
 
-import { NewAssetModal } from '../components'
+import { ChainSwitcher, NewAssetModal } from '../components'
 import { DECIMALS_LIMIT } from '../components/NewAssetModal/FirstStep'
 import { TransactionInfoBlockStatus } from '../components/TransactionInfoBlock/TransactionInfoBlock'
-import { BN_ZERO as MOCK_BN_ZERO, STATESCAN_LINK, useToggle } from '../utils'
+import { AppChainsProvider, BN_ZERO as MOCK_BN_ZERO, STATESCAN_LINK, useToggle } from '../utils'
 import {
   assertButtonDisabled,
   assertButtonNotDisabled,
@@ -32,7 +32,7 @@ import {
   findAndClickButton,
   getAccountSelect,
   renderWithTheme,
-  selectAccountFromDropdown,
+  selectAccountFromDropdown, switchApiToPolkadot,
   typeInInput
 } from './helpers'
 import {
@@ -56,6 +56,7 @@ function TestComponent(): JSX.Element {
 
   return (
     <>
+      <ChainSwitcher/>
       {!isOpen && <button onClick={toggleOpen}>Create new asset</button>}
       <NewAssetModal
         isOpen={isOpen}
@@ -820,11 +821,31 @@ describe('New asset modal', () => {
       await findAndClickButton('View asset in explorer')
       assertNewTabOpened(STATESCAN_LINK + ASSET_ID)
     })
+
+    it('updates displayed chain names on active api change', async () => {
+      setTeleportTransactionStatus(TransactionStatus.Ready)
+      mockUseBalances.availableBalance = new BN(0)
+      renderModal()
+      await switchApiToPolkadot()
+      await enterThirdStep()
+
+      await assertTransactionInfoBlock(1, 'ready', [
+        'Chainpolkadotstatemint',
+        'Teleport amount140.0310KSM',
+        'Polkadot fee0.0300KSM'
+      ])
+
+      await assertTransactionInfoBlock(2, 'ready', [
+        'Chainstatemint',
+        'Deposit140.0000KSM',
+        'Statemint fee0.0300KSM'
+      ])
+    })
   })
 })
 
 const renderModal = (): RenderResult => {
-  return renderWithTheme(<TestComponent/>)
+  return renderWithTheme(<AppChainsProvider><TestComponent/></AppChainsProvider>)
 }
 
 const fillFirstStep = (): void => {

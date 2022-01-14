@@ -12,3 +12,7 @@ export const shortAddress = (address: string, length = 12): string => (
 )
 
 export const cutString = (string: string, length: number): string => string.substring(0, length)
+
+export const capitalizeFirstLetter = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1)
+
+export * from './chainLogoPicker'

@@ -1,6 +1,6 @@
 import BN from 'bn.js'
 
-import { formatValue } from '../../formaters/formaters'
+import { formatValue } from '../../formatters'
 
 const DECIMALS_DISPLAYED = 4
 

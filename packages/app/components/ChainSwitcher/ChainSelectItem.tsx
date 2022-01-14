@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { Chains } from 'use-substrate'
 
-import { chainLogoPicker } from '../../formaters/chainLogoPicker'
+import { chainLogoPicker } from '../../formatters'
 import { ColorType } from '../../styles/styleVariables'
 import { Text } from '../typography'
 

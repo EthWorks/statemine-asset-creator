@@ -6,7 +6,7 @@ import { useAccounts, useActiveAccounts } from 'use-substrate'
 
 import KusamaLogo from '../../assets/img/kusama.svg'
 import StatemineLogo from '../../assets/img/statemine.svg'
-import { useAccountSelect, useAppChains, useToggle } from '../../utils'
+import { useAccountSelect, useAppChains, useCapitalizedChains, useToggle } from '../../utils'
 import { AccountSelect } from '../AccountSelect'
 import { Arrow } from '../icons'
 import { ButtonPrimary, ButtonTertiary, CloseButton, Loader, Modal, Text, Title } from '../index'
@@ -22,6 +22,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
   const accounts = useAccounts()
   const { setActiveAccounts } = useActiveAccounts()
   const [isRelayChainAccountSelectVisible, toggleRelayChainAccountSelectVisible, setRelayChainAccountSelectVisible] = useToggle()
+  const [capitalizedRelayChain, capitalizedParachain] = useCapitalizedChains([relayChain, parachain])
 
   const {
     account: relayChainAccount,
@@ -46,19 +47,19 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
     setRelayChainAccountInfo(undefined)
 
     if (!hasParaChainFreeBalance && !isRelayChainAccountSelectVisible) {
-      setParachainAccountInfo('This account has insufficient funds, consider adding Kusama account.')
+      setParachainAccountInfo(`This account has insufficient funds, consider adding ${capitalizedRelayChain} account.`)
 
       return
     }
 
     if (isRelayChainAccountSelectVisible) {
-      setParachainAccountInfo('Funds will be transferred to this Statemine account from your Kusama account.')
+      setParachainAccountInfo(`Funds will be transferred to this ${capitalizedParachain} account from your Kusama account.`)
     }
 
     if (isRelayChainAccountSelectVisible && !hasRelayChainFreeBalance) {
       setRelayChainAccountInfo('This account has no funds')
     }
-  }, [hasParaChainFreeBalance, isRelayChainAccountSelectVisible, hasRelayChainFreeBalance, setParachainAccountInfo, setRelayChainAccountInfo])
+  }, [hasParaChainFreeBalance, isRelayChainAccountSelectVisible, hasRelayChainFreeBalance, setParachainAccountInfo, setRelayChainAccountInfo, capitalizedRelayChain, capitalizedParachain])
 
   const _onClick = async (): Promise<void> => {
     setActiveAccounts({
@@ -94,13 +95,13 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
       onClose={_onClose}
     >
       <TextStyle size='SM'>
-        Asset creation and transfers happen on the <b>Statemine</b> parachain. You <b>need an account with a balance on Statemine</b> for fees and deposits. However, you can also use a fresh & empty account, and send funds from your Kusama account.
+        Asset creation and transfers happen on the <b>{capitalizedParachain}</b> parachain. You <b>need an account with a balance on {capitalizedParachain}</b> for fees and deposits. However, you can also use a fresh & empty account, and send funds from your {capitalizedRelayChain} account.
       </TextStyle>
       <SectionTitleStyle>
         <ImageWrapper>
           <Image src={StatemineLogo} alt='Statemine' />
         </ImageWrapper>
-        <Title color='white'>Statemine account</Title>
+        <Title color='white'>{capitalizedParachain} account</Title>
       </SectionTitleStyle>
       <AccountSelect
         label='Choose account'
@@ -112,7 +113,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
       />
       {!displayKusamaSelect && (
         <Centered>
-          <ButtonTertiary onClick={toggleRelayChainAccountSelectVisible}>Add Kusama account</ButtonTertiary>
+          <ButtonTertiary onClick={toggleRelayChainAccountSelectVisible}>Add {capitalizedRelayChain} account</ButtonTertiary>
         </Centered>
       )}
       {displayKusamaSelect && (
@@ -121,7 +122,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
             <ImageWrapper>
               <Image src={KusamaLogo} alt='Kusama' />
             </ImageWrapper>
-            <Title color='white'>Kusama account</Title>
+            <Title color='white'>{capitalizedRelayChain} account</Title>
           </SectionTitleStyle>
           <AccountSelect
             label='Choose account'
