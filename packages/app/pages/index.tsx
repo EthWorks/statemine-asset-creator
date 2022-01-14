@@ -36,6 +36,9 @@ const Home: NextPage = () => {
   const { connectionState: parachainConnectionState } = useApi(parachain)
   const { connectionState: relayChainConnectionState } = useApi(relayChain)
 
+  const isLoading = parachainConnectionState !== 'connected' || relayChainConnectionState !== 'connected' ||
+      !assets
+
   useEffect(() => {
     setAccountSelectModalOpen(extensionActivated() && !address)
   }, [address, setAccountSelectModalOpen])
@@ -79,6 +82,7 @@ const Home: NextPage = () => {
             </div>
           </>
         }
+        isLoading={isLoading}
       >
         {address && assets?.length
           ? <PageBox size='full' title={`Created assets [${assets.length}]`}>
