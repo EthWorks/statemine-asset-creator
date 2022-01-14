@@ -4,7 +4,7 @@ on:
     - cron: '1 5 * * *'
 jobs:
   alltests:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js
