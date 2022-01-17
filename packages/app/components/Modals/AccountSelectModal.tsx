@@ -38,28 +38,30 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
     setAccount: setParachainAccount,
     accountInfo: parachainAccountInfo,
     setAccountInfo: setParachainAccountInfo,
-    hasFreeBalance: hasParaChainFreeBalance,
-    clearData: clearParaChainData
+    hasFreeBalance: hasParachainFreeBalance,
+    clearData: clearParachainData
   } = useAccountSelect(parachain)
+
+  const displayRelayChainSelect = isRelayChainAccountSelectVisible || !!relayChainAccount
 
   useEffect(() => {
     setParachainAccountInfo(undefined)
     setRelayChainAccountInfo(undefined)
 
-    if (!hasParaChainFreeBalance && !isRelayChainAccountSelectVisible) {
+    if (!hasParachainFreeBalance && !displayRelayChainSelect) {
       setParachainAccountInfo(`This account has insufficient funds, consider adding ${capitalizedRelayChain} account.`)
 
       return
     }
 
-    if (isRelayChainAccountSelectVisible) {
-      setParachainAccountInfo(`Funds will be transferred to this ${capitalizedParachain} account from your Kusama account.`)
+    if (displayRelayChainSelect) {
+      setParachainAccountInfo(`Funds will be transferred to this ${capitalizedParachain} account from your ${capitalizedRelayChain} account.`)
     }
 
-    if (isRelayChainAccountSelectVisible && !hasRelayChainFreeBalance) {
+    if (relayChainAccount && displayRelayChainSelect && !hasRelayChainFreeBalance) {
       setRelayChainAccountInfo('This account has no funds')
     }
-  }, [hasParaChainFreeBalance, isRelayChainAccountSelectVisible, hasRelayChainFreeBalance, setParachainAccountInfo, setRelayChainAccountInfo, capitalizedRelayChain, capitalizedParachain])
+  }, [capitalizedParachain, capitalizedRelayChain, displayRelayChainSelect, hasParachainFreeBalance, hasRelayChainFreeBalance, relayChainAccount, setParachainAccountInfo, setRelayChainAccountInfo])
 
   const _onClick = async (): Promise<void> => {
     setActiveAccounts({
@@ -71,7 +73,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
 
   const _onClose = (): void => {
     clearRelayChainData()
-    clearParaChainData()
+    clearParachainData()
     setRelayChainAccountSelectVisible(false)
     closeModal()
   }
@@ -84,8 +86,6 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
   const hideKusamaSelectButton = <StyledCloseButton data-testid='close-account-select' onClick={_onRelayChainSelectHide}/>
 
   if (accounts.extensionStatus === 'Loading') return <Loader />
-
-  const displayKusamaSelect = isRelayChainAccountSelectVisible || !!relayChainAccount
 
   return (
     <Modal
@@ -111,12 +111,12 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
         tip={parachainAccountInfo}
         chain={parachain}
       />
-      {!displayKusamaSelect && (
+      {!displayRelayChainSelect && (
         <Centered>
           <ButtonTertiary onClick={toggleRelayChainAccountSelectVisible}>Add {capitalizedRelayChain} account</ButtonTertiary>
         </Centered>
       )}
-      {displayKusamaSelect && (
+      {displayRelayChainSelect && (
         <>
           <SectionTitleStyle>
             <ImageWrapper>
