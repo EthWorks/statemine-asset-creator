@@ -33,15 +33,11 @@ export const AccountsContextProvider = ({ appName, children, ss58Format }: Accou
   )
 
   const web3Enable: () => Promise<void> = useCallback(async () => {
-    if (extensionStatus !== 'Available') {
+    if (extensionStatus !== 'Available' || !keyringWrapper) {
       return
     }
 
     const injectedAccounts = await getInjectedAccounts(appName)
-
-    if (!keyringWrapper) {
-      return
-    }
 
     if (!keyringWrapper.isLoaded()) {
       keyringWrapper.loadAccounts(injectedAccounts)
@@ -61,14 +57,14 @@ export const AccountsContextProvider = ({ appName, children, ss58Format }: Accou
 
   useEffect(() => {
     const isObserved = observableAccounts && Object.keys(observableAccounts).length === keyringWrapper?.keyring.getAccounts().length
-
     if (!isObserved) return
+
     setAllAccounts(mapObservableToAccounts(observableAccounts, ss58Format))
 
     if (extensionStatus === 'Enabled') {
       setExtensionStatus('Loaded')
     }
-  }, [observableAccounts, ss58Format, extensionStatus])
+  }, [observableAccounts, ss58Format, extensionStatus, keyringWrapper])
 
   if (!keyringWrapper) {
     return <AccountsContext.Provider value={emptyAccounts}>{children}</AccountsContext.Provider>
