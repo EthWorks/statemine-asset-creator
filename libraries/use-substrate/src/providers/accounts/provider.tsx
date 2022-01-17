@@ -60,6 +60,7 @@ export const AccountsContextProvider = ({ appName, children, ss58Format }: Accou
   const observableAccounts = useObservable(keyringWrapper?.keyring.accounts.subject.asObservable().pipe(debounceTime(20)), [keyringWrapper, keyringWrapper?.keyring])
 
   useEffect(() => {
+    if (!observableAccounts) return
     setAllAccounts(mapObservableToAccounts(observableAccounts, ss58Format))
 
     if (extensionStatus === 'Enabled') {

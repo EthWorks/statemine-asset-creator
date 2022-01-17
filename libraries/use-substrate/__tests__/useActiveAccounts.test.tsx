@@ -204,7 +204,7 @@ describe('use active accounts', () => {
   })
 
   describe('isLoaded status has', () => {
-    it('"false" value for not loaded extension', async () => {
+    it('"false" value for available extension status', async () => {
       mockUseAccounts.extensionStatus = 'Available'
       const { result } = renderActiveAccounts()
 
@@ -212,7 +212,15 @@ describe('use active accounts', () => {
       expect(isLoaded).toEqual(false)
     })
 
-    it('"true" value for loaded extension', async () => {
+    it('"false" value for not enabled extension status', async () => {
+      mockUseAccounts.extensionStatus = 'Enabled'
+      const { result } = renderActiveAccounts()
+
+      const { isLoaded } = result.current
+      expect(isLoaded).toEqual(false)
+    })
+
+    it('"true" value for loaded extension status', async () => {
       mockUseAccounts.extensionStatus = 'Loaded'
       const { result } = renderActiveAccounts()
 
