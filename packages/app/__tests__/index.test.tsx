@@ -173,12 +173,14 @@ describe('Home', () => {
   it('updates displayed chain icons on active api change', async () => {
     renderWithTheme(<AppChainsProvider><Home/></AppChainsProvider>)
 
-    await assertChainLogo(Chains.Kusama)
-    await assertChainLogo(Chains.Statemine)
+    const activeAccountBar = await screen.findByTestId('active-account-bar')
+
+    await assertChainLogo(Chains.Kusama, activeAccountBar)
+    await assertChainLogo(Chains.Statemine, activeAccountBar)
 
     await switchApiToPolkadot()
 
-    await assertChainLogo(Chains.Polkadot)
-    await assertChainLogo(Chains.Statemint)
+    await assertChainLogo(Chains.Polkadot, activeAccountBar)
+    await assertChainLogo(Chains.Statemint, activeAccountBar)
   })
 })
