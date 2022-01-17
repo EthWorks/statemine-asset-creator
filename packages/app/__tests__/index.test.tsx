@@ -7,7 +7,14 @@ import { Chains, Chains as mockChains } from 'use-substrate'
 
 import Home from '../pages/index'
 import { AppChainsProvider } from '../utils'
-import { assertText, clickButton, renderWithTheme, setLocalStorage, switchApiToPolkadot } from './helpers'
+import {
+  assertChainLogo,
+  assertText,
+  clickButton,
+  renderWithTheme,
+  setLocalStorage,
+  switchApiToPolkadot
+} from './helpers'
 import {
   bobAccountId,
   bobAddressForActiveAccountBar,
@@ -166,16 +173,12 @@ describe('Home', () => {
   it('updates displayed chain icons on active api change', async () => {
     renderWithTheme(<AppChainsProvider><Home/></AppChainsProvider>)
 
-    await assertIcon(Chains.Kusama)
-    await assertIcon(Chains.Statemine)
+    await assertChainLogo(Chains.Kusama)
+    await assertChainLogo(Chains.Statemine)
 
     await switchApiToPolkadot()
 
-    await assertIcon(Chains.Polkadot)
-    await assertIcon(Chains.Statemint)
+    await assertChainLogo(Chains.Polkadot)
+    await assertChainLogo(Chains.Statemint)
   })
 })
-
-async function assertIcon(chain: Chains) {
-  await screen.findByTestId(`${chain}-chain-logo`)
-}

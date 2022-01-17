@@ -1,10 +1,10 @@
-import Image from 'next/image'
 import { FC } from 'react'
 import styled from 'styled-components'
 
 import { Chains, useActiveAccount, useBalances, useBestNumber, useChainToken } from 'use-substrate'
 
-import { chainLogoPicker, shortAddress } from '../../formatters'
+import { shortAddress } from '../../formatters'
+import { ChainLogo } from '../ChainLogo'
 import { FormatBalance } from '../FormatBalance'
 import { FormatBlockNumber } from '../FormatBlockNumber'
 import { Text } from '../typography'
@@ -24,9 +24,7 @@ export const ActiveAccount: FC<ActiveAccountProps> = ({ chain }) => {
   return (
     <ActiveAccountWrapper>
       <ActiveAccountContent>
-        <LogoWrapper data-testid={`${chain}-chain-logo`}>
-          <Image src={chainLogoPicker(chain)} alt={chain}/>
-        </LogoWrapper>
+        <StyledChainLogo chain={chain}/>
         <div>
           <InfoWrapper>
             <ActiveAccountText size='XS'>{chain},</ActiveAccountText>
@@ -93,16 +91,8 @@ const ActiveAccountText = styled(Text)`
   margin-right: 4px;
 `
 
-const LogoWrapper = styled.div`
-  width: 25px;
-  height: 25px;
+const StyledChainLogo = styled(ChainLogo)`
   margin-right: 8px;
-  
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
 `
 
 const InfoWrapper = styled.div`
