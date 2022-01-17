@@ -4,17 +4,16 @@ import styled from 'styled-components'
 
 import { Chains, useActiveAccount, useBalances, useBestNumber, useChainToken } from 'use-substrate'
 
-import { shortAddress } from '../../formatters'
+import { chainLogoPicker, shortAddress } from '../../formatters'
 import { FormatBalance } from '../FormatBalance'
 import { FormatBlockNumber } from '../FormatBlockNumber'
 import { Text } from '../typography'
 
 interface ActiveAccountProps {
-  logo?: string,
   chain: Chains
 }
 
-export const ActiveAccount: FC<ActiveAccountProps> = ({ chain, logo }) => {
+export const ActiveAccount: FC<ActiveAccountProps> = ({ chain }) => {
   const { activeAccount } = useActiveAccount(chain)
   const { chainToken, chainDecimals } = useChainToken(chain) || {}
   const { freeBalance: chainFreeBalance } = useBalances(activeAccount?.address.toString(), chain) || {}
@@ -25,8 +24,8 @@ export const ActiveAccount: FC<ActiveAccountProps> = ({ chain, logo }) => {
   return (
     <ActiveAccountWrapper>
       <ActiveAccountContent>
-        <LogoWrapper>
-          {logo && <Image src={logo} alt={chain}/>}
+        <LogoWrapper data-testid={`${chain}-chain-logo`}>
+          <Image src={chainLogoPicker(chain)} alt={chain}/>
         </LogoWrapper>
         <div>
           <InfoWrapper>
