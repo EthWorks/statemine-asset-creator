@@ -4,7 +4,7 @@ import { debounceTime } from 'rxjs'
 import { useObservable } from '../../hooks'
 import { KeyringWrapper, useAsync } from '../../util'
 import { AccountsContext } from './context'
-import { ExtensionStatus, UseAccounts } from './types'
+import { Account, ExtensionStatus, UseAccounts } from './types'
 import { checkRepeatedlyIfExtensionLoaded, getInjectedAccounts, mapObservableToAccounts } from './utils'
 
 export interface AccountsContextProviderProps {
@@ -18,6 +18,7 @@ const emptyAccounts: UseAccounts = { hasAccounts: false, allAccounts: [], web3En
 export const AccountsContextProvider = ({ appName, children, ss58Format }: AccountsContextProviderProps): JSX.Element => {
   const [extensionStatus, setExtensionStatus] = useState<ExtensionStatus>('Loading')
   const [keyringWrapper, setKeyringWrapper] = useState<KeyringWrapper | undefined>(undefined)
+  const [allAccounts, setAllAccounts] = useState<Account[]>([])
 
   useAsync(async () => {
     const { keyring } = await import('@polkadot/ui-keyring')
@@ -46,23 +47,30 @@ export const AccountsContextProvider = ({ appName, children, ss58Format }: Accou
       keyringWrapper.loadAccounts(injectedAccounts)
     }
 
-    setExtensionStatus('Loaded')
-
     const { web3AccountsSubscribe } = await import('@polkadot/extension-dapp')
 
     await web3AccountsSubscribe((accountsFromAllExtensions) => {
       keyringWrapper.forgetAccountsRemovedFromExtension(accountsFromAllExtensions)
       keyringWrapper.injectAccountsAddedToExtension(accountsFromAllExtensions)
     })
+
+    setExtensionStatus('Enabled')
   }, [extensionStatus, keyringWrapper])
 
   const observableAccounts = useObservable(keyringWrapper?.keyring.accounts.subject.asObservable().pipe(debounceTime(20)), [keyringWrapper, keyringWrapper?.keyring])
+
+  useEffect(() => {
+    setAllAccounts(mapObservableToAccounts(observableAccounts, ss58Format))
+
+    if (extensionStatus === 'Enabled') {
+      setExtensionStatus('Loaded')
+    }
+  }, [observableAccounts, ss58Format, extensionStatus])
 
   if (!keyringWrapper) {
     return <AccountsContext.Provider value={emptyAccounts}>{children}</AccountsContext.Provider>
   }
 
-  const allAccounts = mapObservableToAccounts(observableAccounts, ss58Format)
   const contextValue: UseAccounts = { allAccounts, hasAccounts: allAccounts.length !== 0, web3Enable, extensionStatus }
 
   if (extensionStatus === 'Unavailable') {

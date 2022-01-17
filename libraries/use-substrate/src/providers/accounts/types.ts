@@ -14,7 +14,7 @@ export interface Account {
   address: Address
 }
 
-export type ExtensionStatus = 'Loading' | 'Available' | 'Unavailable' | 'Loaded'
+export type ExtensionStatus = 'Loading' | 'Available' | 'Unavailable' | 'Enabled' | 'Loaded'
 
 export interface UseAccounts {
   extensionStatus: ExtensionStatus;
