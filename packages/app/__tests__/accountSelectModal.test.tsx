@@ -45,7 +45,6 @@ let mockParachainActiveAccount: ActiveAccount | undefined
 const mockActiveAccount = (chain: Chains) => {
   switch (chain) {
     case Chains.Kusama:
-      return mockRelayChainActiveAccount
     case Chains.Polkadot:
       return mockRelayChainActiveAccount
     default:
