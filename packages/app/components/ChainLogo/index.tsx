@@ -6,7 +6,7 @@ import { Chains } from 'use-substrate'
 
 import { chainLogoPicker } from '../../formatters'
 
-interface ChainLogoProps {
+export interface ChainLogoProps {
   chain: Chains,
   className?: string
 }
@@ -14,7 +14,7 @@ interface ChainLogoProps {
 function ChainLogoComponent({ chain, className }: ChainLogoProps): JSX.Element {
   return (
     <ImageWrapper className={className} data-testid={`${chain}-chain-logo`}>
-      <Image src={chainLogoPicker(chain)} alt=''/>
+      <Image src={chainLogoPicker(chain)} alt='' width={25} height={25}/>
     </ImageWrapper>
   )
 }
