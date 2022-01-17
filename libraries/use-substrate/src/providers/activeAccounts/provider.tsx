@@ -26,7 +26,7 @@ export const ActiveAccountProvider: FC<ActiveAccountProviderProps> = ({ children
     }
 
     setIsLoaded(true)
-  }, [api, allAccounts.length])
+  }, [api, allAccounts.length, extensionStatus])
 
   const _setActiveAccounts = (newActiveAccounts: ActiveAccountsInput): void => {
     if (localStorageExists()) {
