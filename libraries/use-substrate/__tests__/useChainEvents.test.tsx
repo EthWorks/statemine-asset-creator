@@ -5,6 +5,12 @@ import { Chains, useApi, useChainEvents } from '../src'
 import { MockedApiProvider } from './mocks/MockedApiProvider'
 
 describe('useChainEvents hook', () => {
+  it('returns emitted events', async () => {
+    const { result } = renderResult(Chains.Kusama)
+
+    expect(result.current?.events).toEqual('somestring')
+  })
+
   it('returns emitted event block number', async () => {
     const { result } = renderResult(Chains.Kusama)
 

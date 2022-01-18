@@ -92,8 +92,21 @@ export const mockedKusamaApi: UseApi = {
         events: () => from<ObservableInput<Vec<EventRecord>>>([
           createType('Vec<EventRecord>', [
             {
-              event: createType('Event', { value: new BN('1'), method: 'Created', section: 'assets' }),
-              phase: createType('Phase', 'Initialization')
+              phase: {
+                ApplyExtrinsic: 0
+              },
+              event: createType('Event', {
+                method: 'ExtrinsicSuccess',
+                section: 'system',
+                index: '0x0012',
+                data: createType('GenericEventData',
+                  {
+                    weight: '184,647,000',
+                    class: 'Mandatory',
+                    paysFee: 'Yes'
+                  })
+              }),
+              topics: []
             }
           ])
         ])

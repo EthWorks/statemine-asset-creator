@@ -25,6 +25,7 @@ export function useChainEvents(chain: Chains, checks: EventCheck[]): UseChainEve
     console.log(`event.[${index}].phase`, event.phase.toString())
     console.log(`event.[${index}].topics`, event.topics.toString())
   })
+
   useEffect((): void => {
     if (eventRecords) {
       const events = eventRecords.filter((record) =>
