@@ -7,15 +7,18 @@ import type { AssetInfoWithId, AssetMeta, FetchedAssets, UseAssets, UseAssetsOpt
 import { useEffect, useMemo, useState } from 'react'
 
 import { useApi } from './useApi'
+import { useChainEvents } from './useChainEvents'
 import { useObservable } from './useObservable'
 
 export function useAssets(chain: Chains, options?: UseAssetsOptions): UseAssets | undefined {
   const [ids, setIds] = useState<AssetId[]>()
   const [ownerAssets, setOwnerAssets] = useState<AssetInfoWithId[]>([])
   const { api, connectionState } = useApi(chain)
+  const CHECKS = useMemo(() => [api?.events.assets.Created, api?.events.assets.Destroyed], [api])
 
-  const fetchedAssets = useObservable<FetchedAssets>(api?.query.assets.asset.entries(), [api, connectionState])
-  const metadata = useObservable<PalletAssetsAssetMetadata[]>(ids ? api?.query.assets.metadata.multi(ids) : undefined, [ids, api, connectionState])
+  const { blockHash } = useChainEvents(chain, CHECKS) || {}
+  const fetchedAssets = useObservable<FetchedAssets>((blockHash ? api?.query.assets.asset.entriesAt(blockHash) : api?.query.assets.asset.entries()), [api, connectionState, blockHash])
+  const metadata = useObservable<PalletAssetsAssetMetadata[]>(ids ? api?.query.assets.metadata.multi(ids) : undefined, [ids, api, connectionState, fetchedAssets])
 
   useEffect(() => {
     if (!fetchedAssets) return undefined

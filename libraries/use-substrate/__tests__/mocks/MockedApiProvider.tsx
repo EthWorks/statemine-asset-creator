@@ -3,16 +3,18 @@ import type { ApiRx } from '@polkadot/api'
 import type { DeriveBalancesAll, DeriveBalancesAllAccountData } from '@polkadot/api-derive/types'
 import type { BlockNumber, ParaId } from '@polkadot/types/interfaces'
 import type { PalletAssetsAssetMetadata } from '@polkadot/types/lookup'
-import type { ISubmittableResult } from '@polkadot/types/types'
+import type { AnyTuple, IEvent, ISubmittableResult } from '@polkadot/types/types'
 import type { FetchedAssets, UseApi } from '../../src'
 
+import { Vec } from '@polkadot/types'
+import { EventRecord } from '@polkadot/types/interfaces'
 import BN from 'bn.js'
 import React from 'react'
 import { from, of } from 'rxjs'
 
 import { createType } from 'test-helpers'
 
-import { ApiContext } from '../../src'
+import { ApiContext, isModuleEvent } from '../../src'
 import { ALICE, BOB } from '../consts'
 import { createAssetStorageKey } from '../utils'
 
@@ -57,6 +59,12 @@ export const mockedKusamaApi: UseApi = {
         bestNumber: () => from<ObservableInput<BlockNumber>>([createType('BlockNumber', new BN('966'))])
       }
     },
+    events: {
+      assets: {
+        Created: { is: (arg: IEvent<AnyTuple>) => isModuleEvent(arg, 'assets', 'Created') },
+        Destroyed: { is: (arg: IEvent<AnyTuple>) => isModuleEvent(arg, 'assets', 'Destroyed') }
+      }
+    },
     query: {
       parachainInfo: {
         parachainId: () => from<ObservableInput<ParaId>>([createType('ParaId', new BN('12'))])
@@ -79,6 +87,16 @@ export const mockedKusamaApi: UseApi = {
             ]
           ])
         }
+      },
+      system: {
+        events: () => from<ObservableInput<Vec<EventRecord>>>([
+          createType('Vec<EventRecord>', [
+            {
+              event: createType('Event', { value: new BN('1'), method: 'Created', section: 'assets' }),
+              phase: createType('Phase', 'Initialization')
+            }
+          ])
+        ])
       }
     },
     tx: {
