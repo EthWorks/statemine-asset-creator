@@ -6,7 +6,7 @@ import React from 'react'
 import { Chains as mockChains } from 'use-substrate'
 
 import Home from '../pages/index'
-import { assertText, clickButton, renderWithTheme, setLocalStorage } from './helpers'
+import { assertNoText, assertText, clickButton, renderWithTheme, setLocalStorage } from './helpers'
 import {
   bobAccountId,
   bobAddressForActiveAccountBar,
@@ -25,7 +25,7 @@ import {
   shortenedCharlieAddress
 } from './mocks'
 
-let mockAssets: UseAssets = []
+let mockAssets: UseAssets | undefined = []
 let mockActiveAccount: ActiveAccount | undefined = { address: bobAccountId }
 jest.mock('use-substrate/dist/src/hooks', () => ({
   useAccounts: () => mockUseAccounts,
@@ -161,4 +161,37 @@ describe('Home', () => {
       await within(header).findByTestId('active-account-bar')
     })
   })
+
+  describe('shows page loader for', () => {
+    it('not connected api', async () => {
+      const connectionState = mockUseApi.connectionState
+      mockUseApi.connectionState = 'connecting'
+
+      renderWithTheme(<Home/>)
+
+      await screen.findByTestId('loader')
+      assertNoPageHeader()
+      assertNoText('Dashboard')
+
+      mockUseApi.connectionState = connectionState
+    })
+
+    it('not loaded assets', async () => {
+      const assets = mockAssets
+      mockAssets = undefined
+
+      renderWithTheme(<Home/>)
+
+      await screen.findByTestId('loader')
+      assertNoPageHeader()
+      assertNoText('Dashboard')
+
+      mockAssets = assets
+    })
+  })
 })
+
+const assertNoPageHeader = () => {
+  const header = screen.queryByTestId('page-header')
+  expect(header).toBeNull()
+}

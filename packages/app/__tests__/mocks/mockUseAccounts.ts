@@ -7,5 +7,5 @@ export const mockUseAccounts: UseAccounts = {
   allAccounts: mockAccounts,
   hasAccounts: true,
   web3Enable: mockWeb3Enable,
-  extensionStatus: 'Available'
+  extensionStatus: 'Loaded'
 }
