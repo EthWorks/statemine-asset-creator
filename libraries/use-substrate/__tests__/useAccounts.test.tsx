@@ -27,7 +27,9 @@ describe('useAccountsHook', () => {
       jest.runOnlyPendingTimers()
     })
 
-    await result.current.web3Enable()
+    await act(async () => {
+      await result.current.web3Enable()
+    })
 
     act(() => {
       jest.runOnlyPendingTimers()
@@ -54,7 +56,9 @@ describe('useAccountsHook', () => {
       jest.runOnlyPendingTimers()
     })
 
-    await result.current.web3Enable()
+    await act(async () => {
+      await result.current.web3Enable()
+    })
 
     act(() => {
       jest.runOnlyPendingTimers()
@@ -81,7 +85,9 @@ describe('useAccountsHook', () => {
       jest.runOnlyPendingTimers()
     })
 
-    await result.current.web3Enable()
+    await act(async () => {
+      await result.current.web3Enable()
+    })
 
     act(() => {
       jest.runOnlyPendingTimers()
