@@ -8,7 +8,7 @@ export interface LoaderProps {
 }
 
 export const Loader = ({ fullPage }: LoaderProps): JSX.Element => (
-  <LoaderWrapper fullPage={fullPage}>
+  <LoaderWrapper fullPage={fullPage} data-testid='loader'>
     <LoaderBg />
     <Image src={loaderIcon} alt='' width='200' height='200' />
   </LoaderWrapper>

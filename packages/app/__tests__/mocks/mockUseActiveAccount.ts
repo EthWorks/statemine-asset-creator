@@ -3,5 +3,6 @@ import { bobActiveAccount } from './mockAccounts'
 
 export const mockUseActiveAccount = {
   activeAccount: bobActiveAccount,
-  setActiveAccount: noop
+  setActiveAccount: noop,
+  isLoaded: true
 }

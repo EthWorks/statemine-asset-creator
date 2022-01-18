@@ -9,6 +9,7 @@ import Home from '../pages/index'
 import { AppChainsProvider } from '../utils'
 import {
   assertChainLogo,
+  assertNoText,
   assertText,
   clickButton,
   renderWithTheme,
@@ -33,7 +34,7 @@ import {
   shortenedCharlieAddress
 } from './mocks'
 
-let mockAssets: UseAssets = []
+let mockAssets: UseAssets | undefined = []
 let mockActiveAccount: ActiveAccount | undefined = { address: bobAccountId }
 jest.mock('use-substrate/dist/src/hooks', () => ({
   useAccounts: () => mockUseAccounts,
@@ -183,4 +184,37 @@ describe('Home', () => {
     await assertChainLogo(Chains.Polkadot, activeAccountBar)
     await assertChainLogo(Chains.Statemint, activeAccountBar)
   })
+
+  describe('shows page loader for', () => {
+    it('not connected api', async () => {
+      const connectionState = mockUseApi.connectionState
+      mockUseApi.connectionState = 'connecting'
+
+      renderWithTheme(<Home/>)
+
+      await screen.findByTestId('loader')
+      assertNoPageHeader()
+      assertNoText('Dashboard')
+
+      mockUseApi.connectionState = connectionState
+    })
+
+    it('not loaded assets', async () => {
+      const assets = mockAssets
+      mockAssets = undefined
+
+      renderWithTheme(<Home/>)
+
+      await screen.findByTestId('loader')
+      assertNoPageHeader()
+      assertNoText('Dashboard')
+
+      mockAssets = assets
+    })
+  })
 })
+
+const assertNoPageHeader = () => {
+  const header = screen.queryByTestId('page-header')
+  expect(header).toBeNull()
+}

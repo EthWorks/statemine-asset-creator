@@ -9,23 +9,24 @@ import { ActiveAccountsContext } from './context'
 import { convertAddressesToAccountIds, filterAccountsPresentInExtension, writeToLocalStorage } from './utils'
 
 export const ActiveAccountProvider: FC<ActiveAccountProviderProps> = ({ children, api }) => {
-  const extensionAccounts = useAccounts()
+  const { allAccounts, extensionStatus } = useAccounts()
   const [activeAccounts, setActiveAccounts] = useState<ActiveAccounts>({})
+  const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
+    if (extensionStatus !== 'Loaded' || !api) return
+
     if (localStorageExists()) {
       const localStorageAccounts = localStorage.getItem('activeAccounts')
       const parsedAccounts = localStorageAccounts ? JSON.parse(localStorageAccounts) : {}
 
-      if (!api) {
-        return
-      }
-
-      const accountsPresentInExtension = filterAccountsPresentInExtension(parsedAccounts, extensionAccounts.allAccounts)
+      const accountsPresentInExtension = filterAccountsPresentInExtension(parsedAccounts, allAccounts)
       const accountsWithAccountIds = convertAddressesToAccountIds(accountsPresentInExtension, api)
       setActiveAccounts(accountsWithAccountIds)
     }
-  }, [api, extensionAccounts.allAccounts.length])
+
+    setIsLoaded(true)
+  }, [api, allAccounts.length, extensionStatus])
 
   const _setActiveAccounts = (newActiveAccounts: ActiveAccountsInput): void => {
     if (localStorageExists()) {
@@ -42,7 +43,7 @@ export const ActiveAccountProvider: FC<ActiveAccountProviderProps> = ({ children
   }
 
   return (
-    <ActiveAccountsContext.Provider value={{ activeAccounts, setActiveAccounts: _setActiveAccounts }}>
+    <ActiveAccountsContext.Provider value={{ activeAccounts, setActiveAccounts: _setActiveAccounts, isLoaded }}>
       {children}
     </ActiveAccountsContext.Provider>
   )
