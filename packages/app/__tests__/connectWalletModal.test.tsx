@@ -94,6 +94,6 @@ describe('Connect wallet modal', () => {
   it('displays connect wallet modal when extension is not activated', async () => {
     renderWithTheme(<Home />)
 
-    await screen.findByText('Connect Wallet to start using app')
+    await screen.findByText('Connect extension to start using this app')
   })
 })

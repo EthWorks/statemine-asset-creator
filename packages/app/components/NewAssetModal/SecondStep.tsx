@@ -38,6 +38,8 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
 
   const useAdminEverywhereButton = <StyledLink onClick={_setAdminForAllAccounts}>Use everywhere</StyledLink>
 
+  const pluralForAdmins = insufficientFundsAdmins.length > 1
+
   return (
     <form onSubmit={_onNext}>
       <AccountSelect
@@ -75,7 +77,7 @@ export function SecondStep({ onNext, onBack }: ModalStep): JSX.Element | null {
       />
       {insufficientFundsAdmins.length > 0 && (
         <Info
-          text={`Insufficient funds on the ${listedAdmins} account${insufficientFundsAdmins.length > 1 ? 's' : ''} to create assets.`}
+          text={`The ${listedAdmins} account${pluralForAdmins ? 's' : ''} ${pluralForAdmins ? 'are' : 'is'} low on funds. ${pluralForAdmins ? 'They' : 'It'} may not be able to perform ${pluralForAdmins ? 'their' : 'its'} tasks until topped up.`}
         />
       )}
       <ModalFooter contentPosition='between'>

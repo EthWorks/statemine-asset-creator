@@ -124,7 +124,7 @@ describe('Account select modal', () => {
   it('shows info about insufficient funds', async () => {
     renderWithTheme(<Home/>)
 
-    await assertText('This account has insufficient funds, consider adding Kusama account.')
+    await assertText('This account has insufficient funds, consider adding a Kusama account.')
   })
 
   it('shows info about kusama account', async () => {
@@ -256,7 +256,7 @@ describe('Account select modal', () => {
     expect(modal).toHaveTextContent('Polkadot account')
     expect(modal).not.toHaveTextContent('Kusama account')
     expect(modal).toHaveTextContent('Asset creation and transfers happen on the Statemint parachain. You need an account with a balance on Statemint for fees and deposits. However, you can also use a fresh & empty account, and send funds from your Polkadot account.')
-    expect(modal).toHaveTextContent('This account has insufficient funds, consider adding Polkadot account.')
+    expect(modal).toHaveTextContent('This account has insufficient funds, consider adding a Polkadot account.')
   })
 
   afterEach(() => {

@@ -12,13 +12,13 @@ export function getCreateAssetTransactionModalDetails(status: TransactionStatus 
       return {
         name: 'Asset Creation',
         title: 'Pending transaction {txNumber}/{txNumber}...',
-        text: 'It takes time to create your asset. In order to do so, we need to create a transaction and wait until blockchain validates it.'
+        text: 'Asset creation transaction is included in a block. Waiting until it is confirmed.'
       }
     case (TransactionStatus.Success):
       return {
         name: undefined,
         title: 'Congratulations!',
-        text: 'Your asset have been created.'
+        text: 'Your asset has been created.'
       }
     case (TransactionStatus.Error):
       return {
@@ -38,7 +38,7 @@ export function getTeleportTransactionModalDetails(status: TransactionStatus | u
       return {
         name: 'Teleport',
         title: 'Pending transaction 1/2...',
-        text: 'It takes time to teleport. In order to do so, we need to create a transaction and wait until blockchain validates it.'
+        text: 'Teleport transaction is included in a block. Waiting until it is confirmed.'
       }
     case (TransactionStatus.Error):
       return {

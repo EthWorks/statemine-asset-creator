@@ -119,7 +119,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelect
 
   const requiredTeleportInfo = (
     <StyledInfo
-      text={`Insufficient funds on the owner account to create the asset. Teleport transaction from selected ${capitalizedRelayChain} account will be executed`}
+      text={`Owner account has insufficient funds on ${capitalizedParachain} to create the asset. A Teleport transaction from selected ${capitalizedRelayChain} account will be executed.`}
     />
   )
 

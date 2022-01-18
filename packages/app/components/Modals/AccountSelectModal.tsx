@@ -47,7 +47,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
     setRelayChainAccountInfo(undefined)
 
     if (!hasParaChainFreeBalance && !isRelayChainAccountSelectVisible) {
-      setParachainAccountInfo(`This account has insufficient funds, consider adding ${capitalizedRelayChain} account.`)
+      setParachainAccountInfo(`This account has insufficient funds, consider adding a ${capitalizedRelayChain} account.`)
 
       return
     }
