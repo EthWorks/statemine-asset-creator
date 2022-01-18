@@ -2,7 +2,7 @@ import type { RenderResult } from '@testing-library/react'
 import type { RuntimeDispatchInfo } from '@polkadot/types/interfaces'
 import type { ErrorDetails, UseActiveAccount, UseTransaction } from 'use-substrate'
 
-import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, screen } from '@testing-library/react'
 import BN from 'bn.js'
 import React from 'react'
 
@@ -32,7 +32,8 @@ import {
   findAndClickButton,
   getAccountSelect,
   renderWithTheme,
-  selectAccountFromDropdown, switchApiToPolkadot,
+  selectAccountFromDropdown,
+  switchApiToPolkadot,
   typeInInput
 } from './helpers'
 import {
@@ -134,7 +135,7 @@ describe('New asset modal', () => {
 
       await enterThirdStep()
 
-      await waitFor(() => expect(screen.getByText('Confirm')).toBeTruthy())
+      await screen.findByText('Confirm')
       await assertSummary()
     })
 
@@ -227,7 +228,7 @@ describe('New asset modal', () => {
             assertButtonDisabled('Next')
 
             fillInput(inputName, 'a'.repeat(mockedStringLimit))
-            await assertNoInputError(inputName)
+            assertNoInputError(inputName)
 
             assertButtonNotDisabled('Next')
           })
@@ -385,7 +386,7 @@ describe('New asset modal', () => {
       it('issuer', async () => {
         await selectAccountFromDropdown(ISSUER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
         clickButton('Next')
-        await act(() => findAndClickButton('Confirm'))
+        await findAndClickButton('Confirm')
 
         expect(mockUseApi.api.tx.assets.setTeam).toBeCalledWith(ASSET_ID, aliceAccount.address, bobAccount.address, bobAccount.address)
       })
@@ -393,7 +394,7 @@ describe('New asset modal', () => {
       it('freezer', async () => {
         await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
         clickButton('Next')
-        await act(() => findAndClickButton('Confirm'))
+        await findAndClickButton('Confirm')
 
         expect(mockUseApi.api.tx.assets.setTeam).toBeCalledWith(ASSET_ID, bobAccount.address, bobAccount.address, aliceAccount.address)
       })
@@ -646,7 +647,7 @@ describe('New asset modal', () => {
           mockActiveAccount = (chain: Chains | undefined) => {
             switch (chain) {
               case Chains.Kusama:
-                return { activeAccount: undefined, setActiveAccount: () => { /**/ } }
+                return { activeAccount: undefined, setActiveAccount: () => { /**/ }, isLoaded: true }
               default:
                 return mockUseActiveAccount
             }
