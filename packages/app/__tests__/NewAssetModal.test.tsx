@@ -2,7 +2,7 @@ import type { RenderResult } from '@testing-library/react'
 import type { RuntimeDispatchInfo } from '@polkadot/types/interfaces'
 import type { ErrorDetails, UseActiveAccount, UseTransaction } from 'use-substrate'
 
-import { act, fireEvent, screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import BN from 'bn.js'
 import React from 'react'
 
@@ -883,7 +883,7 @@ const assertFirstStepEmpty = () => {
 }
 
 const assertSummary = async () => {
-  const assetModal = await screen.getByTestId('modal')
+  const assetModal = await screen.findByTestId('modal')
   expect(assetModal).toHaveTextContent(`Asset name${ASSET_NAME}`)
   expect(assetModal).toHaveTextContent(`Asset symbol${ASSET_SYMBOL}`)
   expect(assetModal).toHaveTextContent(`Asset decimals${ASSET_DECIMALS}`)
@@ -899,7 +899,7 @@ const createAsset = async (): Promise<void> => {
   await fillSecondStep()
 
   clickButton('Next')
-  await act(async () => await findAndClickButton('Confirm'))
+  await findAndClickButton('Confirm')
 }
 
 const enterThirdStep = async (): Promise<void> => {
@@ -914,7 +914,7 @@ const enterThirdStep = async (): Promise<void> => {
 
 const enterSecondStep = async () => {
   await openModal()
-  await fillFirstStep()
+  fillFirstStep()
   clickButton('Next')
 }
 
@@ -926,6 +926,7 @@ const closeModal = async () => {
 
 const openModal = async (): Promise<void> => {
   await findAndClickButton('Create new asset')
+  await assertText('Create asset')
 }
 
 const assertSteps = (expectedSteps: ('active' | 'past' | 'unvisited')[]) => {

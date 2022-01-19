@@ -3,10 +3,19 @@ import type { ActiveAccount, UseAssets } from 'use-substrate'
 import { act, screen, within } from '@testing-library/react'
 import React from 'react'
 
-import { Chains as mockChains } from 'use-substrate'
+import { Chains, Chains as mockChains } from 'use-substrate'
 
 import Home from '../pages/index'
-import { assertNoText, assertText, clickButton, renderWithTheme, setLocalStorage } from './helpers'
+import { AppChainsProvider } from '../utils'
+import {
+  assertChainLogo,
+  assertNoText,
+  assertText,
+  clickButton,
+  renderWithTheme,
+  setLocalStorage,
+  switchApiToPolkadot
+} from './helpers'
 import {
   bobAccountId,
   bobAddressForActiveAccountBar,
@@ -160,6 +169,20 @@ describe('Home', () => {
 
       await within(header).findByTestId('active-account-bar')
     })
+  })
+
+  it('updates displayed chain icons on active api change', async () => {
+    renderWithTheme(<AppChainsProvider><Home/></AppChainsProvider>)
+
+    const activeAccountBar = await screen.findByTestId('active-account-bar')
+
+    await assertChainLogo(Chains.Kusama, activeAccountBar)
+    await assertChainLogo(Chains.Statemine, activeAccountBar)
+
+    await switchApiToPolkadot()
+
+    await assertChainLogo(Chains.Polkadot, activeAccountBar)
+    await assertChainLogo(Chains.Statemint, activeAccountBar)
   })
 
   describe('shows page loader for', () => {
