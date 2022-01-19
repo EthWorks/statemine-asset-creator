@@ -122,7 +122,6 @@ const mockedStringLimit = mockUseAssetsConstants.stringLimit.toNumber()
 
 describe('New asset modal', () => {
   beforeEach(() => {
-    jest.setTimeout(10000)
     mockTransaction.mockClear()
     setCreateAssetTransactionStatus(TransactionStatus.Ready)
     mockUseApi.api.tx.assets.create.mockClear()
