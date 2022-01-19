@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { ReactNode } from 'react'
 import styled, { css } from 'styled-components'
 
+import { Loader } from '../Loader'
 import { Text } from '../typography'
 
 export interface PageTemplateProps {
@@ -10,22 +11,29 @@ export interface PageTemplateProps {
   errorPage?: boolean,
   header?: ReactNode,
   title?: string,
-  templateHeader?: ReactNode
+  templateHeader?: ReactNode,
+  isLoading?: boolean
 }
 
-export const PageTemplate = ({ background, children, errorPage, header, title, templateHeader }: PageTemplateProps): JSX.Element => (
+export const PageTemplate = ({ background, children, errorPage, header, title, templateHeader, isLoading }: PageTemplateProps): JSX.Element => (
   <PageWrapper errorPage={errorPage}>
     <PageBg>
       <Image src={background} alt='' />
     </PageBg>
-    {header && <MainHeader>{header}</MainHeader>}
-    {(title || templateHeader) && (
-      <PageTitleWrapper>
-        {title && <Text size='2XL' color='white' bold>{title}</Text>}
-        {templateHeader}
-      </PageTitleWrapper>
-    )}
-    {children}
+    {isLoading
+      ? <Loader/>
+      : (
+        <>
+          {header && <MainHeader>{header}</MainHeader>}
+          {(title || templateHeader) && (
+            <PageTitleWrapper>
+              {title && <Text size='2XL' color='white' bold>{title}</Text>}
+              {templateHeader}
+            </PageTitleWrapper>
+          )}
+          {children}
+        </>
+      )}
   </PageWrapper>
 )
 

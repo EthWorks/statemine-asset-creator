@@ -5,7 +5,8 @@ import type { ActiveAccount } from '../../hooks'
 
 export interface UseActiveAccounts {
   activeAccounts: ActiveAccounts,
-  setActiveAccounts: (activeAccounts: ActiveAccountsInput) => void
+  setActiveAccounts: (activeAccounts: ActiveAccountsInput) => void,
+  isLoaded: boolean
 }
 
 export type ActiveAccounts = Partial<Record<Chains, ActiveAccount>>

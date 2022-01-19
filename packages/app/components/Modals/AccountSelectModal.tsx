@@ -1,13 +1,11 @@
-import Image from 'next/image'
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
 import { useAccounts, useActiveAccounts } from 'use-substrate'
 
-import KusamaLogo from '../../assets/img/kusama.svg'
-import StatemineLogo from '../../assets/img/statemine.svg'
 import { useAccountSelect, useAppChains, useCapitalizedChains, useToggle } from '../../utils'
 import { AccountSelect } from '../AccountSelect'
+import { ChainLogo } from '../ChainLogo'
 import { Arrow } from '../icons'
 import { ButtonPrimary, ButtonTertiary, CloseButton, Loader, Modal, Text, Title } from '../index'
 import { SectionTitle } from '../SectionTitle/SectionTitle'
@@ -98,9 +96,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
         Asset creation and transfers happen on the <b>{capitalizedParachain}</b> parachain. You <b>need an account with a balance on {capitalizedParachain}</b> for fees and deposits. However, you can also use a fresh & empty account, and send funds from your {capitalizedRelayChain} account.
       </TextStyle>
       <SectionTitleStyle>
-        <ImageWrapper>
-          <Image src={StatemineLogo} alt='Statemine' />
-        </ImageWrapper>
+        <ChainLogo chain={parachain}/>
         <Title color='white'>{capitalizedParachain} account</Title>
       </SectionTitleStyle>
       <AccountSelect
@@ -119,9 +115,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
       {displayRelayChainSelect && (
         <>
           <SectionTitleStyle>
-            <ImageWrapper>
-              <Image src={KusamaLogo} alt='Kusama' />
-            </ImageWrapper>
+            <ChainLogo chain={relayChain}/>
             <Title color='white'>{capitalizedRelayChain} account</Title>
           </SectionTitleStyle>
           <AccountSelect
@@ -160,11 +154,6 @@ const StyledButtonPrimary = styled(ButtonPrimary)`
 
 const StyledCloseButton = styled(CloseButton)`
   margin-left: auto;
-`
-
-const ImageWrapper = styled.div`
-  width: 32px;
-  height: 32px;
 `
 
 const Centered = styled.div`

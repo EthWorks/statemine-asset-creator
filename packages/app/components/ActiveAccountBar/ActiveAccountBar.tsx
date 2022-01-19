@@ -2,8 +2,6 @@ import type { FC } from 'react'
 
 import styled from 'styled-components'
 
-import kusamaLogo from '../../assets/img/kusama.svg'
-import statemineLogo from '../../assets/img/statemine.svg'
 import { useAppChains } from '../../utils'
 import { ButtonSquare } from '../button/Button'
 import { Edit } from '../icons'
@@ -21,12 +19,10 @@ export const ActiveAccountBar: FC<Props> = ({ onClick }) => {
       <ActiveAccount
         key={relayChain}
         chain={relayChain}
-        logo={kusamaLogo}
       />
       <ActiveAccount
         key={parachain}
         chain={parachain}
-        logo={statemineLogo}
       />
       <EditButton onClick={onClick}>
         <Edit />
