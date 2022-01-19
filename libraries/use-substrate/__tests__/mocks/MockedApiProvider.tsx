@@ -1,8 +1,7 @@
 import type { ObservableInput } from 'rxjs'
 import type { ApiRx } from '@polkadot/api'
 import type { DeriveBalancesAll, DeriveBalancesAllAccountData } from '@polkadot/api-derive/types'
-import type { GenericEventData, Vec } from '@polkadot/types'
-import type { BlockNumber, EventRecord, Hash, ParaId } from '@polkadot/types/interfaces'
+import type { BlockNumber, ParaId } from '@polkadot/types/interfaces'
 import type { PalletAssetsAssetMetadata } from '@polkadot/types/lookup'
 import type { AnyTuple, IEvent, ISubmittableResult } from '@polkadot/types/types'
 import type { FetchedAssets, UseApi } from '../../src'
@@ -88,38 +87,7 @@ export const mockedKusamaApi: UseApi = {
         }
       },
       system: {
-        events: () => from<ObservableInput<Vec<EventRecord>>>([
-          Object.assign([{
-            phase: { ApplyExtrinsic: 1 },
-            event: {
-              section: 'assets',
-              method: 'Created',
-              index: createType('EventId', '0x0001'),
-              data: [{ module: { index: 34, error: 9 } }, {
-                weight: 397453000,
-                class: 'Normal',
-                paysFee: 'Yes'
-              }] as unknown as GenericEventData
-            },
-            topics: [] as unknown as Vec<Hash>
-          } as unknown as EventRecord,
-          {
-            phase: { ApplyExtrinsic: 1 },
-            event: {
-              section: 'assets',
-              method: 'Destroyed',
-              index: createType('EventId', '0x0002'),
-              data: [{ module: { index: 22, error: 1 } }, {
-                weight: 352153000,
-                class: 'Normal',
-                paysFee: 'Yes'
-              }] as unknown as GenericEventData
-            },
-            topics: [] as unknown as Vec<Hash>
-          } as unknown as EventRecord] as Vec<EventRecord>, {
-            createdAtHash: createType('Hash', '0x38020a026d6f646c506f745374616b650038020a026d6f646c506f745374616b6500')
-          })
-        ])
+        events: () => from<ObservableInput<FetchedAssets>>([[]])
       }
     },
     tx: {

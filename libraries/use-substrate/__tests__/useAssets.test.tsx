@@ -89,9 +89,9 @@ const customApi: UseApi = {
   api: {
     ...mockedKusamaApi.api,
     query: {
-      ...mockedKusamaApi.api!.query,
+      ...mockedKusamaApi.api?.query,
       assets: {
-        ...mockedKusamaApi.api!.query.assets,
+        ...mockedKusamaApi.api?.query.assets,
         metadata: {
           multi: () => from<ObservableInput<PalletAssetsAssetMetadata[]>>([
             [

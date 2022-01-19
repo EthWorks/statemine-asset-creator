@@ -25,9 +25,6 @@ import Error from './_error'
 
 const Home: NextPage = () => {
   const { relayChain, parachain } = useAppChains()
-  const { api } = useApi(parachain)
-
-  console.log('Created:', api?.events.assets.Created)
   const { activeAccount } = useActiveAccount(parachain)
   const { address } = activeAccount || {}
   const { web3Enable } = useAccounts()

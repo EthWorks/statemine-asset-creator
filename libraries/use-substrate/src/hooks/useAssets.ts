@@ -18,7 +18,7 @@ export function useAssets(chain: Chains, options?: UseAssetsOptions): UseAssets 
 
   const { blockHash } = useChainEvents(chain, CHECKS) || {}
   const fetchedAssets = useObservable<FetchedAssets>((blockHash ? api?.query.assets.asset.entriesAt(blockHash) : api?.query.assets.asset.entries()), [api, connectionState, blockHash])
-  const metadata = useObservable<PalletAssetsAssetMetadata[]>(ids ? api?.query.assets.metadata.multi(ids) : undefined, [ids, api, connectionState, fetchedAssets])
+  const metadata = useObservable<PalletAssetsAssetMetadata[]>(ids ? api?.query.assets.metadata.multi(ids) : undefined, [ids, api, connectionState])
 
   useEffect(() => {
     if (!fetchedAssets) return undefined
