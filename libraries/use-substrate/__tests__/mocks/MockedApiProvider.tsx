@@ -6,8 +6,8 @@ import type { PalletAssetsAssetMetadata } from '@polkadot/types/lookup'
 import type { AnyTuple, IEvent, ISubmittableResult } from '@polkadot/types/types'
 import type { FetchedAssets, UseApi } from '../../src'
 
-import { Vec } from '@polkadot/types'
-import { EventRecord } from '@polkadot/types/interfaces'
+import { GenericEvent, GenericEventData, Vec } from '@polkadot/types'
+import { EventRecord, Hash, Phase } from '@polkadot/types/interfaces'
 import BN from 'bn.js'
 import React from 'react'
 import { from, of } from 'rxjs'
@@ -17,6 +17,29 @@ import { createType } from 'test-helpers'
 import { ApiContext, isModuleEvent } from '../../src'
 import { ALICE, BOB } from '../consts'
 import { createAssetStorageKey } from '../utils'
+import {decorateEvents} from "@polkadot/types/metadata/decorate";
+
+import json3 from '@polkadot/types-support/json/EventRecord.003.json';
+
+const hex = json3.params.result.changes[0][1];
+const eventRecord = createType('Vec<EventRecord>', hex, true);
+
+// const eventRecord: EventRecord = {
+//   phase: { ApplyExtrinsic: 1 },
+//   event: createType('GenericEvent',{
+//     section: 'system',
+//     method: 'ExtrinsicFailed',
+//     index: createType('EventId', '0x0001'),
+//     data: [{ module: { index: 34, error: 9 }, asModule: {}, isModule: true, registry: { findMetaError: () => ({ section: 'assets', name: 'BadMetadata', docs: 'Invalid metadata given.' }) } }, {
+//       weight: 397453000,
+//       class: 'Normal',
+//       paysFee: 'Yes'
+//     }] as unknown as GenericEventData
+//   }),
+//   topics: [] as unknown as Vec<Hash>
+// } as unknown as EventRecord
+
+const vectorEventRecord: Vec<EventRecord> = createType('Vec<EventRecord>', [eventRecord])
 
 export const mockedKusamaApi: UseApi = {
   isConnected: true,
@@ -90,25 +113,7 @@ export const mockedKusamaApi: UseApi = {
       },
       system: {
         events: () => from<ObservableInput<Vec<EventRecord>>>([
-          createType('Vec<EventRecord>', [
-            {
-              phase: {
-                ApplyExtrinsic: 0
-              },
-              event: createType('Event', {
-                method: 'ExtrinsicSuccess',
-                section: 'system',
-                index: '0x0012',
-                data: createType('GenericEventData',
-                  {
-                    weight: '184,647,000',
-                    class: 'Mandatory',
-                    paysFee: 'Yes'
-                  })
-              }),
-              topics: []
-            }
-          ])
+          vectorEventRecord
         ])
       }
     },

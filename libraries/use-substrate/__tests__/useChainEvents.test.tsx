@@ -37,3 +37,5 @@ describe('useChainEvents hook', () => {
     }, { wrapper })
   }
 })
+
+

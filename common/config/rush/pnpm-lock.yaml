@@ -17,6 +17,7 @@ specifiers:
   '@polkadot/ui-keyring': ~0.87.3
   '@polkadot/util': ~8.0.5
   '@polkadot/util-crypto': 8.0.5
+  '@polkadot/x-fetch': ~8.3.1
   '@radix-ui/react-id': ~0.1.1
   '@radix-ui/react-popover': ~0.1.1
   '@radix-ui/react-tooltip': ~0.1.4
@@ -92,6 +93,7 @@ dependencies:
   '@polkadot/ui-keyring': 0.87.3
   '@polkadot/util': 8.0.5
   '@polkadot/util-crypto': 8.0.5
+  '@polkadot/x-fetch': 8.3.1
   '@radix-ui/react-id': 0.1.1_react@17.0.2
   '@radix-ui/react-popover': 0.1.1_5539cae010396b202b015f3568914e95
   '@radix-ui/react-tooltip': 0.1.6_react-dom@17.0.2+react@17.0.2
@@ -1725,7 +1727,7 @@ packages:
       '@emotion/core': ^10.0.28
       react: '>=16.3.0'
     dependencies:
-      '@babel/runtime': 7.16.3
+      '@babel/runtime': 7.16.7
       '@emotion/core': 10.3.0_react@17.0.2
       '@emotion/is-prop-valid': 0.8.8
       '@emotion/serialize': 0.11.16
@@ -2903,7 +2905,7 @@ packages:
       '@polkadot/types': 6.10.3
       '@polkadot/util': 8.0.5
       '@polkadot/util-crypto': 8.0.5
-      '@polkadot/x-fetch': 8.0.5
+      '@polkadot/x-fetch': 8.3.1
       '@polkadot/x-global': 8.0.5
       '@polkadot/x-ws': 8.0.5
       eventemitter3: 4.0.7
@@ -3030,16 +3032,6 @@ packages:
       '@polkadot/wasm-crypto-asmjs': 4.4.1
       '@polkadot/wasm-crypto-wasm': 4.4.1
       '@polkadot/x-randomvalues': 8.0.5
-    dev: false
-
-  /@polkadot/x-fetch/8.0.5:
-    resolution: {integrity: sha512-nUFHVwO7VcN0c/crzDIy1VT4xyJA+8tgBCtghajvoBv5HwSFMwhAFkUrdVqz3hdBF7ye2IHg4hLYU90ol2MS1g==}
-    engines: {node: '>=14.0.0'}
-    dependencies:
-      '@babel/runtime': 7.16.3
-      '@polkadot/x-global': 8.0.5
-      '@types/node-fetch': 2.5.12
-      node-fetch: 2.6.6
     dev: false
 
   /@polkadot/x-fetch/8.3.1:
@@ -6656,7 +6648,7 @@ packages:
   /babel-plugin-macros/2.8.0:
     resolution: {integrity: sha512-SEP5kJpfGYqYKpBrj5XU3ahw5p5GOHJ0U5ssOSQ/WBVdwkD2Dzlce95exQTs3jOVWPPKLBN2rlEWkCK7dSmLvg==}
     dependencies:
-      '@babel/runtime': 7.16.3
+      '@babel/runtime': 7.16.7
       cosmiconfig: 6.0.0
       resolve: 1.20.0
     dev: false
@@ -10422,7 +10414,7 @@ packages:
   /history/5.1.0:
     resolution: {integrity: sha512-zPuQgPacm2vH2xdORvGGz1wQMuHSIB56yNAy5FnLuwOwgSYyPKptJtcMm6Ev+hRGeS+GzhbmRacHzvlESbFwDg==}
     dependencies:
-      '@babel/runtime': 7.16.3
+      '@babel/runtime': 7.16.7
     dev: false
 
   /hmac-drbg/1.0.1:
@@ -14373,7 +14365,7 @@ packages:
     dependencies:
       '@babel/core': 7.16.0
       '@babel/generator': 7.16.0
-      '@babel/runtime': 7.16.3
+      '@babel/runtime': 7.16.7
       ast-types: 0.14.2
       commander: 2.20.3
       doctrine: 3.0.0
@@ -17971,12 +17963,13 @@ packages:
     dev: false
 
   file:projects/test-helpers.tgz:
-    resolution: {integrity: sha512-g5wHaEYRrj/sBXbUixN9z9c/eAKrdsYEYC+lMk8evTolQiIVKAhJvCmnSr3AKyLCuEd9nacq70u8hV5N+Tnjaw==, tarball: file:projects/test-helpers.tgz}
+    resolution: {integrity: sha512-ceklchY6UvP9v0xMLwFNgF4enQJCCmGSLbzAcLcKqI5aLU9Bz3SMllRhbFfr91HoSbwzOwUKZ88SCnXjlE24ag==, tarball: file:projects/test-helpers.tgz}
     name: '@rush-temp/test-helpers'
     version: 0.0.0
     dependencies:
       '@polkadot/api': 6.10.3
       '@polkadot/types': 6.10.3
+      '@polkadot/types-support': 6.10.3
       '@polkadot/x-fetch': 8.3.1
       '@rushstack/eslint-patch': 1.0.9
       eslint: 7.32.0
