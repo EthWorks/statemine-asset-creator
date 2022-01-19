@@ -727,6 +727,25 @@ describe('New asset modal', () => {
             'Statemine fee0.0300KSM'
           ])
         })
+
+        it('when still loading teleport fee', async () => {
+          const paymentInfo = mockUseTeleport.paymentInfo
+          mockUseTeleport = { ...mockUseTeleport, paymentInfo: undefined }
+
+          setTeleportTransactionStatus(TransactionStatus.Ready)
+          mockUseBalances.availableBalance = new BN(0)
+
+          renderModal()
+          await enterThirdStep()
+
+          await assertTransactionInfoBlock(1, 'ready', [
+            'Chainkusamastatemine',
+            'Teleport amount140.0310KSM',
+            'Kusama fee-'
+          ])
+
+          mockUseTeleport = { ...mockUseTeleport, paymentInfo }
+        })
       })
 
       describe('executes teleport transaction', () => {
