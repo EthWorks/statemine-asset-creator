@@ -2,7 +2,7 @@ import type { RenderResult } from '@testing-library/react'
 import type { RuntimeDispatchInfo } from '@polkadot/types/interfaces'
 import type { ErrorDetails, UseActiveAccount, UseTransaction } from 'use-substrate'
 
-import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import BN from 'bn.js'
 import React from 'react'
 
@@ -32,7 +32,8 @@ import {
   findAndClickButton,
   getAccountSelect,
   renderWithTheme,
-  selectAccountFromDropdown, switchApiToPolkadot,
+  selectAccountFromDropdown,
+  switchApiToPolkadot,
   typeInInput
 } from './helpers'
 import {
@@ -134,7 +135,7 @@ describe('New asset modal', () => {
 
       await enterThirdStep()
 
-      await waitFor(() => expect(screen.getByText('Confirm')).toBeTruthy())
+      await screen.findByText('Confirm')
       await assertSummary()
     })
 
@@ -227,7 +228,7 @@ describe('New asset modal', () => {
             assertButtonDisabled('Next')
 
             fillInput(inputName, 'a'.repeat(mockedStringLimit))
-            await assertNoInputError(inputName)
+            assertNoInputError(inputName)
 
             assertButtonNotDisabled('Next')
           })
@@ -385,7 +386,7 @@ describe('New asset modal', () => {
       it('issuer', async () => {
         await selectAccountFromDropdown(ISSUER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
         clickButton('Next')
-        await act(() => findAndClickButton('Confirm'))
+        await findAndClickButton('Confirm')
 
         expect(mockUseApi.api.tx.assets.setTeam).toBeCalledWith(ASSET_ID, aliceAccount.address, bobAccount.address, bobAccount.address)
       })
@@ -393,7 +394,7 @@ describe('New asset modal', () => {
       it('freezer', async () => {
         await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
         clickButton('Next')
-        await act(() => findAndClickButton('Confirm'))
+        await findAndClickButton('Confirm')
 
         expect(mockUseApi.api.tx.assets.setTeam).toBeCalledWith(ASSET_ID, bobAccount.address, bobAccount.address, aliceAccount.address)
       })
@@ -646,7 +647,7 @@ describe('New asset modal', () => {
           mockActiveAccount = (chain: Chains | undefined) => {
             switch (chain) {
               case Chains.Kusama:
-                return { activeAccount: undefined, setActiveAccount: () => { /**/ } }
+                return { activeAccount: undefined, setActiveAccount: () => { /**/ }, isLoaded: true }
               default:
                 return mockUseActiveAccount
             }
@@ -725,6 +726,25 @@ describe('New asset modal', () => {
             'Deposit140.0000KSM',
             'Statemine fee0.0300KSM'
           ])
+        })
+
+        it('when still loading teleport fee', async () => {
+          const paymentInfo = mockUseTeleport.paymentInfo
+          mockUseTeleport = { ...mockUseTeleport, paymentInfo: undefined }
+
+          setTeleportTransactionStatus(TransactionStatus.Ready)
+          mockUseBalances.availableBalance = new BN(0)
+
+          renderModal()
+          await enterThirdStep()
+
+          await assertTransactionInfoBlock(1, 'ready', [
+            'Chainkusamastatemine',
+            'Teleport amount140.0310KSM',
+            'Kusama fee-'
+          ])
+
+          mockUseTeleport = { ...mockUseTeleport, paymentInfo }
         })
       })
 
@@ -882,7 +902,7 @@ const assertFirstStepEmpty = () => {
 }
 
 const assertSummary = async () => {
-  const assetModal = await screen.getByTestId('modal')
+  const assetModal = await screen.findByTestId('modal')
   expect(assetModal).toHaveTextContent(`Asset name${ASSET_NAME}`)
   expect(assetModal).toHaveTextContent(`Asset symbol${ASSET_SYMBOL}`)
   expect(assetModal).toHaveTextContent(`Asset decimals${ASSET_DECIMALS}`)
@@ -898,7 +918,7 @@ const createAsset = async (): Promise<void> => {
   await fillSecondStep()
 
   clickButton('Next')
-  await act(async () => await findAndClickButton('Confirm'))
+  await findAndClickButton('Confirm')
 }
 
 const enterThirdStep = async (): Promise<void> => {
@@ -913,7 +933,7 @@ const enterThirdStep = async (): Promise<void> => {
 
 const enterSecondStep = async () => {
   await openModal()
-  await fillFirstStep()
+  fillFirstStep()
   clickButton('Next')
 }
 
@@ -925,6 +945,7 @@ const closeModal = async () => {
 
 const openModal = async (): Promise<void> => {
   await findAndClickButton('Create new asset')
+  await assertText('Create asset')
 }
 
 const assertSteps = (expectedSteps: ('active' | 'past' | 'unvisited')[]) => {

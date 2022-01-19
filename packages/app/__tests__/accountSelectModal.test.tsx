@@ -10,6 +10,7 @@ import Home from '../pages'
 import { theme } from '../styles/styleVariables'
 import { AppChainsProvider, BN_ZERO as MOCK_BN_ZERO } from '../utils'
 import {
+  assertChainLogo,
   assertModalClosed,
   assertNoText,
   assertText,
@@ -39,15 +40,16 @@ import {
 const mockedSetter = jest.fn()
 const mockedUseAccounts = mockUseAccounts
 let mockActiveAccounts = {}
-let mockKusamaActiveAccount: ActiveAccount | undefined
-let mockStatemineActiveAccount: ActiveAccount | undefined
+let mockRelayChainActiveAccount: ActiveAccount | undefined
+let mockParachainActiveAccount: ActiveAccount | undefined
 
 const mockActiveAccount = (chain: Chains) => {
   switch (chain) {
     case Chains.Kusama:
-      return mockKusamaActiveAccount
+    case Chains.Polkadot:
+      return mockRelayChainActiveAccount
     default:
-      return mockStatemineActiveAccount
+      return mockParachainActiveAccount
   }
 }
 
@@ -140,13 +142,17 @@ describe('Account select modal', () => {
     await findAndClickButton('Add Kusama account')
 
     await assertText('Funds will be transferred to this Statemine account from your Kusama account.')
+    assertNoText('This account has no funds')
+
+    await selectAccountFromDropdown(1, 1)
+
     await assertText('This account has no funds')
   })
 
   it('clears kusama account when select is hidden', async () => {
     mockedUseAccounts.allAccounts = [aliceAccount, bobAccount]
-    mockStatemineActiveAccount = aliceActiveAccount
-    mockKusamaActiveAccount = bobActiveAccount
+    mockParachainActiveAccount = aliceActiveAccount
+    mockRelayChainActiveAccount = bobActiveAccount
     mockActiveAccounts = { kusama: aliceAccount, statemine: bobAccount }
 
     renderWithTheme(<Home/>)
@@ -167,7 +173,7 @@ describe('Account select modal', () => {
   describe('uses active account', () => {
     it('shows current active account', async () => {
       mockedUseAccounts.allAccounts = [charlieAccount]
-      mockStatemineActiveAccount = charlieActiveAccount
+      mockParachainActiveAccount = charlieActiveAccount
 
       renderWithTheme(<Home/>)
 
@@ -187,8 +193,8 @@ describe('Account select modal', () => {
 
     it('shows account select for kusama if there is active account', async () => {
       mockedUseAccounts.allAccounts = [aliceAccount, charlieAccount]
-      mockStatemineActiveAccount = aliceActiveAccount
-      mockKusamaActiveAccount = charlieActiveAccount
+      mockParachainActiveAccount = aliceActiveAccount
+      mockRelayChainActiveAccount = charlieActiveAccount
 
       renderWithTheme(<Home/>)
       await openAccountSelectModal()
@@ -198,7 +204,7 @@ describe('Account select modal', () => {
 
     it('does not show select for kusama when active account is not set', async () => {
       mockedUseAccounts.allAccounts = [aliceAccount, charlieAccount]
-      mockStatemineActiveAccount = aliceActiveAccount
+      mockParachainActiveAccount = aliceActiveAccount
 
       renderWithTheme(<Home/>)
       await openAccountSelectModal()
@@ -209,7 +215,7 @@ describe('Account select modal', () => {
 
   it('clears not applied changes on modal close', async () => {
     mockedUseAccounts.allAccounts = [aliceAccount, charlieAccount]
-    mockStatemineActiveAccount = aliceActiveAccount
+    mockParachainActiveAccount = aliceActiveAccount
     renderWithTheme(<Home/>)
 
     await openAccountSelectModal()
@@ -231,8 +237,8 @@ describe('Account select modal', () => {
 
   it('hides "Add kusama account" button on app load if it was already set', async () => {
     mockedUseAccounts.allAccounts = [aliceAccount, charlieAccount]
-    mockStatemineActiveAccount = aliceActiveAccount
-    mockKusamaActiveAccount = charlieActiveAccount
+    mockParachainActiveAccount = aliceActiveAccount
+    mockRelayChainActiveAccount = charlieActiveAccount
 
     renderWithTheme(<Home/>)
 
@@ -241,28 +247,48 @@ describe('Account select modal', () => {
     assertNoText('Add Kusama account')
   })
 
-  it('updates displayed chain names on active api change', async () => {
-    mockStatemineActiveAccount = aliceActiveAccount
-    mockKusamaActiveAccount = charlieActiveAccount
+  describe('on api change', () => {
+    it('updates displayed chain names', async () => {
+      mockParachainActiveAccount = aliceActiveAccount
+      mockRelayChainActiveAccount = undefined
 
-    renderWithTheme(<AppChainsProvider><Home/></AppChainsProvider>)
-    await switchApiToPolkadot()
+      renderWithTheme(<AppChainsProvider><Home/></AppChainsProvider>)
+      await switchApiToPolkadot()
 
-    await openAccountSelectModal()
-    const modal = await screen.findByTestId('modal')
+      await openAccountSelectModal()
+      const modal = await screen.findByTestId('modal')
 
-    expect(modal).toHaveTextContent('Statemint account')
-    expect(modal).not.toHaveTextContent('Statemine account')
-    expect(modal).toHaveTextContent('Polkadot account')
-    expect(modal).not.toHaveTextContent('Kusama account')
-    expect(modal).toHaveTextContent('Asset creation and transfers happen on the Statemint parachain. You need an account with a balance on Statemint for fees and deposits. However, you can also use a fresh & empty account, and send funds from your Polkadot account.')
-    expect(modal).toHaveTextContent('This account has insufficient funds, consider adding a Polkadot account.')
+      expect(modal).toHaveTextContent('Statemint account')
+      expect(modal).not.toHaveTextContent('Statemine account')
+      expect(modal).toHaveTextContent('Polkadot account')
+      expect(modal).not.toHaveTextContent('Kusama account')
+      expect(modal).toHaveTextContent('Asset creation and transfers happen on the Statemint parachain. You need an account with a balance on Statemint for fees and deposits. However, you can also use a fresh & empty account, and send funds from your Polkadot account.')
+      expect(modal).toHaveTextContent('This account has insufficient funds, consider adding a Polkadot account.')
+    })
+
+    it('updates displayed chain icons', async () => {
+      mockedUseAccounts.allAccounts = [aliceAccount, charlieAccount]
+      mockParachainActiveAccount = aliceActiveAccount
+      mockRelayChainActiveAccount = charlieActiveAccount
+
+      renderWithTheme(<AppChainsProvider><Home/></AppChainsProvider>)
+      await openAccountSelectModal()
+      const modal = await screen.findByTestId('modal')
+
+      await assertChainLogo(Chains.Statemine, modal)
+      await assertChainLogo(Chains.Kusama, modal)
+
+      await switchApiToPolkadot()
+
+      await assertChainLogo(Chains.Statemint, modal)
+      await assertChainLogo(Chains.Polkadot, modal)
+    })
   })
 
   afterEach(() => {
     mockedUseAccounts.allAccounts = [aliceAccount, bobAccount]
-    mockStatemineActiveAccount = undefined
-    mockKusamaActiveAccount = undefined
+    mockParachainActiveAccount = undefined
+    mockRelayChainActiveAccount = undefined
     mockActiveAccounts = {}
   })
 })

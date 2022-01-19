@@ -1,13 +1,11 @@
-import Image from 'next/image'
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
 import { useAccounts, useActiveAccounts } from 'use-substrate'
 
-import KusamaLogo from '../../assets/img/kusama.svg'
-import StatemineLogo from '../../assets/img/statemine.svg'
 import { useAccountSelect, useAppChains, useCapitalizedChains, useToggle } from '../../utils'
 import { AccountSelect } from '../AccountSelect'
+import { ChainLogo } from '../ChainLogo'
 import { Arrow } from '../icons'
 import { ButtonPrimary, ButtonTertiary, CloseButton, Loader, Modal, Text, Title } from '../index'
 import { SectionTitle } from '../SectionTitle/SectionTitle'
@@ -38,28 +36,30 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
     setAccount: setParachainAccount,
     accountInfo: parachainAccountInfo,
     setAccountInfo: setParachainAccountInfo,
-    hasFreeBalance: hasParaChainFreeBalance,
-    clearData: clearParaChainData
+    hasFreeBalance: hasParachainFreeBalance,
+    clearData: clearParachainData
   } = useAccountSelect(parachain)
+
+  const displayRelayChainSelect = isRelayChainAccountSelectVisible || !!relayChainAccount
 
   useEffect(() => {
     setParachainAccountInfo(undefined)
     setRelayChainAccountInfo(undefined)
 
-    if (!hasParaChainFreeBalance && !isRelayChainAccountSelectVisible) {
+    if (!hasParachainFreeBalance && !displayRelayChainSelect) {
       setParachainAccountInfo(`This account has insufficient funds, consider adding a ${capitalizedRelayChain} account.`)
 
       return
     }
 
-    if (isRelayChainAccountSelectVisible) {
-      setParachainAccountInfo(`Funds will be transferred to this ${capitalizedParachain} account from your Kusama account.`)
+    if (displayRelayChainSelect) {
+      setParachainAccountInfo(`Funds will be transferred to this ${capitalizedParachain} account from your ${capitalizedRelayChain} account.`)
     }
 
-    if (isRelayChainAccountSelectVisible && !hasRelayChainFreeBalance) {
+    if (relayChainAccount && displayRelayChainSelect && !hasRelayChainFreeBalance) {
       setRelayChainAccountInfo('This account has no funds')
     }
-  }, [hasParaChainFreeBalance, isRelayChainAccountSelectVisible, hasRelayChainFreeBalance, setParachainAccountInfo, setRelayChainAccountInfo, capitalizedRelayChain, capitalizedParachain])
+  }, [capitalizedParachain, capitalizedRelayChain, displayRelayChainSelect, hasParachainFreeBalance, hasRelayChainFreeBalance, relayChainAccount, setParachainAccountInfo, setRelayChainAccountInfo])
 
   const _onClick = async (): Promise<void> => {
     setActiveAccounts({
@@ -71,7 +71,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
 
   const _onClose = (): void => {
     clearRelayChainData()
-    clearParaChainData()
+    clearParachainData()
     setRelayChainAccountSelectVisible(false)
     closeModal()
   }
@@ -85,8 +85,6 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
 
   if (accounts.extensionStatus === 'Loading') return <Loader />
 
-  const displayKusamaSelect = isRelayChainAccountSelectVisible || !!relayChainAccount
-
   return (
     <Modal
       title='Connect accounts'
@@ -98,9 +96,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
         Asset creation and transfers happen on the <b>{capitalizedParachain}</b> parachain. You <b>need an account with a balance on {capitalizedParachain}</b> for fees and deposits. However, you can also use a fresh & empty account, and send funds from your {capitalizedRelayChain} account.
       </TextStyle>
       <SectionTitleStyle>
-        <ImageWrapper>
-          <Image src={StatemineLogo} alt='Statemine' />
-        </ImageWrapper>
+        <ChainLogo chain={parachain}/>
         <Title color='white'>{capitalizedParachain} account</Title>
       </SectionTitleStyle>
       <AccountSelect
@@ -111,17 +107,15 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
         tip={parachainAccountInfo}
         chain={parachain}
       />
-      {!displayKusamaSelect && (
+      {!displayRelayChainSelect && (
         <Centered>
           <ButtonTertiary onClick={toggleRelayChainAccountSelectVisible}>Add {capitalizedRelayChain} account</ButtonTertiary>
         </Centered>
       )}
-      {displayKusamaSelect && (
+      {displayRelayChainSelect && (
         <>
           <SectionTitleStyle>
-            <ImageWrapper>
-              <Image src={KusamaLogo} alt='Kusama' />
-            </ImageWrapper>
+            <ChainLogo chain={relayChain}/>
             <Title color='white'>{capitalizedRelayChain} account</Title>
           </SectionTitleStyle>
           <AccountSelect
@@ -160,11 +154,6 @@ const StyledButtonPrimary = styled(ButtonPrimary)`
 
 const StyledCloseButton = styled(CloseButton)`
   margin-left: auto;
-`
-
-const ImageWrapper = styled.div`
-  width: 32px;
-  height: 32px;
 `
 
 const Centered = styled.div`

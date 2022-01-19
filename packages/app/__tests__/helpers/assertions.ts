@@ -1,5 +1,7 @@
 import { screen, within } from '@testing-library/react'
 
+import { Chains } from 'use-substrate'
+
 export function assertLocalStorage(key: string, value: unknown) {
   expect(localStorage.getItem(key)).toEqual(value)
 }
@@ -90,4 +92,8 @@ export async function assertInputHint(inputName: string, hint: string) {
   const input = await screen.findByLabelText(inputName)
 
   expect(input.nextSibling).toHaveTextContent(hint)
+}
+
+export async function assertChainLogo(chain: Chains, container?: HTMLElement) {
+  await (container ? within(container) : screen).findByTestId(`${chain}-chain-logo`)
 }
