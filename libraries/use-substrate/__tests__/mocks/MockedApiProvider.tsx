@@ -1,13 +1,12 @@
 import type { ObservableInput } from 'rxjs'
 import type { ApiRx } from '@polkadot/api'
 import type { DeriveBalancesAll, DeriveBalancesAllAccountData } from '@polkadot/api-derive/types'
-import type { BlockNumber, ParaId } from '@polkadot/types/interfaces'
+import type { GenericEventData, Vec } from '@polkadot/types'
+import type { BlockNumber, EventRecord, Hash, ParaId } from '@polkadot/types/interfaces'
 import type { PalletAssetsAssetMetadata } from '@polkadot/types/lookup'
 import type { AnyTuple, IEvent, ISubmittableResult } from '@polkadot/types/types'
 import type { FetchedAssets, UseApi } from '../../src'
 
-import { GenericEvent, GenericEventData, Vec } from '@polkadot/types'
-import { EventRecord, Hash, Phase } from '@polkadot/types/interfaces'
 import BN from 'bn.js'
 import React from 'react'
 import { from, of } from 'rxjs'
@@ -17,29 +16,6 @@ import { createType } from 'test-helpers'
 import { ApiContext, isModuleEvent } from '../../src'
 import { ALICE, BOB } from '../consts'
 import { createAssetStorageKey } from '../utils'
-import {decorateEvents} from "@polkadot/types/metadata/decorate";
-
-import json3 from '@polkadot/types-support/json/EventRecord.003.json';
-
-const hex = json3.params.result.changes[0][1];
-const eventRecord = createType('Vec<EventRecord>', hex, true);
-
-// const eventRecord: EventRecord = {
-//   phase: { ApplyExtrinsic: 1 },
-//   event: createType('GenericEvent',{
-//     section: 'system',
-//     method: 'ExtrinsicFailed',
-//     index: createType('EventId', '0x0001'),
-//     data: [{ module: { index: 34, error: 9 }, asModule: {}, isModule: true, registry: { findMetaError: () => ({ section: 'assets', name: 'BadMetadata', docs: 'Invalid metadata given.' }) } }, {
-//       weight: 397453000,
-//       class: 'Normal',
-//       paysFee: 'Yes'
-//     }] as unknown as GenericEventData
-//   }),
-//   topics: [] as unknown as Vec<Hash>
-// } as unknown as EventRecord
-
-const vectorEventRecord: Vec<EventRecord> = createType('Vec<EventRecord>', [eventRecord])
 
 export const mockedKusamaApi: UseApi = {
   isConnected: true,
@@ -113,7 +89,36 @@ export const mockedKusamaApi: UseApi = {
       },
       system: {
         events: () => from<ObservableInput<Vec<EventRecord>>>([
-          vectorEventRecord
+          Object.assign([{
+            phase: { ApplyExtrinsic: 1 },
+            event: {
+              section: 'assets',
+              method: 'Created',
+              index: createType('EventId', '0x0001'),
+              data: [{ module: { index: 34, error: 9 } }, {
+                weight: 397453000,
+                class: 'Normal',
+                paysFee: 'Yes'
+              }] as unknown as GenericEventData
+            },
+            topics: [] as unknown as Vec<Hash>
+          } as unknown as EventRecord,
+          {
+            phase: { ApplyExtrinsic: 1 },
+            event: {
+              section: 'assets',
+              method: 'Destroyed',
+              index: createType('EventId', '0x0002'),
+              data: [{ module: { index: 22, error: 1 } }, {
+                weight: 352153000,
+                class: 'Normal',
+                paysFee: 'Yes'
+              }] as unknown as GenericEventData
+            },
+            topics: [] as unknown as Vec<Hash>
+          } as unknown as EventRecord] as Vec<EventRecord>, {
+            createdAtHash: createType('Hash', '0x38020a026d6f646c506f745374616b650038020a026d6f646c506f745374616b6500')
+          })
         ])
       }
     },

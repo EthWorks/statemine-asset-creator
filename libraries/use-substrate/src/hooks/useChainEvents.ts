@@ -17,14 +17,6 @@ export function useChainEvents(chain: Chains, checks: EventCheck[]): UseChainEve
   const { api } = useApi(currentChain)
 
   const eventRecords = useObservable<Vec<EventRecord>>(api?.query.system.events(), [api])
-  // console.log('createdAtHash', eventRecords?.createdAtHash)
-  // eventRecords?.forEach((event, index) => {
-  //   console.log('---------------------')
-  //   console.log(`event.[${index}].event`, event.event.toString())
-  //   console.log(`event.[${index}].createdAtHash`, event.createdAtHash?.toString())
-  //   console.log(`event.[${index}].phase`, event.phase.toString())
-  //   console.log(`event.[${index}].topics`, event.topics.toString())
-  // })
 
   useEffect((): void => {
     if (eventRecords) {
@@ -32,7 +24,7 @@ export function useChainEvents(chain: Chains, checks: EventCheck[]): UseChainEve
         record.event &&
           checks.some((check) => check && check.is(record.event))
       )
-      console.log(events[0]?.event.method, events[0]?.event.toU8a(), events[0]?.toU8a())
+
       if (events.length) {
         setState({
           blockHash: eventRecords.createdAtHash?.toHex() || '',
