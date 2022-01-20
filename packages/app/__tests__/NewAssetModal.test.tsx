@@ -307,7 +307,7 @@ describe('New asset modal', () => {
           await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
           await assertTextInAccountSelect('BOB', FREEZER_DROPDOWN_INDEX)
 
-          await assertInfobox('Insufficient funds on the Admin account to create assets.')
+          await assertInfobox('The Admin account is low on funds. It may not be able to perform its tasks until topped up.')
         })
 
         it('two accounts', async () => {
@@ -318,7 +318,7 @@ describe('New asset modal', () => {
           await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, BOB_ACCOUNT_INDEX)
           await assertTextInAccountSelect('BOB', FREEZER_DROPDOWN_INDEX)
 
-          await assertInfobox('Insufficient funds on the Admin and Issuer accounts to create assets.')
+          await assertInfobox('The Admin and Issuer accounts are low on funds. They may not be able to perform their tasks until topped up.')
         })
 
         it('three accounts', async () => {
@@ -329,7 +329,7 @@ describe('New asset modal', () => {
           await selectAccountFromDropdown(FREEZER_DROPDOWN_INDEX, ALICE_ACCOUNT_INDEX)
           await assertTextInAccountSelect('ALICE', FREEZER_DROPDOWN_INDEX)
 
-          await assertInfobox('Insufficient funds on the Admin, Issuer and Freezer accounts to create assets.')
+          await assertInfobox('The Admin, Issuer and Freezer accounts are low on funds. They may not be able to perform their tasks until topped up.')
         })
       })
 
@@ -348,7 +348,7 @@ describe('New asset modal', () => {
 
           await assertText('Owner account')
 
-          await assertInfobox('Insufficient funds on the Admin, Issuer and Freezer accounts to create assets.')
+          await assertInfobox('The Admin, Issuer and Freezer accounts are low on funds. They may not be able to perform their tasks until topped up.')
         })
 
         it('is hidden for an account with more funds than threshold', async () => {
@@ -493,7 +493,7 @@ describe('New asset modal', () => {
           expect(modalContent).toHaveTextContent('Pending transaction 1/1...')
           expect(modalContent).toHaveTextContent('Transaction #1')
           expect(modalContent).toHaveTextContent('Asset Creation')
-          expect(modalContent).toHaveTextContent('It takes time to create your asset. In order to do so, we need to create a transaction and wait until blockchain validates it.')
+          expect(modalContent).toHaveTextContent('Asset CreationAsset creation transaction is included in a block. Waiting until it is confirmed.')
         })
 
         it('Success', async () => {
@@ -507,7 +507,7 @@ describe('New asset modal', () => {
 
           const modalContent = screen.getByTestId('status-step-Success')
           expect(modalContent).toHaveTextContent('Congratulations!')
-          expect(modalContent).toHaveTextContent('Your asset have been created.')
+          expect(modalContent).toHaveTextContent('Your asset has been created.')
           assertButtonNotDisabled('View asset in explorer')
           assertButtonNotDisabled('Back to dashboard')
         })
@@ -639,7 +639,7 @@ describe('New asset modal', () => {
           renderModal()
           await enterThirdStep()
 
-          await assertInfobox('Insufficient funds on the owner account to create the asset. Teleport transaction from selected Kusama account will be executed')
+          await assertInfobox('Owner account has insufficient funds on Statemine to create the asset. A Teleport transaction from selected Kusama account will be executed.')
         })
 
         it('warning about missing kusama account with a button', async () => {
@@ -766,7 +766,7 @@ describe('New asset modal', () => {
           expect(modalContent).toHaveTextContent('Pending transaction 1/2...')
           expect(modalContent).toHaveTextContent('Transaction #1')
           expect(modalContent).toHaveTextContent('Teleport')
-          expect(modalContent).toHaveTextContent('It takes time to teleport. In order to do so, we need to create a transaction and wait until blockchain validates it.')
+          expect(modalContent).toHaveTextContent('Teleport transaction is included in a block. Waiting until it is confirmed.')
         })
 
         it('hides content and shows error modal when transaction was rejected', async () => {
@@ -801,7 +801,7 @@ describe('New asset modal', () => {
         expect(modalContent).toHaveTextContent('Pending transaction 2/2...')
         expect(modalContent).toHaveTextContent('Transaction #2')
         expect(modalContent).toHaveTextContent('Asset Creation')
-        expect(modalContent).toHaveTextContent('It takes time to create your asset. In order to do so, we need to create a transaction and wait until blockchain validates it.')
+        expect(modalContent).toHaveTextContent('Asset creation transaction is included in a block. Waiting until it is confirmed.')
       })
     })
 

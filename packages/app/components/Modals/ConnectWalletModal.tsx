@@ -32,8 +32,8 @@ export function ConnectWalletModal({ isOpen, closeModal, onExtensionActivated }:
   return (
     <ConnectWalletModalWrapper
       padding='m'
-      headerOverModal={<Text size='3XL' color='white'>Welcome to <b>Statemine</b> Asset Creator!</Text>}
-      title='Connect Wallet to start using app'
+      headerOverModal={<Text size='3XL' color='white'>Welcome to the <b>Statemine</b> Asset Creator!</Text>}
+      title='Connect extension to start using this app'
       titleCenterPosition
       isOpen={isOpen}
       onClose={closeModal}

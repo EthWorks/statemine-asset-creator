@@ -18,12 +18,12 @@ export const TransactionCostSummary = ({ decimals, totalAmount, totalFee, token 
     <StyledLabel>Total amount:</StyledLabel>
     <BalanceWrapper>
       <FormatBalance chainDecimals={decimals} token={token} value={totalAmount} />
-      <TooltipBox text='Total amount tooltip info' />
+      <TooltipBox text='Total amount, including transaction fees and deposits.' />
     </BalanceWrapper>
     <StyledLabel>Transaction fee:</StyledLabel>
     <BalanceWrapper>
       <FormatBalance chainDecimals={decimals} token={token} value={totalFee} />
-      <TooltipBox text='Transaction fee tooltip info' />
+      <TooltipBox text='All transaction fees' />
     </BalanceWrapper>
   </TransactionCostSummaryWrapper>
 )
