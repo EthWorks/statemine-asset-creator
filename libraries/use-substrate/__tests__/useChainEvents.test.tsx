@@ -1,6 +1,6 @@
 import { ApiRx } from '@polkadot/api'
-import { GenericEventData, Vec } from '@polkadot/types'
-import { EventRecord, Hash } from '@polkadot/types/interfaces'
+import { Vec } from '@polkadot/types'
+import { EventRecord } from '@polkadot/types/interfaces'
 import { renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode, useMemo } from 'react'
 import { from, ObservableInput } from 'rxjs'
@@ -9,6 +9,7 @@ import { createType } from 'test-helpers'
 
 import { Chains, UseApi, useApi, useChainEvents } from '../src'
 import { MockedApiProvider, mockedKusamaApi } from './mocks/MockedApiProvider'
+import { mockedEvents } from './mocks/mockedEvents'
 
 describe('useChainEvents hook', () => {
   it('returns emitted events', () => {
@@ -62,34 +63,9 @@ const customApi = {
         ...mockedKusamaApi.api?.query.system,
         events: () => from<ObservableInput<Vec<EventRecord>>>([
           Object.assign([
-            {
-              phase: { ApplyExtrinsic: 1 },
-              event: {
-                section: 'assets',
-                method: 'Created',
-                index: createType('EventId', '0x0001'),
-                data: [{ module: { index: 34, error: 9 } }, {
-                  weight: 397453000,
-                  class: 'Normal',
-                  paysFee: 'Yes'
-                }] as unknown as GenericEventData
-              },
-              topics: [] as unknown as Vec<Hash>
-            } as unknown as EventRecord,
-            {
-              phase: { ApplyExtrinsic: 1 },
-              event: {
-                section: 'assets',
-                method: 'Destroyed',
-                index: createType('EventId', '0x0002'),
-                data: [{ module: { index: 22, error: 1 } }, {
-                  weight: 352153000,
-                  class: 'Normal',
-                  paysFee: 'Yes'
-                }] as unknown as GenericEventData
-              },
-              topics: [] as unknown as Vec<Hash>
-            } as unknown as EventRecord] as Vec<EventRecord>, {
+            mockedEvents.assets.Created,
+            mockedEvents.assets.Destroyed
+          ] as Vec<EventRecord>, {
             createdAtHash: createType('Hash', '0x38020a026d6f646c506f745374616b650038020a026d6f646c506f745374616b6500')
           })
         ])

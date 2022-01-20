@@ -4,15 +4,19 @@ import type { PalletAssetsAssetMetadata } from '@polkadot/types/lookup'
 import type { UseApi } from '../src'
 
 import { ApiRx } from '@polkadot/api'
-import { renderHook } from '@testing-library/react-hooks'
+import { Vec } from '@polkadot/types'
+import { EventRecord } from '@polkadot/types/interfaces'
+import { act, renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
-import { from } from 'rxjs'
+import { asyncScheduler, from, observeOn } from 'rxjs'
 
 import { createType } from 'test-helpers'
 
 import { Chains, useAssets } from '../src'
 import { MockedApiProvider, mockedKusamaApi } from './mocks/MockedApiProvider'
-import { ALICE_ID, BOB_ID } from './consts'
+import { EVENT_HASH, mockedEvents } from './mocks/mockedEvents'
+import { ALICE, ALICE_ID, BOB, BOB_ID } from './consts'
+import { createAssetStorageKey } from './utils'
 
 describe('Use assets hook', () => {
   it('Returns all available assets', async () => {
@@ -72,6 +76,64 @@ describe('Use assets hook', () => {
     expect(symbol).toEqual('KSM🤪')
   })
 
+  describe('observes on events', () => {
+    beforeEach(() => {
+      jest.useFakeTimers()
+    })
+
+    afterEach(() => {
+      jest.useRealTimers()
+      jest.resetAllMocks()
+    })
+
+    it('updates after Created asset event', async () => {
+      const api = createEventApi([mockedEvents.assets.Created])
+
+      renderResult({ customApi: api })
+
+      expect(api.api?.query.assets.asset.entries).toBeCalled()
+      expect(api.api?.query.assets.asset.entriesAt).toBeCalledTimes(0)
+
+      act(() => {
+        jest.advanceTimersByTime(100)
+      })
+
+      expect(api.api?.query.assets.asset.entriesAt).toBeCalledTimes(1)
+      expect(api.api?.query.assets.asset.entriesAt).toBeCalledWith(EVENT_HASH.toString())
+    })
+
+    it('updates after Destroyed asset event', async () => {
+      const api = createEventApi([mockedEvents.assets.Destroyed])
+
+      renderResult({ customApi: api })
+
+      expect(api.api?.query.assets.asset.entries).toBeCalled()
+      expect(api.api?.query.assets.asset.entriesAt).toBeCalledTimes(0)
+
+      act(() => {
+        jest.advanceTimersByTime(100)
+      })
+
+      expect(api.api?.query.assets.asset.entriesAt).toBeCalledTimes(1)
+      expect(api.api?.query.assets.asset.entriesAt).toBeCalledWith(EVENT_HASH.toString())
+    })
+
+    it('not updates after unsupported events', async () => {
+      const api = createEventApi([mockedEvents.assets.Transferred])
+
+      renderResult({ customApi: api })
+
+      expect(api.api?.query.assets.asset.entries).toBeCalled()
+      expect(api.api?.query.assets.asset.entriesAt).not.toBeCalled()
+
+      act(() => {
+        jest.advanceTimersByTime(100)
+      })
+
+      expect(api.api?.query.assets.asset.entriesAt).not.toBeCalled()
+    })
+  })
+
   const renderResult = ({ owner, customApi }:{owner?: AccountId, customApi?: UseApi}) => {
     const wrapper = ({ children }: { children: ReactNode }) => (
       <MockedApiProvider customApi={customApi}>
@@ -104,4 +166,54 @@ const customApi: UseApi = {
       }
     }
   } as unknown as ApiRx
+}
+
+function createEventApi(events: EventRecord[]): UseApi {
+  return {
+    isConnected: true,
+    connectionState: 'connected',
+    api: {
+      ...mockedKusamaApi.api,
+      query: {
+        ...mockedKusamaApi.api?.query,
+        system: {
+          ...mockedKusamaApi.api?.query.system,
+          events: () => from<ObservableInput<Vec<EventRecord>>>([
+            [] as unknown as Vec<EventRecord>,
+            Object.assign([
+              ...events
+            ] as Vec<EventRecord>, { createdAtHash: EVENT_HASH })
+          ]).pipe(observeOn(asyncScheduler, 100))
+        },
+        assets: {
+          ...mockedKusamaApi.api?.query.assets,
+          metadata: {
+            multi: () => from<ObservableInput<PalletAssetsAssetMetadata[]>>([
+              [
+                createType('AssetMetadata', { decimals: 8, symbol: 'TT', name: 'TestToken' }),
+                createType('AssetMetadata', { decimals: 10, symbol: 'TTx', name: 'TestTokenExtra' }),
+                createType('AssetMetadata', { decimals: 12, symbol: 'KSM🤪', name: 'Kusama😒' })
+              ]
+            ])
+          },
+          asset: {
+            entries: jest.fn().mockReturnValue(
+              Object.assign([
+                [createAssetStorageKey(15), createType('Option<AssetDetails>', { owner: createType('AccountId', BOB), isSufficient: undefined })],
+                [createAssetStorageKey(24), createType('Option<AssetDetails>', { owner: createType('AccountId', ALICE), isSufficient: true })],
+                [createAssetStorageKey(24), createType('Option<AssetDetails>', { owner: createType('AccountId', ALICE), isSufficient: true })]
+              ], { subscribe: () => { /* noop */ } })
+            ),
+            entriesAt: jest.fn().mockReturnValue(
+              Object.assign([
+                [createAssetStorageKey(15), createType('Option<AssetDetails>', { owner: createType('AccountId', BOB), isSufficient: undefined })],
+                [createAssetStorageKey(24), createType('Option<AssetDetails>', { owner: createType('AccountId', ALICE), isSufficient: true })],
+                [createAssetStorageKey(24), createType('Option<AssetDetails>', { owner: createType('AccountId', ALICE), isSufficient: true })]
+              ], { subscribe: () => { /* noop */ } })
+            )
+          }
+        }
+      }
+    } as unknown as ApiRx
+  }
 }
