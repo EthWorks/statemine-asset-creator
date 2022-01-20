@@ -1,11 +1,10 @@
-import Image from 'next/image'
 import React from 'react'
 import styled from 'styled-components'
 
 import { Chains } from 'use-substrate'
 
-import { chainLogoPicker } from '../../formatters'
 import { ColorType } from '../../styles/styleVariables'
+import { ChainLogo } from '../ChainLogo'
 import { Text } from '../typography'
 
 interface ChainSelectItemProps {
@@ -36,7 +35,7 @@ export const ChainSelectItem = ({ chain, className, onClick, isTrigger }: ChainS
 
   return (
     <SelectItem className={className} onClick={onClick} backgroundColor={backgroundColor} isTrigger={isTrigger}>
-      <Image width='25' height='25' src={chainLogoPicker(chain)} alt={chain} />
+      <ChainLogo chain={chain}/>
       <div>
         <StyledText size='XXS' color={isTrigger ? color : undefined}>Network</StyledText>
         <StyledText size='XS' color='white'>{chain}</StyledText>

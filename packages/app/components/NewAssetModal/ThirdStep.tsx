@@ -36,6 +36,8 @@ interface Props {
   setStepBarVisible: (arg: boolean) => void
 }
 
+const EMPTY_ROW: JSX.Element = <>-</>
+
 export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelectModal }: ModalStep & Props): JSX.Element {
   const { parachain, relayChain } = useAppChains()
   const [capitalizedRelayChain, capitalizedParachain] = useCapitalizedChains([relayChain, parachain])
@@ -44,10 +46,12 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelect
   const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
   const { activeAccount: relayChainActiveAccount } = useActiveAccount(relayChain)
 
-  const transactionFee = createAssetTransaction?.paymentInfo?.partialFee
+  const createAssetTransactionFee = createAssetTransaction?.paymentInfo?.partialFee
   const { activeAccount } = useActiveAccount(parachain)
   const { address: ownerAddress } = activeAccount || {}
-  const { displayTeleportContent, teleportAmount, transaction: teleportTransaction, stepDetails: teleportStepDetails } = useTeleportTransaction(ownerAddress, transactionFee, createAssetDeposit) || {}
+  const { displayTeleportContent, teleportAmount, transaction: teleportTransaction, stepDetails: teleportStepDetails } = useTeleportTransaction(ownerAddress, createAssetTransactionFee, createAssetDeposit) || {}
+
+  const teleportTransactionFee = teleportTransaction?.paymentInfo?.partialFee
 
   const { chainToken, chainDecimals } = useChainToken(parachain) || {}
   const isContentHidden = state === 'Success' || state === 'Error' || state === 'InProgress'
@@ -97,10 +101,10 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelect
     }
   }, [createAssetTransaction?.status, setStepBarVisible])
 
-  const totalFee = useMemo(() => displayTeleportContent && teleportTransaction && teleportTransaction.paymentInfo
-    ? createAssetTransaction?.paymentInfo?.partialFee.add(teleportTransaction.paymentInfo?.partialFee)
-    : createAssetTransaction?.paymentInfo?.partialFee,
-  [createAssetTransaction?.paymentInfo?.partialFee, displayTeleportContent, teleportTransaction])
+  const totalFee = useMemo(() => displayTeleportContent && teleportTransactionFee
+    ? createAssetTransactionFee?.add(teleportTransactionFee)
+    : createAssetTransactionFee,
+  [createAssetTransactionFee, displayTeleportContent, teleportTransactionFee])
 
   const createAssetTransactionNumber = displayTeleportContent ? 2 : 1
   const createAssetTransactionTitle = useMemo(() => createAssetStepDetails?.title.replace(/{txNumber}/g, createAssetTransactionNumber.toString()), [createAssetStepDetails?.title, createAssetTransactionNumber])
@@ -197,7 +201,10 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelect
               </InfoRow>
               <InfoRow>
                 <Label>{capitalizedRelayChain} fee</Label>
-                <FormatBalance chainDecimals={chainDecimals} token={chainToken} value={teleportTransaction.paymentInfo?.partialFee}/>
+                {teleportTransactionFee
+                  ? <FormatBalance chainDecimals={chainDecimals} token={chainToken} value={teleportTransactionFee}/>
+                  : EMPTY_ROW
+                }
               </InfoRow>
             </TransactionInfoBlock>
           )}
@@ -212,7 +219,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelect
             </InfoRow>
             <InfoRow>
               <Label>{capitalizedParachain} fee</Label>
-              <FormatBalance chainDecimals={chainDecimals} token={chainToken} value={transactionFee}/>
+              <FormatBalance chainDecimals={chainDecimals} token={chainToken} value={createAssetTransactionFee}/>
             </InfoRow>
           </TransactionInfoBlock>
           {chainDecimals && chainToken && totalFee && teleportAmount && (

@@ -25,7 +25,7 @@ import Error from './_error'
 
 const Home: NextPage = () => {
   const { relayChain, parachain } = useAppChains()
-  const { activeAccount } = useActiveAccount(parachain)
+  const { activeAccount, isLoaded: isActiveAccountLoaded } = useActiveAccount(parachain)
   const { address } = activeAccount || {}
   const { web3Enable } = useAccounts()
   const assets = useAssets(parachain, { owner: address })
@@ -36,9 +36,14 @@ const Home: NextPage = () => {
   const { connectionState: parachainConnectionState } = useApi(parachain)
   const { connectionState: relayChainConnectionState } = useApi(relayChain)
 
+  const isLoading = parachainConnectionState !== 'connected' || relayChainConnectionState !== 'connected' ||
+      !assets
+
   useEffect(() => {
-    setAccountSelectModalOpen(extensionActivated() && !address)
-  }, [address, setAccountSelectModalOpen])
+    if (isActiveAccountLoaded && extensionActivated()) {
+      setAccountSelectModalOpen(!address)
+    }
+  }, [address, isActiveAccountLoaded, setAccountSelectModalOpen])
 
   const onExtensionActivated = (): void => {
     setConnectWalletModalOpen(false)
@@ -79,6 +84,7 @@ const Home: NextPage = () => {
             </div>
           </>
         }
+        isLoading={isLoading}
       >
         {address && assets?.length
           ? <PageBox size='full' title={`Created assets [${assets.length}]`}>

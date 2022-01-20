@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { Chains } from 'use-substrate'
 
 import arrow from '../../assets/arrow-right.svg'
-import { chainLogoPicker } from '../../formatters'
+import { ChainLogo } from '../ChainLogo'
 import { Text } from '../typography'
 
 export interface ChainIdentifierProps {
@@ -15,7 +15,7 @@ export interface ChainIdentifierProps {
 export const ChainIdentifier = ({ chainMain, chainTo }: ChainIdentifierProps): JSX.Element => (
   <IdentifierWrapper>
     <IdentifierItem>
-      <Image width='25' height='25' src={chainLogoPicker(chainMain)} alt={chainMain} />
+      <ChainLogo chain={chainMain}/>
       <StyledText color='white' bold size='XS'>{chainMain}</StyledText>
     </IdentifierItem>
     {chainTo && (
@@ -24,7 +24,7 @@ export const ChainIdentifier = ({ chainMain, chainTo }: ChainIdentifierProps): J
           <Image width='20' height='20' src={arrow} alt='' />
         </ArrowWrapper>
         <IdentifierItem>
-          <Image width='25' height='25' src={chainLogoPicker(chainTo)} alt={chainTo} />
+          <ChainLogo chain={chainTo}/>
           <StyledText color='white' bold size='XS'>{chainTo}</StyledText>
         </IdentifierItem>
       </>
