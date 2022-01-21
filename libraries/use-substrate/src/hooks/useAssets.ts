@@ -4,11 +4,12 @@ import type { PalletAssetsAssetMetadata } from '@polkadot/types/lookup'
 import type { Chains } from '../consts'
 import type { AssetInfoWithId, AssetMeta, FetchedAssets, UseAssets, UseAssetsOptions } from './types/useAssets'
 
-import { useEffect, useMemo, useState } from 'react'
+import _ from 'lodash'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { useApi } from './useApi'
 import { useChainEvents } from './useChainEvents'
-import { useObservable } from './useObservable'
+import { useObservable, useObservable2 } from './useObservable'
 
 export function useAssets(chain: Chains, options?: UseAssetsOptions): UseAssets | undefined {
   const [ids, setIds] = useState<AssetId[]>()
@@ -18,20 +19,35 @@ export function useAssets(chain: Chains, options?: UseAssetsOptions): UseAssets 
 
   const { blockHash } = useChainEvents(chain, CHECKS) || {}
   const fetchedAssets = useObservable<FetchedAssets>((blockHash ? api?.query.assets.asset.entriesAt(blockHash) : api?.query.assets.asset.entries()), [api, connectionState, blockHash])
-  const metadata = useObservable<PalletAssetsAssetMetadata[]>(ids ? api?.query.assets.metadata.multi(ids) : undefined, [ids, api, connectionState])
+  const metadata = useObservable2(api?.query.assets.metadata.multi(ids ?? []), [JSON.stringify(ids), api, connectionState])
+  ids?.forEach(id => console.log('id', id.toString()))
+  const metadataRef = useRef<PalletAssetsAssetMetadata[]>()
+  if (!_.isEqual(metadata, metadataRef.current)) {
+    console.log('not equal')
+    metadataRef.current = metadata
+  }
+  metadata?.forEach(asset => console.log('froom hok', asset.name.toHuman()))
+
   useEffect(() => {
     if (!fetchedAssets) return undefined
 
     const assets = convertAssets(fetchedAssets)
 
     setOwnerAssets(filterByOwner(assets, options?.owner))
-  }, [fetchedAssets, options?.owner])
+  }, [JSON.stringify(fetchedAssets), options?.owner])
 
   useEffect(() => {
     setIds(getAssetsIds(ownerAssets))
-  }, [ownerAssets])
+  }, [JSON.stringify(ownerAssets)])
 
-  return useMemo(() => attachMetadataToAssets(ownerAssets, metadata), [ownerAssets, metadata])
+  return useMemo(() => {
+    const assets = attachMetadataToAssets(ownerAssets, metadata)
+
+    metadata?.forEach(asset => console.log('froom memo', asset.name.toHuman()))
+    // assets?.forEach(asset => console.log(asset.name))
+
+    return assets
+  }, [JSON.stringify(ownerAssets), JSON.stringify(metadata)])
 }
 
 function convertAssets(assets: FetchedAssets): AssetInfoWithId[] {

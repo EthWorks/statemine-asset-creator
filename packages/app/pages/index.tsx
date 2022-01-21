@@ -4,7 +4,7 @@ import Head from 'next/head'
 import { useEffect } from 'react'
 import styled from 'styled-components'
 
-import { useAccounts, useActiveAccount, useApi, useAssets } from 'use-substrate'
+import { useAccounts, useActiveAccount, useApi } from 'use-substrate'
 
 import background from '../assets/background.svg'
 import {
@@ -21,6 +21,7 @@ import {
   Text
 } from '../components'
 import { extensionActivated, useAppChains, useAsync, useToggle } from '../utils'
+import { useMultiAssets } from '../utils/hooks/useMultiAssets'
 import Error from './_error'
 
 const Home: NextPage = () => {
@@ -28,16 +29,14 @@ const Home: NextPage = () => {
   const { activeAccount, isLoaded: isActiveAccountLoaded } = useActiveAccount(parachain)
   const { address } = activeAccount || {}
   const { web3Enable } = useAccounts()
-  const assets = useAssets(parachain, { owner: address })
+  const multiAssets = useMultiAssets(address)
+  const assets = multiAssets[parachain]
   const [isNewAssetModalOpen, toggleNewAssetModalOpen] = useToggle()
   const [isConnectWalletModalOpen, toggleConnectWalletModalOpen, setConnectWalletModalOpen] = useToggle(!extensionActivated())
   const [isAccountSelectModalOpen, toggleAccountSelectModalOpen, setAccountSelectModalOpen] = useToggle()
-
   const { connectionState: parachainConnectionState } = useApi(parachain)
   const { connectionState: relayChainConnectionState } = useApi(relayChain)
-
-  const isLoading = parachainConnectionState !== 'connected' || relayChainConnectionState !== 'connected' ||
-      !assets
+  const isLoading = parachainConnectionState !== 'connected' || relayChainConnectionState !== 'connected'
 
   useEffect(() => {
     if (isActiveAccountLoaded && extensionActivated()) {
