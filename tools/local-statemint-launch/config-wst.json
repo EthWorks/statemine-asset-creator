@@ -41,7 +41,7 @@
           "wsPort": 9988,
           "port": 31200,
           "name": "alice",
-          "flags": ["--", "--execution=wasm"]
+          "flags": ["--unsafe-ws-external", "--rpc-cors=all", "--", "--execution=wasm"]
         }
       ]
     }
