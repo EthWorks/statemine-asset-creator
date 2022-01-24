@@ -12,11 +12,12 @@ export interface PageTemplateProps {
   header?: ReactNode,
   title?: string,
   templateHeader?: ReactNode,
-  isLoading?: boolean
+  isLoading?: boolean,
+  className?: string
 }
 
-export const PageTemplate = ({ background, children, errorPage, header, title, templateHeader, isLoading }: PageTemplateProps): JSX.Element => (
-  <PageWrapper errorPage={errorPage}>
+export const PageTemplate = ({ background, children, className, errorPage, header, title, templateHeader, isLoading }: PageTemplateProps): JSX.Element => (
+  <PageWrapper errorPage={errorPage} className={className}>
     <PageBg>
       <Image src={background} alt='' />
     </PageBg>

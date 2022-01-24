@@ -2,7 +2,7 @@ import { act, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 
 import Home from '../pages'
-import { POLKADOT_EXTENSION_LINK } from '../utils'
+import { POLKADOT_EXTENSION_LINK, TOS_PAGE_LINK } from '../utils'
 import {
   assertLinkByText,
   assertLocalStorage,
@@ -88,12 +88,20 @@ describe('Connect wallet modal', () => {
 
     await assertText('Don’t have the Polkadot{.js} extension? Download it')
 
-    await assertLinkByText('here', POLKADOT_EXTENSION_LINK)
+    await assertLinkByText('here', POLKADOT_EXTENSION_LINK, '_blank')
   })
 
   it('displays connect wallet modal when extension is not activated', async () => {
     renderWithTheme(<Home />)
 
     await screen.findByText('Connect extension to start using this app')
+  })
+
+  it('links to the "Terms of Service" page', async () => {
+    renderWithTheme(<Home />)
+
+    await assertText('By connecting, I accept')
+
+    await assertLinkByText('Terms of Service', TOS_PAGE_LINK, '_blank')
   })
 })
