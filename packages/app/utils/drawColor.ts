@@ -1,7 +1,9 @@
-const COLORS_LIST = ['#E6007A', '#2DD4BF', '#3b82f6', '#e4c000']
+import { AssetId } from '@polkadot/types/interfaces'
 
-export const drawColor = ():string => {
-  const colorNumber = Math.floor(Math.random() * (COLORS_LIST.length))
+const COLORS_LIST = ['#E6007A', '#2DD4BF', '#3B82F6', '#E4C000']
+
+export const drawColor = (id: AssetId): string => {
+  const colorNumber = id.modn(COLORS_LIST.length)
 
   return COLORS_LIST[colorNumber]
 }
