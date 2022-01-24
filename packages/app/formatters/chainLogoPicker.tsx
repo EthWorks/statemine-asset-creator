@@ -12,6 +12,11 @@ export const chainLogoPicker = (chain: Chains): string => {
       return polkadot
     case Chains.Statemine:
       return statemine
+    // toDo add westend icon
+    case Chains.Westend:
+      return statemine
+    case Chains.Westmint:
+      return statemine
     default:
       return statemine
   }

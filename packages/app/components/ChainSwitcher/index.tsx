@@ -1,5 +1,5 @@
 import * as Popover from '@radix-ui/react-popover'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 
 import { Chains } from 'use-substrate'
@@ -12,11 +12,15 @@ export const ChainSwitcher = (): JSX.Element => {
   const [isOpen, setOpen] = useState(false)
   const { relayChain, setParachain, setRelayChain } = useAppChains()
 
-  const _onSelectItemClick = (relayChain: Chains, parachain: Chains): void => {
+  const _onSelectItemClick = useCallback((relayChain: Chains, parachain: Chains): void => {
     setRelayChain(relayChain)
     setParachain(parachain)
     setOpen(false)
-  }
+  }, [setRelayChain, setParachain])
+
+  const _switchToPolkadot = useCallback(() => _onSelectItemClick(Chains.Polkadot, Chains.Statemint), [_onSelectItemClick])
+  const _switchToKusama = useCallback(() => _onSelectItemClick(Chains.Kusama, Chains.Statemine), [_onSelectItemClick])
+  const _switchToWestend = useCallback(() => _onSelectItemClick(Chains.Westend, Chains.Westmint), [_onSelectItemClick])
 
   return (
     <Popover.Root onOpenChange={setOpen} open={isOpen}>
@@ -25,8 +29,9 @@ export const ChainSwitcher = (): JSX.Element => {
         <ChainSelectItem chain={relayChain} isTrigger/>
       </Select>
       <SelectDropdown>
-        <ChainSelectItem chain={Chains.Polkadot} onClick={() => _onSelectItemClick(Chains.Polkadot, Chains.Statemint)}/>
-        <ChainSelectItem chain={Chains.Kusama} onClick={() => _onSelectItemClick(Chains.Kusama, Chains.Statemine)}/>
+        <ChainSelectItem chain={Chains.Polkadot} onClick={_switchToPolkadot}/>
+        <ChainSelectItem chain={Chains.Kusama} onClick={_switchToKusama}/>
+        <ChainSelectItem chain={Chains.Westend} onClick={_switchToWestend}/>
       </SelectDropdown>
     </Popover.Root>
   )

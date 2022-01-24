@@ -25,6 +25,8 @@ const _pickColors = (chain: Chains): {backgroundColor: string, color: ColorType 
   switch (chain) {
     case Chains.Polkadot:
       return { backgroundColor: '#E6007A', color: 'white' }
+    case Chains.Westend:
+      return { backgroundColor: '#CCE2FF', color: 'black' }
     default:
       return { backgroundColor: '#000000', color: undefined }
   }
