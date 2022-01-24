@@ -32,8 +32,7 @@ import {
   findAndClickButton,
   getAccountSelect,
   renderWithTheme,
-  selectAccountFromDropdown,
-  switchApiToPolkadot,
+  selectAccountFromDropdown, switchApiTo,
   typeInInput
 } from './helpers'
 import {
@@ -842,24 +841,46 @@ describe('New asset modal', () => {
       assertNewTabOpened(STATESCAN_LINK + ASSET_ID)
     })
 
-    it('updates displayed chain names on active api change', async () => {
-      setTeleportTransactionStatus(TransactionStatus.Ready)
-      mockUseBalances.availableBalance = new BN(0)
-      renderModal()
-      await switchApiToPolkadot()
-      await enterThirdStep()
+    describe('updates displayed chain names on active api change to', () => {
+      beforeEach(() => {
+        setTeleportTransactionStatus(TransactionStatus.Ready)
+        mockUseBalances.availableBalance = new BN(0)
+        renderModal()
+      })
 
-      await assertTransactionInfoBlock(1, 'ready', [
-        'Chainpolkadotstatemint',
-        'Teleport amount140.0310KSM',
-        'Polkadot fee0.0300KSM'
-      ])
+      it('polkadot', async () => {
+        await switchApiTo(Chains.Polkadot)
+        await enterThirdStep()
 
-      await assertTransactionInfoBlock(2, 'ready', [
-        'Chainstatemint',
-        'Deposit140.0000KSM',
-        'Statemint fee0.0300KSM'
-      ])
+        await assertTransactionInfoBlock(1, 'ready', [
+          'Chainpolkadotstatemint',
+          'Teleport amount140.0310KSM',
+          'Polkadot fee0.0300KSM'
+        ])
+
+        await assertTransactionInfoBlock(2, 'ready', [
+          'Chainstatemint',
+          'Deposit140.0000KSM',
+          'Statemint fee0.0300KSM'
+        ])
+      })
+
+      it('westend', async () => {
+        await switchApiTo(Chains.Westend)
+        await enterThirdStep()
+
+        await assertTransactionInfoBlock(1, 'ready', [
+          'Chainwestendwestmint',
+          'Teleport amount140.0310KSM',
+          'Westend fee0.0300KSM'
+        ])
+
+        await assertTransactionInfoBlock(2, 'ready', [
+          'Chainwestmint',
+          'Deposit140.0000KSM',
+          'Westmint fee0.0300KSM'
+        ])
+      })
     })
   })
 })

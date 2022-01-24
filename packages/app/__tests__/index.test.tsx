@@ -14,7 +14,7 @@ import {
   clickButton,
   renderWithTheme,
   setLocalStorage,
-  switchApiToPolkadot
+  switchApiTo
 } from './helpers'
 import {
   bobAccountId,
@@ -171,18 +171,34 @@ describe('Home', () => {
     })
   })
 
-  it('updates displayed chain icons on active api change', async () => {
-    renderWithTheme(<AppChainsProvider><Home/></AppChainsProvider>)
+  describe('updates displayed chain icons on active api change to', () => {
+    it('polkadot', async () => {
+      renderWithTheme(<AppChainsProvider><Home/></AppChainsProvider>)
 
-    const activeAccountBar = await screen.findByTestId('active-account-bar')
+      const activeAccountBar = await screen.findByTestId('active-account-bar')
 
-    await assertChainLogo(Chains.Kusama, activeAccountBar)
-    await assertChainLogo(Chains.Statemine, activeAccountBar)
+      await assertChainLogo(Chains.Kusama, activeAccountBar)
+      await assertChainLogo(Chains.Statemine, activeAccountBar)
 
-    await switchApiToPolkadot()
+      await switchApiTo(Chains.Polkadot)
 
-    await assertChainLogo(Chains.Polkadot, activeAccountBar)
-    await assertChainLogo(Chains.Statemint, activeAccountBar)
+      await assertChainLogo(Chains.Polkadot, activeAccountBar)
+      await assertChainLogo(Chains.Statemint, activeAccountBar)
+    })
+
+    it('westend', async () => {
+      renderWithTheme(<AppChainsProvider><Home/></AppChainsProvider>)
+
+      const activeAccountBar = await screen.findByTestId('active-account-bar')
+
+      await assertChainLogo(Chains.Kusama, activeAccountBar)
+      await assertChainLogo(Chains.Statemine, activeAccountBar)
+
+      await switchApiTo(Chains.Westend)
+
+      await assertChainLogo(Chains.Westend, activeAccountBar)
+      await assertChainLogo(Chains.Westmint, activeAccountBar)
+    })
   })
 
   describe('shows page loader for', () => {

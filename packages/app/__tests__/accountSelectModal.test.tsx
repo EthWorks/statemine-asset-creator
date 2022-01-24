@@ -19,7 +19,7 @@ import {
   renderWithTheme,
   selectAccountFromDropdown,
   setLocalStorage,
-  switchApiToPolkadot
+  switchApiTo
 } from './helpers'
 import {
   aliceAccount,
@@ -47,6 +47,7 @@ const mockActiveAccount = (chain: Chains) => {
   switch (chain) {
     case Chains.Kusama:
     case Chains.Polkadot:
+    case Chains.Westend:
       return mockRelayChainActiveAccount
     default:
       return mockParachainActiveAccount
@@ -247,41 +248,83 @@ describe('Account select modal', () => {
     assertNoText('Add Kusama account')
   })
 
-  describe('on api change', () => {
-    it('updates displayed chain names', async () => {
-      mockParachainActiveAccount = aliceActiveAccount
-      mockRelayChainActiveAccount = undefined
+  describe('on api change to', () => {
+    describe('polkadot', () => {
+      it('updates displayed chain names', async () => {
+        mockParachainActiveAccount = aliceActiveAccount
+        mockRelayChainActiveAccount = undefined
 
-      renderWithTheme(<AppChainsProvider><Home/></AppChainsProvider>)
-      await switchApiToPolkadot()
+        renderWithTheme(<AppChainsProvider><Home/></AppChainsProvider>)
+        await switchApiTo(Chains.Polkadot)
 
-      await openAccountSelectModal()
-      const modal = await screen.findByTestId('modal')
+        await openAccountSelectModal()
+        const modal = await screen.findByTestId('modal')
 
-      expect(modal).toHaveTextContent('Statemint account')
-      expect(modal).not.toHaveTextContent('Statemine account')
-      expect(modal).toHaveTextContent('Polkadot account')
-      expect(modal).not.toHaveTextContent('Kusama account')
-      expect(modal).toHaveTextContent('Asset creation and transfers happen on the Statemint parachain. You need an account with a balance on Statemint for fees and deposits. However, you can also use a fresh & empty account, and send funds from your Polkadot account.')
-      expect(modal).toHaveTextContent('This account has insufficient funds, consider adding a Polkadot account.')
+        expect(modal).toHaveTextContent('Statemint account')
+        expect(modal).not.toHaveTextContent('Statemine account')
+        expect(modal).toHaveTextContent('Polkadot account')
+        expect(modal).not.toHaveTextContent('Kusama account')
+        expect(modal).toHaveTextContent('Asset creation and transfers happen on the Statemint parachain. You need an account with a balance on Statemint for fees and deposits. However, you can also use a fresh & empty account, and send funds from your Polkadot account.')
+        expect(modal).toHaveTextContent('This account has insufficient funds, consider adding a Polkadot account.')
+      })
+
+      it('updates displayed chain icons', async () => {
+        mockedUseAccounts.allAccounts = [aliceAccount, charlieAccount]
+        mockParachainActiveAccount = aliceActiveAccount
+        mockRelayChainActiveAccount = charlieActiveAccount
+
+        renderWithTheme(<AppChainsProvider><Home/></AppChainsProvider>)
+        await openAccountSelectModal()
+        const modal = await screen.findByTestId('modal')
+
+        await assertChainLogo(Chains.Statemine, modal)
+        await assertChainLogo(Chains.Kusama, modal)
+
+        await switchApiTo(Chains.Polkadot)
+
+        await assertChainLogo(Chains.Statemint, modal)
+        await assertChainLogo(Chains.Polkadot, modal)
+      })
     })
 
-    it('updates displayed chain icons', async () => {
-      mockedUseAccounts.allAccounts = [aliceAccount, charlieAccount]
-      mockParachainActiveAccount = aliceActiveAccount
-      mockRelayChainActiveAccount = charlieActiveAccount
+    describe('westend', () => {
+      it('updates displayed chain names', async () => {
+        mockParachainActiveAccount = aliceActiveAccount
+        mockRelayChainActiveAccount = undefined
 
-      renderWithTheme(<AppChainsProvider><Home/></AppChainsProvider>)
-      await openAccountSelectModal()
-      const modal = await screen.findByTestId('modal')
+        renderWithTheme(<AppChainsProvider><Home/></AppChainsProvider>)
+        await switchApiTo(Chains.Westend)
 
-      await assertChainLogo(Chains.Statemine, modal)
-      await assertChainLogo(Chains.Kusama, modal)
+        await openAccountSelectModal()
+        const modal = await screen.findByTestId('modal')
 
-      await switchApiToPolkadot()
+        expect(modal).toHaveTextContent('Westmint account')
+        expect(modal).not.toHaveTextContent('Statemint account')
+        expect(modal).not.toHaveTextContent('Statemine account')
+        expect(modal).toHaveTextContent('Westend account')
+        expect(modal).not.toHaveTextContent('Kusama account')
+        expect(modal).not.toHaveTextContent('Polkadot account')
+        expect(modal).toHaveTextContent('Asset creation and transfers happen on the Westmint parachain. You need an account with a balance on Westmint for fees and deposits. However, you can also use a fresh & empty account, and send funds from your Westend account.')
+        expect(modal).toHaveTextContent('This account has insufficient funds, consider adding a Westend account.')
+      })
 
-      await assertChainLogo(Chains.Statemint, modal)
-      await assertChainLogo(Chains.Polkadot, modal)
+      it('updates displayed chain icons', async () => {
+        mockedUseAccounts.allAccounts = [aliceAccount, charlieAccount]
+        mockParachainActiveAccount = aliceActiveAccount
+        mockRelayChainActiveAccount = charlieActiveAccount
+
+        renderWithTheme(<AppChainsProvider><Home/></AppChainsProvider>)
+        await openAccountSelectModal()
+        const modal = await screen.findByTestId('modal')
+
+        await assertChainLogo(Chains.Statemine, modal)
+        await assertChainLogo(Chains.Kusama, modal)
+
+        await switchApiTo(Chains.Westend)
+
+        await assertChainLogo(Chains.Westmint, modal)
+        await assertChainLogo(Chains.Westend, modal)
+      })
     })
   })
 

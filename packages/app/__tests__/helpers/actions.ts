@@ -1,6 +1,8 @@
 import { fireEvent, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import { Chains } from 'use-substrate'
+
 import { PointerEvent } from './events'
 
 export function clickButton(name: string) {
@@ -61,8 +63,8 @@ export async function clickByText(text: string) {
   fireEvent.click(useEverywhereLink)
 }
 
-export async function switchApiToPolkadot() {
+export async function switchApiTo(chain: Chains) {
   const switcher = await screen.findByRole('button', { name: 'Network kusama' })
   userEvent.click(switcher)
-  userEvent.click(await screen.findByText('polkadot'))
+  userEvent.click(await screen.findByText(chain))
 }
