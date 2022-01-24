@@ -2,11 +2,11 @@ import Image from 'next/image'
 import { ReactNode } from 'react'
 import styled, { css } from 'styled-components'
 
+import background from '../../assets/background.svg'
 import { Loader } from '../Loader'
 import { Text } from '../typography'
 
 export interface PageTemplateProps {
-  background: string,
   children: ReactNode,
   errorPage?: boolean,
   header?: ReactNode,
@@ -16,10 +16,10 @@ export interface PageTemplateProps {
   className?: string
 }
 
-export const PageTemplate = ({ background, children, className, errorPage, header, title, templateHeader, isLoading }: PageTemplateProps): JSX.Element => (
+export const PageTemplate = ({ children, className, errorPage, header, title, templateHeader, isLoading }: PageTemplateProps): JSX.Element => (
   <PageWrapper errorPage={errorPage} className={className}>
     <PageBg>
-      <Image src={background} alt='' />
+      <Image src={background} alt=''/>
     </PageBg>
     {isLoading
       ? <Loader/>

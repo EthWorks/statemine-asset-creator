@@ -6,7 +6,6 @@ import styled from 'styled-components'
 
 import { useAccounts, useActiveAccount, useApi, useAssets } from 'use-substrate'
 
-import background from '../assets/background.svg'
 import {
   AccountSelectModal,
   ActiveAccountBar,
@@ -70,7 +69,6 @@ const Home: NextPage = () => {
         <meta name="description" content="Application for managing assets on Statemine"/>
       </Head>
       <PageTemplate
-        background={background}
         title="Dashboard"
         templateHeader={address && assets?.length ? <ButtonPrimary onClick={toggleNewAssetModalOpen}>Create new asset</ButtonPrimary> : null}
         header={

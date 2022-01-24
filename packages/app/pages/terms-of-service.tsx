@@ -3,7 +3,6 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
-import background from '../assets/background.svg'
 import { ButtonPrimary, Card, PageBox, PageTemplate, Text } from '../components'
 import { LANDING_PAGE_LINK } from '../utils'
 
@@ -20,7 +19,6 @@ const TermsOfService: NextPage = () => {
         <meta name="description" content="Terms of service of Statemine Asset Creator"/>
       </Head>
       <StyledPageTemplate
-        background={background}
         title="Terms of service"
         templateHeader={<ButtonPrimary onClick={_onClick}>Back to Main Page</ButtonPrimary>}
       >
