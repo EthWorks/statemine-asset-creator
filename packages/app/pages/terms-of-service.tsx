@@ -1,17 +1,10 @@
 import { NextPage } from 'next'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
-import { ButtonPrimary, Card, PageBox, PageTemplate, Text } from '../components'
-import { LANDING_PAGE_LINK } from '../utils'
+import { Card, PageBox, PageTemplate, Text } from '../components'
 
 const TermsOfService: NextPage = () => {
-  const router = useRouter()
-  const _onClick = async (): Promise<void> => {
-    await router.push(LANDING_PAGE_LINK)
-  }
-
   return (
     <>
       <Head>
@@ -20,7 +13,6 @@ const TermsOfService: NextPage = () => {
       </Head>
       <StyledPageTemplate
         title="Terms of service"
-        templateHeader={<ButtonPrimary onClick={_onClick}>Back to Main Page</ButtonPrimary>}
       >
         <PageBox size='large'>
           <Card padding='m'>
