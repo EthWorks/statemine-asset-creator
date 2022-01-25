@@ -5,7 +5,9 @@ const chains: Chains[] = [
   Chains.Kusama,
   Chains.Statemine,
   Chains.Polkadot,
-  Chains.Statemint
+  Chains.Statemint,
+  Chains.Westend,
+  Chains.Westmint
 ]
 
 describe('--NIGHTLY--checks endpoints', () => {
