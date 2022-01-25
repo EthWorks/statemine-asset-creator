@@ -23,7 +23,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
   const {
     assetName, setAssetName, assetNameError, setAssetNameError, assetId, assetIdError, setAssetIdError, assetSymbol,
     assetSymbolError, setAssetSymbolError, setAssetId, setAssetSymbol, setAssetDecimals, minBalance, setMinBalance,
-    assetDecimals, stringLimit, setAssetDecimalsError, assetDecimalsError
+    assetDecimals, stringLimit, setAssetDecimalsError, assetDecimalsError, minBalanceError, setMinBalanceError
   } = useNewAssetModal()
   const existingAssets = useAssets(parachain)
 
@@ -32,10 +32,11 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
     setAssetSymbolError(undefined)
     setAssetIdError(undefined)
     setAssetDecimalsError(undefined)
-  }, [setAssetNameError, setAssetSymbolError, setAssetIdError, setAssetDecimalsError])
+    setMinBalanceError(undefined)
+  }, [setAssetNameError, setAssetSymbolError, setAssetIdError, setAssetDecimalsError, setMinBalanceError])
 
   const isFilled = !!assetName && !!assetSymbol && !!assetId && !!assetDecimals && !!minBalance
-  const isValid = !assetNameError && !assetSymbolError && !assetIdError && !assetDecimalsError
+  const isValid = !assetNameError && !assetSymbolError && !assetIdError && !assetDecimalsError && !minBalanceError
   const isDisabled = !isFilled || !isValid
 
   const isAssetIdUnique = useCallback(() => !existingAssets?.find(({ id }: Asset) => id.toString() === assetId), [existingAssets, assetId])
@@ -64,7 +65,11 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
     if (+assetDecimals > DECIMALS_LIMIT) {
       setAssetDecimalsError('Value too large')
     }
-  }, [assetId, assetName, assetSymbol, clearErrors, setAssetNameError, setAssetSymbolError, setAssetIdError, stringLimit, isAssetIdUnique, assetDecimals, setAssetDecimalsError])
+
+    if (minBalance.length && +minBalance === 0) {
+      setMinBalanceError('Non-zero value expected')
+    }
+  }, [assetId, assetName, assetSymbol, clearErrors, setAssetNameError, setAssetSymbolError, setAssetIdError, stringLimit, isAssetIdUnique, assetDecimals, setAssetDecimalsError, minBalance, setMinBalanceError])
 
   const _onNext = useCallback((e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -115,6 +120,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
         inputType='NATURAL'
       />
       <NumericInput
+        error={minBalanceError}
         value={minBalance}
         onChange={setMinBalance}
         label="Minimum balance"

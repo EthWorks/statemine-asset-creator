@@ -22,8 +22,9 @@ export const NewAssetModalProvider: React.FC = ({ children }) => {
   const [assetDecimals, setAssetDecimals] = useState<string>('')
   const [assetDecimalsError, setAssetDecimalsError] = useState<string>()
   const [assetSymbol, setAssetSymbol] = useState<string>('')
-  const [minBalance, setMinBalance] = useState<string>('')
   const [assetSymbolError, setAssetSymbolError] = useState<string>()
+  const [minBalance, setMinBalance] = useState<string>('')
+  const [minBalanceError, setMinBalanceError] = useState<string>()
   const { stringLimit } = useAssetsConstants(parachain)
 
   return <NewAssetModalContext.Provider value={{
@@ -48,9 +49,11 @@ export const NewAssetModalProvider: React.FC = ({ children }) => {
     assetSymbol,
     setAssetSymbol,
     assetSymbolError,
+    setAssetSymbolError,
     minBalance,
     setMinBalance,
-    setAssetSymbolError,
+    minBalanceError,
+    setMinBalanceError,
     stringLimit
   }}>{children}</NewAssetModalContext.Provider>
 }
