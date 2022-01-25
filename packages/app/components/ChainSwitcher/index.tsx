@@ -4,9 +4,21 @@ import styled from 'styled-components'
 
 import { Chains } from 'use-substrate'
 
+import { ColorType } from '../../styles/styleVariables'
 import { useAppChains } from '../../utils'
 import { Arrow } from '../icons'
 import { ChainSelectItem } from './ChainSelectItem'
+
+const getArrowColor = (chain: Chains): ColorType => {
+  switch (chain) {
+    case Chains.Polkadot:
+      return 'gray50'
+    case Chains.Westend:
+      return 'gray900'
+    default:
+      return 'gray500'
+  }
+}
 
 export const ChainSwitcher = (): JSX.Element => {
   const [isOpen, setOpen] = useState(false)
@@ -25,7 +37,7 @@ export const ChainSwitcher = (): JSX.Element => {
   return (
     <Popover.Root onOpenChange={setOpen} open={isOpen}>
       <Select>
-        <StyledArrow direction={isOpen ? 'up' : 'down'} width='10' height='6'/>
+        <StyledArrow direction={isOpen ? 'up' : 'down'} width='10' height='6' color={getArrowColor(relayChain)}/>
         <ChainSelectItem chain={relayChain} isTrigger/>
       </Select>
       <SelectDropdown>
@@ -45,7 +57,7 @@ const Select = styled(Popover.Trigger)`
   height: 52px;
   padding: 0;
   border: none;
-  border-radius: 8px;
+  background-color: transparent;
   color: white;
 `
 
@@ -55,16 +67,18 @@ const SelectDropdown = styled(Popover.Content)`
   border-radius: 8px;
   background-color: ${({ theme }) => theme.colors.black};
   transform: translateY(4px);
+  border: 1px solid #404040;
   
   div:hover {
-    background-color: ${({ theme }) => theme.colors.gray[900]};
+    background-color: ${({ theme }) => theme.colors.gray900};
   }
 `
 
-const StyledArrow = styled(Arrow)`
+const StyledArrow = styled(Arrow)<{color: string}>`
   position: absolute;
   top: 50%;
   right: 12px;
   transform: translateY(-50%);
   cursor: pointer;
+  color: ${({ color, theme }) => theme.colors[color]}
 `

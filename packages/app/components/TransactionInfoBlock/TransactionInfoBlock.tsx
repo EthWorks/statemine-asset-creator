@@ -86,7 +86,7 @@ const BlockHeaderLine = styled.div`
   transform: translateY(-50%);
   height: 1px;
   width: 50%;
-  background-color: ${({ theme }) => theme.colors.gray[600]};
+  background-color: ${({ theme }) => theme.colors.gray600};
   
   & + & {
     left: 50%;
@@ -137,7 +137,7 @@ const TitleWrapper = styled.div`
 
 const StyledText = styled(Text)`
   position: relative;
-  color: ${({ theme }) => theme.colors.gray[500]};
+  color: ${({ theme }) => theme.colors.gray500};
   padding-right: 12px;
   margin-right: 8px;
 
@@ -149,7 +149,7 @@ const StyledText = styled(Text)`
     transform: translateY(-50%);
     width: 4px;
     height: 4px;
-    background-color: ${({ theme }) => theme.colors.gray[500]};
+    background-color: ${({ theme }) => theme.colors.gray500};
     border-radius: ${({ theme }) => theme.borderRadius.circle};
     z-index: 1;
   }

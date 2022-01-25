@@ -5,5 +5,5 @@ export const Label = styled.span`
   font-weight: 700;
   line-height: 20px;
   text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.gray[400]};
+  color: ${({ theme }) => theme.colors.gray400};
 `

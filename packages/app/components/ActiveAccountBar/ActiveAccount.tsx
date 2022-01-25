@@ -51,7 +51,7 @@ const ActiveAccountWrapper = styled.div`
   height: 44px;
   padding: 0 8px;
   border-radius: ${({ theme }) => theme.borderRadius.m};
-  background-color: ${({ theme }) => theme.colors.gray[800]};
+  background-color: ${({ theme }) => theme.colors.gray800};
 `
 
 const ActiveAccountContent = styled.div`
@@ -63,7 +63,7 @@ const AddressWrapper = styled.div`
   display: flex;
   align-items: center;
   padding-left: 8px;
-  border-left: 1px solid ${({ theme }) => theme.colors.gray[600]};
+  border-left: 1px solid ${({ theme }) => theme.colors.gray600};
 `
 
 const AddressText = styled(Text)`

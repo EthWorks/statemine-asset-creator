@@ -49,7 +49,7 @@ const StepWrapper = styled.div`
       transform: translateY(-50%);
       height: 1px;
       width: 40px;
-      background-color: ${({ theme }) => theme.colors.gray[600]};
+      background-color: ${({ theme }) => theme.colors.gray600};
     }
   }
 
@@ -84,9 +84,9 @@ const StepNumber = styled.div`
   height: 24px;
   margin-right: 8px;
   border-radius: ${({ theme }) => theme.borderRadius.circle};
-  border: 1px solid ${({ theme }) => theme.colors.gray[400]};
+  border: 1px solid ${({ theme }) => theme.colors.gray400};
 `
 
 const OptionalText = styled(Text)`
-  color: ${({ theme }) => theme.colors.gray[500]};
+  color: ${({ theme }) => theme.colors.gray500};
 `

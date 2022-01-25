@@ -30,7 +30,7 @@ export const SectionTitleWrapper = styled.div`
     transform: translate(-50%, -50%);
     width: 100%;
     height: 1px;
-    background-color: ${({ theme }) => theme.colors.gray[500]};
+    background-color: ${({ theme }) => theme.colors.gray500};
   }
 `
 

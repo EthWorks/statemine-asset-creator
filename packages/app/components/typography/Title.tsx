@@ -11,6 +11,6 @@ export const Title = styled.h3<TitleProps>`
   display: flex;
   padding: 0 10px;
   background: ${({ theme }) => theme.colors.black};
-  color: ${({ theme, color }) => color ? theme.colors[color] : theme.colors.gray[500]};
+  color: ${({ theme, color }) => color ? theme.colors[color] : theme.colors.gray500};
   z-index: 1;
 `

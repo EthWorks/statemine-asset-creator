@@ -42,7 +42,7 @@ const CardMenuWrapper = styled.div<Omit<AssetsCardMenuProps, 'assetId'>>`
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: ${({ theme }) => theme.colors.gray[700]};
+    background-color: ${({ theme }) => theme.colors.gray700};
     opacity: 0.9;
     backdrop-filter: blur(1.5px);
   }
@@ -70,7 +70,7 @@ const MenuLink = styled.a`
   white-space: nowrap;
   font-size: 14px;
   line-height: 20px;
-  color: ${({ theme }) => theme.colors.gray[400]};
+  color: ${({ theme }) => theme.colors.gray400};
   transition: .25s ease-in;
   
   &:hover {

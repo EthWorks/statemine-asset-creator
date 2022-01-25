@@ -37,12 +37,12 @@ const CustomInputWrapper = styled.div`
 
 const Input = styled.input<Pick<CustomInputProps, 'large'>>`
   padding: 8px;
-  border: 1px solid ${({ theme }) => theme.colors.gray[600]};
+  border: 1px solid ${({ theme }) => theme.colors.gray600};
   border-radius: ${({ theme }) => theme.borderRadius.s};
   background: transparent;
   font-size: 14px;
   line-height: 143%;
-  color: ${({ theme }) => theme.colors.gray[50]};
+  color: ${({ theme }) => theme.colors.gray50};
 
   &:-webkit-autofill {
     -webkit-box-shadow: 0 0 0 30px ${({ theme }) => theme.colors.black} inset !important;
@@ -77,5 +77,5 @@ const InputLabel = styled.label`
   font-size: 14px;
   font-weight: 500;
   line-height: 143%;
-  color: ${({ theme }) => theme.colors.gray[400]};
+  color: ${({ theme }) => theme.colors.gray400};
 `

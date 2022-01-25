@@ -29,9 +29,9 @@ export const BaseButtonStyle = styled.button<ButtonProps>`
   }
   
   &:disabled {
-    background-color: ${({ theme }) => theme.colors.gray[800]};
-    border-color: ${({ theme }) => theme.colors.gray[800]};
-    color: ${({ theme }) => theme.colors.gray[600]};
+    background-color: ${({ theme }) => theme.colors.gray800};
+    border-color: ${({ theme }) => theme.colors.gray800};
+    color: ${({ theme }) => theme.colors.gray600};
     cursor: not-allowed;
   }
 `

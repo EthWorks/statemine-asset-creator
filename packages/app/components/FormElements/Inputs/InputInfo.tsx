@@ -44,7 +44,7 @@ const Error = styled.div`
 
 const HintText = styled(Text)`
   margin-top: 5px;
-  color: ${({ theme }) => theme.colors.gray[300]};
+  color: ${({ theme }) => theme.colors.gray300};
 `
 
 const TipText = styled(Text)`

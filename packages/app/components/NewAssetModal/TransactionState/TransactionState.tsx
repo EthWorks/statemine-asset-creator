@@ -98,7 +98,7 @@ const TransactionWrapper = styled.div`
   
   p:first-child {
     position: relative;
-    color: ${({ theme }) => theme.colors.gray[500]};
+    color: ${({ theme }) => theme.colors.gray500};
     padding-right: 8px;
     margin-right: 8px;
     
@@ -111,7 +111,7 @@ const TransactionWrapper = styled.div`
       width: 4px;
       height: 4px;
       border-radius: ${({ theme }) => theme.borderRadius.circle};
-      background-color: ${({ theme }) => theme.colors.gray[500]};
+      background-color: ${({ theme }) => theme.colors.gray500};
     }
   }
 `

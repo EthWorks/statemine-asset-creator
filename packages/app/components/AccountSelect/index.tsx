@@ -139,19 +139,19 @@ const StyledButton = styled(Popover.Trigger)`
   width: 100%;
   border: 2px solid transparent;
   border-radius: ${({ theme }) => theme.borderRadius.s};
-  background-color: ${({ theme }) => theme.colors.gray[800]};
-  color: ${({ theme }) => theme.colors.gray[400]};
+  background-color: ${({ theme }) => theme.colors.gray800};
+  color: ${({ theme }) => theme.colors.gray400};
   cursor: pointer;
   
   &:active,
   &:focus-visible,
   &:hover {
-    border-color: ${({ theme }) => theme.colors.gray[50]};
-    outline: 2px solid ${({ theme }) => theme.colors.gray[50]};
+    border-color: ${({ theme }) => theme.colors.gray50};
+    outline: 2px solid ${({ theme }) => theme.colors.gray50};
   }
   
   &:disabled {
-    background-color: ${({ theme }) => theme.colors.gray[900]};
+    background-color: ${({ theme }) => theme.colors.gray900};
     cursor: not-allowed;
 
     &:active,
@@ -169,7 +169,7 @@ const StyledDropdown = styled(Popover.Content)`
   width: 636px;
   max-height: 200px;
   border-radius: ${({ theme }) => theme.borderRadius.s};
-  background-color: ${({ theme }) => theme.colors.gray[800]};
+  background-color: ${({ theme }) => theme.colors.gray800};
   
   ul {
     list-style: none;
@@ -183,7 +183,7 @@ const StyledDropdown = styled(Popover.Content)`
 `
 
 const StyledDropdownItem = styled.li`
-  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[500]};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray500};
   cursor: pointer;
   
   &:last-child {

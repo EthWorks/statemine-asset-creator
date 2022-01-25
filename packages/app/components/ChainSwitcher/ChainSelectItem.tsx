@@ -19,28 +19,26 @@ interface SelectItemProps {
   isTrigger?: boolean
 }
 
-type DefaultTextColor = undefined
-
-const _pickColors = (chain: Chains): {backgroundColor: string, color: ColorType | DefaultTextColor} => {
+const _pickColors = (chain: Chains): { backgroundColor: string, networkColor?: ColorType, chainColor?: ColorType } => {
   switch (chain) {
     case Chains.Polkadot:
-      return { backgroundColor: '#E6007A', color: 'white' }
+      return { backgroundColor: '#E6007A', networkColor: 'gray50' }
     case Chains.Westend:
-      return { backgroundColor: '#CCE2FF', color: 'black' }
+      return { backgroundColor: '#FFFFFF', networkColor: 'gray900', chainColor: 'gray900' }
     default:
-      return { backgroundColor: '#000000', color: undefined }
+      return { backgroundColor: '#000000' }
   }
 }
 
 export const ChainSelectItem = ({ chain, className, onClick, isTrigger }: ChainSelectItemProps): JSX.Element => {
-  const { backgroundColor, color } = _pickColors(chain)
+  const { backgroundColor, networkColor, chainColor } = _pickColors(chain)
 
   return (
     <SelectItem className={className} onClick={onClick} backgroundColor={backgroundColor} isTrigger={isTrigger}>
       <ChainLogo chain={chain}/>
       <div>
-        <StyledText size='XXS' color={isTrigger ? color : undefined}>Network</StyledText>
-        <StyledText size='XS' color='white'>{chain}</StyledText>
+        {isTrigger && <StyledText size='XXS' color={networkColor}>Network</StyledText>}
+        <StyledText size='XS' color={(isTrigger && chainColor) ? chainColor : 'white'}>{chain}</StyledText>
       </div>
     </SelectItem>
   )

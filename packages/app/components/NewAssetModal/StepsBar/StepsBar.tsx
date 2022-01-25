@@ -28,6 +28,6 @@ const StyledStepBar = styled.div`
   justify-content: center;
   padding: 21px 44px;
   margin-bottom: 24px;
-  background-color: ${({ theme }) => theme.colors.gray[900]};
+  background-color: ${({ theme }) => theme.colors.gray900};
   border-radius: ${({ theme }) => theme.borderRadius.m};
 `

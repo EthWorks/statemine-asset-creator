@@ -86,7 +86,7 @@ const CardHeader = styled.header`
 
 const CardTitle = styled(Text)`
   text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.gray[50]}
+  color: ${({ theme }) => theme.colors.gray50}
 `
 
 const CardContent = styled.div`
@@ -167,7 +167,7 @@ const SymbolWrapper = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: ${({ theme }) => theme.colors.gray[700]};
+    background-color: ${({ theme }) => theme.colors.gray700};
     opacity: 0.9;
     backdrop-filter: blur(1.5px);
   }

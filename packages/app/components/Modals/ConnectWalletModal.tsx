@@ -80,8 +80,8 @@ const ConnectButton = styled.button`
   padding: 24px;
   border: none;
   border-radius: ${({ theme }) => theme.borderRadius.m};
-  background-color: ${({ theme }) => theme.colors.gray[900]};
-  color: ${({ theme }) => theme.colors.gray[50]};
+  background-color: ${({ theme }) => theme.colors.gray900};
+  color: ${({ theme }) => theme.colors.gray50};
   cursor: pointer;
 
   ${Text} {
