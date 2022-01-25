@@ -57,6 +57,7 @@ const Select = styled(Popover.Trigger)`
   height: 52px;
   padding: 0;
   border: none;
+  border-radius: 8px;
   background-color: transparent;
   color: white;
 `
