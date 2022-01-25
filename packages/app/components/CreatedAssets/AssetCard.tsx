@@ -26,7 +26,7 @@ export const AssetCard: FC<AssetCardProps> = ({ asset }) => {
   const cardMenuContainerRef = useRef(null)
   useOutsideClick(cardMenuContainerRef, () => setIsOpen(false))
 
-  const color = useMemo(() => drawColor(), [])
+  const color = useMemo(() => drawColor(id), [id])
 
   return (
     <StyledCard padding='s' data-testid={`asset-card-${id.toNumber()}`}>
@@ -43,7 +43,7 @@ export const AssetCard: FC<AssetCardProps> = ({ asset }) => {
         </CardMenuContainer>
       </CardHeader>
       <CardContent>
-        <AssetImage color={color}>
+        <AssetImage data-testid='asset-image' color={color}>
           <CardTitle size='SM'>{cutString(symbol, 4)}</CardTitle>
           {symbol.length > 4 &&
             <SymbolWrapper>

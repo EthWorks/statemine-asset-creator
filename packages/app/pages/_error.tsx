@@ -5,7 +5,6 @@ import Link from 'next/link'
 import styled from 'styled-components'
 
 import error404 from '../assets/404.svg'
-import background from '../assets/background.svg'
 import errorX from '../assets/error.svg'
 import { ButtonTertiary, PageTemplate, Text } from '../components'
 
@@ -16,7 +15,7 @@ interface ErrorPageProps {
 
 const Error: NextPage<ErrorPageProps> = ({ statusCode, text }) => {
   return (
-    <PageTemplate background={background} errorPage>
+    <PageTemplate errorPage>
       {statusCode === 404
         ? <Image src={error404} alt='Page not found' />
         : <Image src={errorX} alt='Internal server error' />
