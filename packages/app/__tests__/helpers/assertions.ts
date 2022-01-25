@@ -24,10 +24,11 @@ export function assertNoText(text: string) {
   expect(screen.queryByText(text)).toBeFalsy()
 }
 
-export async function assertLinkByText(text: string, url: string) {
+export async function assertLinkByText(text: string, url: string, target?: string) {
   const link = await screen.findByText(text)
 
   expect(link.getAttribute('href')).toEqual(url)
+  expect(link.getAttribute('target')).toEqual(target)
 }
 
 export async function assertInputError(inputName: string, errorText: string) {

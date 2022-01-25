@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { useAccounts } from 'use-substrate'
 
 import Logo from '../../assets/img/polkadot.svg'
-import { POLKADOT_EXTENSION_LINK } from '../../utils'
+import { POLKADOT_EXTENSION_LINK, TOS_PAGE_LINK } from '../../utils'
 import { ArrowLarge } from '../icons'
 import { Link, Loader, Modal, Text } from '../index'
 
@@ -51,11 +51,11 @@ export function ConnectWalletModal({ isOpen, closeModal, onExtensionActivated }:
             </ConnectButton>
             <Text size='SM'>
               {'Don’t have the Polkadot{.js} extension? Download it '}
-              <Link href={POLKADOT_EXTENSION_LINK}>here</Link>
+              <Link href={POLKADOT_EXTENSION_LINK} target='_blank' rel="noopener noreferrer">here</Link>
             </Text>
             <Text size='SM' color='white'>
               {'By connecting, I accept '}
-              <Link href=''>Terms of Service</Link>
+              <Link href={TOS_PAGE_LINK} target='_blank' rel="noopener noreferrer">Terms of Service</Link>
             </Text>
           </>
         )
