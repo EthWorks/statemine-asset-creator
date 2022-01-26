@@ -72,12 +72,13 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelect
 
   useEffect(() => {
     if (teleportTransaction?.status === 'Success') {
+      setStepBarVisible(true)
       setState(ThirdStepState.TeleportDone)
     }
 
     if (teleportTransaction?.status === 'Error') {
-      setState(ThirdStepState.Error)
       setStepBarVisible(false)
+      setState(ThirdStepState.Error)
     }
 
     if (teleportTransaction?.status === 'InBlock') {
@@ -88,13 +89,13 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelect
 
   useEffect(() => {
     if (createAssetTransaction?.status === 'Success') {
-      setState(ThirdStepState.Success)
       setStepBarVisible(false)
+      setState(ThirdStepState.Success)
     }
 
     if (createAssetTransaction?.status === 'Error') {
-      setState(ThirdStepState.Error)
       setStepBarVisible(false)
+      setState(ThirdStepState.Error)
     }
 
     if (createAssetTransaction?.status === 'InBlock') {
