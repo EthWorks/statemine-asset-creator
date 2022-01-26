@@ -16,7 +16,7 @@ interface ActiveAccountProps {
 export const ActiveAccount: FC<ActiveAccountProps> = ({ chain }) => {
   const { activeAccount } = useActiveAccount(chain)
   const { chainToken, chainDecimals } = useChainToken(chain) || {}
-  const { freeBalance: chainFreeBalance } = useBalances(activeAccount?.address.toString(), chain) || {}
+  const { availableBalance } = useBalances(activeAccount?.address.toString(), chain) || {}
   const chainBlockNumber = useBestNumber(chain)
 
   if (!activeAccount) return null
@@ -28,7 +28,7 @@ export const ActiveAccount: FC<ActiveAccountProps> = ({ chain }) => {
         <div>
           <InfoWrapper>
             <ActiveAccountText size='XS'>{chain},</ActiveAccountText>
-            <StyledFormatBalance token={chainToken} chainDecimals={chainDecimals} value={chainFreeBalance}/>
+            <StyledFormatBalance token={chainToken} chainDecimals={chainDecimals} value={availableBalance}/>
           </InfoWrapper>
           <InfoWrapper>
             <ActiveAccountText size='XXS'>Current block</ActiveAccountText>

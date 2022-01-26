@@ -68,7 +68,7 @@ describe('Home', () => {
 
     const activeAccountContainer = await screen.findByTestId('active-account-bar')
     expect(activeAccountContainer).toHaveTextContent(bobAddressForActiveAccountBar)
-    expect(activeAccountContainer).toHaveTextContent('kusama,6,000.0000KSM')
+    expect(activeAccountContainer).toHaveTextContent('kusama,4,000.0000KSM')
   })
 
   it('opens create asset modal', async () => {
