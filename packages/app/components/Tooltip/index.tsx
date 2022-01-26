@@ -30,7 +30,7 @@ const TooltipBtn = styled(Tooltip.Trigger)`
   align-items: center;
   width: 16px;
   height: 16px;
-  color: ${({ theme }) => theme.colors.gray[400]};
+  color: ${({ theme }) => theme.colors.gray400};
   padding: 0;
   margin: 0;
   background: none;
@@ -43,9 +43,9 @@ const Dropdown = styled(Tooltip.Content)`
   padding: 8px;
   max-width: 224px;
   border-radius: ${({ theme }) => theme.borderRadius.s};
-  background-color: ${({ theme }) => theme.colors.gray[500]};
+  background-color: ${({ theme }) => theme.colors.gray500};
 `
 
 const DropdownArrow = styled(Tooltip.Arrow)`
-  fill: ${({ theme }) => theme.colors.gray[500]};
+  fill: ${({ theme }) => theme.colors.gray500};
 `

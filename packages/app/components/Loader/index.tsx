@@ -33,6 +33,6 @@ const LoaderBg = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: ${({ theme }) => theme.colors.gray[800]};
+  background-color: ${({ theme }) => theme.colors.gray800};
   opacity: .6;
 `

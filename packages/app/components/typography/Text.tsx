@@ -29,7 +29,7 @@ export const Text = styled.p<TextProps>`
   ${({ bold }) => bold && TextBoldStyle};
   ${({ italic }) => italic && TextItalicStyle};
   ${({ underline }) => underline && TextUnderlineStyle};
-  color: ${({ theme, color }) => color ? theme.colors[color] : theme.colors.gray[400]};
+  color: ${({ theme, color }) => color ? theme.colors[color] : theme.colors.gray400};
   font-size: ${({ size }) => size ? sizes[size].fontSize : sizes.Base.fontSize};
   line-height: ${({ size }) => size ? sizes[size].lineHeight : sizes.Base.lineHeight};
 `

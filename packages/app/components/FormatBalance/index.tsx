@@ -27,7 +27,7 @@ const TextBalance = styled(Text)`
   margin-right: 4px;
   
   span {
-    color: ${({ theme }) => theme.colors.gray[400]};
+    color: ${({ theme }) => theme.colors.gray400};
   }
 `
 

@@ -65,7 +65,7 @@ const Select = styled(Popover.Trigger)`
   padding: 8px;
   width: 636px;
   height: 100%;
-  border: 1px solid ${({ theme }) => theme.colors.gray[600]};
+  border: 1px solid ${({ theme }) => theme.colors.gray600};
   border-radius: ${({ theme }) => theme.borderRadius.m};
   background-color: ${({ theme }) => theme.colors.black};
   text-align: left;
@@ -76,7 +76,7 @@ const Select = styled(Popover.Trigger)`
   }
   
   svg {
-    color: ${({ theme }) => theme.colors.gray[500]};
+    color: ${({ theme }) => theme.colors.gray500};
     margin-left: 16px;
   }
 `
@@ -87,7 +87,7 @@ const Dropdown = styled(Popover.Content)`
   width: 636px;
   transform: translateY(2px);
   border-radius: ${({ theme }) => theme.borderRadius.m};
-  background-color: ${({ theme }) => theme.colors.gray[700]};
+  background-color: ${({ theme }) => theme.colors.gray700};
   
   ul {
     list-style: none;
@@ -99,7 +99,7 @@ const Dropdown = styled(Popover.Content)`
       padding: 4px 8px;
       
       &:hover {
-        background-color: ${({ theme }) => theme.colors.gray[600]};
+        background-color: ${({ theme }) => theme.colors.gray600};
       }
       
       & + li {

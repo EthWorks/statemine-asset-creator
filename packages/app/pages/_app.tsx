@@ -26,7 +26,9 @@ const config: Config = {
     { name: Chains.Kusama, url: envConfig.kusamaUrl },
     { name: Chains.Statemine, url: envConfig.statemineUrl },
     { name: Chains.Polkadot, url: envConfig.polkadotUrl },
-    { name: Chains.Statemint, url: envConfig.statemintUrl }
+    { name: Chains.Statemint, url: envConfig.statemintUrl },
+    { name: Chains.Westend, url: envConfig.polkadotUrl },
+    { name: Chains.Westmint, url: envConfig.statemintUrl }
   ],
   appName: APPLICATION_NAME
 }

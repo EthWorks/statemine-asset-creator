@@ -42,7 +42,7 @@ const ActiveAccountWrapper = styled.div`
 `
 
 const EditButton = styled(ButtonSquare)`
-  color: ${({ theme }) => theme.colors.gray[500]};
+  color: ${({ theme }) => theme.colors.gray500};
   
   &:hover {
     background: none;

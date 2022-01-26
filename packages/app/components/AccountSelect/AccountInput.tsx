@@ -39,7 +39,7 @@ export const AccountInput: FC<Props> = ({ onChange, value, toggleOpen, isOpen, e
 
 const AccountInputWrapper = styled.div`
   position: relative;
-  color:  ${({ theme }) => theme.colors.gray[400]};
+  color:  ${({ theme }) => theme.colors.gray400};
 `
 
 const StyledTextInput = styled(TextInput)`
@@ -48,8 +48,8 @@ const StyledTextInput = styled(TextInput)`
   margin: 0;
   border: 2px solid transparent;
   border-radius: ${({ theme }) => theme.borderRadius.s};
-  background-color: ${({ theme }) => theme.colors.gray[800]};
-  color: ${({ theme }) => theme.colors.gray[400]};
+  background-color: ${({ theme }) => theme.colors.gray800};
+  color: ${({ theme }) => theme.colors.gray400};
 
   &:focus-within {
     outline: 1px solid ${({ theme }) => theme.colors.pinkLight};

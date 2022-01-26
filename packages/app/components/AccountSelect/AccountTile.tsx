@@ -85,7 +85,7 @@ const CellRow = styled.div`
 `
 
 const TextName = styled(Text)`
-  color: ${({ theme }) => theme.colors.gray[50]};
+  color: ${({ theme }) => theme.colors.gray50};
 `
 
 const TextAddress = styled(Text)`

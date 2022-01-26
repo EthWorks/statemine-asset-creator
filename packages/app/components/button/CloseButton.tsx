@@ -16,7 +16,7 @@ export const CloseButton = styled.button`
     left: 50%;
     width: 12px;
     height: 2px;
-    background-color: ${({ theme }) => theme.colors.gray[600]};
+    background-color: ${({ theme }) => theme.colors.gray600};
   }
   
   &:before {

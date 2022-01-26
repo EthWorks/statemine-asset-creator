@@ -66,7 +66,7 @@ const TextName = styled(Text)`
     transform: translateY(-50%);
     width: 2px;
     height: 2px;
-    background-color: ${({ theme }) => theme.colors.gray[400]};
+    background-color: ${({ theme }) => theme.colors.gray400};
     border-radius: ${({ theme }) => theme.borderRadius.circle};
   }
 `
