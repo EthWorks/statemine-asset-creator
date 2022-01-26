@@ -18,7 +18,7 @@ export interface Props extends InputInfoProps {
   accounts: Account[],
   currentAccount: Account | undefined,
   setCurrentAccount: (arg: Account) => void,
-  withFreeBalance?: boolean,
+  withFullBalance?: boolean,
   label?: string,
   withAccountInput?: boolean,
   disabled?: boolean,
@@ -26,7 +26,7 @@ export interface Props extends InputInfoProps {
   chain: Chains
 }
 
-export function AccountSelect({ accounts, currentAccount, setCurrentAccount, label, withFreeBalance = false, withAccountInput, disabled, button, chain, ...inputInfoProps }: Props): JSX.Element {
+export function AccountSelect({ accounts, currentAccount, setCurrentAccount, label, withFullBalance = false, withAccountInput, disabled, button, chain, ...inputInfoProps }: Props): JSX.Element {
   const [isOpen, toggleOpen, setOpen] = useToggle()
   const [inputAddressValue, setInputAddressValue] = useState<string>('')
   const [inputAddressError, setInputAddressError] = useState<string>()
@@ -90,7 +90,7 @@ export function AccountSelect({ accounts, currentAccount, setCurrentAccount, lab
               >
                 {currentAccount && !isOpen
                   ? <AccountTile
-                    withFreeBalance={withFreeBalance}
+                    withFullBalance={withFullBalance}
                     account={currentAccount}
                     chain={chain}
                   />
@@ -112,7 +112,7 @@ export function AccountSelect({ accounts, currentAccount, setCurrentAccount, lab
               key={account.address}
             >
               <AccountTile
-                withFreeBalance={withFreeBalance}
+                withFullBalance={withFullBalance}
                 account={account}
                 chain={chain}
               />

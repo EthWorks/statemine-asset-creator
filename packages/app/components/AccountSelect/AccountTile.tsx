@@ -13,10 +13,10 @@ import { Label, Text } from '../typography'
 interface Props {
   account: Account,
   chain: Chains,
-  withFreeBalance?: boolean
+  withFullBalance?: boolean
 }
 
-export function AccountTile({ account, chain, withFreeBalance }: Props): JSX.Element {
+export function AccountTile({ account, chain, withFullBalance }: Props): JSX.Element {
   const balance = useBalances(account.address, chain)
   const { chainDecimals, chainToken } = useChainToken(chain) || {}
 
@@ -32,6 +32,12 @@ export function AccountTile({ account, chain, withFreeBalance }: Props): JSX.Ele
         </AccountTileName>
       </AccountTileCell>
       <AccountTileCellEnd>
+        {withFullBalance && (
+          <CellRow>
+            <Label>full account balance</Label>
+            <FormatBalance token={chainToken} chainDecimals={chainDecimals} value={fullBalance}/>
+          </CellRow>
+        )}
         <CellRow>
           <StyledLabel>
             transferable balance
@@ -39,12 +45,6 @@ export function AccountTile({ account, chain, withFreeBalance }: Props): JSX.Ele
           </StyledLabel>
           <FormatBalance token={chainToken} chainDecimals={chainDecimals} value={balance?.availableBalance}/>
         </CellRow>
-        {withFreeBalance && (
-          <CellRow>
-            <Label>full account balance</Label>
-            <FormatBalance token={chainToken} chainDecimals={chainDecimals} value={fullBalance}/>
-          </CellRow>
-        )}
       </AccountTileCellEnd>
     </AccountTileWrapper>
   )
