@@ -1,10 +1,10 @@
-import type { Option, StorageKey } from '@polkadot/types'
 import type { AccountId, AssetId } from '@polkadot/types/interfaces'
-import type { PalletAssetsAssetDetails } from '@polkadot/types/lookup'
+import type { PalletAssetsAssetDetails, PalletAssetsAssetMetadata } from '@polkadot/types/lookup'
 
+import { Option, StorageKey, u32 } from '@polkadot/types'
 import BN from 'bn.js'
 
-export type FetchedAssets = [StorageKey<[AssetId]>, Option<PalletAssetsAssetDetails>][];
+export type FetchedAssetsEntries = [StorageKey<[AssetId]>, Option<PalletAssetsAssetDetails>][];
 
 export interface AssetInfo {
   readonly owner: AccountId;
@@ -31,6 +31,10 @@ export interface AssetMeta {
 
 export interface AssetInfoWithId extends AssetInfo {
   readonly id: AssetId;
+}
+
+export interface FetchedAsset extends PalletAssetsAssetDetails, PalletAssetsAssetMetadata{
+  id: StorageKey<[u32]>
 }
 
 export type Asset = AssetInfoWithId & AssetMeta

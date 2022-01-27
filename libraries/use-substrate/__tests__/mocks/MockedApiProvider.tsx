@@ -4,7 +4,7 @@ import type { DeriveBalancesAll, DeriveBalancesAllAccountData } from '@polkadot/
 import type { BlockNumber, ParaId } from '@polkadot/types/interfaces'
 import type { PalletAssetsAssetMetadata } from '@polkadot/types/lookup'
 import type { ISubmittableResult } from '@polkadot/types/types'
-import type { FetchedAssets, UseApi } from '../../src'
+import type { FetchedAssetsEntries, UseApi } from '../../src'
 
 import BN from 'bn.js'
 import React from 'react'
@@ -71,7 +71,7 @@ export const mockedKusamaApi: UseApi = {
           ])
         },
         asset: {
-          entries: () => from<ObservableInput<FetchedAssets>>([
+          entries: () => from<ObservableInput<FetchedAssetsEntries>>([
             [
               [createAssetStorageKey(15), createType('Option<AssetDetails>', { owner: createType('AccountId', BOB), isSufficient: undefined })],
               [createAssetStorageKey(24), createType('Option<AssetDetails>', { owner: createType('AccountId', ALICE), isSufficient: true })],
