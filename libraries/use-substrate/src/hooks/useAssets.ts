@@ -28,7 +28,15 @@ function extractEvents(eventRecords: Vec<EventRecord>, checks: EventCheck[]): Ob
 }
 
 export function all(api: ApiRx): Observable<FetchedAsset[]> {
-  const checks = [api.events.assets.Created, api.events.assets.Destroyed]
+  const checks = [
+    api.events.assets.Created,
+    api.events.assets.Destroyed,
+    api.events.assets.MetadataCleared,
+    api.events.assets.MetadataSet,
+    api.events.assets.OwnerChanged,
+    api.events.assets.TeamChanged,
+    api.events.assets.Issued
+  ]
 
   const initBlockHash = api.rpc.chain.subscribeNewHeads()
     .pipe(take(1))

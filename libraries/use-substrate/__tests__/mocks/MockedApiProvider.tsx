@@ -60,7 +60,12 @@ export const mockedKusamaApi: UseApi = {
     events: {
       assets: {
         Created: { is: (arg: IEvent<AnyTuple>) => isModuleEvent(arg, 'assets', 'Created') },
-        Destroyed: { is: (arg: IEvent<AnyTuple>) => isModuleEvent(arg, 'assets', 'Destroyed') }
+        Destroyed: { is: (arg: IEvent<AnyTuple>) => isModuleEvent(arg, 'assets', 'Destroyed') },
+        MetadataCleared: { is: (arg: IEvent<AnyTuple>) => isModuleEvent(arg, 'assets', 'MetadataCleared') },
+        MetadataSet: { is: (arg: IEvent<AnyTuple>) => isModuleEvent(arg, 'assets', 'MetadataSet') },
+        OwnerChanged: { is: (arg: IEvent<AnyTuple>) => isModuleEvent(arg, 'assets', 'OwnerChanged') },
+        TeamChanged: { is: (arg: IEvent<AnyTuple>) => isModuleEvent(arg, 'assets', 'TeamChanged') },
+        Issued: { is: (arg: IEvent<AnyTuple>) => isModuleEvent(arg, 'assets', 'Issued') }
       }
     },
     query: {
