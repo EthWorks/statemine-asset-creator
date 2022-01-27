@@ -1,9 +1,9 @@
 import type { ObservableInput } from 'rxjs'
 import type { ApiRx } from '@polkadot/api'
 import type { DeriveBalancesAll, DeriveBalancesAllAccountData } from '@polkadot/api-derive/types'
-import type { BlockNumber, ParaId } from '@polkadot/types/interfaces'
-import type { PalletAssetsAssetMetadata } from '@polkadot/types/lookup'
-import type { ISubmittableResult } from '@polkadot/types/types'
+import type { StorageKey, Vec } from '@polkadot/types'
+import type { AssetId, BlockNumber, EventRecord, Header, ParaId } from '@polkadot/types/interfaces'
+import type { AnyTuple, IEvent, ISubmittableResult } from '@polkadot/types/types'
 import type { FetchedAssetsEntries, UseApi } from '../../src'
 
 import BN from 'bn.js'
@@ -12,7 +12,7 @@ import { from, of } from 'rxjs'
 
 import { createType } from 'test-helpers'
 
-import { ApiContext } from '../../src'
+import { ApiContext, FetchedAssetsMetadataEntries, isModuleEvent } from '../../src'
 import { ALICE, BOB } from '../consts'
 import { createAssetStorageKey } from '../utils'
 
@@ -57,28 +57,45 @@ export const mockedKusamaApi: UseApi = {
         bestNumber: () => from<ObservableInput<BlockNumber>>([createType('BlockNumber', new BN('966'))])
       }
     },
+    events: {
+      assets: {
+        Created: { is: (arg: IEvent<AnyTuple>) => isModuleEvent(arg, 'assets', 'Created') },
+        Destroyed: { is: (arg: IEvent<AnyTuple>) => isModuleEvent(arg, 'assets', 'Destroyed') }
+      }
+    },
     query: {
       parachainInfo: {
         parachainId: () => from<ObservableInput<ParaId>>([createType('ParaId', new BN('12'))])
       },
       assets: {
         metadata: {
-          multi: () => from<ObservableInput<PalletAssetsAssetMetadata[]>>([
+          entriesAt: () => from<ObservableInput<FetchedAssetsMetadataEntries>>([
             [
-              createType('AssetMetadata', { decimals: 8, symbol: 'TT', name: 'TestToken' }),
-              createType('AssetMetadata', { decimals: 12, symbol: 'KSM', name: 'Kusama' })
+              [createAssetStorageKey(15), createType('AssetMetadata', { decimals: 8, symbol: 'TT', name: 'TestToken' })],
+              [createAssetStorageKey(24), createType('AssetMetadata', { decimals: 10, symbol: 'TTx', name: 'TestTokenExtra' })],
+              [createAssetStorageKey(1000), createType('AssetMetadata', { decimals: 12, symbol: 'KSM🤪', name: 'Kusama😒' })]
             ]
           ])
         },
         asset: {
-          entries: () => from<ObservableInput<FetchedAssetsEntries>>([
+          entriesAt: () => from<ObservableInput<FetchedAssetsEntries>>([
             [
-              [createAssetStorageKey(15), createType('Option<AssetDetails>', { owner: createType('AccountId', BOB), isSufficient: undefined })],
-              [createAssetStorageKey(24), createType('Option<AssetDetails>', { owner: createType('AccountId', ALICE), isSufficient: true })],
-              [createAssetStorageKey(1000), createType('Option<AssetDetails>', { owner: createType('AccountId', BOB) })]
+              [createAssetStorageKey(15), createType('Option<AssetDetails>', { owner: createType('AccountId', BOB), isSufficient: undefined, isSome: () => true, unwrap: () => ({}) })],
+              [createAssetStorageKey(24), createType('Option<AssetDetails>', { owner: createType('AccountId', ALICE), isSufficient: true, isSome: () => true, unwrap: () => ({}) })],
+              [createAssetStorageKey(1000), createType('Option<AssetDetails>', { owner: createType('AccountId', BOB), isSome: () => true, unwrap: () => ({}) })]
+            ]
+          ]),
+          keysAt: () => from<ObservableInput<StorageKey<[AssetId]>[]>>([
+            [
+              createAssetStorageKey(15),
+              createAssetStorageKey(24),
+              createAssetStorageKey(1000)
             ]
           ])
         }
+      },
+      system: {
+        events: () => from<ObservableInput<Vec<EventRecord>>>([[{} as EventRecord] as Vec<EventRecord>])
       }
     },
     tx: {
@@ -103,6 +120,11 @@ export const mockedKusamaApi: UseApi = {
     registry: {
       chainDecimals: [18],
       chainTokens: ['TT']
+    },
+    rpc: {
+      chain: {
+        subscribeNewHeads: () => from<ObservableInput<Header>>([createType('Header', { number: new BN(1) })])
+      }
     }
   } as unknown as ApiRx,
   connectionState: 'connected'

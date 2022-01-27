@@ -53,8 +53,6 @@ export function all(api: ApiRx): Observable<FetchedAsset[]> {
       const result: FetchedAsset[] = []
 
       maybeAssets.forEach(([, asset], index) => {
-        console.log(`For id ${ids[index].toString()} there is ${asset.isSome ? 'an' : 'no'} asset and ${maybeMetadatas[index][1].decimals.toBn().gtn(0) ? 'a' : 'no'} metadata`)
-
         if (asset.isSome) {
           result.push({
             ...asset.unwrap(),

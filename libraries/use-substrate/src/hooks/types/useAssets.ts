@@ -5,6 +5,7 @@ import { Option, StorageKey, u32 } from '@polkadot/types'
 import BN from 'bn.js'
 
 export type FetchedAssetsEntries = [StorageKey<[AssetId]>, Option<PalletAssetsAssetDetails>][];
+export type FetchedAssetsMetadataEntries = [StorageKey<[AssetId]>, PalletAssetsAssetMetadata][];
 
 export interface AssetInfo {
   readonly owner: AccountId;
