@@ -1,5 +1,6 @@
 import type { ModalStep } from './types'
 
+import BN from 'bn.js'
 import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 
@@ -109,7 +110,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelect
   const createAssetTransactionNumber = displayTeleportContent ? 2 : 1
   const createAssetTransactionTitle = useMemo(() => createAssetStepDetails?.title.replace(/{txNumber}/g, createAssetTransactionNumber.toString()), [createAssetStepDetails?.title, createAssetTransactionNumber])
   const TELEPORT_TRANSACTION_NUMBER = 1
-
+  const formattedMinBalance = useMemo(() => new BN(minBalance), [minBalance])
   if (state === ThirdStepState.Loading || !ownerAddress || !createAssetTransaction || !teleportTransaction) return <Loader/>
 
   const _onSubmit = async (): Promise<void> => {
@@ -182,7 +183,7 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelect
             </InfoRow>
             <InfoRow>
               <Label>Asset minimal balance</Label>
-              <Text size='XS' color='white' bold>{minBalance}</Text>
+              <StyledFormatBalance chainDecimals={+assetDecimals} token={assetSymbol} value={formattedMinBalance}/>
             </InfoRow>
             <InfoRow>
               <Label>Asset id</Label>
@@ -248,4 +249,11 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelect
 
 const StyledInfo = styled(Info)`
   margin-bottom: 16px;
+`
+
+const StyledFormatBalance = styled(FormatBalance)`
+  p {
+    font-size: 12px;
+    line-height: 16px;
+  }
 `

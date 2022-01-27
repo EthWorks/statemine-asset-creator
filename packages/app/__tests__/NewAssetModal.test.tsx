@@ -9,6 +9,7 @@ import React from 'react'
 import { Chains, TransactionStatus } from 'use-substrate'
 
 import { ChainSwitcher, NewAssetModal } from '../components'
+import { formatBalance } from '../components/FormatBalance/utils'
 import { DECIMALS_LIMIT } from '../components/NewAssetModal/FirstStep'
 import { TransactionInfoBlockStatus } from '../components/TransactionInfoBlock/TransactionInfoBlock'
 import { AppChainsProvider, BN_ZERO as MOCK_BN_ZERO, STATESCAN_LINK, useToggle } from '../utils'
@@ -946,11 +947,13 @@ const assertFirstStepEmpty = () => {
 }
 
 const assertSummary = async () => {
+  const { integers, decimals } = formatBalance(new BN(MIN_BALANCE), +ASSET_DECIMALS) || {}
+
   const assetModal = await screen.findByTestId('modal')
   expect(assetModal).toHaveTextContent(`Asset name${ASSET_NAME}`)
   expect(assetModal).toHaveTextContent(`Asset symbol${ASSET_SYMBOL}`)
   expect(assetModal).toHaveTextContent(`Asset decimals${ASSET_DECIMALS}`)
-  expect(assetModal).toHaveTextContent(`Asset minimal balance${MIN_BALANCE}`)
+  expect(assetModal).toHaveTextContent(`Asset minimal balance${integers}.${decimals}${ASSET_SYMBOL}`)
   expect(assetModal).toHaveTextContent(`Asset id${ASSET_ID}`)
 }
 
