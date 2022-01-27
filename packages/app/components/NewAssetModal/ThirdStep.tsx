@@ -255,5 +255,6 @@ const StyledFormatBalance = styled(FormatBalance)`
   p {
     font-size: 12px;
     line-height: 16px;
+    font-weight: 700;
   }
 `
