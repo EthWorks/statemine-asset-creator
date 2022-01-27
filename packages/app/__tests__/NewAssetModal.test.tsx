@@ -272,6 +272,11 @@ describe('New asset modal', () => {
       })
 
       describe('Minimum balance', () => {
+        beforeEach(() => {
+          fillFirstStep()
+          clearInput('Minimum balance')
+        })
+
         it('shows error and disables next button for value "0"', async () => {
           fillInput('Minimum balance', '0')
 
@@ -279,11 +284,11 @@ describe('New asset modal', () => {
           assertButtonDisabled('Next')
         })
 
-        it('shows error and disables next button for value "0.00"', async () => {
-          fillInput('Minimum balance', '0.00')
+        it('does not allow decimals', async () => {
+          typeInInput('Minimum balance', '1.00')
 
-          await assertInputError('Minimum balance', 'Non-zero value expected')
-          assertButtonDisabled('Next')
+          assertInputValue('Minimum balance', '100')
+          assertButtonNotDisabled('Next')
         })
 
         it('does not show error and disables next button for no value in the input', async () => {

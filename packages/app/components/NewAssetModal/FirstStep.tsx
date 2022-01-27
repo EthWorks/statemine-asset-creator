@@ -125,7 +125,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
         onChange={setMinBalance}
         label="Minimum balance"
         id="min-balance"
-        inputType='POSITIVE'
+        inputType='NATURAL'
       />
       <ModalFooter>
         <ButtonPrimary type='submit' disabled={isDisabled}>
