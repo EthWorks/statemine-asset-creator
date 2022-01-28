@@ -9,6 +9,7 @@ import React from 'react'
 import { Chains, TransactionStatus } from 'use-substrate'
 
 import { ChainSwitcher, NewAssetModal } from '../components'
+import { formatBalance } from '../components/FormatBalance/utils'
 import { DECIMALS_LIMIT } from '../components/NewAssetModal/FirstStep'
 import { TransactionInfoBlockStatus } from '../components/TransactionInfoBlock/TransactionInfoBlock'
 import { AppChainsProvider, BN_ZERO as MOCK_BN_ZERO, STATESCAN_LINK, useToggle } from '../utils'
@@ -271,6 +272,11 @@ describe('New asset modal', () => {
       })
 
       describe('Minimum balance', () => {
+        beforeEach(() => {
+          fillFirstStep()
+          clearInput('Minimum balance')
+        })
+
         it('shows error and disables next button for value "0"', async () => {
           fillInput('Minimum balance', '0')
 
@@ -278,11 +284,11 @@ describe('New asset modal', () => {
           assertButtonDisabled('Next')
         })
 
-        it('shows error and disables next button for value "0.00"', async () => {
-          fillInput('Minimum balance', '0.00')
+        it('does not allow decimals', async () => {
+          typeInInput('Minimum balance', '1.00')
 
-          await assertInputError('Minimum balance', 'Non-zero value expected')
-          assertButtonDisabled('Next')
+          assertInputValue('Minimum balance', '100')
+          assertButtonNotDisabled('Next')
         })
 
         it('does not show error and disables next button for no value in the input', async () => {
@@ -968,11 +974,13 @@ const assertFirstStepEmpty = () => {
 }
 
 const assertSummary = async () => {
+  const { integers, decimals } = formatBalance(new BN(MIN_BALANCE), +ASSET_DECIMALS) || {}
+
   const assetModal = await screen.findByTestId('modal')
   expect(assetModal).toHaveTextContent(`Asset name${ASSET_NAME}`)
   expect(assetModal).toHaveTextContent(`Asset symbol${ASSET_SYMBOL}`)
   expect(assetModal).toHaveTextContent(`Asset decimals${ASSET_DECIMALS}`)
-  expect(assetModal).toHaveTextContent(`Asset minimal balance${MIN_BALANCE}`)
+  expect(assetModal).toHaveTextContent(`Asset minimal balance${integers}.${decimals}${ASSET_SYMBOL}`)
   expect(assetModal).toHaveTextContent(`Asset id${ASSET_ID}`)
 }
 
