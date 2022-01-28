@@ -84,7 +84,6 @@ export function useAssets(chain: Chains, options?: UseAssetsOptions): UseAssets 
   return useMemo(() => {
     if (!fetchedAssets) return []
     const converted = convertAssets(fetchedAssets)
-    console.log('from memo', converted)
 
     return options?.owner ? filterByOwner(converted, options.owner) : converted
   }, [options?.owner, fetchedAssets])
