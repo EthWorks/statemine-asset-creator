@@ -79,6 +79,13 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
     }
   }, [assetNameError, assetSymbolError, onNext, stringLimit])
 
+  const _generateId = useCallback((): void => {
+    const min = Math.ceil(0)
+    const max = Math.floor(1000)
+
+    setAssetId(Math.floor(Math.random() * (max - min) + min).toString())
+  }, [setAssetId])
+
   return (
     <form onSubmit={_onNext}>
       <FormHead>
@@ -118,6 +125,10 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
         label="Asset ID"
         id="asset-ID"
         inputType='NATURAL'
+        button={{
+          label: 'Generate random ID',
+          onClick: _generateId
+        }}
       />
       <NumericInput
         error={minBalanceError}
