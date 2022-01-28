@@ -1,20 +1,19 @@
+import type { Vec } from '@polkadot/types'
 import type { AccountId, EventRecord, Hash } from '@polkadot/types/interfaces'
 import type { Chains } from '../consts'
-import type { Asset, UseAssets, UseAssetsOptions } from './types/useAssets'
+import type { Asset, FetchedAsset, FetchedAssetsEntries, FetchedAssetsIds, FetchedAssetsMetadataEntries, UseAssets, UseAssetsOptions } from './types/useAssets'
 
 import { ApiRx } from '@polkadot/api'
 import { AugmentedEvent } from '@polkadot/api/types'
-import { Vec } from '@polkadot/types'
 import { useMemo } from 'react'
-import { combineLatest, concat, EMPTY, map, Observable, of, switchMap, take, tap } from 'rxjs'
+import { combineLatest, concat, EMPTY, map, Observable, of, switchMap, take } from 'rxjs'
 
-import { FetchedAsset } from './types/useAssets'
 import { useApi } from './useApi'
 import { useObservable } from './useObservable'
 
 type EventCheck = AugmentedEvent<'promise'> | false | undefined | null;
 
-function extractEvents(eventRecords: Vec<EventRecord>, checks: EventCheck[]): Observable<Hash> {
+function detectBlocksWithEvents(eventRecords: Vec<EventRecord>, checks: EventCheck[]): Observable<Hash> {
   const assetEvents = eventRecords.filter((record) =>
     record.event &&
       checks.some((check) => check && check.is(record.event))
@@ -25,6 +24,22 @@ function extractEvents(eventRecords: Vec<EventRecord>, checks: EventCheck[]): Ob
   }
 
   return EMPTY
+}
+
+function concatAssets([maybeAssets, maybeMetadatas, ids]: [maybeAssets: FetchedAssetsEntries, maybeMetadatas: FetchedAssetsMetadataEntries, ids: FetchedAssetsIds]): FetchedAsset[] {
+  const result: FetchedAsset[] = []
+
+  maybeAssets.forEach(([, asset], index) => {
+    if (asset.isSome) {
+      result.push({
+        ...asset.unwrap(),
+        ...maybeMetadatas[index][1],
+        id: ids[index]
+      } as FetchedAsset)
+    }
+  })
+
+  return result
 }
 
 export function all(api: ApiRx): Observable<FetchedAsset[]> {
@@ -45,9 +60,8 @@ export function all(api: ApiRx): Observable<FetchedAsset[]> {
   const resultObservable = concat(
     initBlockHash,
     api.query.system.events()
-      .pipe(switchMap((events: Vec<EventRecord>) => extractEvents(events, checks)))
+      .pipe(switchMap((events: Vec<EventRecord>) => detectBlocksWithEvents(events, checks)))
   )
-    .pipe(tap((blockHash) => console.log(`Block hash: ${blockHash.toString()}`)))
     .pipe(
       switchMap((blockHash: Hash) =>
         combineLatest([
@@ -57,21 +71,7 @@ export function all(api: ApiRx): Observable<FetchedAsset[]> {
         ])
       )
     )
-    .pipe(map(([maybeAssets, maybeMetadatas, ids]) => {
-      const result: FetchedAsset[] = []
-
-      maybeAssets.forEach(([, asset], index) => {
-        if (asset.isSome) {
-          result.push({
-            ...asset.unwrap(),
-            ...maybeMetadatas[index][1],
-            id: ids[index]
-          } as FetchedAsset)
-        }
-      })
-
-      return result
-    }))
+    .pipe(map(concatAssets))
 
   return resultObservable
 }

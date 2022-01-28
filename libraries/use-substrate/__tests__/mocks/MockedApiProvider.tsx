@@ -1,10 +1,10 @@
 import type { ObservableInput } from 'rxjs'
 import type { ApiRx } from '@polkadot/api'
 import type { DeriveBalancesAll, DeriveBalancesAllAccountData } from '@polkadot/api-derive/types'
-import type { StorageKey, Vec } from '@polkadot/types'
-import type { AssetId, BlockNumber, EventRecord, Header, ParaId } from '@polkadot/types/interfaces'
+import type { Vec } from '@polkadot/types'
+import type { BlockNumber, EventRecord, Header, ParaId } from '@polkadot/types/interfaces'
 import type { AnyTuple, IEvent, ISubmittableResult } from '@polkadot/types/types'
-import type { FetchedAssetsEntries, UseApi } from '../../src'
+import type { FetchedAssetsEntries, FetchedAssetsIds, UseApi } from '../../src'
 
 import BN from 'bn.js'
 import React from 'react'
@@ -90,7 +90,7 @@ export const mockedKusamaApi: UseApi = {
               [createAssetStorageKey(1000), createType('Option<AssetDetails>', { owner: createType('AccountId', BOB), isSome: () => true, unwrap: () => ({}) })]
             ]
           ]),
-          keysAt: () => from<ObservableInput<StorageKey<[AssetId]>[]>>([
+          keysAt: () => from<ObservableInput<FetchedAssetsIds>>([
             [
               createAssetStorageKey(15),
               createAssetStorageKey(24),
