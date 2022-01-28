@@ -58,7 +58,7 @@ jest.mock('use-substrate/dist/src/hooks', () => ({
   useApi: () => mockUseApi,
   useAccounts: () => mockedUseAccounts,
   useAssets: () => mockUseAssets,
-  useBalances: () => ({ ...mockUseBalances, freeBalance: MOCK_BN_ZERO }),
+  useBalances: () => ({ ...mockUseBalances, availableBalance: MOCK_BN_ZERO }),
   useBestNumber: () => mockUseBestNumber,
   useActiveAccounts: () => ({
     activeAccounts: mockActiveAccounts,
