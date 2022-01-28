@@ -11,7 +11,7 @@ import { Transaction } from '../types'
 import { getTeleportTransactionModalDetails } from './getTransactionModalDetails'
 
 interface UseRequireTeleport extends Transaction {
-  displayTeleportContent: boolean,
+  requireTeleport: boolean,
   teleportAmount: BN,
 }
 
@@ -38,13 +38,13 @@ export function useTeleportTransaction(owner: AccountId | undefined, transaction
   const transaction = useTeleport(sender, recipient, teleportAmount ?? BN_ZERO)
   const stepDetails = useMemo(() => getTeleportTransactionModalDetails(transaction?.status, transaction?.errorDetails), [transaction])
 
-  const displayTeleportContent = useMemo(() => {
+  const requireTeleport = useMemo(() => {
     return transaction?.status !== TransactionStatus.Ready || (transaction.status === TransactionStatus.Ready && isTeleportRequired)
   }, [isTeleportRequired, transaction?.status])
 
-  return displayTeleportContent !== undefined && teleportAmount && transaction
+  return requireTeleport !== undefined && teleportAmount && transaction
     ? {
-      displayTeleportContent,
+      requireTeleport,
       teleportAmount,
       transaction,
       stepDetails

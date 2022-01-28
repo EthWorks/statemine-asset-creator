@@ -2,7 +2,6 @@ import { act, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import Home from '../pages'
-import { mockUseBestNumber } from './mocks/mockUseBestNumber'
 import { renderWithTheme, setLocalStorage } from './helpers'
 import {
   bobAddressForActiveAccountBar,
@@ -11,6 +10,7 @@ import {
   mockUseActiveAccounts,
   mockUseApi,
   mockUseBalances,
+  mockUseBestNumber,
   mockUseChainToken
 } from './mocks'
 
@@ -42,8 +42,8 @@ describe('Active account bar', () => {
     const statemineActiveAccount = activeAccountBar.children[1] as HTMLElement
 
     await within(kusamaActiveAccount).findByText(bobAddressForActiveAccountBar)
-    expect(kusamaActiveAccount).toHaveTextContent('kusama,6,000.0000KSM')
-    expect(statemineActiveAccount).toHaveTextContent('statemine,6,000.0000KSM')
+    expect(kusamaActiveAccount).toHaveTextContent('kusama,4,000.0000KSM')
+    expect(statemineActiveAccount).toHaveTextContent('statemine,4,000.0000KSM')
   })
 
   it('opens select account modal', async () => {
