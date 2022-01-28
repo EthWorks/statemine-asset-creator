@@ -499,6 +499,28 @@ describe('New asset modal', () => {
             'Statemine fee0.0300KSM'
           ])
         })
+
+        it('does not show teleport transaction info for ongoing create asset transaction with no more funds available on the owner account', async () => {
+          renderModal()
+          await enterThirdStep()
+
+          setCreateAssetTransactionStatus(TransactionStatus.AwaitingSign)
+          mockUseBalances.availableBalance = new BN(0)
+
+          assertStepsBarVisible()
+          assertContentVisible()
+
+          await findAndClickButton('Confirm')
+
+          await assertTransactionInfoBlock(1, 'sign', [
+            'Chainstatemine',
+            'Statemine fee0.0300KSM'
+          ])
+        })
+
+        afterAll(() => {
+          mockUseBalances.availableBalance = new BN(4000000000000000)
+        })
       })
 
       describe('hides content and shows pending transaction for ongoing transaction', () => {
