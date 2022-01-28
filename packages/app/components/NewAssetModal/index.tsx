@@ -11,7 +11,7 @@ import { ThirdStep } from './ThirdStep'
 
 export function NewAssetModal({ isOpen, closeModal, openAccountSelectModal }: NewAssetModalProps): JSX.Element {
   const [activeStep, setActiveStep] = useState<number>(1)
-  const [stepBarVisible, setStepBarVisible] = useState<boolean>(true)
+  const [isTransactionStateDisplayed, setIsTransactionStateDisplayed] = useState<boolean>(false)
 
   const _moveToStep = (step: number): void => {
     setActiveStep(step)
@@ -19,7 +19,7 @@ export function NewAssetModal({ isOpen, closeModal, openAccountSelectModal }: Ne
 
   const _onClose = (): void => {
     _moveToStep(1)
-    setStepBarVisible(true)
+    setIsTransactionStateDisplayed(false)
     closeModal()
   }
 
@@ -35,7 +35,7 @@ export function NewAssetModal({ isOpen, closeModal, openAccountSelectModal }: Ne
         return <ThirdStep
           onNext={_onClose}
           onBack={() => _moveToStep(2)}
-          setStepBarVisible={setStepBarVisible}
+          setIsTransactionStateDisplayed={setIsTransactionStateDisplayed}
           openAccountSelectModal={openAccountSelectModal}
         />
       }
@@ -48,9 +48,10 @@ export function NewAssetModal({ isOpen, closeModal, openAccountSelectModal }: Ne
       onClose={_onClose}
       padding='m'
       title='Create asset'
+      size={isTransactionStateDisplayed ? 'm' : 'l'}
     >
       <NewAssetModalProvider>
-        {stepBarVisible && <StepsBar activeStep={activeStep - 1} />}
+        {!isTransactionStateDisplayed && <StepsBar activeStep={activeStep - 1} />}
         <div>
           {renderStep()}
         </div>

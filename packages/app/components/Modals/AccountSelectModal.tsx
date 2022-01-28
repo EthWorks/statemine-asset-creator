@@ -27,7 +27,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
     setAccount: setRelayChainAccount,
     accountInfo: relayChainAccountInfo,
     setAccountInfo: setRelayChainAccountInfo,
-    hasFreeBalance: hasRelayChainFreeBalance,
+    hasAvailableBalance: hasRelayChainAvailableBalance,
     clearData: clearRelayChainData
   } = useAccountSelect(relayChain)
 
@@ -36,7 +36,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
     setAccount: setParachainAccount,
     accountInfo: parachainAccountInfo,
     setAccountInfo: setParachainAccountInfo,
-    hasFreeBalance: hasParachainFreeBalance,
+    hasAvailableBalance: hasParachainAvailableBalance,
     clearData: clearParachainData
   } = useAccountSelect(parachain)
 
@@ -46,7 +46,7 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
     setParachainAccountInfo(undefined)
     setRelayChainAccountInfo(undefined)
 
-    if (!hasParachainFreeBalance && !displayRelayChainSelect) {
+    if (!hasParachainAvailableBalance && !displayRelayChainSelect) {
       setParachainAccountInfo(`This account has insufficient funds, consider adding a ${capitalizedRelayChain} account.`)
 
       return
@@ -56,10 +56,10 @@ export function AccountSelectModal({ closeModal, isOpen }: Props): JSX.Element {
       setParachainAccountInfo(`Funds will be transferred to this ${capitalizedParachain} account from your ${capitalizedRelayChain} account.`)
     }
 
-    if (relayChainAccount && displayRelayChainSelect && !hasRelayChainFreeBalance) {
+    if (relayChainAccount && displayRelayChainSelect && !hasRelayChainAvailableBalance) {
       setRelayChainAccountInfo('This account has no funds')
     }
-  }, [capitalizedParachain, capitalizedRelayChain, displayRelayChainSelect, hasParachainFreeBalance, hasRelayChainFreeBalance, relayChainAccount, setParachainAccountInfo, setRelayChainAccountInfo])
+  }, [capitalizedParachain, capitalizedRelayChain, displayRelayChainSelect, hasParachainAvailableBalance, hasRelayChainAvailableBalance, relayChainAccount, setParachainAccountInfo, setRelayChainAccountInfo])
 
   const _onClick = async (): Promise<void> => {
     setActiveAccounts({
