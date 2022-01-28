@@ -1,22 +1,15 @@
-import type { ObservableInput } from 'rxjs'
 import type { AccountId } from '@polkadot/types/interfaces'
-import type { PalletAssetsAssetMetadata } from '@polkadot/types/lookup'
-import type { UseApi } from '../src'
 
-import { ApiRx } from '@polkadot/api'
 import { renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
-import { from } from 'rxjs'
-
-import { createType } from 'test-helpers'
 
 import { Chains, useAssets } from '../src'
-import { MockedApiProvider, mockedKusamaApi } from './mocks/MockedApiProvider'
+import { MockedApiProvider } from './mocks/MockedApiProvider'
 import { ALICE_ID, BOB_ID } from './consts'
 
 describe('Use assets hook', () => {
   it('Returns all available assets', async () => {
-    const { result } = renderResult({ customApi })
+    const { result } = renderResult({})
 
     expect(result.current).toHaveLength(3)
 
@@ -64,7 +57,7 @@ describe('Use assets hook', () => {
   })
 
   it('Converts name and symbol to utf8', async () => {
-    const { result } = renderResult({ customApi })
+    const { result } = renderResult({})
 
     const { name, symbol } = (result.current ?? [])[2]
 
@@ -72,9 +65,9 @@ describe('Use assets hook', () => {
     expect(symbol).toEqual('KSM🤪')
   })
 
-  const renderResult = ({ owner, customApi }:{owner?: AccountId, customApi?: UseApi}) => {
+  const renderResult = ({ owner }: {owner?: AccountId}) => {
     const wrapper = ({ children }: { children: ReactNode }) => (
-      <MockedApiProvider customApi={customApi}>
+      <MockedApiProvider>
         {children}
       </MockedApiProvider>
     )
@@ -82,26 +75,3 @@ describe('Use assets hook', () => {
     return renderHook(() => useAssets(Chains.Kusama, { owner }), { wrapper })
   }
 })
-
-const customApi: UseApi = {
-  isConnected: true,
-  connectionState: 'connected',
-  api: {
-    ...mockedKusamaApi.api,
-    query: {
-      ...mockedKusamaApi.api!.query,
-      assets: {
-        ...mockedKusamaApi.api!.query.assets,
-        metadata: {
-          multi: () => from<ObservableInput<PalletAssetsAssetMetadata[]>>([
-            [
-              createType('AssetMetadata', { decimals: 8, symbol: 'TT', name: 'TestToken' }),
-              createType('AssetMetadata', { decimals: 10, symbol: 'TTx', name: 'TestTokenExtra' }),
-              createType('AssetMetadata', { decimals: 12, symbol: 'KSM🤪', name: 'Kusama😒' })
-            ]
-          ])
-        }
-      }
-    }
-  } as unknown as ApiRx
-}
