@@ -33,12 +33,12 @@ enum ThirdStepState {
 
 interface Props {
   openAccountSelectModal: () => void,
-  setStepBarVisible: (arg: boolean) => void
+  setIsTransactionStateDisplayed: (arg: boolean) => void
 }
 
 const EMPTY_ROW: JSX.Element = <>-</>
 
-export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelectModal }: ModalStep & Props): JSX.Element {
+export function ThirdStep({ onNext, onBack, setIsTransactionStateDisplayed, openAccountSelectModal }: ModalStep & Props): JSX.Element {
   const { parachain, relayChain } = useAppChains()
   const [capitalizedRelayChain, capitalizedParachain] = useCapitalizedChains([relayChain, parachain])
   const [state, setState] = useState<ThirdStepState>(ThirdStepState.Loading)
@@ -72,37 +72,37 @@ export function ThirdStep({ onNext, onBack, setStepBarVisible, openAccountSelect
 
   useEffect(() => {
     if (teleportTransaction?.status === 'Success') {
-      setStepBarVisible(true)
+      setIsTransactionStateDisplayed(false)
       setState(ThirdStepState.TeleportDone)
     }
 
     if (teleportTransaction?.status === 'Error') {
-      setStepBarVisible(false)
+      setIsTransactionStateDisplayed(true)
       setState(ThirdStepState.Error)
     }
 
     if (teleportTransaction?.status === 'InBlock') {
-      setStepBarVisible(false)
+      setIsTransactionStateDisplayed(true)
       setState(ThirdStepState.InProgress)
     }
-  }, [setStepBarVisible, teleportTransaction?.status])
+  }, [setIsTransactionStateDisplayed, teleportTransaction?.status])
 
   useEffect(() => {
     if (createAssetTransaction?.status === 'Success') {
-      setStepBarVisible(false)
+      setIsTransactionStateDisplayed(true)
       setState(ThirdStepState.Success)
     }
 
     if (createAssetTransaction?.status === 'Error') {
-      setStepBarVisible(false)
+      setIsTransactionStateDisplayed(true)
       setState(ThirdStepState.Error)
     }
 
     if (createAssetTransaction?.status === 'InBlock') {
-      setStepBarVisible(false)
+      setIsTransactionStateDisplayed(true)
       setState(ThirdStepState.InProgress)
     }
-  }, [createAssetTransaction?.status, setStepBarVisible])
+  }, [createAssetTransaction?.status, setIsTransactionStateDisplayed])
 
   const totalFee = useMemo(() => displayTeleport && teleportTransactionFee
     ? createAssetTransactionFee?.add(teleportTransactionFee)
