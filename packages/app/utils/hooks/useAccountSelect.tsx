@@ -11,7 +11,7 @@ interface UseAccountSelect {
   setAccount: (account: Account | undefined) => void;
   accountInfo?: string;
   setAccountInfo: (accountInfo: string | undefined) => void;
-  hasFreeBalance?: boolean;
+  hasAvailableBalance?: boolean;
   clearData: () => void
 }
 
@@ -19,8 +19,8 @@ export function useAccountSelect(chain: Chains): UseAccountSelect {
   const [account, setAccount] = useState<Account>()
   const { activeAccount } = useActiveAccount(chain)
   const [accountInfo, setAccountInfo] = useState<string>()
-  const { freeBalance } = useBalances(account?.address, chain) || {}
-  const hasFreeBalance = freeBalance?.gt(BN_ZERO)
+  const { availableBalance } = useBalances(account?.address, chain) || {}
+  const hasAvailableBalance = availableBalance?.gt(BN_ZERO)
 
   const setCurrentActiveAccount = useCallback((): void => {
     setAccount(
@@ -34,5 +34,5 @@ export function useAccountSelect(chain: Chains): UseAccountSelect {
     setCurrentActiveAccount()
   }, [setCurrentActiveAccount])
 
-  return { account, setAccount, accountInfo, setAccountInfo, hasFreeBalance, clearData: setCurrentActiveAccount }
+  return { account, setAccount, accountInfo, setAccountInfo, hasAvailableBalance, clearData: setCurrentActiveAccount }
 }

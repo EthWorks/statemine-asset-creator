@@ -25,12 +25,12 @@ jest.mock('use-substrate/dist/src/hooks', () => ({
 }))
 
 interface TestComponentProps {
-  withFreeBalance?: boolean;
+  withFullBalance?: boolean;
   withAccountInput?: boolean;
   disabled?: boolean
 }
 
-function AccountSelectTestComponent({ withFreeBalance, withAccountInput, disabled }: TestComponentProps): JSX.Element {
+function AccountSelectTestComponent({ withFullBalance, withAccountInput, disabled }: TestComponentProps): JSX.Element {
   const accounts = mockUseSubstrate.useAccounts()
   const [account, setAccount] = useState<Account>()
 
@@ -40,7 +40,7 @@ function AccountSelectTestComponent({ withFreeBalance, withAccountInput, disable
         accounts={accounts.allAccounts}
         currentAccount={account}
         setCurrentAccount={setAccount}
-        withFreeBalance={withFreeBalance}
+        withFullBalance={withFullBalance}
         withAccountInput={withAccountInput}
         disabled={disabled}
         chain={Chains.Kusama}
@@ -91,8 +91,8 @@ describe('AccountSelect component', () => {
     await within(openDropdownButton).findByText('Select account')
   })
 
-  it('shows free balance', async () => {
-    render(<AccountSelectTestComponent withFreeBalance/>)
+  it('shows full balance', async () => {
+    render(<AccountSelectTestComponent withFullBalance/>)
 
     await selectAccountFromDropdown(0, 0)
 

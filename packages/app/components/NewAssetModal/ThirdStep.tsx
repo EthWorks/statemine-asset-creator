@@ -42,6 +42,7 @@ export function ThirdStep({ onNext, onBack, setIsTransactionStateDisplayed, open
   const { parachain, relayChain } = useAppChains()
   const [capitalizedRelayChain, capitalizedParachain] = useCapitalizedChains([relayChain, parachain])
   const [state, setState] = useState<ThirdStepState>(ThirdStepState.Loading)
+  const [displayTeleport, setDisplayTeleport] = useState(false)
   const { transaction: createAssetTransaction, stepDetails: createAssetStepDetails, createAssetDeposit } = useCreateAssetTransaction() || {}
   const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
   const { activeAccount: relayChainActiveAccount } = useActiveAccount(relayChain)
@@ -49,7 +50,7 @@ export function ThirdStep({ onNext, onBack, setIsTransactionStateDisplayed, open
   const createAssetTransactionFee = createAssetTransaction?.paymentInfo?.partialFee
   const { activeAccount } = useActiveAccount(parachain)
   const { address: ownerAddress } = activeAccount || {}
-  const { displayTeleportContent, teleportAmount, transaction: teleportTransaction, stepDetails: teleportStepDetails } = useTeleportTransaction(ownerAddress, createAssetTransactionFee, createAssetDeposit) || {}
+  const { requireTeleport, teleportAmount, transaction: teleportTransaction, stepDetails: teleportStepDetails } = useTeleportTransaction(ownerAddress, createAssetTransactionFee, createAssetDeposit) || {}
 
   const teleportTransactionFee = teleportTransaction?.paymentInfo?.partialFee
 
@@ -60,13 +61,14 @@ export function ThirdStep({ onNext, onBack, setIsTransactionStateDisplayed, open
 
   useEffect(() => {
     if (state === ThirdStepState.Loading && createAssetTransaction && teleportTransaction) {
-      if (displayTeleportContent) {
+      if (requireTeleport) {
+        setDisplayTeleport(true)
         setState(ThirdStepState.TeleportReady)
       } else {
         setState(ThirdStepState.CreateAssetReady)
       }
     }
-  }, [createAssetTransaction, displayTeleportContent, teleportTransaction])
+  }, [createAssetTransaction, requireTeleport, teleportTransaction])
 
   useEffect(() => {
     if (teleportTransaction?.status === 'Success') {
@@ -102,12 +104,12 @@ export function ThirdStep({ onNext, onBack, setIsTransactionStateDisplayed, open
     }
   }, [createAssetTransaction?.status, setIsTransactionStateDisplayed])
 
-  const totalFee = useMemo(() => displayTeleportContent && teleportTransactionFee
+  const totalFee = useMemo(() => displayTeleport && teleportTransactionFee
     ? createAssetTransactionFee?.add(teleportTransactionFee)
     : createAssetTransactionFee,
-  [createAssetTransactionFee, displayTeleportContent, teleportTransactionFee])
+  [createAssetTransactionFee, displayTeleport, teleportTransactionFee])
 
-  const createAssetTransactionNumber = displayTeleportContent ? 2 : 1
+  const createAssetTransactionNumber = displayTeleport ? 2 : 1
   const createAssetTransactionTitle = useMemo(() => createAssetStepDetails?.title.replace(/{txNumber}/g, createAssetTransactionNumber.toString()), [createAssetStepDetails?.title, createAssetTransactionNumber])
   const TELEPORT_TRANSACTION_NUMBER = 1
 
@@ -190,7 +192,7 @@ export function ThirdStep({ onNext, onBack, setIsTransactionStateDisplayed, open
               <Text size='XS' color='white' bold>{assetId}</Text>
             </InfoRow>
           </TransactionInfoBlock>
-          {displayTeleportContent && (
+          {displayTeleport && (
             <TransactionInfoBlock name='Teleport' number={TELEPORT_TRANSACTION_NUMBER} status={mapToTransactionInfoBlockStatus(teleportTransaction.status)}>
               <InfoRow>
                 <Label>Chain</Label>
