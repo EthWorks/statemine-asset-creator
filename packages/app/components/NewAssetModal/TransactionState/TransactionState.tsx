@@ -9,7 +9,7 @@ import { TransactionStatus } from 'use-substrate'
 import pending from '../../../assets/coin.gif'
 import complete from '../../../assets/complet.svg'
 import fail from '../../../assets/fail.svg'
-import { STATESCAN_LINK } from '../../../utils'
+import { useStatescanLink } from '../../../utils'
 import { ButtonOutline, ButtonTertiary } from '../../button/Button'
 import { ViewIcon } from '../../icons'
 import { Text } from '../../typography'
@@ -39,11 +39,13 @@ const getIcon = (status: TransactionStatus): StaticImageData => {
 }
 
 export const TransactionState = ({ name, number, status, title, text, onClose, assetId }: TransactionStateProps): JSX.Element | null => {
+  const statescanLink = useStatescanLink()
+
   if (!status || status === TransactionStatus.Ready || status === TransactionStatus.AwaitingSign) return null
 
   const _onClick = (): void => {
     window.open(
-      STATESCAN_LINK + assetId,
+      statescanLink + assetId,
       '_blank',
       'noopener,noreferrer'
     )
