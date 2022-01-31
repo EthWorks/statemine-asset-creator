@@ -10,7 +10,7 @@ interface AssetsCardMenuProps {
   isOpen: boolean
 }
 
-export const AssetsCardMenu = ({ assetId, isOpen }:AssetsCardMenuProps):JSX.Element => {
+export const AssetsCardMenu = ({ assetId, isOpen }: AssetsCardMenuProps): JSX.Element => {
   const statescanLink = useStatescanLink()
 
   return (
