@@ -11,8 +11,8 @@ import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { ChainIdentifier } from '../ChainIdentifier'
 import { FormatBalance } from '../FormatBalance'
 import { ArrowLeft, ArrowRight } from '../icons'
-import { Info } from '../Info'
 import { Loader } from '../Loader'
+import { ThirdStepInfobox } from '../ThirdStepInfobox'
 import { TransactionCostSummary } from '../TransactionCostSummary'
 import { InfoRow, TransactionInfoBlock } from '../TransactionInfoBlock/TransactionInfoBlock'
 import { Label, Text } from '../typography'
@@ -125,23 +125,6 @@ export function ThirdStep({ onNext, onBack, setIsTransactionStateDisplayed, open
     }
   }
 
-  const requiredTeleportInfo = (
-    <StyledInfo
-      text={`Owner account has insufficient funds on ${capitalizedParachain} to create the asset. A Teleport transaction from selected ${capitalizedRelayChain} account will be executed.`}
-    />
-  )
-
-  const noKusamaAccountWarning = (
-    <StyledInfo
-      text={`Insufficient funds on the owner account to create the asset. Cannot execute teleport transaction due to not selected ${capitalizedRelayChain} account.`}
-      type='warning'
-      action={{
-        name: `Select ${capitalizedRelayChain} account`,
-        onClick: openAccountSelectModal
-      }}
-    />
-  )
-
   return (
     <>
       {createAssetStepDetails && (
@@ -167,10 +150,14 @@ export function ThirdStep({ onNext, onBack, setIsTransactionStateDisplayed, open
       )}
       {!isContentHidden && (
         <div data-testid='third-step-content'>
-          {state === ThirdStepState.TeleportReady && (relayChainActiveAccount
-            ? requiredTeleportInfo
-            : noKusamaAccountWarning)
-          }
+          {state === ThirdStepState.TeleportReady && (
+            <ThirdStepInfobox
+              parachain={capitalizedParachain}
+              relayChain={capitalizedRelayChain}
+              openAccountSelectModal={openAccountSelectModal}
+              relayChainActiveAccount={relayChainActiveAccount}
+            />
+          )}
           <TransactionInfoBlock status='baseInfo'>
             <InfoRow>
               <Label>Asset name</Label>
@@ -197,7 +184,7 @@ export function ThirdStep({ onNext, onBack, setIsTransactionStateDisplayed, open
             <TransactionInfoBlock name='Teleport' number={TELEPORT_TRANSACTION_NUMBER} status={mapToTransactionInfoBlockStatus(teleportTransaction.status)}>
               <InfoRow>
                 <Label>Chain</Label>
-                <ChainIdentifier chainMain={relayChain} chainTo={parachain} />
+                <ChainIdentifier chainMain={relayChain} chainTo={parachain}/>
               </InfoRow>
               <InfoRow>
                 <Label>Teleport amount</Label>
@@ -212,10 +199,14 @@ export function ThirdStep({ onNext, onBack, setIsTransactionStateDisplayed, open
               </InfoRow>
             </TransactionInfoBlock>
           )}
-          <TransactionInfoBlock name='Asset Creation' number={createAssetTransactionNumber} status={mapToTransactionInfoBlockStatus(createAssetTransaction.status)}>
+          <TransactionInfoBlock
+            name='Asset Creation'
+            number={createAssetTransactionNumber}
+            status={mapToTransactionInfoBlockStatus(createAssetTransaction.status)}
+          >
             <InfoRow>
               <Label>Chain</Label>
-              <ChainIdentifier chainMain={parachain} />
+              <ChainIdentifier chainMain={parachain}/>
             </InfoRow>
             <InfoRow>
               <Label>Deposit</Label>
@@ -236,12 +227,12 @@ export function ThirdStep({ onNext, onBack, setIsTransactionStateDisplayed, open
           )}
           <ModalFooter contentPosition='between'>
             <ButtonOutline onClick={onBack} disabled={areButtonsDisabled}>
-              <ArrowLeft />
+              <ArrowLeft/>
               Back
             </ButtonOutline>
             <ButtonPrimary onClick={_onSubmit} disabled={areButtonsDisabled}>
               Confirm
-              <ArrowRight />
+              <ArrowRight/>
             </ButtonPrimary>
           </ModalFooter>
         </div>
@@ -249,10 +240,6 @@ export function ThirdStep({ onNext, onBack, setIsTransactionStateDisplayed, open
     </>
   )
 }
-
-const StyledInfo = styled(Info)`
-  margin-bottom: 16px;
-`
 
 const StyledFormatBalance = styled(FormatBalance)`
   p {
