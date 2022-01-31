@@ -59,7 +59,7 @@ export function ThirdStep({ onNext, onBack, setIsTransactionStateDisplayed, open
 
   const { chainToken, chainDecimals } = useChainToken(parachain) || {}
   const isContentHidden = state === 'Success' || state === 'Error' || state === 'InProgress'
-  const canPayTeleportCosts = teleportAmount && relayChainAvailableBalance?.gt(teleportAmount)
+  const hasRelayChainFunds = useMemo(() => teleportAmount && relayChainAvailableBalance?.gt(teleportAmount), [relayChainAvailableBalance, teleportAmount])
   const areButtonsDisabled = state === 'AwaitingSign'
 
   useEffect(() => {
@@ -155,7 +155,7 @@ export function ThirdStep({ onNext, onBack, setIsTransactionStateDisplayed, open
           {state === ThirdStepState.TeleportReady && (
             <ThirdStepInfobox
               openAccountSelectModal={openAccountSelectModal}
-              canPayTeleportCosts={!!canPayTeleportCosts}
+              hasRelayChainFunds={!!hasRelayChainFunds}
               relayChainActiveAccount={relayChainActiveAccount}
             />
           )}
@@ -231,7 +231,7 @@ export function ThirdStep({ onNext, onBack, setIsTransactionStateDisplayed, open
               <ArrowLeft/>
               Back
             </ButtonOutline>
-            <ButtonPrimary onClick={_onSubmit} disabled={areButtonsDisabled || !canPayTeleportCosts}>
+            <ButtonPrimary onClick={_onSubmit} disabled={areButtonsDisabled || !hasRelayChainFunds}>
               Confirm
               <ArrowRight/>
             </ButtonPrimary>

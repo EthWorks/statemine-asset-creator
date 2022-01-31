@@ -7,11 +7,11 @@ import { Info } from './Info'
 
 interface TransactionWarningProps {
   openAccountSelectModal: () => void,
-  canPayTeleportCosts: boolean,
+  hasRelayChainFunds: boolean,
   relayChainActiveAccount: ActiveAccount | undefined
 }
 
-export function ThirdStepInfobox({ openAccountSelectModal, canPayTeleportCosts, relayChainActiveAccount }: TransactionWarningProps): JSX.Element {
+export function ThirdStepInfobox({ openAccountSelectModal, hasRelayChainFunds, relayChainActiveAccount }: TransactionWarningProps): JSX.Element {
   const { parachain, relayChain } = useAppChains()
   const [capitalizedRelayChain, capitalizedParachain] = useCapitalizedChains([relayChain, parachain])
 
@@ -47,7 +47,7 @@ export function ThirdStepInfobox({ openAccountSelectModal, canPayTeleportCosts, 
     return noRelayChainAccountWarning
   }
 
-  if (!canPayTeleportCosts) {
+  if (!hasRelayChainFunds) {
     return lowRelayChainBalanceWarning
   }
 
