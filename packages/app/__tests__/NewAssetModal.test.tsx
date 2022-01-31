@@ -736,9 +736,11 @@ describe('New asset modal', () => {
           await enterThirdStep()
 
           await assertInfobox(
-            'Selected Kusama account has insufficient funds to execute teleport transaction. A Teleport transaction from selected Kusama account will be executed.Change Kusama account',
+            'Selected Kusama account has insufficient funds to execute teleport transaction.Change Kusama account',
             'warning'
           )
+
+          assertButtonDisabled('Confirm')
         })
       })
 

@@ -1,21 +1,19 @@
-import BN from 'bn.js'
 import styled from 'styled-components'
 
-import { useActiveAccount, useBalances } from 'use-substrate'
+import { ActiveAccount } from 'use-substrate'
 
 import { useAppChains, useCapitalizedChains } from '../utils'
 import { Info } from './Info'
 
 interface TransactionWarningProps {
   openAccountSelectModal: () => void,
-  teleportAmount: BN | undefined
+  canPayTeleportCosts: boolean,
+  relayChainActiveAccount: ActiveAccount | undefined
 }
 
-export function ThirdStepInfobox({ openAccountSelectModal, teleportAmount }: TransactionWarningProps): JSX.Element {
+export function ThirdStepInfobox({ openAccountSelectModal, canPayTeleportCosts, relayChainActiveAccount }: TransactionWarningProps): JSX.Element {
   const { parachain, relayChain } = useAppChains()
   const [capitalizedRelayChain, capitalizedParachain] = useCapitalizedChains([relayChain, parachain])
-  const { activeAccount: relayChainActiveAccount } = useActiveAccount(relayChain)
-  const { availableBalance: relayChainAvailableBalance } = useBalances(relayChainActiveAccount?.address.toString(), relayChain) || {}
 
   const requiredTeleportInfo = (
     <StyledInfo
@@ -36,7 +34,7 @@ export function ThirdStepInfobox({ openAccountSelectModal, teleportAmount }: Tra
 
   const lowRelayChainBalanceWarning = (
     <StyledInfo
-      text={'Selected Kusama account has insufficient funds to execute teleport transaction. A Teleport transaction from selected Kusama account will be executed.'}
+      text={'Selected Kusama account has insufficient funds to execute teleport transaction.'}
       type='warning'
       action={{
         name: `Change ${capitalizedRelayChain} account`,
@@ -49,7 +47,7 @@ export function ThirdStepInfobox({ openAccountSelectModal, teleportAmount }: Tra
     return noRelayChainAccountWarning
   }
 
-  if (teleportAmount && relayChainAvailableBalance?.lt(teleportAmount)) {
+  if (!canPayTeleportCosts) {
     return lowRelayChainBalanceWarning
   }
 

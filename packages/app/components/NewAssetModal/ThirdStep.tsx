@@ -4,7 +4,7 @@ import BN from 'bn.js'
 import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 
-import { useActiveAccount, useChainToken } from 'use-substrate'
+import { useActiveAccount, useBalances, useChainToken } from 'use-substrate'
 
 import { useAppChains, useCapitalizedChains } from '../../utils'
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
@@ -54,9 +54,12 @@ export function ThirdStep({ onNext, onBack, setIsTransactionStateDisplayed, open
 
   const teleportTransactionFee = teleportTransaction?.paymentInfo?.partialFee
 
+  const { activeAccount: relayChainActiveAccount } = useActiveAccount(relayChain)
+  const { availableBalance: relayChainAvailableBalance } = useBalances(relayChainActiveAccount?.address.toString(), relayChain) || {}
+
   const { chainToken, chainDecimals } = useChainToken(parachain) || {}
   const isContentHidden = state === 'Success' || state === 'Error' || state === 'InProgress'
-
+  const canPayTeleportCosts = teleportAmount && relayChainAvailableBalance?.gt(teleportAmount)
   const areButtonsDisabled = state === 'AwaitingSign'
 
   useEffect(() => {
@@ -152,7 +155,8 @@ export function ThirdStep({ onNext, onBack, setIsTransactionStateDisplayed, open
           {state === ThirdStepState.TeleportReady && (
             <ThirdStepInfobox
               openAccountSelectModal={openAccountSelectModal}
-              teleportAmount={teleportAmount}
+              canPayTeleportCosts={!!canPayTeleportCosts}
+              relayChainActiveAccount={relayChainActiveAccount}
             />
           )}
           <TransactionInfoBlock status='baseInfo'>
@@ -227,7 +231,7 @@ export function ThirdStep({ onNext, onBack, setIsTransactionStateDisplayed, open
               <ArrowLeft/>
               Back
             </ButtonOutline>
-            <ButtonPrimary onClick={_onSubmit} disabled={areButtonsDisabled}>
+            <ButtonPrimary onClick={_onSubmit} disabled={areButtonsDisabled || !canPayTeleportCosts}>
               Confirm
               <ArrowRight/>
             </ButtonPrimary>
