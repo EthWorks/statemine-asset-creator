@@ -1,39 +1,59 @@
+import BN from 'bn.js'
 import styled from 'styled-components'
 
-import { ActiveAccount } from 'use-substrate'
+import { useActiveAccount, useBalances } from 'use-substrate'
 
+import { useAppChains, useCapitalizedChains } from '../utils'
 import { Info } from './Info'
 
 interface TransactionWarningProps {
-  relayChainActiveAccount: ActiveAccount | undefined,
-  parachain: string,
-  relayChain: string,
-  openAccountSelectModal: () => void
+  openAccountSelectModal: () => void,
+  teleportAmount: BN | undefined
 }
 
-export function ThirdStepInfobox({ relayChainActiveAccount, relayChain, parachain, openAccountSelectModal }: TransactionWarningProps): JSX.Element {
+export function ThirdStepInfobox({ openAccountSelectModal, teleportAmount }: TransactionWarningProps): JSX.Element {
+  const { parachain, relayChain } = useAppChains()
+  const [capitalizedRelayChain, capitalizedParachain] = useCapitalizedChains([relayChain, parachain])
+  const { activeAccount: relayChainActiveAccount } = useActiveAccount(relayChain)
+  const { availableBalance: relayChainAvailableBalance } = useBalances(relayChainActiveAccount?.address.toString(), relayChain) || {}
+
   const requiredTeleportInfo = (
     <StyledInfo
-      text={`Owner account has insufficient funds on ${parachain} to create the asset. A Teleport transaction from selected ${relayChain} account will be executed.`}
+      text={`Owner account has insufficient funds on ${capitalizedParachain} to create the asset. A Teleport transaction from selected ${capitalizedRelayChain} account will be executed.`}
     />
   )
 
-  const noKusamaAccountWarning = (
+  const noRelayChainAccountWarning = (
     <StyledInfo
-      text={`Insufficient funds on the owner account to create the asset. Cannot execute teleport transaction due to not selected ${relayChain} account.`}
+      text={`Insufficient funds on the owner account to create the asset. Cannot execute teleport transaction due to not selected ${capitalizedRelayChain} account.`}
       type='warning'
       action={{
-        name: `Select ${relayChain} account`,
+        name: `Select ${capitalizedRelayChain} account`,
         onClick: openAccountSelectModal
       }}
     />
   )
 
-  if (relayChainActiveAccount) {
-    return requiredTeleportInfo
+  const lowRelayChainBalanceWarning = (
+    <StyledInfo
+      text={'Selected Kusama account has insufficient funds to execute teleport transaction. A Teleport transaction from selected Kusama account will be executed.'}
+      type='warning'
+      action={{
+        name: `Change ${capitalizedRelayChain} account`,
+        onClick: openAccountSelectModal
+      }}
+    />
+  )
+
+  if (!relayChainActiveAccount) {
+    return noRelayChainAccountWarning
   }
 
-  return noKusamaAccountWarning
+  if (teleportAmount && relayChainAvailableBalance?.lt(teleportAmount)) {
+    return lowRelayChainBalanceWarning
+  }
+
+  return requiredTeleportInfo
 }
 
 const StyledInfo = styled(Info)`

@@ -46,7 +46,6 @@ export function ThirdStep({ onNext, onBack, setIsTransactionStateDisplayed, open
   const [displayTeleport, setDisplayTeleport] = useState(false)
   const { transaction: createAssetTransaction, stepDetails: createAssetStepDetails, createAssetDeposit } = useCreateAssetTransaction() || {}
   const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
-  const { activeAccount: relayChainActiveAccount } = useActiveAccount(relayChain)
 
   const createAssetTransactionFee = createAssetTransaction?.paymentInfo?.partialFee
   const { activeAccount } = useActiveAccount(parachain)
@@ -152,10 +151,8 @@ export function ThirdStep({ onNext, onBack, setIsTransactionStateDisplayed, open
         <div data-testid='third-step-content'>
           {state === ThirdStepState.TeleportReady && (
             <ThirdStepInfobox
-              parachain={capitalizedParachain}
-              relayChain={capitalizedRelayChain}
               openAccountSelectModal={openAccountSelectModal}
-              relayChainActiveAccount={relayChainActiveAccount}
+              teleportAmount={teleportAmount}
             />
           )}
           <TransactionInfoBlock status='baseInfo'>
