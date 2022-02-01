@@ -76,7 +76,7 @@ const Input = styled.input<Pick<CustomInputProps, 'large'>>`
       font-weight: bold;
       font-size: 24px;
       line-height: 28px;
-       color: ${({ theme }) => theme.colors.gray600};
+      color: ${({ theme }) => theme.colors.gray600};
     }
   `}
 `
