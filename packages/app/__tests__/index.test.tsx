@@ -8,7 +8,7 @@ import { Chains, Chains as mockChains } from 'use-substrate'
 import Home from '../pages/index'
 import { AppChainsProvider } from '../utils'
 import {
-  assertChainLogo,
+  assertChainLogo, assertLinkByText,
   assertNoText,
   assertText,
   clickButton,
@@ -226,6 +226,28 @@ describe('Home', () => {
       assertNoText('Dashboard')
 
       mockAssets = assets
+    })
+  })
+
+  describe('displays docs links component', () => {
+    it('for an account without assets', async () => {
+      renderWithTheme(<Home/>)
+
+      await screen.findByText('You haven’t created any assets yet.')
+      await screen.findByText('Learn more about assets')
+      await assertLinkByText('Read more about assets', 'https://wiki.polkadot.network/docs/learn-assets', '_blank')
+      await assertLinkByText('How to Teleport', 'https://wiki.polkadot.network/docs/learn-teleport', '_blank')
+    })
+
+    it('for an account with assets', async () => {
+      mockAssets = mockUseAssets
+      renderWithTheme(<Home/>)
+
+      await screen.findByText('Created assets [2]')
+      await screen.findByText('Learn more about assets')
+      await assertLinkByText('Read more about assets', 'https://wiki.polkadot.network/docs/learn-assets', '_blank')
+      await assertLinkByText('How to Teleport', 'https://wiki.polkadot.network/docs/learn-teleport', '_blank')
+      mockAssets = []
     })
   })
 })
