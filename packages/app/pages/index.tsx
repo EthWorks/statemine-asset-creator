@@ -90,7 +90,7 @@ const Home: NextPage = () => {
             <PageBox size='full' title={`Created assets [${assets.length}]`}>
               <CreatedAssets assets={assets}/>
             </PageBox>
-            <DocsLinks withPadding/>
+            <StyledDocsLinks withMargin/>
           </>
           : <PageBox size='large' title='Created assets'>
             <StyledCard padding='m'>
@@ -104,7 +104,7 @@ const Home: NextPage = () => {
                 }
               </div>
             </StyledCard>
-            <DocsLinks/>
+            <StyledDocsLinks/>
           </PageBox>
         }
         <NewAssetModal
@@ -139,5 +139,9 @@ const StyledCardTitle = styled(Text)`
 `
 
 const StyledButton = styled(ButtonPrimary)`
+  margin-top: 16px;
+`
+
+const StyledDocsLinks = styled(DocsLinks)`
   margin-top: 16px;
 `
