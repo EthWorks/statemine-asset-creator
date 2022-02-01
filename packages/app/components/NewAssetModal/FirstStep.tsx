@@ -93,6 +93,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
           id="asset-name"
           large
           autoFocus
+          placeholder='Type your asset name'
         />
       </FormHead>
       <TextInput
