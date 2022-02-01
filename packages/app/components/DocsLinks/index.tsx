@@ -12,7 +12,7 @@ interface Props {
 
 export function DocsLinks({ className, withMargin = false }: Props): JSX.Element {
   return (
-    <StyledCard className={className} withMargin={!!withMargin} color="gray700" padding='m'>
+    <StyledCard className={className} withMargin={withMargin} color="gray700" padding='m'>
       <Header color='white'>Learn more about assets</Header>
       <StyledText color='white'>
           Are you curious how to create your own asset? You don&apos;t know how to make a teleport? Read our guide and start!

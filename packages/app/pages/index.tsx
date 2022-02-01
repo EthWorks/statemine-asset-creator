@@ -107,6 +107,7 @@ const Home: NextPage = () => {
             <StyledDocsLinks/>
           </PageBox>
         }
+
         <NewAssetModal
           isOpen={isNewAssetModalOpen}
           closeModal={toggleNewAssetModalOpen}
