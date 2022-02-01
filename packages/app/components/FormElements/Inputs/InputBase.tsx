@@ -69,6 +69,15 @@ const Input = styled.input<Pick<CustomInputProps, 'large'>>`
       border: none;
       caret-color: ${({ theme }) => theme.colors.pinkLight};
     }
+    
+    &::placeholder {
+      font-family: 'Space Grotesk', sans-serif;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 24px;
+      line-height: 28px;
+       color: ${({ theme }) => theme.colors.gray600};
+    }
   `}
 `
 
