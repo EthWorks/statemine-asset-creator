@@ -14,6 +14,7 @@ import {
   ChainSwitcher,
   ConnectWalletModal,
   CreatedAssets,
+  DocsLinks,
   NewAssetModal,
   PageBox,
   PageTemplate,
@@ -85,9 +86,12 @@ const Home: NextPage = () => {
         isLoading={isLoading}
       >
         {address && assets?.length
-          ? <PageBox size='full' title={`Created assets [${assets.length}]`}>
-            <CreatedAssets assets={assets}/>
-          </PageBox>
+          ? <>
+            <PageBox size='full' title={`Created assets [${assets.length}]`}>
+              <CreatedAssets assets={assets}/>
+            </PageBox>
+            <StyledDocsLinks withMargin/>
+          </>
           : <PageBox size='large' title='Created assets'>
             <StyledCard padding='m'>
               <StyledCardTitle size="SM" color="white">You haven’t created any assets yet.</StyledCardTitle>
@@ -100,6 +104,7 @@ const Home: NextPage = () => {
                 }
               </div>
             </StyledCard>
+            <StyledDocsLinks/>
           </PageBox>
         }
 
@@ -135,5 +140,9 @@ const StyledCardTitle = styled(Text)`
 `
 
 const StyledButton = styled(ButtonPrimary)`
+  margin-top: 16px;
+`
+
+const StyledDocsLinks = styled(DocsLinks)`
   margin-top: 16px;
 `
