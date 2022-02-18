@@ -39,7 +39,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
   const isValid = !assetNameError && !assetSymbolError && !assetIdError && !assetDecimalsError && !minBalanceError
   const isDisabled = !isFilled || !isValid
 
-  const isAssetIdUnique = useCallback(() => !existingAssets?.find(({ id }: Asset) => id.toString() === assetId), [existingAssets, assetId])
+  const isAssetIdUnique = useCallback((assetId: string) => !existingAssets?.find(({ id }: Asset) => id.toString() === assetId), [existingAssets])
 
   useEffect(() => {
     if (!stringLimit) {
@@ -58,7 +58,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
       setAssetSymbolError(STRING_LIMIT_EXCEEDED_ERROR)
     }
 
-    if (assetId && !isAssetIdUnique()) {
+    if (!isAssetIdUnique(assetId)) {
       setAssetIdError('Value cannot match an already-existing asset id.')
     }
 
@@ -79,6 +79,15 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
     }
   }, [assetNameError, assetSymbolError, onNext, stringLimit])
 
+  const _generateId = useCallback((): void => {
+    const min = Math.ceil(0)
+    const max = Math.floor(1000)
+
+    const generatedId = Math.floor(Math.random() * (max - min) + min).toString()
+
+    isAssetIdUnique(generatedId) ? setAssetId(generatedId) : _generateId()
+  }, [isAssetIdUnique, setAssetId])
+
   return (
     <form onSubmit={_onNext}>
       <FormHead>
@@ -93,6 +102,8 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
           id="asset-name"
           large
           autoFocus
+          tooltip='The descriptive name for this asset, e.g. "Kusama", "Polkadot"'
+          placeholder='Type your asset name'
         />
       </FormHead>
       <TextInput
@@ -101,6 +112,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
         onChange={setAssetSymbol}
         label="Asset symbol"
         id="asset-symbol"
+        tooltip='The symbol that will represent this asset, e.g. "KSM", "DOT"'
       />
       <NumericInput
         error={assetDecimalsError}
@@ -110,6 +122,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
         id="asset-decimals"
         inputType='NATURAL'
         hint={`Max allowed value is ${DECIMALS_LIMIT}`}
+        tooltip='The number of decimal places for this Asset.'
       />
       <NumericInput
         error={assetIdError}
@@ -118,6 +131,11 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
         label="Asset ID"
         id="asset-ID"
         inputType='NATURAL'
+        button={{
+          label: 'Generate random ID',
+          onClick: _generateId
+        }}
+        tooltip='The selected id for the asset. This cannot match an already-existing asset id.'
       />
       <NumericInput
         error={minBalanceError}
@@ -126,6 +144,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
         label="Minimum balance"
         id="min-balance"
         inputType='NATURAL'
+        tooltip='The minimum balance for the asset. This is specified in the units and decimals as requested'
       />
       <ModalFooter>
         <ButtonPrimary type='submit' disabled={isDisabled}>

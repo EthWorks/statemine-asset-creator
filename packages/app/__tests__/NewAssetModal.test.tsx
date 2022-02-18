@@ -2,7 +2,8 @@ import type { RenderResult } from '@testing-library/react'
 import type { RuntimeDispatchInfo } from '@polkadot/types/interfaces'
 import type { ErrorDetails, UseActiveAccount, UseTransaction } from 'use-substrate'
 
-import { fireEvent, screen } from '@testing-library/react'
+import { fireEvent, screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import BN from 'bn.js'
 import React from 'react'
 
@@ -12,7 +13,7 @@ import { ChainSwitcher, NewAssetModal } from '../components'
 import { formatBalance } from '../components/FormatBalance/utils'
 import { DECIMALS_LIMIT } from '../components/NewAssetModal/FirstStep'
 import { TransactionInfoBlockStatus } from '../components/TransactionInfoBlock/TransactionInfoBlock'
-import { AppChainsProvider, BN_ZERO as MOCK_BN_ZERO, STATESCAN_LINK, useToggle } from '../utils'
+import { AppChainsProvider, BN_ZERO as MOCK_BN_ZERO, useToggle } from '../utils'
 import {
   assertButtonDisabled,
   assertButtonNotDisabled,
@@ -37,8 +38,8 @@ import {
   typeInInput
 } from './helpers'
 import {
-  aliceAccount,
-  bobAccount,
+  aliceAccount, aliceActiveAccount,
+  bobAccount, bobActiveAccount,
   mockUseAccounts,
   mockUseActiveAccount,
   mockUseApi,
@@ -305,6 +306,83 @@ describe('New asset modal', () => {
       await openModal()
 
       await assertInputHint('Asset decimals', `Max allowed value is ${DECIMALS_LIMIT}`)
+    })
+
+    describe('asset id input', () => {
+      const RANDOM_NUMBER = 0.123456789
+      const EXPECTED_ID = 123
+      const ID_IN_USE = 0.009
+
+      afterEach(() => {
+        jest.spyOn(global.Math, 'random').mockRestore()
+      })
+
+      it('generates random asset id', async () => {
+        jest.spyOn(global.Math, 'random').mockReturnValue(RANDOM_NUMBER)
+
+        renderModal()
+        await openModal()
+
+        expect(global.Math.random).toHaveBeenCalledTimes(0)
+        await findAndClickButton('Generate random ID')
+        expect(global.Math.random).toHaveBeenCalledTimes(1)
+        assertInputValue('Asset ID', `${EXPECTED_ID}`)
+      })
+
+      it('generates again if asset id is already in use', async () => {
+        jest.spyOn(global.Math, 'random').mockReturnValueOnce(ID_IN_USE).mockReturnValueOnce(RANDOM_NUMBER)
+
+        renderModal()
+        await openModal()
+
+        expect(global.Math.random).toHaveBeenCalledTimes(0)
+        await findAndClickButton('Generate random ID')
+        expect(global.Math.random).toHaveBeenCalledTimes(2)
+
+        assertInputValue('Asset ID', `${EXPECTED_ID}`)
+      })
+    })
+
+    describe('input tooltips', () => {
+      it('Asset name', async () => {
+        renderModal()
+        await openModal()
+
+        await hoverInputTooltip('Asset name')
+        await assertTooltipText('The descriptive name for this asset, e.g. "Kusama", "Polkadot"')
+      })
+
+      it('Asset symbol', async () => {
+        renderModal()
+        await openModal()
+
+        await hoverInputTooltip('Asset symbol')
+        await assertTooltipText('The symbol that will represent this asset, e.g. "KSM", "DOT"')
+      })
+
+      it('Asset decimals', async () => {
+        renderModal()
+        await openModal()
+
+        await hoverInputTooltip('Asset decimals')
+        await assertTooltipText('The number of decimal places for this Asset.')
+      })
+
+      it('Asset ID', async () => {
+        renderModal()
+        await openModal()
+
+        await hoverInputTooltip('Asset ID')
+        await assertTooltipText('The selected id for the asset. This cannot match an already-existing asset id.')
+      })
+
+      it('Minimum balance', async () => {
+        renderModal()
+        await openModal()
+
+        await hoverInputTooltip('Minimum balance')
+        await assertTooltipText('The minimum balance for the asset. This is specified in the units and decimals as requested')
+      })
     })
   })
 
@@ -684,7 +762,14 @@ describe('New asset modal', () => {
     describe('proposes kusama teleport if account has insufficient funds', () => {
       describe('displays', () => {
         it('info about teleport execution', async () => {
-          mockUseBalances.availableBalance = new BN(0)
+          mockActiveAccount = (chain: Chains | undefined) => {
+            switch (chain) {
+              case Chains.Kusama:
+                return { activeAccount: bobActiveAccount, setActiveAccount: () => { /**/ }, isLoaded: true }
+              default:
+                return { activeAccount: aliceActiveAccount, setActiveAccount: () => { /**/ }, isLoaded: true }
+            }
+          }
 
           renderModal()
           await enterThirdStep()
@@ -693,13 +778,12 @@ describe('New asset modal', () => {
         })
 
         it('warning about missing kusama account with a button', async () => {
-          mockUseBalances.availableBalance = new BN(0)
           mockActiveAccount = (chain: Chains | undefined) => {
             switch (chain) {
               case Chains.Kusama:
                 return { activeAccount: undefined, setActiveAccount: () => { /**/ }, isLoaded: true }
               default:
-                return mockUseActiveAccount
+                return { activeAccount: aliceActiveAccount, setActiveAccount: () => { /**/ }, isLoaded: true }
             }
           }
 
@@ -721,6 +805,20 @@ describe('New asset modal', () => {
 
           await assertNoInfobox()
           await assertNoInfobox('warning')
+        })
+
+        it('infobox if relay chain account has less funds than teleport amount', async () => {
+          mockActiveAccount = () => ({ activeAccount: aliceActiveAccount, setActiveAccount: () => { /**/ }, isLoaded: true })
+
+          renderModal()
+          await enterThirdStep()
+
+          await assertInfobox(
+            'Selected Kusama account has insufficient funds to execute teleport transaction.Change Kusama account',
+            'warning'
+          )
+
+          assertButtonDisabled('Confirm')
         })
       })
 
@@ -857,6 +955,8 @@ describe('New asset modal', () => {
 
     describe('displays summary', () => {
       it('for create asset transaction', async () => {
+        mockActiveAccount = () => ({ activeAccount: bobActiveAccount, setActiveAccount: () => { /**/ }, isLoaded: true })
+
         mockUseBalances.availableBalance = EXPECTED_TELEPORT_AMOUNT.addn(1)
 
         renderModal()
@@ -889,48 +989,76 @@ describe('New asset modal', () => {
       assertContentHidden()
 
       await findAndClickButton('View asset in explorer')
-      assertNewTabOpened(STATESCAN_LINK + ASSET_ID)
+      assertNewTabOpened('https://statemine.statescan.io/asset/' + ASSET_ID)
     })
 
-    describe('updates displayed chain names on active api change to', () => {
-      beforeEach(() => {
-        setTeleportTransactionStatus(TransactionStatus.Ready)
-        mockUseBalances.availableBalance = new BN(0)
-        renderModal()
+    describe('on api change', () => {
+      describe('updates displayed chain names to', () => {
+        beforeEach(() => {
+          setTeleportTransactionStatus(TransactionStatus.Ready)
+          mockUseBalances.availableBalance = new BN(0)
+          renderModal()
+        })
+
+        it('polkadot', async () => {
+          await switchApiTo(Chains.Polkadot)
+          await enterThirdStep()
+
+          await assertTransactionInfoBlock(1, 'ready', [
+            'Chainpolkadotstatemint',
+            'Teleport amount140.0310KSM',
+            'Polkadot fee0.0300KSM'
+          ])
+
+          await assertTransactionInfoBlock(2, 'ready', [
+            'Chainstatemint',
+            'Deposit140.0000KSM',
+            'Statemint fee0.0300KSM'
+          ])
+        })
+
+        it('westend', async () => {
+          await switchApiTo(Chains.Westend)
+          await enterThirdStep()
+
+          await assertTransactionInfoBlock(1, 'ready', [
+            'Chainwestendwestmint',
+            'Teleport amount140.0310KSM',
+            'Westend fee0.0300KSM'
+          ])
+
+          await assertTransactionInfoBlock(2, 'ready', [
+            'Chainwestmint',
+            'Deposit140.0000KSM',
+            'Westmint fee0.0300KSM'
+          ])
+        })
       })
 
-      it('polkadot', async () => {
-        await switchApiTo(Chains.Polkadot)
-        await enterThirdStep()
+      describe('updates statescan link for', () => {
+        it('polkadot network', async () => {
+          setCreateAssetTransactionStatus(TransactionStatus.Success)
 
-        await assertTransactionInfoBlock(1, 'ready', [
-          'Chainpolkadotstatemint',
-          'Teleport amount140.0310KSM',
-          'Polkadot fee0.0300KSM'
-        ])
+          renderModal()
+          await switchApiTo(Chains.Polkadot)
 
-        await assertTransactionInfoBlock(2, 'ready', [
-          'Chainstatemint',
-          'Deposit140.0000KSM',
-          'Statemint fee0.0300KSM'
-        ])
-      })
+          await enterThirdStep()
 
-      it('westend', async () => {
-        await switchApiTo(Chains.Westend)
-        await enterThirdStep()
+          await findAndClickButton('View asset in explorer')
+          assertNewTabOpened('https://statemint.statescan.io/asset/' + ASSET_ID)
+        })
 
-        await assertTransactionInfoBlock(1, 'ready', [
-          'Chainwestendwestmint',
-          'Teleport amount140.0310KSM',
-          'Westend fee0.0300KSM'
-        ])
+        it('westend network', async () => {
+          setCreateAssetTransactionStatus(TransactionStatus.Success)
 
-        await assertTransactionInfoBlock(2, 'ready', [
-          'Chainwestmint',
-          'Deposit140.0000KSM',
-          'Westmint fee0.0300KSM'
-        ])
+          renderModal()
+          await switchApiTo(Chains.Westend)
+
+          await enterThirdStep()
+
+          await findAndClickButton('View asset in explorer')
+          assertNewTabOpened('https://westmint.statescan.io/asset/' + ASSET_ID)
+        })
       })
     })
   })
@@ -1117,4 +1245,15 @@ const assertTransactionInfoBlock = async (transactionNumber: number, status: Tra
   const transactionInfoBlock = await screen.findByTestId(`transaction-info-block-${transactionNumber}-${status}`)
 
   content.forEach(text => expect(transactionInfoBlock).toHaveTextContent(text))
+}
+
+const assertTooltipText = async (text: string) => {
+  const tooltip = await screen.findByRole('tooltip')
+  within(tooltip).getByText(text)
+}
+
+async function hoverInputTooltip(inputName: string) {
+  const label = await screen.findByText(inputName)
+
+  userEvent.hover(label.nextSibling as Element)
 }

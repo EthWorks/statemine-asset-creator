@@ -4,15 +4,15 @@ import BN from 'bn.js'
 import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 
-import { useActiveAccount, useChainToken } from 'use-substrate'
+import { useActiveAccount, useBalances, useChainToken } from 'use-substrate'
 
 import { useAppChains, useCapitalizedChains } from '../../utils'
 import { ButtonOutline, ButtonPrimary } from '../button/Button'
 import { ChainIdentifier } from '../ChainIdentifier'
 import { FormatBalance } from '../FormatBalance'
 import { ArrowLeft, ArrowRight } from '../icons'
-import { Info } from '../Info'
 import { Loader } from '../Loader'
+import { ThirdStepInfobox } from '../ThirdStepInfobox'
 import { TransactionCostSummary } from '../TransactionCostSummary'
 import { InfoRow, TransactionInfoBlock } from '../TransactionInfoBlock/TransactionInfoBlock'
 import { Label, Text } from '../typography'
@@ -46,7 +46,6 @@ export function ThirdStep({ onNext, onBack, setIsTransactionStateDisplayed, open
   const [displayTeleport, setDisplayTeleport] = useState(false)
   const { transaction: createAssetTransaction, stepDetails: createAssetStepDetails, createAssetDeposit } = useCreateAssetTransaction() || {}
   const { assetName, assetSymbol, assetDecimals, assetId, minBalance } = useNewAssetModal()
-  const { activeAccount: relayChainActiveAccount } = useActiveAccount(relayChain)
 
   const createAssetTransactionFee = createAssetTransaction?.paymentInfo?.partialFee
   const { activeAccount } = useActiveAccount(parachain)
@@ -55,9 +54,12 @@ export function ThirdStep({ onNext, onBack, setIsTransactionStateDisplayed, open
 
   const teleportTransactionFee = teleportTransaction?.paymentInfo?.partialFee
 
+  const { activeAccount: relayChainActiveAccount } = useActiveAccount(relayChain)
+  const { availableBalance: relayChainAvailableBalance } = useBalances(relayChainActiveAccount?.address.toString(), relayChain) || {}
+
   const { chainToken, chainDecimals } = useChainToken(parachain) || {}
   const isContentHidden = state === 'Success' || state === 'Error' || state === 'InProgress'
-
+  const hasRelayChainFunds = useMemo(() => teleportAmount && relayChainAvailableBalance?.gt(teleportAmount), [relayChainAvailableBalance, teleportAmount])
   const areButtonsDisabled = state === 'AwaitingSign'
 
   useEffect(() => {
@@ -125,23 +127,6 @@ export function ThirdStep({ onNext, onBack, setIsTransactionStateDisplayed, open
     }
   }
 
-  const requiredTeleportInfo = (
-    <StyledInfo
-      text={`Owner account has insufficient funds on ${capitalizedParachain} to create the asset. A Teleport transaction from selected ${capitalizedRelayChain} account will be executed.`}
-    />
-  )
-
-  const noKusamaAccountWarning = (
-    <StyledInfo
-      text={`Insufficient funds on the owner account to create the asset. Cannot execute teleport transaction due to not selected ${capitalizedRelayChain} account.`}
-      type='warning'
-      action={{
-        name: `Select ${capitalizedRelayChain} account`,
-        onClick: openAccountSelectModal
-      }}
-    />
-  )
-
   return (
     <>
       {createAssetStepDetails && (
@@ -167,10 +152,13 @@ export function ThirdStep({ onNext, onBack, setIsTransactionStateDisplayed, open
       )}
       {!isContentHidden && (
         <div data-testid='third-step-content'>
-          {state === ThirdStepState.TeleportReady && (relayChainActiveAccount
-            ? requiredTeleportInfo
-            : noKusamaAccountWarning)
-          }
+          {state === ThirdStepState.TeleportReady && (
+            <ThirdStepInfobox
+              openAccountSelectModal={openAccountSelectModal}
+              hasRelayChainFunds={!!hasRelayChainFunds}
+              relayChainActiveAccount={relayChainActiveAccount}
+            />
+          )}
           <TransactionInfoBlock status='baseInfo'>
             <InfoRow>
               <Label>Asset name</Label>
@@ -197,7 +185,7 @@ export function ThirdStep({ onNext, onBack, setIsTransactionStateDisplayed, open
             <TransactionInfoBlock name='Teleport' number={TELEPORT_TRANSACTION_NUMBER} status={mapToTransactionInfoBlockStatus(teleportTransaction.status)}>
               <InfoRow>
                 <Label>Chain</Label>
-                <ChainIdentifier chainMain={relayChain} chainTo={parachain} />
+                <ChainIdentifier chainMain={relayChain} chainTo={parachain}/>
               </InfoRow>
               <InfoRow>
                 <Label>Teleport amount</Label>
@@ -212,10 +200,14 @@ export function ThirdStep({ onNext, onBack, setIsTransactionStateDisplayed, open
               </InfoRow>
             </TransactionInfoBlock>
           )}
-          <TransactionInfoBlock name='Asset Creation' number={createAssetTransactionNumber} status={mapToTransactionInfoBlockStatus(createAssetTransaction.status)}>
+          <TransactionInfoBlock
+            name='Asset Creation'
+            number={createAssetTransactionNumber}
+            status={mapToTransactionInfoBlockStatus(createAssetTransaction.status)}
+          >
             <InfoRow>
               <Label>Chain</Label>
-              <ChainIdentifier chainMain={parachain} />
+              <ChainIdentifier chainMain={parachain}/>
             </InfoRow>
             <InfoRow>
               <Label>Deposit</Label>
@@ -236,12 +228,12 @@ export function ThirdStep({ onNext, onBack, setIsTransactionStateDisplayed, open
           )}
           <ModalFooter contentPosition='between'>
             <ButtonOutline onClick={onBack} disabled={areButtonsDisabled}>
-              <ArrowLeft />
+              <ArrowLeft/>
               Back
             </ButtonOutline>
-            <ButtonPrimary onClick={_onSubmit} disabled={areButtonsDisabled}>
+            <ButtonPrimary onClick={_onSubmit} disabled={areButtonsDisabled || !hasRelayChainFunds}>
               Confirm
-              <ArrowRight />
+              <ArrowRight/>
             </ButtonPrimary>
           </ModalFooter>
         </div>
@@ -249,10 +241,6 @@ export function ThirdStep({ onNext, onBack, setIsTransactionStateDisplayed, open
     </>
   )
 }
-
-const StyledInfo = styled(Info)`
-  margin-bottom: 16px;
-`
 
 const StyledFormatBalance = styled(FormatBalance)`
   p {

@@ -1,19 +1,29 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
 
+import { TooltipBox } from '../../Tooltip'
 import { InputInfo } from './InputInfo'
 
 export interface CustomInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string,
   large?: boolean,
   hint?: string,
-  error?: string
+  error?: string,
+  button?: {
+    label: string,
+    onClick: () => void
+  },
+  tooltip?: string
 }
 
-export function InputBase({ id, label, hint, error, large, className, ...arg }: CustomInputProps): JSX.Element {
+export function InputBase({ id, label, hint, error, large, className, button, tooltip, ...arg }: CustomInputProps): JSX.Element {
   return (
     <CustomInputWrapper data-testid={label} className={className}>
-      {label && <InputLabel htmlFor={id}>{label}</InputLabel>}
+      <LabelWrapper>
+        {label && <InputLabel htmlFor={id}>{label}</InputLabel>}
+        {tooltip && <StyledTooltip text={tooltip}/>}
+      </LabelWrapper>
+      {button && <StyledLink type='button' onClick={button.onClick}>{button.label}</StyledLink>}
       <Input
         id={id}
         large={large}
@@ -69,13 +79,51 @@ const Input = styled.input<Pick<CustomInputProps, 'large'>>`
       border: none;
       caret-color: ${({ theme }) => theme.colors.pinkLight};
     }
+    
+    &::placeholder {
+      font-family: 'Space Grotesk', sans-serif;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 24px;
+      line-height: 28px;
+      color: ${({ theme }) => theme.colors.gray600};
+    }
   `}
 `
 
 const InputLabel = styled.label`
-  margin-bottom: 4px;
   font-size: 14px;
   font-weight: 500;
   line-height: 143%;
   color: ${({ theme }) => theme.colors.gray400};
+`
+
+const StyledLink = styled.button`
+  font-size: 12px;
+  line-height: 20px;
+  color: ${({ theme }) => theme.colors.pinkLight};
+
+  background: none;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+`
+
+const LabelWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 4px;
+`
+
+const StyledTooltip = styled(TooltipBox)`
+  margin-left: 5.6px;
 `
