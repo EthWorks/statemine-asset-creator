@@ -12,7 +12,7 @@ import { ChainSwitcher, NewAssetModal } from '../components'
 import { formatBalance } from '../components/FormatBalance/utils'
 import { DECIMALS_LIMIT } from '../components/NewAssetModal/FirstStep'
 import { TransactionInfoBlockStatus } from '../components/TransactionInfoBlock/TransactionInfoBlock'
-import { AppChainsProvider, BN_ZERO as MOCK_BN_ZERO, STATESCAN_LINK, useToggle } from '../utils'
+import { AppChainsProvider, BN_ZERO as MOCK_BN_ZERO, useToggle } from '../utils'
 import {
   assertButtonDisabled,
   assertButtonNotDisabled,
@@ -924,48 +924,76 @@ describe('New asset modal', () => {
       assertContentHidden()
 
       await findAndClickButton('View asset in explorer')
-      assertNewTabOpened(STATESCAN_LINK + ASSET_ID)
+      assertNewTabOpened('https://statemine.statescan.io/asset/' + ASSET_ID)
     })
 
-    describe('updates displayed chain names on active api change to', () => {
-      beforeEach(() => {
-        setTeleportTransactionStatus(TransactionStatus.Ready)
-        mockUseBalances.availableBalance = new BN(0)
-        renderModal()
+    describe('on api change', () => {
+      describe('updates displayed chain names to', () => {
+        beforeEach(() => {
+          setTeleportTransactionStatus(TransactionStatus.Ready)
+          mockUseBalances.availableBalance = new BN(0)
+          renderModal()
+        })
+
+        it('polkadot', async () => {
+          await switchApiTo(Chains.Polkadot)
+          await enterThirdStep()
+
+          await assertTransactionInfoBlock(1, 'ready', [
+            'Chainpolkadotstatemint',
+            'Teleport amount140.0310KSM',
+            'Polkadot fee0.0300KSM'
+          ])
+
+          await assertTransactionInfoBlock(2, 'ready', [
+            'Chainstatemint',
+            'Deposit140.0000KSM',
+            'Statemint fee0.0300KSM'
+          ])
+        })
+
+        it('westend', async () => {
+          await switchApiTo(Chains.Westend)
+          await enterThirdStep()
+
+          await assertTransactionInfoBlock(1, 'ready', [
+            'Chainwestendwestmint',
+            'Teleport amount140.0310KSM',
+            'Westend fee0.0300KSM'
+          ])
+
+          await assertTransactionInfoBlock(2, 'ready', [
+            'Chainwestmint',
+            'Deposit140.0000KSM',
+            'Westmint fee0.0300KSM'
+          ])
+        })
       })
 
-      it('polkadot', async () => {
-        await switchApiTo(Chains.Polkadot)
-        await enterThirdStep()
+      describe('updates statescan link for', () => {
+        it('polkadot network', async () => {
+          setCreateAssetTransactionStatus(TransactionStatus.Success)
 
-        await assertTransactionInfoBlock(1, 'ready', [
-          'Chainpolkadotstatemint',
-          'Teleport amount140.0310KSM',
-          'Polkadot fee0.0300KSM'
-        ])
+          renderModal()
+          await switchApiTo(Chains.Polkadot)
 
-        await assertTransactionInfoBlock(2, 'ready', [
-          'Chainstatemint',
-          'Deposit140.0000KSM',
-          'Statemint fee0.0300KSM'
-        ])
-      })
+          await enterThirdStep()
 
-      it('westend', async () => {
-        await switchApiTo(Chains.Westend)
-        await enterThirdStep()
+          await findAndClickButton('View asset in explorer')
+          assertNewTabOpened('https://statemint.statescan.io/asset/' + ASSET_ID)
+        })
 
-        await assertTransactionInfoBlock(1, 'ready', [
-          'Chainwestendwestmint',
-          'Teleport amount140.0310KSM',
-          'Westend fee0.0300KSM'
-        ])
+        it('westend network', async () => {
+          setCreateAssetTransactionStatus(TransactionStatus.Success)
 
-        await assertTransactionInfoBlock(2, 'ready', [
-          'Chainwestmint',
-          'Deposit140.0000KSM',
-          'Westmint fee0.0300KSM'
-        ])
+          renderModal()
+          await switchApiTo(Chains.Westend)
+
+          await enterThirdStep()
+
+          await findAndClickButton('View asset in explorer')
+          assertNewTabOpened('https://westmint.statescan.io/asset/' + ASSET_ID)
+        })
       })
     })
   })
