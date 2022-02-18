@@ -2,7 +2,7 @@ import type { AssetId } from '@polkadot/types/interfaces'
 
 import styled, { css } from 'styled-components'
 
-import { STATESCAN_LINK } from '../../utils'
+import { useStatescanLink } from '../../utils'
 import { ViewIcon } from '../icons'
 
 interface AssetsCardMenuProps {
@@ -10,18 +10,22 @@ interface AssetsCardMenuProps {
   isOpen: boolean
 }
 
-export const AssetsCardMenu = ({ assetId, isOpen }:AssetsCardMenuProps):JSX.Element => (
-  <CardMenuWrapper isOpen={isOpen}>
-    <CardMenu>
-      <li>
-        <MenuLink href={STATESCAN_LINK + assetId.toString()} target="_blank" rel="noopener noreferrer">
-          <ViewIcon width='20' height='20' />
+export const AssetsCardMenu = ({ assetId, isOpen }: AssetsCardMenuProps): JSX.Element => {
+  const statescanLink = useStatescanLink()
+
+  return (
+    <CardMenuWrapper isOpen={isOpen}>
+      <CardMenu>
+        <li>
+          <MenuLink href={statescanLink + assetId.toString()} target="_blank" rel="noopener noreferrer">
+            <ViewIcon width='20' height='20' />
           View in explorer
-        </MenuLink>
-      </li>
-    </CardMenu>
-  </CardMenuWrapper>
-)
+          </MenuLink>
+        </li>
+      </CardMenu>
+    </CardMenuWrapper>
+  )
+}
 
 const CardMenuWrapper = styled.div<Omit<AssetsCardMenuProps, 'assetId'>>`
   overflow: hidden;

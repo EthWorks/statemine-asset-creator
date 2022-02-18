@@ -13,7 +13,7 @@ import { ChainSwitcher, NewAssetModal } from '../components'
 import { formatBalance } from '../components/FormatBalance/utils'
 import { DECIMALS_LIMIT } from '../components/NewAssetModal/FirstStep'
 import { TransactionInfoBlockStatus } from '../components/TransactionInfoBlock/TransactionInfoBlock'
-import { AppChainsProvider, BN_ZERO as MOCK_BN_ZERO, STATESCAN_LINK, useToggle } from '../utils'
+import { AppChainsProvider, BN_ZERO as MOCK_BN_ZERO, useToggle } from '../utils'
 import {
   assertButtonDisabled,
   assertButtonNotDisabled,
@@ -38,8 +38,8 @@ import {
   typeInInput
 } from './helpers'
 import {
-  aliceAccount,
-  bobAccount,
+  aliceAccount, aliceActiveAccount,
+  bobAccount, bobActiveAccount,
   mockUseAccounts,
   mockUseActiveAccount,
   mockUseApi,
@@ -762,7 +762,14 @@ describe('New asset modal', () => {
     describe('proposes kusama teleport if account has insufficient funds', () => {
       describe('displays', () => {
         it('info about teleport execution', async () => {
-          mockUseBalances.availableBalance = new BN(0)
+          mockActiveAccount = (chain: Chains | undefined) => {
+            switch (chain) {
+              case Chains.Kusama:
+                return { activeAccount: bobActiveAccount, setActiveAccount: () => { /**/ }, isLoaded: true }
+              default:
+                return { activeAccount: aliceActiveAccount, setActiveAccount: () => { /**/ }, isLoaded: true }
+            }
+          }
 
           renderModal()
           await enterThirdStep()
@@ -771,13 +778,12 @@ describe('New asset modal', () => {
         })
 
         it('warning about missing kusama account with a button', async () => {
-          mockUseBalances.availableBalance = new BN(0)
           mockActiveAccount = (chain: Chains | undefined) => {
             switch (chain) {
               case Chains.Kusama:
                 return { activeAccount: undefined, setActiveAccount: () => { /**/ }, isLoaded: true }
               default:
-                return mockUseActiveAccount
+                return { activeAccount: aliceActiveAccount, setActiveAccount: () => { /**/ }, isLoaded: true }
             }
           }
 
@@ -799,6 +805,20 @@ describe('New asset modal', () => {
 
           await assertNoInfobox()
           await assertNoInfobox('warning')
+        })
+
+        it('infobox if relay chain account has less funds than teleport amount', async () => {
+          mockActiveAccount = () => ({ activeAccount: aliceActiveAccount, setActiveAccount: () => { /**/ }, isLoaded: true })
+
+          renderModal()
+          await enterThirdStep()
+
+          await assertInfobox(
+            'Selected Kusama account has insufficient funds to execute teleport transaction.Change Kusama account',
+            'warning'
+          )
+
+          assertButtonDisabled('Confirm')
         })
       })
 
@@ -935,6 +955,8 @@ describe('New asset modal', () => {
 
     describe('displays summary', () => {
       it('for create asset transaction', async () => {
+        mockActiveAccount = () => ({ activeAccount: bobActiveAccount, setActiveAccount: () => { /**/ }, isLoaded: true })
+
         mockUseBalances.availableBalance = EXPECTED_TELEPORT_AMOUNT.addn(1)
 
         renderModal()
@@ -967,48 +989,76 @@ describe('New asset modal', () => {
       assertContentHidden()
 
       await findAndClickButton('View asset in explorer')
-      assertNewTabOpened(STATESCAN_LINK + ASSET_ID)
+      assertNewTabOpened('https://statemine.statescan.io/asset/' + ASSET_ID)
     })
 
-    describe('updates displayed chain names on active api change to', () => {
-      beforeEach(() => {
-        setTeleportTransactionStatus(TransactionStatus.Ready)
-        mockUseBalances.availableBalance = new BN(0)
-        renderModal()
+    describe('on api change', () => {
+      describe('updates displayed chain names to', () => {
+        beforeEach(() => {
+          setTeleportTransactionStatus(TransactionStatus.Ready)
+          mockUseBalances.availableBalance = new BN(0)
+          renderModal()
+        })
+
+        it('polkadot', async () => {
+          await switchApiTo(Chains.Polkadot)
+          await enterThirdStep()
+
+          await assertTransactionInfoBlock(1, 'ready', [
+            'Chainpolkadotstatemint',
+            'Teleport amount140.0310KSM',
+            'Polkadot fee0.0300KSM'
+          ])
+
+          await assertTransactionInfoBlock(2, 'ready', [
+            'Chainstatemint',
+            'Deposit140.0000KSM',
+            'Statemint fee0.0300KSM'
+          ])
+        })
+
+        it('westend', async () => {
+          await switchApiTo(Chains.Westend)
+          await enterThirdStep()
+
+          await assertTransactionInfoBlock(1, 'ready', [
+            'Chainwestendwestmint',
+            'Teleport amount140.0310KSM',
+            'Westend fee0.0300KSM'
+          ])
+
+          await assertTransactionInfoBlock(2, 'ready', [
+            'Chainwestmint',
+            'Deposit140.0000KSM',
+            'Westmint fee0.0300KSM'
+          ])
+        })
       })
 
-      it('polkadot', async () => {
-        await switchApiTo(Chains.Polkadot)
-        await enterThirdStep()
+      describe('updates statescan link for', () => {
+        it('polkadot network', async () => {
+          setCreateAssetTransactionStatus(TransactionStatus.Success)
 
-        await assertTransactionInfoBlock(1, 'ready', [
-          'Chainpolkadotstatemint',
-          'Teleport amount140.0310KSM',
-          'Polkadot fee0.0300KSM'
-        ])
+          renderModal()
+          await switchApiTo(Chains.Polkadot)
 
-        await assertTransactionInfoBlock(2, 'ready', [
-          'Chainstatemint',
-          'Deposit140.0000KSM',
-          'Statemint fee0.0300KSM'
-        ])
-      })
+          await enterThirdStep()
 
-      it('westend', async () => {
-        await switchApiTo(Chains.Westend)
-        await enterThirdStep()
+          await findAndClickButton('View asset in explorer')
+          assertNewTabOpened('https://statemint.statescan.io/asset/' + ASSET_ID)
+        })
 
-        await assertTransactionInfoBlock(1, 'ready', [
-          'Chainwestendwestmint',
-          'Teleport amount140.0310KSM',
-          'Westend fee0.0300KSM'
-        ])
+        it('westend network', async () => {
+          setCreateAssetTransactionStatus(TransactionStatus.Success)
 
-        await assertTransactionInfoBlock(2, 'ready', [
-          'Chainwestmint',
-          'Deposit140.0000KSM',
-          'Westmint fee0.0300KSM'
-        ])
+          renderModal()
+          await switchApiTo(Chains.Westend)
+
+          await enterThirdStep()
+
+          await findAndClickButton('View asset in explorer')
+          assertNewTabOpened('https://westmint.statescan.io/asset/' + ASSET_ID)
+        })
       })
     })
   })

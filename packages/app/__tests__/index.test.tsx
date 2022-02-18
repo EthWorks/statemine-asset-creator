@@ -171,33 +171,67 @@ describe('Home', () => {
     })
   })
 
-  describe('updates displayed chain icons on active api change to', () => {
-    it('polkadot', async () => {
-      renderWithTheme(<AppChainsProvider><Home/></AppChainsProvider>)
+  describe('on active api change', () => {
+    describe('updates displayed chain icons to', () => {
+      it('polkadot', async () => {
+        renderWithTheme(<AppChainsProvider><Home/></AppChainsProvider>)
 
-      const activeAccountBar = await screen.findByTestId('active-account-bar')
+        const activeAccountBar = await screen.findByTestId('active-account-bar')
 
-      await assertChainLogo(Chains.Kusama, activeAccountBar)
-      await assertChainLogo(Chains.Statemine, activeAccountBar)
+        await assertChainLogo(Chains.Kusama, activeAccountBar)
+        await assertChainLogo(Chains.Statemine, activeAccountBar)
 
-      await switchApiTo(Chains.Polkadot)
+        await switchApiTo(Chains.Polkadot)
 
-      await assertChainLogo(Chains.Polkadot, activeAccountBar)
-      await assertChainLogo(Chains.Statemint, activeAccountBar)
+        await assertChainLogo(Chains.Polkadot, activeAccountBar)
+        await assertChainLogo(Chains.Statemint, activeAccountBar)
+      })
+
+      it('westend', async () => {
+        renderWithTheme(<AppChainsProvider><Home/></AppChainsProvider>)
+
+        const activeAccountBar = await screen.findByTestId('active-account-bar')
+
+        await assertChainLogo(Chains.Kusama, activeAccountBar)
+        await assertChainLogo(Chains.Statemine, activeAccountBar)
+
+        await switchApiTo(Chains.Westend)
+
+        await assertChainLogo(Chains.Westend, activeAccountBar)
+        await assertChainLogo(Chains.Westmint, activeAccountBar)
+      })
     })
 
-    it('westend', async () => {
-      renderWithTheme(<AppChainsProvider><Home/></AppChainsProvider>)
+    describe('updates asset\'s statescan link for', () => {
+      beforeAll(() => {
+        mockAssets = mockUseAssets
+      })
 
-      const activeAccountBar = await screen.findByTestId('active-account-bar')
+      afterAll(() => {
+        mockAssets = []
+      })
 
-      await assertChainLogo(Chains.Kusama, activeAccountBar)
-      await assertChainLogo(Chains.Statemine, activeAccountBar)
+      it('polkadot network', async () => {
+        renderWithTheme(<AppChainsProvider><Home/></AppChainsProvider>)
 
-      await switchApiTo(Chains.Westend)
+        await switchApiTo(Chains.Polkadot)
 
-      await assertChainLogo(Chains.Westend, activeAccountBar)
-      await assertChainLogo(Chains.Westmint, activeAccountBar)
+        const assetCard = await screen.findByTestId('asset-card-9')
+
+        const statescanLink = await within(assetCard).findByText('View in explorer')
+        expect(statescanLink).toHaveAttribute('href', 'https://statemint.statescan.io/asset/9')
+      })
+
+      it('westend network', async () => {
+        renderWithTheme(<AppChainsProvider><Home/></AppChainsProvider>)
+
+        await switchApiTo(Chains.Westend)
+
+        const assetCard = await screen.findByTestId('asset-card-9')
+
+        const statescanLink = await within(assetCard).findByText('View in explorer')
+        expect(statescanLink).toHaveAttribute('href', 'https://westmint.statescan.io/asset/9')
+      })
     })
   })
 
