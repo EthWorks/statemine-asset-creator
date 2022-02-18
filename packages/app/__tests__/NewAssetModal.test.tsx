@@ -37,8 +37,8 @@ import {
   typeInInput
 } from './helpers'
 import {
-  aliceAccount,
-  bobAccount,
+  aliceAccount, aliceActiveAccount,
+  bobAccount, bobActiveAccount,
   mockUseAccounts,
   mockUseActiveAccount,
   mockUseApi,
@@ -719,7 +719,14 @@ describe('New asset modal', () => {
     describe('proposes kusama teleport if account has insufficient funds', () => {
       describe('displays', () => {
         it('info about teleport execution', async () => {
-          mockUseBalances.availableBalance = new BN(0)
+          mockActiveAccount = (chain: Chains | undefined) => {
+            switch (chain) {
+              case Chains.Kusama:
+                return { activeAccount: bobActiveAccount, setActiveAccount: () => { /**/ }, isLoaded: true }
+              default:
+                return { activeAccount: aliceActiveAccount, setActiveAccount: () => { /**/ }, isLoaded: true }
+            }
+          }
 
           renderModal()
           await enterThirdStep()
@@ -728,13 +735,12 @@ describe('New asset modal', () => {
         })
 
         it('warning about missing kusama account with a button', async () => {
-          mockUseBalances.availableBalance = new BN(0)
           mockActiveAccount = (chain: Chains | undefined) => {
             switch (chain) {
               case Chains.Kusama:
                 return { activeAccount: undefined, setActiveAccount: () => { /**/ }, isLoaded: true }
               default:
-                return mockUseActiveAccount
+                return { activeAccount: aliceActiveAccount, setActiveAccount: () => { /**/ }, isLoaded: true }
             }
           }
 
@@ -756,6 +762,20 @@ describe('New asset modal', () => {
 
           await assertNoInfobox()
           await assertNoInfobox('warning')
+        })
+
+        it('infobox if relay chain account has less funds than teleport amount', async () => {
+          mockActiveAccount = () => ({ activeAccount: aliceActiveAccount, setActiveAccount: () => { /**/ }, isLoaded: true })
+
+          renderModal()
+          await enterThirdStep()
+
+          await assertInfobox(
+            'Selected Kusama account has insufficient funds to execute teleport transaction.Change Kusama account',
+            'warning'
+          )
+
+          assertButtonDisabled('Confirm')
         })
       })
 
@@ -892,6 +912,8 @@ describe('New asset modal', () => {
 
     describe('displays summary', () => {
       it('for create asset transaction', async () => {
+        mockActiveAccount = () => ({ activeAccount: bobActiveAccount, setActiveAccount: () => { /**/ }, isLoaded: true })
+
         mockUseBalances.availableBalance = EXPECTED_TELEPORT_AMOUNT.addn(1)
 
         renderModal()
