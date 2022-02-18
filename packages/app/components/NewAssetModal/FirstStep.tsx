@@ -103,6 +103,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
           large
           autoFocus
           tooltip='The descriptive name for this asset, e.g. "Kusama", "Polkadot"'
+          placeholder='Type your asset name'
         />
       </FormHead>
       <TextInput
