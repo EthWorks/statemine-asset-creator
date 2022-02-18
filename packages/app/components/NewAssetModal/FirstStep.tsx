@@ -39,7 +39,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
   const isValid = !assetNameError && !assetSymbolError && !assetIdError && !assetDecimalsError && !minBalanceError
   const isDisabled = !isFilled || !isValid
 
-  const isAssetIdUnique = useCallback(() => !existingAssets?.find(({ id }: Asset) => id.toString() === assetId), [existingAssets, assetId])
+  const isAssetIdUnique = useCallback((assetId: string) => !existingAssets?.find(({ id }: Asset) => id.toString() === assetId), [existingAssets])
 
   useEffect(() => {
     if (!stringLimit) {
@@ -58,7 +58,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
       setAssetSymbolError(STRING_LIMIT_EXCEEDED_ERROR)
     }
 
-    if (assetId && !isAssetIdUnique()) {
+    if (!isAssetIdUnique(assetId)) {
       setAssetIdError('Value cannot match an already-existing asset id.')
     }
 
@@ -78,6 +78,15 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
       onNext()
     }
   }, [assetNameError, assetSymbolError, onNext, stringLimit])
+
+  const _generateId = useCallback((): void => {
+    const min = Math.ceil(0)
+    const max = Math.floor(1000)
+
+    const generatedId = Math.floor(Math.random() * (max - min) + min).toString()
+
+    isAssetIdUnique(generatedId) ? setAssetId(generatedId) : _generateId()
+  }, [isAssetIdUnique, setAssetId])
 
   return (
     <form onSubmit={_onNext}>
@@ -118,6 +127,10 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
         label="Asset ID"
         id="asset-ID"
         inputType='NATURAL'
+        button={{
+          label: 'Generate random ID',
+          onClick: _generateId
+        }}
       />
       <NumericInput
         error={minBalanceError}

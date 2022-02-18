@@ -7,13 +7,18 @@ export interface CustomInputProps extends React.InputHTMLAttributes<HTMLInputEle
   label?: string,
   large?: boolean,
   hint?: string,
-  error?: string
+  error?: string,
+  button?: {
+    label: string,
+    onClick: () => void
+  }
 }
 
-export function InputBase({ id, label, hint, error, large, className, ...arg }: CustomInputProps): JSX.Element {
+export function InputBase({ id, label, hint, error, large, className, button, ...arg }: CustomInputProps): JSX.Element {
   return (
     <CustomInputWrapper data-testid={label} className={className}>
       {label && <InputLabel htmlFor={id}>{label}</InputLabel>}
+      {button && <StyledLink type='button' onClick={button.onClick}>{button.label}</StyledLink>}
       <Input
         id={id}
         large={large}
@@ -78,4 +83,23 @@ const InputLabel = styled.label`
   font-weight: 500;
   line-height: 143%;
   color: ${({ theme }) => theme.colors.gray400};
+`
+
+const StyledLink = styled.button`
+  font-size: 12px;
+  line-height: 20px;
+  color: ${({ theme }) => theme.colors.pinkLight};
+
+  background: none;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  
+  &:hover {
+    text-decoration: underline;
+  }
 `

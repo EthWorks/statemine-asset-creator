@@ -306,6 +306,41 @@ describe('New asset modal', () => {
 
       await assertInputHint('Asset decimals', `Max allowed value is ${DECIMALS_LIMIT}`)
     })
+
+    describe('asset id input', () => {
+      const RANDOM_NUMBER = 0.123456789
+      const EXPECTED_ID = 123
+      const ID_IN_USE = 0.009
+
+      afterEach(() => {
+        jest.spyOn(global.Math, 'random').mockRestore()
+      })
+
+      it('generates random asset id', async () => {
+        jest.spyOn(global.Math, 'random').mockReturnValue(RANDOM_NUMBER)
+
+        renderModal()
+        await openModal()
+
+        expect(global.Math.random).toHaveBeenCalledTimes(0)
+        await findAndClickButton('Generate random ID')
+        expect(global.Math.random).toHaveBeenCalledTimes(1)
+        assertInputValue('Asset ID', `${EXPECTED_ID}`)
+      })
+
+      it('generates again if asset id is already in use', async () => {
+        jest.spyOn(global.Math, 'random').mockReturnValueOnce(ID_IN_USE).mockReturnValueOnce(RANDOM_NUMBER)
+
+        renderModal()
+        await openModal()
+
+        expect(global.Math.random).toHaveBeenCalledTimes(0)
+        await findAndClickButton('Generate random ID')
+        expect(global.Math.random).toHaveBeenCalledTimes(2)
+
+        assertInputValue('Asset ID', `${EXPECTED_ID}`)
+      })
+    })
   })
 
   describe('Second step', () => {
