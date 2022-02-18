@@ -2,7 +2,8 @@ import type { RenderResult } from '@testing-library/react'
 import type { RuntimeDispatchInfo } from '@polkadot/types/interfaces'
 import type { ErrorDetails, UseActiveAccount, UseTransaction } from 'use-substrate'
 
-import { fireEvent, screen } from '@testing-library/react'
+import { fireEvent, screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import BN from 'bn.js'
 import React from 'react'
 
@@ -339,6 +340,48 @@ describe('New asset modal', () => {
         expect(global.Math.random).toHaveBeenCalledTimes(2)
 
         assertInputValue('Asset ID', `${EXPECTED_ID}`)
+      })
+    })
+
+    describe('input tooltips', () => {
+      it('Asset name', async () => {
+        renderModal()
+        await openModal()
+
+        await hoverInputTooltip('Asset name')
+        await assertTooltipText('The descriptive name for this asset, e.g. "Kusama", "Polkadot"')
+      })
+
+      it('Asset symbol', async () => {
+        renderModal()
+        await openModal()
+
+        await hoverInputTooltip('Asset symbol')
+        await assertTooltipText('The symbol that will represent this asset, e.g. "KSM", "DOT"')
+      })
+
+      it('Asset decimals', async () => {
+        renderModal()
+        await openModal()
+
+        await hoverInputTooltip('Asset decimals')
+        await assertTooltipText('The number of decimal places for this Asset.')
+      })
+
+      it('Asset ID', async () => {
+        renderModal()
+        await openModal()
+
+        await hoverInputTooltip('Asset ID')
+        await assertTooltipText('The selected id for the asset. This cannot match an already-existing asset id.')
+      })
+
+      it('Minimum balance', async () => {
+        renderModal()
+        await openModal()
+
+        await hoverInputTooltip('Minimum balance')
+        await assertTooltipText('The minimum balance for the asset. This is specified in the units and decimals as requested')
       })
     })
   })
@@ -1202,4 +1245,15 @@ const assertTransactionInfoBlock = async (transactionNumber: number, status: Tra
   const transactionInfoBlock = await screen.findByTestId(`transaction-info-block-${transactionNumber}-${status}`)
 
   content.forEach(text => expect(transactionInfoBlock).toHaveTextContent(text))
+}
+
+const assertTooltipText = async (text: string) => {
+  const tooltip = await screen.findByRole('tooltip')
+  within(tooltip).getByText(text)
+}
+
+async function hoverInputTooltip(inputName: string) {
+  const label = await screen.findByText(inputName)
+
+  userEvent.hover(label.nextSibling as Element)
 }

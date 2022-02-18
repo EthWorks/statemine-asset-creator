@@ -1,6 +1,7 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
 
+import { TooltipBox } from '../../Tooltip'
 import { InputInfo } from './InputInfo'
 
 export interface CustomInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -11,13 +12,17 @@ export interface CustomInputProps extends React.InputHTMLAttributes<HTMLInputEle
   button?: {
     label: string,
     onClick: () => void
-  }
+  },
+  tooltip?: string
 }
 
-export function InputBase({ id, label, hint, error, large, className, button, ...arg }: CustomInputProps): JSX.Element {
+export function InputBase({ id, label, hint, error, large, className, button, tooltip, ...arg }: CustomInputProps): JSX.Element {
   return (
     <CustomInputWrapper data-testid={label} className={className}>
-      {label && <InputLabel htmlFor={id}>{label}</InputLabel>}
+      <LabelWrapper>
+        {label && <InputLabel htmlFor={id}>{label}</InputLabel>}
+        {tooltip && <StyledTooltip text={tooltip}/>}
+      </LabelWrapper>
       {button && <StyledLink type='button' onClick={button.onClick}>{button.label}</StyledLink>}
       <Input
         id={id}
@@ -78,7 +83,6 @@ const Input = styled.input<Pick<CustomInputProps, 'large'>>`
 `
 
 const InputLabel = styled.label`
-  margin-bottom: 4px;
   font-size: 14px;
   font-weight: 500;
   line-height: 143%;
@@ -102,4 +106,15 @@ const StyledLink = styled.button`
   &:hover {
     text-decoration: underline;
   }
+`
+
+const LabelWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 4px;
+`
+
+const StyledTooltip = styled(TooltipBox)`
+  margin-left: 5.6px;
 `

@@ -102,6 +102,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
           id="asset-name"
           large
           autoFocus
+          tooltip='The descriptive name for this asset, e.g. "Kusama", "Polkadot"'
         />
       </FormHead>
       <TextInput
@@ -110,6 +111,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
         onChange={setAssetSymbol}
         label="Asset symbol"
         id="asset-symbol"
+        tooltip='The symbol that will represent this asset, e.g. "KSM", "DOT"'
       />
       <NumericInput
         error={assetDecimalsError}
@@ -119,6 +121,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
         id="asset-decimals"
         inputType='NATURAL'
         hint={`Max allowed value is ${DECIMALS_LIMIT}`}
+        tooltip='The number of decimal places for this Asset.'
       />
       <NumericInput
         error={assetIdError}
@@ -131,6 +134,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
           label: 'Generate random ID',
           onClick: _generateId
         }}
+        tooltip='The selected id for the asset. This cannot match an already-existing asset id.'
       />
       <NumericInput
         error={minBalanceError}
@@ -139,6 +143,7 @@ export function FirstStep({ onNext }: ModalStep): JSX.Element {
         label="Minimum balance"
         id="min-balance"
         inputType='NATURAL'
+        tooltip='The minimum balance for the asset. This is specified in the units and decimals as requested'
       />
       <ModalFooter>
         <ButtonPrimary type='submit' disabled={isDisabled}>

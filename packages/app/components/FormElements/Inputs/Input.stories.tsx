@@ -31,3 +31,19 @@ WithButton.args = {
     }
   }
 }
+
+export const WithTooltip = Template.bind({})
+WithTooltip.args = {
+  tooltip: 'Tooltip text'
+}
+
+export const WithTooltipAndButton = Template.bind({})
+WithTooltipAndButton.args = {
+  tooltip: 'Tooltip text',
+  button: {
+    label: 'Button label',
+    onClick: () => {
+      console.log('Button clicked')
+    }
+  }
+}

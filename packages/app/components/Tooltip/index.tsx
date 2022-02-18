@@ -5,13 +5,14 @@ import { TooltipIcon } from '../icons/TooltipIcon'
 import { Text } from '../typography'
 
 export interface TooltipBoxProps {
-  text: string
+  text: string,
+  className?: string
 }
 
-export const TooltipBox = ({ text }: TooltipBoxProps): JSX.Element => (
+export const TooltipBox = ({ className, text }: TooltipBoxProps): JSX.Element => (
   <Tooltip.Provider>
     <Tooltip.Root delayDuration={200}>
-      <TooltipBtn asChild>
+      <TooltipBtn className={className} asChild>
         <div>
           <TooltipIcon />
         </div>
